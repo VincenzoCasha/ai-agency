@@ -1,0 +1,1531 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan maestro de digitalización - CRUDO y Propiedades</title>
+  <style>
+    :root {
+      --ink: #24211f;
+      --muted: #6f665d;
+      --paper: #fbfaf7;
+      --panel: #ffffff;
+      --line: #ded8cf;
+      --wine: #7c2635;
+      --olive: #566b38;
+      --teal: #2f6f73;
+      --ochre: #b77b2a;
+      --charcoal: #353432;
+      --soft-wine: #f6e9eb;
+      --soft-olive: #edf2e6;
+      --soft-teal: #e6f1f1;
+      --soft-ochre: #f8efdF;
+      --shadow: 0 14px 34px rgba(36, 33, 31, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--wine);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(251, 250, 247, 0.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 64px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      color: #fff;
+      background: var(--wine);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .nav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a,
+    .print-button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 0 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--muted);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav a:hover,
+    .print-button:hover {
+      color: var(--ink);
+      border-color: var(--line);
+      background: #fff;
+    }
+
+    .hero {
+      padding: 58px 0 34px;
+      border-bottom: 1px solid var(--line);
+      background: #fffdf8;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 34px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--wine);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 880px;
+      font-size: clamp(40px, 6vw, 76px);
+    }
+
+    .subtitle {
+      max-width: 780px;
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: clamp(18px, 2.2vw, 23px);
+    }
+
+    .hero-note {
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--olive);
+      border-radius: 8px;
+      padding: 18px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-note strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--olive);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    main {
+      padding: 34px 0 70px;
+    }
+
+    section {
+      scroll-margin-top: 90px;
+      margin-top: 34px;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(280px, 0.22fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(28px, 4vw, 46px);
+    }
+
+    .section-head p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .tag {
+      display: inline-flex;
+      justify-self: end;
+      align-items: center;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid.four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 20px;
+      box-shadow: 0 5px 18px rgba(36, 33, 31, 0.04);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .card h4 {
+      margin-bottom: 9px;
+      font-size: 16px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .card p + p {
+      margin-top: 10px;
+    }
+
+    .accent-wine {
+      border-top: 5px solid var(--wine);
+    }
+
+    .accent-olive {
+      border-top: 5px solid var(--olive);
+    }
+
+    .accent-teal {
+      border-top: 5px solid var(--teal);
+    }
+
+    .accent-ochre {
+      border-top: 5px solid var(--ochre);
+    }
+
+    .stat {
+      display: grid;
+      gap: 4px;
+      min-height: 120px;
+      align-content: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .stat b {
+      color: var(--wine);
+      font-size: clamp(24px, 4vw, 38px);
+      line-height: 1;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .note {
+      border-left: 5px solid var(--teal);
+      background: var(--soft-teal);
+      border-radius: 8px;
+      padding: 16px 18px;
+      color: var(--charcoal);
+    }
+
+    .note strong {
+      color: var(--teal);
+    }
+
+    .warning {
+      border-left-color: var(--ochre);
+      background: var(--soft-ochre);
+    }
+
+    .warning strong {
+      color: #8a5612;
+    }
+
+    .wine-note {
+      border-left-color: var(--wine);
+      background: var(--soft-wine);
+    }
+
+    .wine-note strong {
+      color: var(--wine);
+    }
+
+    ul,
+    ol {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin: 7px 0;
+      color: var(--muted);
+    }
+
+    li strong {
+      color: var(--ink);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--ink);
+      background: #f3efe8;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .score {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 28px;
+      border-radius: 6px;
+      color: #fff;
+      background: var(--olive);
+      font-weight: 850;
+      font-size: 13px;
+    }
+
+    .score.mid {
+      background: var(--ochre);
+    }
+
+    .score.low {
+      background: var(--wine);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      min-height: 138px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .step:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -9px;
+      width: 12px;
+      height: 12px;
+      border-top: 2px solid var(--line);
+      border-right: 2px solid var(--line);
+      transform: translateY(-50%) rotate(45deg);
+      background: var(--paper);
+    }
+
+    .step:last-child:after {
+      display: none;
+    }
+
+    .step b {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--wine);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .milestone {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .milestone time {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 8px;
+      background: var(--charcoal);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .milestone h3 {
+      margin-bottom: 7px;
+      font-size: 18px;
+    }
+
+    .milestone p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .price {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .price header {
+      padding: 18px;
+      color: #fff;
+      background: var(--charcoal);
+    }
+
+    .price:nth-child(2) header {
+      background: var(--wine);
+    }
+
+    .price:nth-child(3) header {
+      background: var(--teal);
+    }
+
+    .price h3 {
+      font-size: 21px;
+    }
+
+    .amount {
+      margin-top: 8px;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .price .body {
+      padding: 18px;
+    }
+
+    .mini {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .box {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      border: 2px solid var(--olive);
+      border-radius: 5px;
+      background: #fff;
+    }
+
+    .sources {
+      font-size: 14px;
+    }
+
+    .sources li {
+      word-break: break-word;
+    }
+
+    footer {
+      padding: 34px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      background: #fff;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .section-head,
+      .grid.two,
+      .grid.three,
+      .grid.four,
+      .price-grid,
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .tag {
+        justify-self: start;
+      }
+
+      .step:after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .topbar {
+        position: static;
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      td {
+        border-bottom: 0;
+        padding: 10px 14px;
+      }
+
+      tr {
+        border-bottom: 1px solid var(--line);
+        padding: 8px 0;
+      }
+
+      tr:last-child {
+        border-bottom: 0;
+      }
+
+      td:before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 4px;
+        color: var(--ink);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .milestone {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .topbar,
+      .print-button {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 24px;
+      }
+
+      section {
+        break-inside: avoid;
+      }
+
+      a {
+        color: var(--ink);
+      }
+
+      .card,
+      .stat,
+      .price,
+      table,
+      .milestone,
+      .step {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="brand">
+        <span class="mark">AI</span>
+        <span>AI Agency - Dossier estratégico</span>
+      </div>
+      <nav class="nav" aria-label="Navegación del documento">
+        <a href="#vision">Visión</a>
+        <a href="#crudo">CRUDO</a>
+        <a href="#propiedades">Propiedades</a>
+        <a href="#facturacion">Facturación</a>
+        <a href="#ejecucion">Ejecución</a>
+        <a href="#preguntas">Preguntas</a>
+        <button class="print-button" type="button" onclick="window.print()">Imprimir</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <p class="eyebrow">Basado en Ideas.md - Madrid - actualizado abril 2026</p>
+        <h1>Plan maestro para convertir negocios físicos en activos digitales rentables.</h1>
+        <p class="subtitle">Una guía práctica para aterrizar dos oportunidades: CRUDO, un bar/distribuidor de vinos y quesos nicho, y una línea inmobiliaria entre alquileres de propiedades y estudio de reformas.</p>
+        <div class="meta">
+          <span class="pill">Objetivos por negocio</span>
+          <span class="pill">Funcionalidades digitales</span>
+          <span class="pill">Plan de facturación</span>
+          <span class="pill">Roadmap 90 días</span>
+          <span class="pill">Preguntas de descubrimiento</span>
+        </div>
+      </div>
+      <aside class="hero-note">
+        <strong>Principio central</strong>
+        No vendas "una web". Vende un sistema comercial: atraer demanda, convertirla en reservas, pedidos o leads, retener clientes y medir qué canal trae dinero.
+      </aside>
+    </div>
+  </div>
+
+  <main class="shell">
+    <section id="vision">
+      <div class="section-head">
+        <div>
+          <h2>Visión General</h2>
+          <p>Los negocios físicos ya tienen algo que muchas startups no tienen: producto real, ubicación, clientes, historia y confianza local. Tu oportunidad como AI Agency es empaquetar esa realidad en un sistema digital que genere ventas medibles.</p>
+        </div>
+        <span class="tag">Tesis de negocio</span>
+      </div>
+
+      <div class="grid three">
+        <article class="card accent-wine">
+          <h3>1. Digitalizar presencia</h3>
+          <p>Hacer que el negocio sea encontrable, deseable y claro: Google, web, Instagram, páginas de producto o servicio, reseñas, fotos y mensajes consistentes.</p>
+        </article>
+        <article class="card accent-olive">
+          <h3>2. Digitalizar conversión</h3>
+          <p>Convertir interés en acción: reservas, pedidos para recoger, formularios de visita, solicitudes de presupuesto, WhatsApp estructurado, pagos, CRM y automatizaciones.</p>
+        </article>
+        <article class="card accent-teal">
+          <h3>3. Digitalizar repetición</h3>
+          <p>Crear memoria comercial: newsletter, campañas estacionales, remarketing, club de clientes, seguimiento de leads y panel de métricas mensual.</p>
+        </article>
+      </div>
+
+      <div class="note" style="margin-top:16px">
+        <strong>Lectura rápida:</strong> CRUDO es una oportunidad de marca, contenido y comunidad. Propiedades es una oportunidad de conversión y gestión de leads. Reformas es una oportunidad de confianza, ticket alto y casos visuales antes/después.
+      </div>
+    </section>
+
+    <section id="mapa">
+      <div class="section-head">
+        <div>
+          <h2>Mapa de Decisión</h2>
+          <p>Antes de construir, conviene elegir el foco. Estas puntuaciones son una hipótesis inicial a partir de tus notas, no una verdad cerrada.</p>
+        </div>
+        <span class="tag">Qué priorizar</span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Oportunidad</th>
+            <th>Velocidad a ingresos</th>
+            <th>Potencial de contenido</th>
+            <th>Complejidad operativa</th>
+            <th>Escalabilidad</th>
+            <th>Recomendación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Oportunidad"><strong>CRUDO: bar + quesos + vinos</strong></td>
+            <td data-label="Velocidad"><span class="score">8</span></td>
+            <td data-label="Contenido"><span class="score">9</span></td>
+            <td data-label="Complejidad"><span class="score mid">6</span> por stock, alimentos y alcohol</td>
+            <td data-label="Escalabilidad"><span class="score mid">7</span></td>
+            <td data-label="Recomendación">Muy buen primer caso de estudio para tu agencia: visual, local, nicho y con campañas recurrentes.</td>
+          </tr>
+          <tr>
+            <td data-label="Oportunidad"><strong>Propiedades: alquiler estudiantes y larga estancia</strong></td>
+            <td data-label="Velocidad"><span class="score">8</span></td>
+            <td data-label="Contenido"><span class="score mid">6</span></td>
+            <td data-label="Complejidad"><span class="score mid">6</span> por documentación, disponibilidad y seguimiento</td>
+            <td data-label="Escalabilidad"><span class="score mid">7</span> si sumas propietarios externos</td>
+            <td data-label="Recomendación">Ideal si ya tenéis varias propiedades. El objetivo no es viralidad, es reducir vacantes y filtrar mejor.</td>
+          </tr>
+          <tr>
+            <td data-label="Oportunidad"><strong>Reformas / studio architect</strong></td>
+            <td data-label="Velocidad"><span class="score mid">6</span></td>
+            <td data-label="Contenido"><span class="score">9</span></td>
+            <td data-label="Complejidad"><span class="score low">8</span> por ciclo de venta largo y ejecución</td>
+            <td data-label="Escalabilidad"><span class="score">8</span></td>
+            <td data-label="Recomendación">Potencial de ticket alto. Necesita portfolio fuerte, procesos claros y autoridad técnica.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid two" style="margin-top:16px">
+        <article class="card accent-olive">
+          <h3>Mi recomendación inicial</h3>
+          <p>Empieza con dos MVPs: CRUDO como caso de marca y ecommerce ligero; Propiedades como landing de cartera con formularios y CRM. Mantén Reformas como segunda fase si ya existe un archivo sólido de proyectos antes/después.</p>
+        </article>
+        <article class="card accent-ochre">
+          <h3>Decisión clave</h3>
+          <p>No mezcles alquileres y reformas bajo una web confusa. Si se lanzan ambas, usa una marca paraguas inmobiliaria con dos entradas claras: "Viviendas en alquiler" y "Reformas y proyectos".</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="crudo">
+      <div class="section-head">
+        <div>
+          <h2>Idea 1: CRUDO</h2>
+          <p>Bar en el centro de Madrid donde se venden quesos y vinos de buena calidad, muy nicho. La estrategia debe convertir el encanto físico en tráfico, reservas, recogidas y repetición.</p>
+        </div>
+        <span class="tag">Wine bar + cheese</span>
+      </div>
+
+      <div class="grid four">
+        <div class="stat">
+          <b>1</b>
+          <span>Destino local buscable en Google</span>
+        </div>
+        <div class="stat">
+          <b>2</b>
+          <span>Contenido de producto y cultura gastronómica</span>
+        </div>
+        <div class="stat">
+          <b>3</b>
+          <span>Pedidos pickup, packs y campañas</span>
+        </div>
+        <div class="stat">
+          <b>4</b>
+          <span>Club, newsletter y clientes recurrentes</span>
+        </div>
+      </div>
+
+      <div class="grid two" style="margin-top:16px">
+        <article class="card accent-wine">
+          <h3>Objetivo de negocio</h3>
+          <p>Posicionar CRUDO como una experiencia gastronómica de referencia en Madrid para vinos, quesos, catas y productos especiales, generando tráfico al local y ventas fuera de horas mediante pedidos para recoger.</p>
+          <ul>
+            <li><strong>Objetivo principal:</strong> aumentar visitas al local y pedidos de productos estacionales.</li>
+            <li><strong>Objetivo secundario:</strong> construir una comunidad propia que no dependa solo de Instagram.</li>
+            <li><strong>Objetivo de marca:</strong> transmitir criterio, origen, calidad y cercanía.</li>
+          </ul>
+        </article>
+        <article class="card accent-olive">
+          <h3>Oferta digital ideal</h3>
+          <p>Un sistema compacto: web editorial + tienda pickup + calendario de eventos + Instagram como motor de descubrimiento + email/WhatsApp como motor de repetición.</p>
+          <ul>
+            <li>Packs de queso y vino por temporada, ocasión o presupuesto.</li>
+            <li>Catas con plazas limitadas y pago/reserva online.</li>
+            <li>Producto de semana con ficha breve, origen y maridaje.</li>
+            <li>Merch de marca solo cuando haya estética suficiente y demanda real.</li>
+          </ul>
+        </article>
+      </div>
+
+      <h3 style="margin:28px 0 12px">Embudo recomendado para CRUDO</h3>
+      <div class="flow">
+        <div class="step">
+          <b>Descubrimiento</b>
+          <strong>Instagram, Google, Maps</strong>
+          <span>Reels cortos, fotos de producto, reseñas, búsquedas "vino y queso Madrid".</span>
+        </div>
+        <div class="step">
+          <b>Interés</b>
+          <strong>Web y link in bio</strong>
+          <span>Menú, historia, productos de temporada, eventos y ubicación clara.</span>
+        </div>
+        <div class="step">
+          <b>Conversión</b>
+          <strong>Reserva o pickup</strong>
+          <span>Reserva de mesa/cata, packs para recoger, gift cards y pedidos rápidos.</span>
+        </div>
+        <div class="step">
+          <b>Retención</b>
+          <strong>Newsletter / WhatsApp</strong>
+          <span>Campañas de temporada, lanzamientos limitados, recordatorios de catas.</span>
+        </div>
+        <div class="step">
+          <b>Repetición</b>
+          <strong>Club CRUDO</strong>
+          <span>Clientes frecuentes, preventas, cajas mensuales y colaboraciones.</span>
+        </div>
+      </div>
+
+      <div class="grid three" style="margin-top:16px">
+        <article class="card">
+          <h3>Funcionalidades MVP</h3>
+          <ul>
+            <li>Home con propuesta de valor, horario, ubicación y llamada a reservar.</li>
+            <li>Página de productos estacionales: quesos, vinos, packs y merch.</li>
+            <li>Ecommerce pickup con stock limitado y franjas de recogida.</li>
+            <li>Calendario de catas y eventos.</li>
+            <li>Link in bio propio, no dependiente de herramientas externas.</li>
+            <li>Google Business Profile optimizado con fotos, categorías y posts.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Funcionalidades fase 2</h3>
+          <ul>
+            <li>Club de socios o newsletter con preventas.</li>
+            <li>Cajas mensuales de queso y vino.</li>
+            <li>Gift cards digitales para regalos.</li>
+            <li>Campañas B2B para empresas: lotes navideños y eventos privados.</li>
+            <li>Automatización de reseñas tras visita o recogida.</li>
+            <li>Panel de ventas por campaña y canal.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Contenido mensual</h3>
+          <ul>
+            <li>8-12 reels: producto, maridajes, proveedor, servicio real.</li>
+            <li>12-20 stories: stock, ambiente, eventos, "hoy en barra".</li>
+            <li>2 newsletters: producto especial y evento/campaña.</li>
+            <li>4 posts Google Business Profile.</li>
+            <li>1 campaña estacional: verano, Navidad, San Valentín, vendimia.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="note warning" style="margin-top:16px">
+        <strong>Checklist legal/operativo:</strong> vender alimentos online requiere cumplir legislación alimentaria y estar inscrito en el registro que corresponda según la actividad. Además, la página debe mostrar información alimentaria obligatoria antes de la compra cuando aplique, incluyendo alérgenos. Para vino y alcohol, conviene añadir verificación de edad y revisar condiciones de venta con gestoría o asesor legal.
+      </div>
+    </section>
+
+    <section id="propiedades">
+      <div class="section-head">
+        <div>
+          <h2>Idea 2: Propiedades o Reformas</h2>
+          <p>Aquí hay dos caminos. Uno monetiza activos existentes: propiedades para estudiantes y larga estancia. El otro monetiza confianza y ticket alto: reformas, arquitectura y proyectos antes/después.</p>
+        </div>
+        <span class="tag">Real estate</span>
+      </div>
+
+      <div class="grid two">
+        <article class="card accent-teal">
+          <h3>Opción A: Properties Rental</h3>
+          <p>Crear presencia digital para todas las propiedades, enfocada en estudiantes y alquileres de larga duración.</p>
+          <ul>
+            <li><strong>Objetivo:</strong> reducir días de vacancia, mejorar calidad de candidatos y centralizar solicitudes.</li>
+            <li><strong>Cliente final:</strong> estudiantes, jóvenes profesionales, familias o perfiles internacionales.</li>
+            <li><strong>Promesa:</strong> viviendas claras, fotos reales, proceso serio y respuesta rápida.</li>
+            <li><strong>Monetización:</strong> ocupación propia, gestión para terceros o captación de propietarios.</li>
+          </ul>
+        </article>
+        <article class="card accent-ochre">
+          <h3>Opción B: Empresa de Reformas</h3>
+          <p>Crear una marca de reformas/studio architect usando proyectos hechos, casos antes/después y confianza técnica.</p>
+          <ul>
+            <li><strong>Objetivo:</strong> generar solicitudes cualificadas de reformas con presupuesto y urgencia real.</li>
+            <li><strong>Cliente final:</strong> familias, propietarios, inversores, residencias estudiantiles.</li>
+            <li><strong>Promesa:</strong> transformar espacios con diseño, control de obra y claridad de costes.</li>
+            <li><strong>Monetización:</strong> proyecto, dirección, ejecución, margen sobre obra o fee de gestión.</li>
+          </ul>
+        </article>
+      </div>
+
+      <h3 style="margin:28px 0 12px">Arquitectura digital recomendada</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Área</th>
+            <th>Rental</th>
+            <th>Reformas</th>
+            <th>Por qué importa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Área"><strong>Web</strong></td>
+            <td data-label="Rental">Cartera de propiedades, páginas por vivienda, disponibilidad y formulario.</td>
+            <td data-label="Reformas">Portfolio, servicios, proceso, casos antes/después y llamada diagnóstica.</td>
+            <td data-label="Importancia">La web ordena la confianza y evita conversaciones repetitivas por WhatsApp.</td>
+          </tr>
+          <tr>
+            <td data-label="Área"><strong>CRM</strong></td>
+            <td data-label="Rental">Pipeline: interesado, visita, documentación, aprobado, contrato.</td>
+            <td data-label="Reformas">Pipeline: lead, llamada, visita técnica, presupuesto, ganado/perdido.</td>
+            <td data-label="Importancia">Sin CRM, el crecimiento se convierte en caos operativo.</td>
+          </tr>
+          <tr>
+            <td data-label="Área"><strong>Contenido</strong></td>
+            <td data-label="Rental">Tours, guías de zona, FAQs para estudiantes, normas y transporte.</td>
+            <td data-label="Reformas">Antes/después, errores comunes, materiales, timelines y costes orientativos.</td>
+            <td data-label="Importancia">El contenido reduce miedo y aumenta calidad de lead.</td>
+          </tr>
+          <tr>
+            <td data-label="Área"><strong>Conversión</strong></td>
+            <td data-label="Rental">Formulario de candidatura, agenda de visitas, documentos requeridos.</td>
+            <td data-label="Reformas">Quiz de proyecto, calculadora orientativa, booking de consulta.</td>
+            <td data-label="Importancia">La conversión debe filtrar, no solo traer volumen.</td>
+          </tr>
+          <tr>
+            <td data-label="Área"><strong>Métricas</strong></td>
+            <td data-label="Rental">Días vacante, leads cualificados, visitas, ratio aprobado.</td>
+            <td data-label="Reformas">Coste por lead, llamadas, presupuestos enviados, tasa de cierre.</td>
+            <td data-label="Importancia">Los números enseñan dónde invertir tiempo y anuncios.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid three" style="margin-top:16px">
+        <article class="card">
+          <h3>Rental MVP</h3>
+          <ul>
+            <li>Landing "Viviendas para estudiantes y larga estancia en Madrid".</li>
+            <li>Listado de propiedades con estado: disponible, próximamente, ocupada.</li>
+            <li>Página por propiedad con fotos, vídeo, mapa aproximado, transporte y reglas.</li>
+            <li>Formulario de solicitud con fechas, presupuesto, perfil y documentos.</li>
+            <li>Automatización de email: recibido, siguiente paso, documentos necesarios.</li>
+            <li>CRM simple en Airtable, Notion, HubSpot o similar.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Reformas MVP</h3>
+          <ul>
+            <li>Home centrada en proyectos reales y confianza técnica.</li>
+            <li>Casos antes/después con problema, solución, presupuesto orientativo y plazo.</li>
+            <li>Servicios: reforma integral, cocinas, baños, inversión para alquilar.</li>
+            <li>Formulario de lead con tipo de inmueble, m2, ciudad, timing y rango de presupuesto.</li>
+            <li>Calendario de llamada inicial.</li>
+            <li>Secuencia de seguimiento para leads que no responden.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Decisión de marca</h3>
+          <ul>
+            <li>Si vendes alquileres propios: marca directa, clara y local.</li>
+            <li>Si captas propietarios externos: marca de gestión patrimonial.</li>
+            <li>Si haces reformas: marca visual y técnica, con casos muy cuidados.</li>
+            <li>Si haces todo: marca paraguas con navegación separada y mensajes distintos.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="note" style="margin-top:16px">
+        <strong>Nota para alquileres en Madrid:</strong> según la Comunidad de Madrid, en contratos de vivienda se exige fianza equivalente a una mensualidad y el propietario debe depositarla en la Agencia de Vivienda Social. También se exige Certificado de Eficiencia Energética para viviendas ofertadas en alquiler. Esto no sustituye asesoramiento legal, pero sí debe estar contemplado en el flujo digital.
+      </div>
+    </section>
+
+    <section id="facturacion">
+      <div class="section-head">
+        <div>
+          <h2>Plan de Facturación</h2>
+          <p>Tu agencia debería cobrar por dos cosas distintas: construcción del sistema y operación mensual. El error típico es cobrar solo por la web y abandonar el valor recurrente.</p>
+        </div>
+        <span class="tag">Pricing</span>
+      </div>
+
+      <div class="price-grid">
+        <article class="price">
+          <header>
+            <h3>Diagnóstico</h3>
+            <div class="amount">350-800 €</div>
+          </header>
+          <div class="body">
+            <p class="mini">Pago único. Ideal para entrar sin fricción.</p>
+            <ul>
+              <li>Auditoría web, Google, Instagram y embudo.</li>
+              <li>Mapa de oportunidades en 30 días.</li>
+              <li>Checklist legal/operativo no jurídico.</li>
+              <li>Roadmap priorizado con presupuesto.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="price">
+          <header>
+            <h3>Lanzamiento</h3>
+            <div class="amount">1.800-5.500 €</div>
+          </header>
+          <div class="body">
+            <p class="mini">Setup inicial. El rango depende de ecommerce, CRM y contenido.</p>
+            <ul>
+              <li>Web o landing estratégica.</li>
+              <li>SEO básico, analítica y conversiones.</li>
+              <li>Formularios, reservas, pickup o CRM.</li>
+              <li>Plantillas de contenido y campaña inicial.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="price">
+          <header>
+            <h3>Crecimiento</h3>
+            <div class="amount">750-2.500 €/mes</div>
+          </header>
+          <div class="body">
+            <p class="mini">Retainer mensual. Mínimo recomendado: 3 meses.</p>
+            <ul>
+              <li>Contenido, campañas y optimización.</li>
+              <li>Gestión CRM y automatizaciones.</li>
+              <li>Reporting mensual con acciones.</li>
+              <li>Mejoras web y experimentos de conversión.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <h3 style="margin:28px 0 12px">Paquetes por tipo de cliente</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Setup recomendado</th>
+            <th>Mensual recomendado</th>
+            <th>Extras facturables</th>
+            <th>Notas de margen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Cliente"><strong>CRUDO</strong></td>
+            <td data-label="Setup">Web + link in bio + Google + ecommerce pickup: 2.500-5.500 €</td>
+            <td data-label="Mensual">Contenido, campañas y reporting: 900-1.800 €/mes</td>
+            <td data-label="Extras">Fotografía, vídeo, anuncios, email marketing, gift cards, cajas mensuales.</td>
+            <td data-label="Margen">Mucho valor recurrente por campañas estacionales y productos nuevos.</td>
+          </tr>
+          <tr>
+            <td data-label="Cliente"><strong>Rental</strong></td>
+            <td data-label="Setup">Cartera de propiedades + formularios + CRM: 2.000-4.500 €</td>
+            <td data-label="Mensual">SEO local, mantenimiento y pipeline: 500-1.200 €/mes</td>
+            <td data-label="Extras">Página por propiedad, tours, fotografía, automatización de documentos.</td>
+            <td data-label="Margen">El ahorro por días de vacancia puede justificar el fee con facilidad.</td>
+          </tr>
+          <tr>
+            <td data-label="Cliente"><strong>Reformas</strong></td>
+            <td data-label="Setup">Portfolio + casos + quiz + CRM: 3.000-7.000 €</td>
+            <td data-label="Mensual">Contenido, ads y nurturing: 1.000-2.500 €/mes</td>
+            <td data-label="Extras">Before/after profesional, calculadora, campañas por zona, landing por servicio.</td>
+            <td data-label="Margen">Ticket alto, pero necesita buena cualificación para no perder tiempo.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid two" style="margin-top:16px">
+        <article class="card accent-olive">
+          <h3>Condiciones comerciales</h3>
+          <ul>
+            <li>50% al empezar, 30% al aprobar estructura, 20% antes de publicar.</li>
+            <li>Mensualidad pagada por adelantado.</li>
+            <li>Contrato mínimo de 3 meses para growth.</li>
+            <li>Publicidad, herramientas, fotografía y legal no incluidos salvo pacto.</li>
+            <li>Entrega mensual: informe, aprendizajes y plan del mes siguiente.</li>
+          </ul>
+        </article>
+        <article class="card accent-teal">
+          <h3>Modelo híbrido opcional</h3>
+          <p>Para clientes con poco presupuesto inicial, puedes bajar el setup a cambio de permanencia o bonus por resultados medibles.</p>
+          <ul>
+            <li>Setup reducido + 6 meses de retainer.</li>
+            <li>Bonus por leads cualificados, no por leads brutos.</li>
+            <li>Bonus por ventas online atribuibles si el tracking está bien configurado.</li>
+            <li>Nunca prometas resultados sin controlar oferta, stock, respuesta y presupuesto.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="ejecucion">
+      <div class="section-head">
+        <div>
+          <h2>Plan de Ejecución</h2>
+          <p>Un roadmap de 90 días para pasar de idea a sistema funcionando. El objetivo no es perfección: es lanzar, medir, aprender y aumentar inversión donde haya señal.</p>
+        </div>
+        <span class="tag">90 días</span>
+      </div>
+
+      <div class="timeline">
+        <article class="milestone">
+          <time>Días 1-7</time>
+          <div>
+            <h3>Discovery y activos</h3>
+            <p>Entrevistas, objetivos, inventario de fotos, productos, propiedades o proyectos. Definir una métrica principal por negocio: pedidos pickup, reservas, solicitudes de alquiler o llamadas de reforma.</p>
+          </div>
+        </article>
+        <article class="milestone">
+          <time>Días 8-14</time>
+          <div>
+            <h3>Estrategia y arquitectura</h3>
+            <p>Mapa de páginas, mensajes, ofertas, formularios y CRM. Decidir stack: Shopify/WooCommerce/Webflow/WordPress para CRUDO; Webflow/WordPress + Airtable/HubSpot para propiedades y reformas.</p>
+          </div>
+        </article>
+        <article class="milestone">
+          <time>Días 15-30</time>
+          <div>
+            <h3>Construcción MVP</h3>
+            <p>Diseño y construcción de web, páginas clave, analítica, formularios, reservas, ecommerce pickup o CRM. Crear plantillas de contenido e importar productos, propiedades o casos.</p>
+          </div>
+        </article>
+        <article class="milestone">
+          <time>Días 31-45</time>
+          <div>
+            <h3>Launch controlado</h3>
+            <p>Publicación, revisión de mobile, tracking, pruebas de pedido/formulario, optimización de Google Business Profile, primeras campañas orgánicas y una campaña pagada pequeña para validar conversión.</p>
+          </div>
+        </article>
+        <article class="milestone">
+          <time>Días 46-75</time>
+          <div>
+            <h3>Campañas y mejora</h3>
+            <p>CRUDO: campaña estacional o cata. Rental: captación por zona y universidad. Reformas: landing por servicio o caso antes/después. Medir conversiones y ajustar copy, oferta y formularios.</p>
+          </div>
+        </article>
+        <article class="milestone">
+          <time>Días 76-90</time>
+          <div>
+            <h3>Sistema mensual</h3>
+            <p>Documentar proceso, crear calendario de 3 meses, dashboard, backlog de mejoras y propuesta de retainer. Aquí se transforma el proyecto en relación recurrente.</p>
+          </div>
+        </article>
+      </div>
+
+      <h3 style="margin:28px 0 12px">Checklist de lanzamiento</h3>
+      <div class="grid two">
+        <article class="card">
+          <h3>Antes de publicar</h3>
+          <ul class="checklist">
+            <li><span class="box"></span><span>Dominio, hosting, email profesional y accesos ordenados.</span></li>
+            <li><span class="box"></span><span>Fotos reales optimizadas, textos aprobados y páginas principales revisadas.</span></li>
+            <li><span class="box"></span><span>Formulario probado en móvil y desktop, con email de confirmación.</span></li>
+            <li><span class="box"></span><span>Analytics, eventos de conversión y Search Console configurados.</span></li>
+            <li><span class="box"></span><span>Aviso legal, privacidad, cookies y condiciones de compra revisadas.</span></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Primer mes después</h3>
+          <ul class="checklist">
+            <li><span class="box"></span><span>Revisar qué páginas reciben tráfico y cuáles convierten.</span></li>
+            <li><span class="box"></span><span>Publicar mínimo una campaña concreta, no solo contenido genérico.</span></li>
+            <li><span class="box"></span><span>Pedir reseñas a clientes reales con un proceso simple.</span></li>
+            <li><span class="box"></span><span>Optimizar formularios si llegan leads malos o incompletos.</span></li>
+            <li><span class="box"></span><span>Preparar informe mensual con decisiones, no solo métricas.</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="metricas">
+      <div class="section-head">
+        <div>
+          <h2>Métricas y Dashboard</h2>
+          <p>El dashboard debe caber en una página. Si el dueño del negocio no entiende el resultado en 5 minutos, el sistema no está comunicando bien.</p>
+        </div>
+        <span class="tag">KPI</span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Negocio</th>
+            <th>Métrica principal</th>
+            <th>Métricas secundarias</th>
+            <th>Señal de alerta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Negocio"><strong>CRUDO</strong></td>
+            <td data-label="Principal">Pedidos pickup, reservas/catas y visitas desde Google Maps.</td>
+            <td data-label="Secundarias">Ticket medio, productos top, crecimiento email, clics de Instagram, reseñas.</td>
+            <td data-label="Alerta">Mucho engagement y pocas reservas: la oferta o llamada a la acción no está clara.</td>
+          </tr>
+          <tr>
+            <td data-label="Negocio"><strong>Rental</strong></td>
+            <td data-label="Principal">Días de vacancia y leads cualificados por propiedad.</td>
+            <td data-label="Secundarias">Visitas agendadas, ratio aprobado, tiempo de respuesta, origen del lead.</td>
+            <td data-label="Alerta">Muchos leads malos: falta filtro de presupuesto, fechas o perfil.</td>
+          </tr>
+          <tr>
+            <td data-label="Negocio"><strong>Reformas</strong></td>
+            <td data-label="Principal">Presupuestos cualificados y tasa de cierre.</td>
+            <td data-label="Secundarias">Coste por lead, llamadas, visitas técnicas, valor medio de proyecto.</td>
+            <td data-label="Alerta">Muchas llamadas sin presupuesto real: el formulario debe endurecer cualificación.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="ia">
+      <div class="section-head">
+        <div>
+          <h2>Cómo Usar IA sin Vender Humo</h2>
+          <p>La IA debe bajar costes, acelerar producción y mejorar seguimiento. No debe sustituir criterio gastronómico, legal, inmobiliario o técnico.</p>
+        </div>
+        <span class="tag">AI Agency</span>
+      </div>
+
+      <div class="grid three">
+        <article class="card accent-wine">
+          <h3>Para CRUDO</h3>
+          <ul>
+            <li>Descripciones de productos con tono de marca.</li>
+            <li>Ideas de maridajes y campañas por temporada.</li>
+            <li>Guiones de reels a partir de producto real.</li>
+            <li>Segmentación de newsletters por interés: queso, vino, eventos.</li>
+          </ul>
+        </article>
+        <article class="card accent-teal">
+          <h3>Para alquileres</h3>
+          <ul>
+            <li>Respuestas base a preguntas frecuentes.</li>
+            <li>Clasificación de leads por fechas, presupuesto y perfil.</li>
+            <li>Resumen de solicitudes para el propietario.</li>
+            <li>Guías de zona y textos por propiedad.</li>
+          </ul>
+        </article>
+        <article class="card accent-ochre">
+          <h3>Para reformas</h3>
+          <ul>
+            <li>Primer briefing estructurado del proyecto.</li>
+            <li>Resumen de llamada y próximos pasos.</li>
+            <li>Contenido educativo sobre procesos y errores comunes.</li>
+            <li>Comparación de leads por potencial y urgencia.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="riesgos">
+      <div class="section-head">
+        <div>
+          <h2>Riesgos Reales</h2>
+          <p>La estrategia buena no ignora las fricciones. Las convierte en checklist antes de gastar dinero.</p>
+        </div>
+        <span class="tag">Riesgos</span>
+      </div>
+
+      <div class="grid two">
+        <article class="card">
+          <h3>Riesgos operativos</h3>
+          <ul>
+            <li><strong>CRUDO:</strong> stock no actualizado, pedidos que el equipo no puede preparar, fotos que no reflejan producto real.</li>
+            <li><strong>Rental:</strong> disponibilidad desactualizada, exceso de WhatsApps, leads sin documentación, fotos poco fiables.</li>
+            <li><strong>Reformas:</strong> leads sin presupuesto, promesas de plazo imposibles, falta de fotos profesionales de proyectos.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Riesgos comerciales</h3>
+          <ul>
+            <li>Vender una web como entregable final en vez de vender crecimiento medible.</li>
+            <li>No definir quién responde leads y en cuánto tiempo.</li>
+            <li>Lanzar ecommerce sin margen claro por producto, packaging y preparación.</li>
+            <li>No pedir reseñas ni capturar emails desde el primer día.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="preguntas">
+      <div class="section-head">
+        <div>
+          <h2>Preguntas para Tener Más Contexto</h2>
+          <p>Estas preguntas te ayudan a pasar de idea a propuesta vendible. Las respuestas también te sirven para hacer una reunión de descubrimiento profesional.</p>
+        </div>
+        <span class="tag">Discovery</span>
+      </div>
+
+      <div class="grid three">
+        <article class="card accent-wine">
+          <h3>Preguntas sobre CRUDO</h3>
+          <ol>
+            <li>¿CRUDO ya tiene web, Google Business Profile e Instagram activos?</li>
+            <li>¿Cuál es el objetivo más urgente: más gente en el local, más reservas, más venta de queso/vino o más eventos?</li>
+            <li>¿Qué productos tienen mejor margen y cuáles se pueden preparar para pickup?</li>
+            <li>¿El local puede gestionar pedidos online sin romper la operación diaria?</li>
+            <li>¿Hay fotos profesionales de producto, barra, equipo y ambiente?</li>
+            <li>¿Se venden bebidas alcohólicas online o solo se promocionan para recogida?</li>
+            <li>¿Qué tono de marca tiene CRUDO: elegante, rebelde, educativo, cercano, premium?</li>
+            <li>¿Qué campañas estacionales ya funcionan en tienda física?</li>
+          </ol>
+        </article>
+
+        <article class="card accent-teal">
+          <h3>Preguntas sobre alquileres</h3>
+          <ol>
+            <li>¿Las propiedades son propias, familiares o de terceros?</li>
+            <li>¿Cuántas viviendas/habitaciones hay y en qué zonas?</li>
+            <li>¿El foco son estudiantes, larga estancia, familias o perfiles internacionales?</li>
+            <li>¿Qué documentación se pide para aprobar un inquilino?</li>
+            <li>¿Cuál es el coste actual de una vivienda vacía durante una semana?</li>
+            <li>¿Usáis Idealista, Fotocasa, universidad, contactos o solo boca a boca?</li>
+            <li>¿Hay fotos, vídeos, planos y Certificado de Eficiencia Energética?</li>
+            <li>¿Quién responderá leads y agendará visitas?</li>
+          </ol>
+        </article>
+
+        <article class="card accent-ochre">
+          <h3>Preguntas sobre reformas</h3>
+          <ol>
+            <li>¿Ya existe una empresa/equipo de reformas o es una idea por crear?</li>
+            <li>¿Qué proyectos hechos se pueden enseñar con permiso?</li>
+            <li>¿Hay fotos antes/después de calidad suficiente?</li>
+            <li>¿Qué tipo de proyecto interesa más: vivienda familiar, inversión para alquilar, residencia estudiantil?</li>
+            <li>¿Cuál es el ticket medio y margen aproximado?</li>
+            <li>¿En qué zonas podéis operar?</li>
+            <li>¿Quién hace visita técnica, presupuesto y seguimiento?</li>
+            <li>¿Qué os diferencia: diseño, precio, rapidez, materiales, gestión completa?</li>
+          </ol>
+        </article>
+      </div>
+
+      <div class="card accent-olive" style="margin-top:16px">
+        <h3>Preguntas sobre tu AI Agency</h3>
+        <ol>
+          <li>¿Quieres que estos dos negocios sean tus propios proyectos o tus primeros casos para vender a otros negocios físicos?</li>
+          <li>¿Tienes capacidad de crear contenido tú mismo o necesitas contratar foto/vídeo?</li>
+          <li>¿Qué presupuesto puedes asumir antes de tener ingresos recurrentes?</li>
+          <li>¿Quieres posicionarte como agencia generalista o como especialista en negocios locales premium?</li>
+          <li>¿Qué puedes entregar tú solo hoy: web, automatización, contenido, ads, CRM, estrategia?</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="proximos-pasos">
+      <div class="section-head">
+        <div>
+          <h2>Próximos 10 Pasos</h2>
+          <p>Una secuencia concreta para empezar esta semana sin perderse en planificación infinita.</p>
+        </div>
+        <span class="tag">Acción</span>
+      </div>
+
+      <div class="card">
+        <ul class="checklist">
+          <li><span class="box"></span><span>Elegir el primer caso público: CRUDO, Rental o Reformas. Mi voto: CRUDO si tienes acceso al dueño y al producto; Rental si las propiedades ya son vuestras.</span></li>
+          <li><span class="box"></span><span>Hacer una reunión de discovery de 60 minutos usando las preguntas anteriores.</span></li>
+          <li><span class="box"></span><span>Definir una métrica norte: pedidos, reservas, solicitudes o presupuestos cualificados.</span></li>
+          <li><span class="box"></span><span>Crear un inventario de activos: fotos, vídeos, productos, propiedades, proyectos, reseñas, textos, precios.</span></li>
+          <li><span class="box"></span><span>Diseñar una oferta MVP que pueda lanzarse en 30 días.</span></li>
+          <li><span class="box"></span><span>Configurar dominio, analítica, Search Console y CRM simple.</span></li>
+          <li><span class="box"></span><span>Construir la web/landing con máximo 5 páginas clave.</span></li>
+          <li><span class="box"></span><span>Lanzar una campaña concreta: cata/pickup para CRUDO, propiedad destacada para Rental o caso antes/después para Reformas.</span></li>
+          <li><span class="box"></span><span>Medir durante 14 días y ajustar mensaje, formulario u oferta.</span></li>
+          <li><span class="box"></span><span>Convertir el aprendizaje en una propuesta mensual de growth.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="fuentes">
+      <div class="section-head">
+        <div>
+          <h2>Fuentes y Notas</h2>
+          <p>Referencias consultadas para no diseñar el sistema a ciegas. La parte legal debe validarse con asesoría especializada antes de operar.</p>
+        </div>
+        <span class="tag">Referencias</span>
+      </div>
+
+      <div class="grid two">
+        <article class="card">
+          <h3>Referencias legales y operativas</h3>
+          <ul class="sources">
+            <li><a href="https://www.aesan.gob.es/AECOSAN/web/operadores_economicos/seccion/comercializacion_alimentos.htm">AESAN: comercialización de alimentos por internet</a></li>
+            <li><a href="https://portal-cec.consumo.gob.es/es/informacion-general/compras-online/derechos-del-consumidor">Centro Europeo del Consumidor en España: derechos del consumidor en compras online</a></li>
+            <li><a href="https://portal-cec.consumo.gob.es/es/informacion-general/compras-online/devoluciones">Centro Europeo del Consumidor en España: devoluciones y derecho de desistimiento</a></li>
+            <li><a href="https://www.boe.es/eli/es/l/2002/07/11/34">BOE: Ley 34/2002 de servicios de la sociedad de la información y comercio electrónico</a></li>
+            <li><a href="https://www.aepd.es/prensa-y-comunicacion/notas-de-prensa/aepd-actualiza-guia-cookies-para-adaptarla-a-nuevas-directrices-cepd">AEPD: actualización de la guía sobre uso de cookies</a></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Referencias inmobiliarias y ayudas</h3>
+          <ul class="sources">
+            <li><a href="https://www.comunidad.madrid/vivienda/proceso-alquiler-vivienda">Comunidad de Madrid: proceso de alquiler de vivienda</a></li>
+            <li><a href="https://www.comunidad.madrid/vivienda/plan-alquila">Comunidad de Madrid: Plan Alquila</a></li>
+            <li><a href="https://www.red.es/es/actualidad/noticias/kit-digital-pone-fin-las-dos-ultimas-convocatorias-de-ayudas-abiertas-solicitud">Red.es: cierre de las últimas convocatorias de Kit Digital en octubre de 2025</a></li>
+            <li><a href="https://www.red.es/es/iniciativas/proyectos/kit-digital">Red.es: objetivos y balance del proyecto Kit Digital</a></li>
+            <li><a href="https://kitdigital.red.es/">Kit Digital: datos de impacto actualizados</a></li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="note wine-note" style="margin-top:16px">
+        <strong>Nota sobre Kit Digital:</strong> a fecha de este documento, 28 de abril de 2026, Red.es informa que el programa Kit Digital finalizó su periodo de solicitudes en octubre de 2025. Puedes usar sus categorías como lenguaje comercial, pero no basaría una propuesta nueva en que el cliente vaya a recibir esa ayuda.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      Documento creado para convertir las notas de <strong>Ideas.md</strong> en una hoja de ruta accionable. Próximo paso recomendado: responder las preguntas de discovery y elegir el primer MVP de 30 días.
+    </div>
+  </footer>
+</body>
+</html>
