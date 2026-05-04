@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRUDO - Roadmap Tecnico V1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-bg-primary: #1A1F14;
+  --color-bg-secondary: #1E1C18;
+  --color-bg-elevated: #252420;
+  --color-bg-light: #F2EAD8;
+  --color-bg-light-soft: #EAE0CB;
+  --color-text-primary: #F2EAD8;
+  --color-text-secondary: #C7BFAD;
+  --color-text-muted: #8A8473;
+  --color-text-inverse: #1A1F14;
+  --color-accent: #B5713A;
+  --color-accent-hover: #C8804A;
+  --color-accent-soft: #3A2A1E;
+  --color-gold: #B89668;
+  --color-success: #6B8E5A;
+  --color-warning: #C8893E;
+  --color-error: #A8443A;
+  --color-border: rgba(242,234,216,0.12);
+  --color-border-strong: rgba(242,234,216,0.24);
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+a {
+  color: var(--color-gold);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+.page {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 56px;
+}
+
+.hero {
+  min-height: 54vh;
+  display: grid;
+  align-items: end;
+  padding: 32px 0 36px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.eyebrow {
+  color: var(--color-gold);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.08;
+  margin: 0;
+}
+
+h1 {
+  max-width: 820px;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-style: italic;
+  letter-spacing: 0;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h3 {
+  font-size: 1.55rem;
+}
+
+.lead {
+  max-width: 760px;
+  margin: 18px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 1.08rem;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.pill {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: rgba(242,234,216,0.04);
+  color: var(--color-text-secondary);
+  font-size: 0.84rem;
+}
+
+.pill strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+}
+
+.status-dot.not_started { background: var(--color-text-muted); }
+.status-dot.in_progress { background: var(--color-warning); }
+.status-dot.blocked { background: var(--color-error); }
+.status-dot.review_ready { background: var(--color-gold); }
+.status-dot.done { background: var(--color-success); }
+.status-dot.deferred { background: var(--color-accent); }
+
+.grid {
+  display: grid;
+  gap: 18px;
+}
+
+.summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 28px 0 40px;
+}
+
+.metric {
+  min-height: 128px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  border-radius: 6px;
+}
+
+.metric .label {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.metric .value {
+  margin-top: 10px;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: 2.45rem;
+  line-height: 1;
+}
+
+.metric .hint {
+  margin-top: 10px;
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+}
+
+.section {
+  margin-top: 48px;
+}
+
+.section-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.section-header p {
+  max-width: 560px;
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.roadmap {
+  position: relative;
+  display: grid;
+  gap: 14px;
+}
+
+.phase {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) 172px;
+  gap: 18px;
+  align-items: stretch;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  border-radius: 6px;
+}
+
+.phase.current {
+  border-color: var(--color-gold);
+  box-shadow: inset 4px 0 0 var(--color-gold);
+}
+
+.phase.done {
+  border-color: rgba(107,142,90,0.38);
+}
+
+.phase.blocked {
+  border-color: rgba(168,68,58,0.5);
+}
+
+.phase-index {
+  display: grid;
+  place-items: center;
+  min-height: 74px;
+  border-right: 1px solid var(--color-border);
+  color: var(--color-gold);
+  font-family: var(--font-mono);
+  font-size: 1.45rem;
+}
+
+.phase-body {
+  min-width: 0;
+}
+
+.phase-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.phase-title h3 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.tag {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 9px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tag.not_started { color: var(--color-text-muted); }
+.tag.in_progress { color: var(--color-warning); border-color: rgba(200,137,62,0.5); }
+.tag.blocked { color: var(--color-error); border-color: rgba(168,68,58,0.55); }
+.tag.review_ready { color: var(--color-gold); border-color: rgba(184,150,104,0.55); }
+.tag.done { color: var(--color-success); border-color: rgba(107,142,90,0.55); }
+.tag.deferred { color: var(--color-accent-hover); border-color: rgba(181,113,58,0.55); }
+
+.phase-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.phase-copy p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.phase-copy strong {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--color-text-primary);
+  font-size: 0.73rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.phase-note {
+  margin-top: 10px;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+}
+
+.phase-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.progress-track {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(242,234,216,0.08);
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-gold);
+}
+
+.prompt-name {
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.panel-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.panel {
+  padding: 22px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  border-radius: 6px;
+}
+
+.panel h3 {
+  margin-bottom: 14px;
+  color: var(--color-text-primary);
+}
+
+.list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  position: relative;
+  padding-left: 20px;
+  color: var(--color-text-secondary);
+}
+
+.list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-gold);
+}
+
+.session-log {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg-secondary);
+}
+
+.session-log th,
+.session-log td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.session-log th {
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.session-log td {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.session-log tr:last-child td {
+  border-bottom: 0;
+}
+
+.instructions {
+  padding: 24px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-bg-elevated);
+  border-radius: 6px;
+}
+
+.instructions code {
+  color: var(--color-gold);
+  font-family: var(--font-mono);
+}
+
+.footer-note {
+  margin: 44px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+}
+
+@media (max-width: 900px) {
+  .summary-grid,
+  .panel-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .phase {
+    grid-template-columns: 1fr;
+  }
+
+  .phase-index {
+    place-items: start;
+    min-height: 0;
+    padding-bottom: 10px;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .phase-actions {
+    justify-content: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(100% - 24px, 1180px);
+    padding-top: 18px;
+  }
+
+  .hero {
+    min-height: 42vh;
+  }
+
+  .summary-grid,
+  .panel-grid,
+  .phase-copy {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    display: block;
+  }
+
+  .section-header p {
+    margin-top: 10px;
+  }
+
+  .session-log {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+    color: #1A1F14;
+  }
+
+  .page {
+    width: 100%;
+    padding: 0;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .metric,
+  .phase,
+  .panel,
+  .instructions,
+  .session-log {
+    background: white;
+    border-color: #999;
+    color: #1A1F14;
+  }
+
+  h1, h2, h3,
+  .metric .value,
+  .metric .label,
+  .phase-title h3,
+  .phase-copy strong,
+  .panel h3,
+  .session-log th {
+    color: #1A1F14;
+  }
+
+  .lead,
+  .metric .hint,
+  .phase-copy p,
+  .phase-note,
+  .session-log td,
+  .list li,
+  .footer-note {
+    color: #333;
+  }
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="hero" aria-labelledby="page-title">
+    <div>
+      <div class="eyebrow">Roadmap tecnico vivo</div>
+      <h1 id="page-title">CRUDO V1</h1>
+      <p class="lead">Vista visual del estado de desarrollo. Este archivo debe actualizarse junto con la seccion <code>0.1 Estado vivo del proyecto</code> de <code>V1Tecnico.md</code> al final de cada sesion.</p>
+      <div class="meta-row" id="heroMeta"></div>
+    </div>
+  </section>
+
+  <section class="grid summary-grid" aria-label="Resumen de progreso" id="summary"></section>
+
+  <section class="section" aria-labelledby="roadmap-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Fases</div>
+        <h2 id="roadmap-title">Que esta hecho y que falta</h2>
+      </div>
+      <p>La fase actual aparece resaltada. Nada se marca como DONE si no esta implementado, probado y verificado.</p>
+    </div>
+    <div class="roadmap" id="roadmap"></div>
+  </section>
+
+  <section class="section grid panel-grid" aria-label="Listas operativas">
+    <article class="panel">
+      <h3>Implementado</h3>
+      <ul class="list" id="implementedList"></ul>
+    </article>
+    <article class="panel">
+      <h3>Pendiente critico</h3>
+      <ul class="list" id="pendingList"></ul>
+    </article>
+    <article class="panel">
+      <h3>Decisiones confirmadas</h3>
+      <ul class="list" id="decisionsList"></ul>
+    </article>
+    <article class="panel">
+      <h3>Bloqueos actuales</h3>
+      <ul class="list" id="blockersList"></ul>
+    </article>
+  </section>
+
+  <section class="section" aria-labelledby="owner-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Owner</div>
+        <h2 id="owner-title">Pendientes de decision</h2>
+      </div>
+      <p>Decisiones que pueden bloquear fases futuras si no se cierran a tiempo.</p>
+    </div>
+    <article class="panel">
+      <ul class="list" id="ownerList"></ul>
+    </article>
+  </section>
+
+  <section class="section" aria-labelledby="log-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Historial</div>
+        <h2 id="log-title">Registro de sesiones</h2>
+      </div>
+      <p>Debe crecer una linea por sesion real de trabajo.</p>
+    </div>
+    <table class="session-log">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Fase</th>
+          <th>Trabajo</th>
+          <th>Verificacion</th>
+          <th>Siguiente</th>
+        </tr>
+      </thead>
+      <tbody id="sessionLog"></tbody>
+    </table>
+  </section>
+
+  <section class="section instructions" aria-labelledby="instructions-title">
+    <div class="eyebrow">Instrucciones para Opus</div>
+    <h2 id="instructions-title">Como actualizar este roadmap</h2>
+    <ol>
+      <li>Lee primero <code>V1Tecnico.md</code>, seccion <code>0.1 Estado vivo del proyecto</code>, y despues este archivo.</li>
+      <li>Al terminar una sesion, actualiza el objeto <code>roadmapState</code> dentro de este HTML.</li>
+      <li>Sincroniza los mismos cambios en <code>V1Tecnico.md</code>: fase actual, progreso, implementado, pendiente, bloqueos y registro.</li>
+      <li>No marques una fase como <code>DONE</code> sin build/tests/verificacion.</li>
+      <li>Si el codigo real contradice este HTML, corrige este HTML y deja nota en el registro de sesiones.</li>
+    </ol>
+  </section>
+
+  <p class="footer-note">CRUDO V1 - Roadmap tecnico visual. Fuente principal: V1Tecnico.md.</p>
+</main>
+
+<script>
+const roadmapState = {
+  project: "CRUDO V1",
+  stateVersion: 1,
+  lastUpdated: "2026-05-04",
+  currentPhase: 0,
+  currentPhaseName: "Preparacion, repo y contexto",
+  currentFocus: "Documento tecnico creado; todavia no se ha empezado a implementar codigo",
+  nextRecommendedPrompt: "Fase 0 - Preparacion, repo y contexto",
+  overallStatus: "NOT_STARTED",
+  phases: [
+    {
+      id: 0,
+      name: "Preparacion, repo y contexto",
+      status: "NOT_STARTED",
+      implemented: "V1Tecnico.md creado",
+      missing: "Estructura repo, README, .env.example, docs base",
+      notes: "Sin bloqueos",
+      prompt: "Fase 0",
+      progress: 10
+    },
+    {
+      id: 1,
+      name: "Scaffold backend Spring Boot",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "api/, Maven, OpenAPI inicial, profiles, tests smoke",
+      notes: "Pendiente Fase 0",
+      prompt: "Fase 1",
+      progress: 0
+    },
+    {
+      id: 2,
+      name: "Modelo de datos, Flyway y seed local",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Schema, entidades, repositories, seeds, tests",
+      notes: "Pendiente Fase 1",
+      prompt: "Fase 2",
+      progress: 0
+    },
+    {
+      id: 3,
+      name: "OpenAPI completo y servicios publicos",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Catalogo, campanas, eventos, inquiries, newsletter, consent, site config",
+      notes: "Pendiente Fase 2",
+      prompt: "Fase 3",
+      progress: 0
+    },
+    {
+      id: 4,
+      name: "Mi Tabla y alcohol guard",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Pickup backend, 422 alcohol, idempotency, notificaciones",
+      notes: "Pendiente Fase 3",
+      prompt: "Fase 4",
+      progress: 0
+    },
+    {
+      id: 5,
+      name: "Admin backend y seguridad JWT",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Auth, dashboard, CRUD admin, audit, storage",
+      notes: "Pendiente Fase 4",
+      prompt: "Fase 5",
+      progress: 0
+    },
+    {
+      id: 6,
+      name: "Docker Compose e infraestructura local",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Compose, Dockerfiles, Caddy, backup, CI",
+      notes: "Puede avanzar tras backend scaffold",
+      prompt: "Fase 6",
+      progress: 0
+    },
+    {
+      id: 7,
+      name: "Scaffold frontend y design system",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Vite, rutas, tokens, layout, cookie banner base",
+      notes: "Puede avanzar tras Fase 0",
+      prompt: "Fase 7",
+      progress: 0
+    },
+    {
+      id: 8,
+      name: "Public frontend: Home, Catalogo y PDP",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Home, catalogo, PDP, vino WhatsApp-only, schema",
+      notes: "Pendiente Fase 7 y API estable",
+      prompt: "Fase 8",
+      progress: 0
+    },
+    {
+      id: 9,
+      name: "Mi Tabla frontend y pickup flow",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Store, drawer, form, confirmacion, analytics",
+      notes: "Pendiente Fase 8 y Fase 4",
+      prompt: "Fase 9",
+      progress: 0
+    },
+    {
+      id: 10,
+      name: "Eventos, contacto, newsletter, sobre y mayoristas",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Rutas publicas secundarias y formularios",
+      notes: "Pendiente Fase 3 y Fase 7",
+      prompt: "Fase 10",
+      progress: 0
+    },
+    {
+      id: 11,
+      name: "Admin frontend movil",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Login, dashboard, CRUD UI, pedidos, consultas",
+      notes: "Pendiente Fase 5 y Fase 7",
+      prompt: "Fase 11",
+      progress: 0
+    },
+    {
+      id: 12,
+      name: "Legal, cookies, SEO, analytics y prerender",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Legal, consent, GA4/Pixel, sitemap, schema, prerender",
+      notes: "Pendiente frontend publico",
+      prompt: "Fase 12",
+      progress: 0
+    },
+    {
+      id: 13,
+      name: "Testing E2E, accesibilidad, performance y QA",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Playwright, axe, Lighthouse, QA",
+      notes: "Pendiente flujos principales",
+      prompt: "Fase 13",
+      progress: 0
+    },
+    {
+      id: 14,
+      name: "Contenido real, imagenes y carga inicial",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Productos, fotos, eventos, campana, copy",
+      notes: "Bloqueado por contenido owner si no existe",
+      prompt: "Fase 14",
+      progress: 0
+    },
+    {
+      id: 15,
+      name: "Launch, staging y production",
+      status: "NOT_STARTED",
+      implemented: "Nada",
+      missing: "Staging, production, monitoring, backups, checklist",
+      notes: "Pendiente QA y dominio/infra",
+      prompt: "Fase 15",
+      progress: 0
+    }
+  ],
+  implemented: [
+    "Ninguna funcionalidad de codigo implementada todavia."
+  ],
+  pendingCritical: [
+    "Backend OpenAPI-first.",
+    "Modelo de datos con is_alcohol.",
+    "Alcohol guard backend con HTTP 422 en POST /api/v1/pickup-orders.",
+    "Public frontend.",
+    "Mi Tabla.",
+    "Admin movil.",
+    "Cookie consent AEPD.",
+    "SEO/prerender.",
+    "Analytics gated by consent.",
+    "Docker/infra.",
+    "Tests E2E."
+  ],
+  decisions: [
+    "Stack V1: React + Vite, Spring Boot Java, PostgreSQL, Docker Compose.",
+    "V1 sin pago online.",
+    "V1 sin venta online de alcohol.",
+    "Vino visible en catalogo/PDP, pero solo WhatsApp.",
+    "Mi Tabla solo para no alcohol.",
+    "Espanol como idioma primario; ingles via Google Translate.",
+    "Admin disenado para owner single-operator, menos de 5 minutos al dia.",
+    "AGENTS_Javi.md no se modifica."
+  ],
+  blockers: [
+    "No hay codigo inicial todavia.",
+    "Falta contenido real del owner: productos, precios, fotos, horarios, telefono, dominio, legal y eventos."
+  ],
+  ownerPending: [
+    "Dominio final: crudo.es, crudo.world u otro.",
+    "Horarios exactos y cierres.",
+    "Capacidad pickup diaria.",
+    "SLA real de confirmacion.",
+    "Telefono WhatsApp publico y telefono owner para notificaciones.",
+    "Brevo confirmado o alternativa.",
+    "Cookie provider: custom, Cookiebot, Iubenda u otro.",
+    "Primeros 20-40 productos con precios y is_alcohol.",
+    "Primeros 3 eventos."
+  ],
+  sessionLog: [
+    {
+      date: "2026-05-04",
+      phase: "Fase docs",
+      work: "Creado V1Tecnico.md con fases y prompts para Opus; creado v1TecnicoVisual.html como roadmap visual vivo.",
+      verification: "Estructura revisada.",
+      next: "Fase 0"
+    }
+  ]
+};
+
+const labels = {
+  NOT_STARTED: "No empezado",
+  IN_PROGRESS: "En progreso",
+  BLOCKED: "Bloqueado",
+  REVIEW_READY: "Listo revision",
+  DONE: "Hecho",
+  DEFERRED: "Aplazado"
+};
+
+const classByStatus = (status) => status.toLowerCase();
+
+function statusTag(status) {
+  const statusClass = classByStatus(status);
+  return `<span class="tag ${statusClass}"><span class="status-dot ${statusClass}"></span>${labels[status] || status}</span>`;
+}
+
+function renderHeroMeta() {
+  const heroMeta = document.getElementById("heroMeta");
+  const statusClass = classByStatus(roadmapState.overallStatus);
+  heroMeta.innerHTML = `
+    <span class="pill"><strong>Actualizado</strong> ${roadmapState.lastUpdated}</span>
+    <span class="pill"><span class="status-dot ${statusClass}"></span><strong>Estado</strong> ${labels[roadmapState.overallStatus] || roadmapState.overallStatus}</span>
+    <span class="pill"><strong>Fase actual</strong> ${roadmapState.currentPhase} - ${roadmapState.currentPhaseName}</span>
+    <span class="pill"><strong>Siguiente</strong> ${roadmapState.nextRecommendedPrompt}</span>
+  `;
+}
+
+function renderSummary() {
+  const summary = document.getElementById("summary");
+  const total = roadmapState.phases.length;
+  const done = roadmapState.phases.filter((phase) => phase.status === "DONE").length;
+  const inProgress = roadmapState.phases.filter((phase) => phase.status === "IN_PROGRESS").length;
+  const blocked = roadmapState.phases.filter((phase) => phase.status === "BLOCKED").length;
+  const avgProgress = Math.round(roadmapState.phases.reduce((sum, phase) => sum + phase.progress, 0) / total);
+
+  summary.innerHTML = `
+    <article class="metric">
+      <div class="label">Progreso total</div>
+      <div class="value">${avgProgress}%</div>
+      <div class="hint">Media visual de las fases.</div>
+    </article>
+    <article class="metric">
+      <div class="label">Fases DONE</div>
+      <div class="value">${done}/${total}</div>
+      <div class="hint">Solo fases verificadas.</div>
+    </article>
+    <article class="metric">
+      <div class="label">En progreso</div>
+      <div class="value">${inProgress}</div>
+      <div class="hint">Fases abiertas ahora.</div>
+    </article>
+    <article class="metric">
+      <div class="label">Bloqueos</div>
+      <div class="value">${blocked}</div>
+      <div class="hint">Fases marcadas BLOCKED.</div>
+    </article>
+  `;
+}
+
+function renderRoadmap() {
+  const roadmap = document.getElementById("roadmap");
+  roadmap.innerHTML = roadmapState.phases.map((phase) => {
+    const current = phase.id === roadmapState.currentPhase ? " current" : "";
+    const statusClass = classByStatus(phase.status);
+    return `
+      <article class="phase ${statusClass}${current}" id="phase-${phase.id}">
+        <div class="phase-index">${String(phase.id).padStart(2, "0")}</div>
+        <div class="phase-body">
+          <div class="phase-title">
+            <h3>${phase.name}</h3>
+            ${statusTag(phase.status)}
+          </div>
+          <div class="phase-copy">
+            <p><strong>Implementado</strong>${phase.implemented}</p>
+            <p><strong>Falta</strong>${phase.missing}</p>
+          </div>
+          <div class="phase-note">${phase.notes}</div>
+        </div>
+        <div class="phase-actions">
+          <div class="progress-track" aria-label="Progreso ${phase.progress}%">
+            <div class="progress-fill" style="width: ${phase.progress}%"></div>
+          </div>
+          <div class="prompt-name">${phase.prompt}</div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function renderList(id, items) {
+  const list = document.getElementById(id);
+  list.innerHTML = items.map((item) => `<li>${item}</li>`).join("");
+}
+
+function renderSessionLog() {
+  const body = document.getElementById("sessionLog");
+  body.innerHTML = roadmapState.sessionLog.map((entry) => `
+    <tr>
+      <td>${entry.date}</td>
+      <td>${entry.phase}</td>
+      <td>${entry.work}</td>
+      <td>${entry.verification}</td>
+      <td>${entry.next}</td>
+    </tr>
+  `).join("");
+}
+
+function render() {
+  renderHeroMeta();
+  renderSummary();
+  renderRoadmap();
+  renderList("implementedList", roadmapState.implemented);
+  renderList("pendingList", roadmapState.pendingCritical);
+  renderList("decisionsList", roadmapState.decisions);
+  renderList("blockersList", roadmapState.blockers);
+  renderList("ownerList", roadmapState.ownerPending);
+  renderSessionLog();
+}
+
+render();
+</script>
+</body>
+</html>

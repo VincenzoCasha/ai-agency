@@ -1,0 +1,2917 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRUDO — V1 Website Visual Master Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --color-bg-primary: #1A1F14;
+  --color-bg-secondary: #1E1C18;
+  --color-bg-elevated: #252420;
+  --color-bg-light: #F2EAD8;
+  --color-bg-light-soft: #EAE0CB;
+  --color-text-primary: #F2EAD8;
+  --color-text-secondary: #C7BFAD;
+  --color-text-muted: #8A8473;
+  --color-text-inverse: #1A1F14;
+  --color-accent: #B5713A;
+  --color-accent-hover: #C8804A;
+  --color-accent-soft: #3A2A1E;
+  --color-gold: #B89668;
+  --color-success: #6B8E5A;
+  --color-warning: #C8893E;
+  --color-error: #A8443A;
+  --color-border: rgba(242,234,216,0.12);
+  --color-border-strong: rgba(242,234,216,0.24);
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 0;
+}
+
+aside.toc {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 32px 24px;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+}
+
+aside.toc h2 {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  margin: 0 0 16px;
+  font-weight: 500;
+}
+
+.toc-brand {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+  line-height: 1.05;
+}
+
+.toc-sub {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.toc-list li { margin: 0; }
+.toc-list a {
+  display: block;
+  padding: 6px 8px;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  border-left: 2px solid transparent;
+  border-radius: 2px;
+  transition: all 0.18s ease;
+}
+.toc-list a:hover {
+  color: var(--color-text-primary);
+  border-left-color: var(--color-accent);
+  background: rgba(181,113,58,0.06);
+}
+
+main.content {
+  padding: 64px 56px;
+  max-width: 880px;
+  min-width: 0;
+}
+
+/* Headings — Cormorant Garamond, editorial */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.15;
+  margin: 0;
+}
+
+h1 {
+  font-size: 3.0rem;
+  font-style: italic;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 2.0rem;
+  margin: 64px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+h3 {
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin: 36px 0 12px;
+}
+
+h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 24px 0 10px;
+  color: var(--color-text-primary);
+}
+
+/* Paragraph + list */
+p {
+  margin: 0 0 18px;
+  color: var(--color-text-secondary);
+  max-width: 72ch;
+}
+
+strong { color: var(--color-text-primary); font-weight: 600; }
+em { font-style: italic; }
+
+ul, ol {
+  margin: 0 0 18px;
+  padding-left: 1.5em;
+  color: var(--color-text-secondary);
+}
+li { margin: 6px 0; }
+li::marker { color: var(--color-gold); }
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(181,113,58,0.4);
+  transition: all 0.15s ease;
+}
+a:hover {
+  color: var(--color-accent-hover);
+  border-bottom-color: var(--color-accent-hover);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0 28px;
+  background: var(--color-bg-secondary);
+  font-size: 0.9rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+  overflow: hidden;
+  display: block;
+  overflow-x: auto;
+  white-space: normal;
+}
+thead {
+  background: var(--color-bg-elevated);
+}
+th {
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  color: var(--color-gold);
+  text-align: left;
+  padding: 14px 14px;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: rgba(242,234,216,0.02); }
+
+/* Code */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--color-gold);
+  background: rgba(184,150,104,0.08);
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(184,150,104,0.15);
+}
+
+pre {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  margin: 18px 0 28px;
+  line-height: 1.55;
+}
+
+pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--color-text-primary);
+  font-size: 0.82rem;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  margin: 18px 0 28px;
+  padding: 16px 22px;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.45;
+  border-radius: 0 4px 4px 0;
+}
+blockquote p {
+  color: var(--color-text-primary);
+  margin: 0;
+  max-width: 100%;
+}
+
+/* HR */
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 48px 0;
+}
+
+/* Mermaid wrapper — render inside a light card so diagrams pop */
+.mermaid-wrap {
+  background: var(--color-bg-light);
+  border-radius: 6px;
+  padding: 24px;
+  margin: 24px 0 32px;
+  border: 1px solid var(--color-border-strong);
+  overflow-x: auto;
+}
+.mermaid-wrap pre.mermaid {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-inverse);
+}
+
+/* Header block on page top */
+.page-header {
+  margin-bottom: 56px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--color-border);
+}
+.page-header .eyebrow {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+  color: var(--color-gold);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.page-header h1 {
+  margin-bottom: 16px;
+}
+.page-header .meta {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+.page-header .meta strong { color: var(--color-text-secondary); font-weight: 500; }
+
+/* Mobile */
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  aside.toc {
+    position: static;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  main.content { padding: 32px 24px; }
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.6rem; }
+}
+
+/* Print / PDF export */
+@media print {
+  body { background: white; color: #1A1F14; font-size: 10.5pt; }
+  .layout { display: block; max-width: 100%; }
+  aside.toc { display: none; }
+  main.content { padding: 0; max-width: 100%; }
+  h1, h2, h3, h4 { color: #1A1F14; page-break-after: avoid; }
+  h2 { border-bottom-color: #1A1F14; margin-top: 32px; }
+  table { background: white; border: 1px solid #1A1F14; page-break-inside: avoid; display: table; }
+  thead { background: #f4eedc; }
+  th { color: #1A1F14; border-bottom: 1px solid #1A1F14; }
+  td { color: #1A1F14; border-bottom: 1px solid #ccc; }
+  p, li { color: #1A1F14; }
+  pre { background: #f8f5ec; color: #1A1F14; border: 1px solid #ccc; page-break-inside: avoid; }
+  code { background: #f4eedc; color: #6B4A1E; border: 0; }
+  blockquote { background: #f4eedc; color: #1A1F14; border-radius: 0; }
+  blockquote p { color: #1A1F14; }
+  a { color: #1A1F14; border-bottom: 0; }
+  .mermaid-wrap { background: white; border: 1px solid #1A1F14; page-break-inside: avoid; }
+  hr { border-top-color: #1A1F14; }
+}
+
+/* Print button */
+.print-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  background: var(--color-accent);
+  color: var(--color-text-primary);
+  border: 0;
+  padding: 10px 18px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  transition: background 0.15s ease;
+}
+.print-btn:hover { background: var(--color-accent-hover); }
+@media print { .print-btn { display: none; } }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+
+<div class="layout">
+  <aside class="toc">
+    <div class="toc-brand">CRUDO</div>
+    <div class="toc-sub">V1 Master Plan</div>
+    <h2>Contents</h2>
+    <ul class="toc-list"><li><a href="#0-assumptions-confirmed-by-owner-may-2026">0. Assumptions — Confirmed by Owner (May 2026)</a></li><li><a href="#1-executive-summary-of-the-v1">1. Executive Summary of the V1</a></li><li><a href="#2-primary-and-secondary-objectives">2. Primary and Secondary Objectives</a></li><li><a href="#3-what-is-included-excluded-from-the-v1">3. What Is Included / Excluded from the V1</a></li><li><a href="#4-user-profiles">4. User Profiles</a></li><li><a href="#5-user-experience-map-primary-flow-instagram-pickup-inquiry">5. User Experience Map (primary flow: Instagram → pickup inquiry)</a></li><li><a href="#6-visual-sitemap">6. Visual Sitemap</a></li><li><a href="#7-roadmap-by-phases">7. Roadmap by Phases</a></li><li><a href="#8-week-by-week-execution-plan">8. Week-by-Week Execution Plan</a></li><li><a href="#9-technical-architecture">9. Technical Architecture</a></li><li><a href="#10-architecture-diagram-mermaid">10. Architecture Diagram (Mermaid)</a></li><li><a href="#11-initial-database-model">11. Initial Database Model</a></li><li><a href="#12-erd-diagram-mermaid">12. ERD Diagram (Mermaid)</a></li><li><a href="#13-recommended-api-endpoints">13. Recommended API Endpoints</a></li><li><a href="#14-main-react-components">14. Main React Components</a></li><li><a href="#15-main-java-backend-modules">15. Main Java Backend Modules</a></li><li><a href="#16-docker-amp-environments">16. Docker &amp; Environments</a></li><li><a href="#17-recommended-visual-design-highly-specific-amp-actionable">17. Recommended Visual Design (Highly Specific &amp; Actionable)</a></li><li><a href="#18-required-content-before-building">18. Required Content Before Building</a></li><li><a href="#19-discovery-checklist-remaining-questions-for-crudo-s-owner">19. Discovery Checklist (remaining questions for CRUDO's owner)</a></li><li><a href="#20-prioritized-backlog">20. Prioritized Backlog</a></li><li><a href="#21-user-stories-with-acceptance-criteria">21. User Stories with Acceptance Criteria</a></li><li><a href="#22-main-risks-and-mitigation">22. Main Risks and Mitigation</a></li><li><a href="#23-minimum-testing-for-v1">23. Minimum Testing for V1</a></li><li><a href="#24-launch-checklist">24. Launch Checklist</a></li><li><a href="#25-first-month-metrics-kpis">25. First-Month Metrics / KPIs</a></li><li><a href="#26-improvements-for-v2">26. Improvements for V2</a></li><li><a href="#appendix-a-single-source-of-truth-design-tokens-css-file-stub">Appendix A — Single-source-of-truth design tokens (CSS file stub)</a></li><li><a href="#appendix-b-suggested-folder-layout-monorepo">Appendix B — Suggested folder layout (monorepo)</a></li><li><a href="#appendix-c-domain-name-analysis-amp-recommendation">Appendix C — Domain Name Analysis &amp; Recommendation</a></li><li><a href="#appendix-d-owner-daily-operating-rhythm-5-min-day">Appendix D — Owner Daily Operating Rhythm (≤ 5 min/day)</a></li></ul>
+  </aside>
+
+  <main class="content">
+    <div class="page-header">
+      <div class="eyebrow">Strategic + Technical Foundation</div>
+      <h1>CRUDO — V1 Website Visual Master Plan</h1>
+      <div class="meta">
+        <strong>Prepared for:</strong> CRUDO (Wine Bar &amp; Cheese Distributor — Madrid)<br>
+        <strong>Reference style:</strong> <a href="https://piscolabismadriz.com/">piscolabismadriz.com</a> · <a href="https://www.instagram.com/crudomov/">@crudomov</a><br>
+        <strong>Date:</strong> May 2026 · <strong>Version:</strong> 1.1 (owner-confirmed)
+      </div>
+    </div>
+
+    
+<h2 id="0-assumptions-confirmed-by-owner-may-2026">0. Assumptions — Confirmed by Owner (May 2026)</h2>
+<p>All assumptions have been validated. The North Star goal for V1 is now explicit: <strong>generate enough recurring traffic and in-store revenue to allow the owner to hire a second person (waiter) at the bar.</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Assumption</th>
+<th>Status</th>
+<th>Owner answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A1</td>
+<td>Single location for the next 12 months. Long-term goal: open a second location in 2–3 years.</td>
+<td>✅ Confirmed</td>
+<td>"One of the goals I need your help with — V1 must build the commercial muscle to fund expansion."</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Single owner-operator. <strong>Primary V1 goal: increase sales enough to hire a second person (waiter) at the physical store.</strong></td>
+<td>✅ Confirmed</td>
+<td>"Crudo is owned and worked only by one person. Main goal is to hire a second hand at the store."</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Low volume in V1, growing progressively. Single small VPS is sufficient.</td>
+<td>✅ Confirmed</td>
+<td>"End goal is to progressively increase sales."</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Spanish is primary. English handled via auto-translate (Google Translate widget) — no full i18n in V1.</td>
+<td>✅ Confirmed</td>
+<td>"Spanish primary, with auto-translate for English speakers."</td>
+</tr>
+<tr>
+<td>A5</td>
+<td>No online payment in V1. Online catalog → reserve → pay &amp; pick up at store.</td>
+<td>✅ Confirmed</td>
+<td>"This is the way for V1. Goal is to increase traffic, visibility, and let users see what's available without going to the store."</td>
+</tr>
+<tr>
+<td>A6</td>
+<td>Owner supplies 20–40 product photos.</td>
+<td>✅ Confirmed</td>
+<td>"20–40 pictures."</td>
+</tr>
+<tr>
+<td>A7</td>
+<td>Domain not yet acquired. Considering <code>crudo.world</code> (other ideas welcome).</td>
+<td>✅ Confirmed — see <strong>Appendix C</strong> for domain analysis &amp; recommendation</td>
+<td>"Looking into options like crudo.world or others."</td>
+</tr>
+<tr>
+<td>A8</td>
+<td>Dark editorial visual direction approved as long as it engages, drives traffic, and sells.</td>
+<td>✅ Confirmed</td>
+<td>"Use what you recommend, as long as it keeps users engaged and increases sales."</td>
+</tr>
+<tr>
+<td>A9</td>
+<td>Legal entity exists; LOPDGDD/RGPD-compliant legal pages mandatory.</td>
+<td>✅ Confirmed</td>
+<td>"Yes, it exists."</td>
+</tr>
+<tr>
+<td>A10</td>
+<td><strong>Wine (alcohol) is shown in the online catalog for visibility/promotion, but is NOT addable to "Mi Tabla" pickup reservations.</strong> Wine PDPs have a dedicated "Pregúntanos por WhatsApp" CTA. Cheese and other non-alcoholic products go through the normal Mi Tabla flow.</td>
+<td>✅ Confirmed</td>
+<td>"Skip selling alcohol online at first — promote in-store products. Online catalogue OK, but pay &amp; pickup at store for V1."</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key implication of A2 (single owner-operator):</strong> every feature in V1 must pass the test <em>"can the owner maintain this in under 5 minutes a day, alone, on a phone, between serving customers?"</em> This shapes the admin panel, the inquiry-handling flow, and the operational notifications.</p>
+<hr />
+<h2 id="1-executive-summary-of-the-v1">1. Executive Summary of the V1</h2>
+<p>CRUDO's V1 website is <strong>not a marketing brochure</strong>. It is a <strong>single-owner-operator's commercial multiplier</strong> — a digital system that turns Instagram followers, local search, and curiosity into in-store visits and pickup pre-orders, with one explicit business outcome:</p>
+<blockquote>
+<p><strong>Generate enough sustained revenue to fund the first hire (a second person on the floor) within 12 months — so the owner can step out of the bar long enough to grow the business toward a second location in 2–3 years.</strong></p>
+</blockquote>
+<p>Every scope decision in this plan is filtered against that North Star.</p>
+<p>The V1 turns traffic into:</p>
+<ol>
+<li><strong>Walk-ins</strong> to the physical bar.</li>
+<li><strong>Cheese &amp; non-alcohol pickup pre-orders</strong> (paid in store — no online payment in V1).</li>
+<li><strong>Wine discovery</strong> (browsable catalog, but reservation/inquiry handled by WhatsApp — no online alcohol sale).</li>
+<li><strong>Event / tasting attendees</strong>.</li>
+<li><strong>A growing email list</strong> for seasonal campaigns.</li>
+</ol>
+<p>The site adopts a <strong>dark, editorial, gastronomic visual language</strong> — dark olive backgrounds, cream serif headlines, warm product photography — coherent with the Piscolabis reference family but distinguished by CRUDO's own palette accent (muted terracotta) and typography (Cormorant Garamond + Inter).</p>
+<p>The stack is intentionally lean: <strong>React + Vite frontend</strong>, <strong>Spring Boot Java backend</strong>, <strong>PostgreSQL</strong>, all orchestrated with <strong>Docker Compose</strong>. Architecture is monolithic-modular — small enough to ship in 6–8 weeks, structured enough to evolve into a proper ecommerce in V2 once the first hire is in place.</p>
+<p><strong>Pickup orders in V1: YES — but as a "reserve &amp; pay in store" inquiry flow, restricted to non-alcohol products.</strong> Wine is visible in the catalog (drives discovery) but routes to WhatsApp instead of the cart. This is the single highest-leverage scope decision: it delivers commercial value from day one without dragging legal, payment, and alcohol-online-sale compliance into a first launch.</p>
+<p><strong>Language:</strong> Spanish primary; English readers handled by Google Translate auto-translation (semantic markup + a discreet language hint). Full i18n is deferred to V2.</p>
+<p><strong>Operational rule:</strong> the admin panel and notification flow must let the owner manage everything from a phone in <strong>≤ 5 minutes a day</strong> between serving customers.</p>
+<hr />
+<h2 id="2-primary-and-secondary-objectives">2. Primary and Secondary Objectives</h2>
+<h3 id="north-star">North Star</h3>
+<blockquote>
+<p><strong>Grow monthly in-store revenue + pickup pre-orders to a level that justifies hiring a second person within 12 months of launch.</strong></p>
+</blockquote>
+<p>Working assumption (to be refined with owner financials): a second-person hire in Madrid hospitality costs ~€1,800–2,400/month gross. V1 must generate <strong>incremental</strong> commercial activity (extra walk-ins + pickup pre-orders + event attendance) above today's baseline that comfortably covers that cost.</p>
+<h3 id="primary-objectives-must-move-the-needle-in-month-1">Primary objectives (must move the needle in month 1)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Objective</th>
+<th>How V1 supports it</th>
+<th>Success signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>Drive incremental walk-ins</td>
+<td>Hero with hours/map, sticky "Cómo llegar" CTA, prominent address, Google Maps embed</td>
+<td>Maps "directions" clicks tracked; owner self-reports "found via web/IG" walk-ins</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Generate pickup pre-orders for non-alcohol items</td>
+<td>Catalog → PDP → "Mi tabla" reservation → WhatsApp confirmation</td>
+<td>≥ 20 pickup inquiries/month by month 2</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Stimulate wine discovery + WhatsApp wine inquiries</td>
+<td>Wine catalog (visibility-only) + per-bottle "Pregúntanos por WhatsApp" CTA with prefilled message</td>
+<td>≥ 30 wine WhatsApp clicks/month</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>Fill events and tastings (high-margin revenue)</td>
+<td>Events page with calendar + reservation form per event</td>
+<td>Events at ≥ 70% capacity</td>
+</tr>
+<tr>
+<td>P5</td>
+<td>Grow email list for repeat traffic without paid spend</td>
+<td>Newsletter capture in footer + post-order + content unlock</td>
+<td>+100 subscribers/month</td>
+</tr>
+<tr>
+<td>P6</td>
+<td>Be findable on Google for "vino y queso Madrid", neighborhood searches</td>
+<td>SEO basics, schema.org Restaurant + Product, GMB linkage</td>
+<td>Top 5 local pack in target queries within 90 days</td>
+</tr>
+</tbody>
+</table>
+<h3 id="secondary-objectives-compound-value">Secondary objectives (compound value)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Objective</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>Showcase seasonal campaigns (e.g., "Quesos de primavera", "Vermut Sundays")</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Build content gravity around @crudomov (Instagram embed, shared visual language)</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Position CRUDO as a curator (editorial product descriptions, producer stories)</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>Capture leads for B2B cheese distribution ("Mayoristas" inquiry) — diversifies revenue beyond the bar</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>Measure which channels drive real commercial actions (analytics with conversion events)</td>
+</tr>
+<tr>
+<td>S6</td>
+<td>Make the website Google-Translate-friendly so English-speaking tourists can read &amp; convert without full i18n in V1</td>
+</tr>
+<tr>
+<td>S7</td>
+<td>Build the data + content scaffolding (catalog, events, customer emails) that will be reused by V2's online ecommerce and second-location rollout</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-what-is-included-excluded-from-the-v1">3. What Is Included / Excluded from the V1</h2>
+<h3 id="in">IN</h3>
+<ul>
+<li>Public site: Home, Catalog, Product Detail, Events, About, Contact/Location, Pickup Inquiry, Legal pages</li>
+<li>Cheese + Wine catalogs (filterable, with seasonal flag) — <strong>wine visible but not addable to Mi Tabla</strong></li>
+<li>Featured/seasonal products surfaced on home + catalog</li>
+<li>Events / tastings / campaigns module</li>
+<li>Contact form + newsletter capture (Brevo recommended)</li>
+<li>Pickup "reserve &amp; pay in store" inquiry flow with cart-like selection — <strong>non-alcohol items only</strong></li>
+<li>Wine PDP path: per-bottle WhatsApp CTA with prefilled message ("Hola, me interesa el {producto}…")</li>
+<li>Instagram embed + WhatsApp + Google Maps CTAs</li>
+<li>Minimal admin panel (JWT auth) — phone-friendly, designed for ≤ 5 min/day owner usage</li>
+<li>Spanish primary; <strong>Google Translate auto-translation friendliness</strong> (semantic HTML, <code>lang="es"</code>, no text in images, minimal jargon, optional discreet language hint widget)</li>
+<li>Spain legal: cookie banner (AEPD-compliant), Aviso Legal, Política de Privacidad (LOPDGDD/RGPD), Política de Cookies, age-related notice for alcohol content (informational, since no online sale)</li>
+<li>Google Analytics 4 + Search Console + Meta Pixel + conversion events</li>
+<li>Responsive, mobile-first</li>
+<li>Dockerized dev + prod environments, env vars, basic CI</li>
+<li>Owner notifications: WhatsApp ping + email digest for new pickup inquiries, event reservations, contact forms</li>
+</ul>
+<h3 id="out-defer-to-v2-or-later">OUT (Defer to V2 or later)</h3>
+<ul>
+<li>Online card payment / Stripe / Redsys integration</li>
+<li><strong>Online sale of alcohol</strong> (wine remains visibility-only in V1)</li>
+<li>Real-time stock &amp; shipping logistics</li>
+<li>Full multi-language i18n (English handled via Google Translate in V1; full i18n in V2)</li>
+<li>Loyalty program / member accounts</li>
+<li>Blog / CMS-heavy editorial section (editorial copy lives on product pages and About instead)</li>
+<li>Native mobile app</li>
+<li>Advanced personalization or recommendation engine</li>
+<li>Reviews &amp; ratings system</li>
+<li>Gift cards</li>
+<li>Table reservation system (use existing tools — TheFork, CoverManager — linked out if needed)</li>
+<li>Second-location infrastructure (multi-tenant, location switcher) — explicitly designed-for in data model but not built in V1</li>
+</ul>
+<hr />
+<h2 id="4-user-profiles">4. User Profiles</h2>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Goal on the site</th>
+<th>Primary device</th>
+<th>Entry channel</th>
+<th>Key need</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Local Madrileño (walk-in regular)</strong></td>
+<td>Check today's hours, see what's new this week</td>
+<td>Mobile</td>
+<td>Google search, Maps</td>
+<td>Address, hours, menu vibe in 5 seconds</td>
+</tr>
+<tr>
+<td><strong>Premium / foodie customer</strong></td>
+<td>Browse cheese &amp; wine selection, read producer stories, plan a visit or buy a board</td>
+<td>Mobile + Desktop</td>
+<td>Google, word-of-mouth, press</td>
+<td>Curated catalog, editorial copy, trust signals</td>
+</tr>
+<tr>
+<td><strong>Instagram-driven visitor (@crudomov follower)</strong></td>
+<td>Follow up on a story or post, find a product or event they saw</td>
+<td>Mobile (iOS Safari in-app browser)</td>
+<td>Instagram bio link, story sticker</td>
+<td>Fast load, visual continuity with IG, frictionless inquiry</td>
+</tr>
+<tr>
+<td><strong>Event/tasting hunter</strong></td>
+<td>Find and book a tasting</td>
+<td>Mobile</td>
+<td>Instagram, Eventbrite, friends</td>
+<td>Date, price, "reserve my seat" in 2 taps</td>
+</tr>
+<tr>
+<td><strong>B2B / restaurant buyer</strong></td>
+<td>Inquire about cheese distribution</td>
+<td>Desktop</td>
+<td>Direct, referral</td>
+<td>Clear "Mayoristas" path with form + email</td>
+</tr>
+<tr>
+<td><strong>CRUDO owner (single operator)</strong></td>
+<td>Add a new wine, post an event, mark something as sold-out, confirm a pickup — between serving customers, on a phone</td>
+<td><strong>Mobile</strong> (iPhone) primarily, desktop occasionally</td>
+<td>Direct admin URL bookmarked</td>
+<td>Edit in &lt; 1 minute per item; total daily admin time ≤ 5 minutes; no developer needed; phone-keyboard-friendly inputs</td>
+</tr>
+<tr>
+<td><strong>English-speaking tourist (Madrid visitor)</strong></td>
+<td>Understand what CRUDO is, see opening hours, find the address</td>
+<td>Mobile</td>
+<td>Google search, hotel concierge, IG</td>
+<td>Page must be perfectly intelligible after Google-Translate auto-translation — no text-in-images, semantic markup, simple Spanish</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-user-experience-map-primary-flow-instagram-pickup-inquiry">5. User Experience Map (primary flow: Instagram → pickup inquiry)</h2>
+<div class="mermaid-wrap"><pre class="mermaid">journey
+    title Instagram follower → pickup inquiry
+    section Discovery
+      Sees a story about Comté: 5: User
+      Taps bio link in @crudomov: 4: User
+    section Landing
+      Lands on Home, sees seasonal hero: 5: User
+      Scrolls to "Esta semana en CRUDO": 5: User
+    section Browse
+      Taps a featured cheese: 5: User
+      Reads producer story, sees price: 4: User
+      Adds 2 cheeses to "Mi tabla": 5: User
+      Sees a wine, taps Pregúntanos por WhatsApp: 4: User
+    section Convert
+      Taps "Reservar para recoger": 5: User
+      Fills name, phone, pickup date: 3: User
+      Confirmation page, WhatsApp expected within 24h: 5: User
+    section Loyalty
+      Receives newsletter with next event: 4: User
+      Books a tasting: 5: User
+</pre></div>
+<hr />
+<h2 id="6-visual-sitemap">6. Visual Sitemap</h2>
+<div class="mermaid-wrap"><pre class="mermaid">graph TD
+    Home[Home /]
+    Catalog[Catálogo /catalogo]
+    Cheese[Quesos /catalogo/quesos]
+    Wine[Vinos /catalogo/vinos]
+    Seasonal[Temporada /catalogo/temporada]
+    PDP[Producto /producto/:slug]
+    Events[Eventos y catas /eventos]
+    EventDetail[Evento /eventos/:slug]
+    About[Sobre CRUDO /sobre-crudo]
+    Contact[Contacto /contacto]
+    Pickup[Mi tabla /mi-tabla]
+    PickupConfirm[Confirmación /mi-tabla/confirmacion]
+    Wholesale[Mayoristas /mayoristas]
+    Legal1[Aviso Legal /aviso-legal]
+    Legal2[Privacidad /privacidad]
+    Legal3[Cookies /cookies]
+    Admin[Admin /admin]
+
+    Home --> Catalog
+    Home --> Events
+    Home --> About
+    Home --> Contact
+    Home --> Pickup
+    Catalog --> Cheese
+    Catalog --> Wine
+    Catalog --> Seasonal
+    Cheese --> PDP
+    Wine --> PDP
+    Seasonal --> PDP
+    PDP --> Pickup
+    Pickup --> PickupConfirm
+    Events --> EventDetail
+    EventDetail --> Contact
+    About --> Wholesale
+    Home -.footer.-> Legal1
+    Home -.footer.-> Legal2
+    Home -.footer.-> Legal3
+</pre></div>
+<hr />
+<h2 id="7-roadmap-by-phases">7. Roadmap by Phases</h2>
+<div class="mermaid-wrap"><pre class="mermaid">gantt
+    title CRUDO V1 — 8-week launch roadmap
+    dateFormat YYYY-MM-DD
+    axisFormat %b %d
+    section Phase 0 — Discovery
+    Discovery & content audit         :p0a, 2026-05-04, 5d
+    Brand & content kickoff           :p0b, after p0a, 3d
+    section Phase 1 — Design
+    Wireframes (mobile-first)         :p1a, 2026-05-11, 4d
+    Visual design system & key screens:p1b, after p1a, 6d
+    section Phase 2 — Build (Backend)
+    Spring Boot scaffolding + DB      :p2a, 2026-05-18, 4d
+    Catalog + Events + Auth APIs      :p2b, after p2a, 7d
+    Admin panel CRUD                  :p2c, after p2b, 4d
+    section Phase 3 — Build (Frontend)
+    React scaffolding + design system :p3a, 2026-05-25, 4d
+    Public pages + catalog + PDP      :p3b, after p3a, 7d
+    Pickup flow + Events + forms      :p3c, after p3b, 5d
+    section Phase 4 — Content & QA
+    Content load + photography        :p4a, 2026-06-15, 5d
+    QA, accessibility, perf, legal    :p4b, after p4a, 5d
+    section Phase 5 — Launch
+    Soft launch + analytics validation:p5a, 2026-06-25, 3d
+    Public launch + IG announcement   :p5b, after p5a, 1d
+</pre></div>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Duration</th>
+<th>Key deliverable</th>
+<th>Done =</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 — Discovery</td>
+<td>1 week</td>
+<td>Filled discovery doc, 30-product list, photo plan</td>
+<td>Owner sign-off on scope</td>
+</tr>
+<tr>
+<td>1 — Design</td>
+<td>1.5 weeks</td>
+<td>Figma file with design system + 8 key screens</td>
+<td>Owner approves home + PDP</td>
+</tr>
+<tr>
+<td>2 — Backend</td>
+<td>2 weeks</td>
+<td>API + admin running on Docker, seeded data</td>
+<td>Postman collection green</td>
+</tr>
+<tr>
+<td>3 — Frontend</td>
+<td>2 weeks</td>
+<td>All public pages wired to API on staging</td>
+<td>All flows clickable end-to-end</td>
+</tr>
+<tr>
+<td>4 — Content &amp; QA</td>
+<td>1 week</td>
+<td>Real content live, Lighthouse ≥ 90, legal validated</td>
+<td>QA checklist green</td>
+</tr>
+<tr>
+<td>5 — Launch</td>
+<td>0.5 week</td>
+<td>Production deploy + monitoring + IG announcement</td>
+<td>Site live, GA recording events</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-week-by-week-execution-plan">8. Week-by-Week Execution Plan</h2>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Focus</th>
+<th>Outputs</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>W1</strong></td>
+<td>Discovery, content audit, domain/hosting setup</td>
+<td>Discovery doc filled, 30 products listed, photo brief, hosting &amp; domain ready</td>
+<td>PM + Owner</td>
+</tr>
+<tr>
+<td><strong>W2</strong></td>
+<td>UX wireframes (mobile-first) for all 8 page templates</td>
+<td>Figma wireframes, sitemap signed off</td>
+<td>Designer</td>
+</tr>
+<tr>
+<td><strong>W3</strong></td>
+<td>Visual design system + Home + PDP + Catalog hi-fi</td>
+<td>Figma design system file, 4 hi-fi screens approved</td>
+<td>Designer</td>
+</tr>
+<tr>
+<td><strong>W4</strong></td>
+<td>Backend: Spring Boot scaffolding, DB schema, auth, Catalog/Product/Event entities, REST endpoints</td>
+<td>Local Docker stack runs, Swagger UI, Postman tests</td>
+<td>Backend dev</td>
+</tr>
+<tr>
+<td><strong>W5</strong></td>
+<td>Backend: Admin endpoints, image upload, inquiries, seed data. Frontend: React + Vite scaffold, design tokens, layout, Home + Catalog pages</td>
+<td>Admin works, Home &amp; Catalog wired to API on staging</td>
+<td>Both devs</td>
+</tr>
+<tr>
+<td><strong>W6</strong></td>
+<td>Frontend: PDP, "Mi tabla" pickup flow, Events, Contact, About, Legal pages</td>
+<td>All public pages clickable end-to-end on staging</td>
+<td>Frontend dev</td>
+</tr>
+<tr>
+<td><strong>W7</strong></td>
+<td>Real content load, photography integration, SEO meta, GA4 + Pixel + Search Console, legal copy review</td>
+<td>Content frozen, analytics events firing, accessibility &amp; Lighthouse pass</td>
+<td>PM + Owner + dev</td>
+</tr>
+<tr>
+<td><strong>W8</strong></td>
+<td>Soft launch (no IG announcement), QA pass, fix list, public launch + IG story announcement</td>
+<td>Live site, monitoring dashboard, retro doc</td>
+<td>Whole team</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="9-technical-architecture">9. Technical Architecture</h2>
+<p><strong>Pattern:</strong> Monolithic-modular Spring Boot API + decoupled React SPA + PostgreSQL, all containerized.</p>
+<p><strong>Justification for Spring Boot:</strong> The brief mandates Java. Spring Boot is the de facto Java web framework — mature ORM (JPA/Hibernate), Spring Security for the admin, Spring Data for clean repositories, Flyway for migrations, MapStruct for DTOs. It scales from a 4-table V1 to a real ecommerce in V2 without rewriting.</p>
+<p><strong>Why a SPA + API (not server-rendered):</strong>
+- The frontend is content-light and interaction-rich (cart-like Mi Tabla, filters).
+- Decoupling keeps the door open for a future Next.js/SSR migration if SEO needs deepen.
+- For V1 SEO needs, we use <strong>prerendering for the catalog and product pages</strong> (via <code>vite-plugin-ssg</code> or a small prerender step at build time) so Google indexes them properly. This is the V1 SEO compromise — no Next.js complexity, but no client-only SEO pain either.</p>
+<p><strong>Hosting (recommended):</strong>
+- Single VPS (Hetzner CX22 or DigitalOcean Droplet, ~€5–10/mo) running Docker Compose with <code>caddy</code> as reverse proxy + auto-HTTPS.
+- Object storage (Cloudflare R2 or BunnyCDN) for product images.
+- Cloudflare in front for CDN + WAF + DDoS.
+- Backups: nightly <code>pg_dump</code> to R2.</p>
+<p><strong>Why not serverless / Vercel / managed DB for V1?</strong> A single VPS is cheaper, easier to reason about, and Spring Boot is not free to run on serverless. V2 can split if needed.</p>
+<hr />
+<h2 id="10-architecture-diagram-mermaid">10. Architecture Diagram (Mermaid)</h2>
+<div class="mermaid-wrap"><pre class="mermaid">graph LR
+    subgraph User["User Devices"]
+        Mobile[Mobile Browser]
+        Desktop[Desktop Browser]
+    end
+
+    subgraph CDN["Cloudflare"]
+        CF[CDN + WAF + DNS]
+    end
+
+    subgraph VPS["VPS — Docker Compose"]
+        Caddy[Caddy reverse proxy + HTTPS]
+        FE[React SPA — static build]
+        BE[Spring Boot API]
+        DB[(PostgreSQL 16)]
+    end
+
+    subgraph External["External Services"]
+        R2[Cloudflare R2 — image storage]
+        Mail[Brevo / Mailchimp — newsletter]
+        WA[WhatsApp Business — owner]
+        GA[GA4 + Search Console]
+        IG[Instagram Embed]
+        Maps[Google Maps Embed]
+    end
+
+    Mobile --> CF
+    Desktop --> CF
+    CF --> Caddy
+    Caddy --> FE
+    Caddy --> BE
+    BE --> DB
+    BE --> R2
+    BE --> Mail
+    BE -.notifies.-> WA
+    FE --> GA
+    FE --> IG
+    FE --> Maps
+</pre></div>
+<hr />
+<h2 id="11-initial-database-model">11. Initial Database Model</h2>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Purpose</th>
+<th>Key fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>product</code></td>
+<td>Cheeses, wines, merch</td>
+<td>id, slug, name, type (CHEESE/WINE/OTHER), <strong>is_alcohol</strong> (bool — drives Mi Tabla eligibility), price_cents, vat_rate, short_desc, long_desc, producer, region, is_seasonal, is_featured, is_active, stock_status (IN_STOCK/LOW/OUT), created_at</td>
+</tr>
+<tr>
+<td><code>product_image</code></td>
+<td>Product photography</td>
+<td>id, product_id, url, alt_text, sort_order, is_primary</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>Optional grouping (e.g., "Quesos azules", "Naturales")</td>
+<td>id, slug, name, type, sort_order</td>
+</tr>
+<tr>
+<td><code>product_category</code></td>
+<td>M2M link</td>
+<td>product_id, category_id</td>
+</tr>
+<tr>
+<td><code>campaign</code></td>
+<td>Seasonal campaigns surfaced on home &amp; catalog</td>
+<td>id, slug, title, subtitle, hero_image_url, body_md, starts_at, ends_at, is_active</td>
+</tr>
+<tr>
+<td><code>campaign_product</code></td>
+<td>Products featured in a campaign</td>
+<td>campaign_id, product_id, sort_order</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>Tastings, dinners, themed nights</td>
+<td>id, slug, title, description_md, hero_image_url, starts_at, ends_at, capacity, price_cents, location, is_active</td>
+</tr>
+<tr>
+<td><code>event_reservation</code></td>
+<td>Tasting reservations</td>
+<td>id, event_id, name, email, phone, party_size, notes, status (NEW/CONFIRMED/CANCELLED), created_at</td>
+</tr>
+<tr>
+<td><code>inquiry</code></td>
+<td>Contact form + B2B + general</td>
+<td>id, type (CONTACT/WHOLESALE/PICKUP), name, email, phone, message, payload_json, status, created_at</td>
+</tr>
+<tr>
+<td><code>pickup_order</code></td>
+<td>"Mi tabla" pickup inquiries</td>
+<td>id, name, email, phone, pickup_date, pickup_slot, notes, total_cents, status (NEW/CONFIRMED/READY/PICKED_UP/CANCELLED), created_at</td>
+</tr>
+<tr>
+<td><code>pickup_order_item</code></td>
+<td>Line items</td>
+<td>id, pickup_order_id, product_id, qty, unit_price_cents</td>
+</tr>
+<tr>
+<td><code>newsletter_subscriber</code></td>
+<td>Email captures (also synced to Brevo)</td>
+<td>id, email, source, consent_at, ip, status</td>
+</tr>
+<tr>
+<td><code>admin_user</code></td>
+<td>Backoffice login</td>
+<td>id, email, password_hash, role (ADMIN/STAFF), is_active</td>
+</tr>
+</tbody>
+</table>
+<p>Notes: prices stored as <code>*_cents</code> (integer) to avoid float pitfalls. <code>slug</code> indexed and unique. <code>is_active</code> on every public-facing entity for soft-publishing. All tables have <code>created_at</code>/<code>updated_at</code>.</p>
+<p><strong><code>is_alcohol</code> flag (V1 design choice):</strong> drives the difference between cheese-style PDPs (Mi Tabla button) and wine-style PDPs (WhatsApp button). Server enforces that no <code>pickup_order_item</code> references a product with <code>is_alcohol=true</code>.</p>
+<p><strong>Designed-for-but-not-built (V2 readiness):</strong>
+- A future <code>location</code> table is anticipated. To avoid premature complexity, V1 keeps no <code>location_id</code> foreign keys, but every entity is migration-friendly: a single ALTER + nullable <code>location_id</code> plus a default seed row will retro-fit a multi-location model when a second location is opened in 2–3 years.
+- A <code>language</code> field on Product is <strong>not</strong> added in V1 — Spanish copy + Google Translate covers the use case. V2 i18n will add <code>product_translation</code> table when full English/Catalan is justified.</p>
+<hr />
+<h2 id="12-erd-diagram-mermaid">12. ERD Diagram (Mermaid)</h2>
+<div class="mermaid-wrap"><pre class="mermaid">erDiagram
+    PRODUCT ||--o{ PRODUCT_IMAGE : has
+    PRODUCT ||--o{ PRODUCT_CATEGORY : tagged
+    CATEGORY ||--o{ PRODUCT_CATEGORY : groups
+    CAMPAIGN ||--o{ CAMPAIGN_PRODUCT : features
+    PRODUCT  ||--o{ CAMPAIGN_PRODUCT : appears_in
+    EVENT    ||--o{ EVENT_RESERVATION : receives
+    PICKUP_ORDER ||--o{ PICKUP_ORDER_ITEM : contains
+    PRODUCT  ||--o{ PICKUP_ORDER_ITEM : referenced_by
+
+    PRODUCT {
+      bigint id PK
+      string slug UK
+      string name
+      string type
+      bool is_alcohol
+      int price_cents
+      string producer
+      string region
+      bool is_seasonal
+      bool is_featured
+      bool is_active
+      string stock_status
+    }
+    PRODUCT_IMAGE {
+      bigint id PK
+      bigint product_id FK
+      string url
+      string alt_text
+      int sort_order
+      bool is_primary
+    }
+    CATEGORY {
+      bigint id PK
+      string slug UK
+      string name
+      string type
+    }
+    PRODUCT_CATEGORY {
+      bigint product_id FK
+      bigint category_id FK
+    }
+    CAMPAIGN {
+      bigint id PK
+      string slug UK
+      string title
+      datetime starts_at
+      datetime ends_at
+      bool is_active
+    }
+    CAMPAIGN_PRODUCT {
+      bigint campaign_id FK
+      bigint product_id FK
+      int sort_order
+    }
+    EVENT {
+      bigint id PK
+      string slug UK
+      string title
+      datetime starts_at
+      int capacity
+      int price_cents
+      bool is_active
+    }
+    EVENT_RESERVATION {
+      bigint id PK
+      bigint event_id FK
+      string name
+      string email
+      string phone
+      int party_size
+      string status
+    }
+    PICKUP_ORDER {
+      bigint id PK
+      string name
+      string email
+      string phone
+      date pickup_date
+      string pickup_slot
+      int total_cents
+      string status
+    }
+    PICKUP_ORDER_ITEM {
+      bigint id PK
+      bigint pickup_order_id FK
+      bigint product_id FK
+      int qty
+      int unit_price_cents
+    }
+</pre></div>
+<hr />
+<h2 id="13-recommended-api-endpoints">13. Recommended API Endpoints</h2>
+<p>All under <code>/api/v1</code>. Public endpoints are cacheable (CDN-edge, 5 min). Admin endpoints require <code>Authorization: Bearer &lt;JWT&gt;</code>.</p>
+<h3 id="public">Public</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/products</code></td>
+<td>List products. Query: <code>type</code>, <code>category</code>, <code>seasonal</code>, <code>featured</code>, <code>q</code>, <code>page</code>, <code>size</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/products/{slug}</code></td>
+<td>Product detail with images &amp; related</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/categories</code></td>
+<td>All categories grouped by type</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/campaigns/active</code></td>
+<td>Currently active campaigns</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/campaigns/{slug}</code></td>
+<td>Single campaign with featured products</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/events</code></td>
+<td>Upcoming events</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/events/{slug}</code></td>
+<td>Event detail</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/events/{slug}/reservations</code></td>
+<td>Reserve a seat (rate-limited, captcha)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/inquiries</code></td>
+<td>Generic contact / wholesale form</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/pickup-orders</code></td>
+<td>Submit a "Mi tabla" pickup inquiry. <strong>Server rejects with HTTP 422 if any line item references a product with <code>is_alcohol=true</code></strong> — alcohol must use the WhatsApp path</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/newsletter/subscribe</code></td>
+<td>Subscribe to newsletter (double opt-in via Brevo)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/site/config</code></td>
+<td>Hours, address, holiday closures, hero settings</td>
+</tr>
+</tbody>
+</table>
+<h3 id="admin-jwt-protected">Admin (JWT-protected)</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>/admin/auth/login</code></td>
+<td>Email + password → JWT</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/admin/auth/refresh</code></td>
+<td>Refresh JWT</td>
+</tr>
+<tr>
+<td>GET/POST/PUT/DELETE</td>
+<td><code>/admin/products</code></td>
+<td>CRUD products</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/admin/products/{id}/images</code></td>
+<td>Upload image (multipart → R2)</td>
+</tr>
+<tr>
+<td>GET/POST/PUT/DELETE</td>
+<td><code>/admin/events</code></td>
+<td>CRUD events</td>
+</tr>
+<tr>
+<td>GET/POST/PUT/DELETE</td>
+<td><code>/admin/campaigns</code></td>
+<td>CRUD campaigns</td>
+</tr>
+<tr>
+<td>GET/PATCH</td>
+<td><code>/admin/inquiries</code></td>
+<td>List &amp; update inquiry status</td>
+</tr>
+<tr>
+<td>GET/PATCH</td>
+<td><code>/admin/pickup-orders</code></td>
+<td>List &amp; update order status</td>
+</tr>
+<tr>
+<td>GET/PATCH</td>
+<td><code>/admin/event-reservations</code></td>
+<td>List &amp; update</td>
+</tr>
+<tr>
+<td>GET/PUT</td>
+<td><code>/admin/site/config</code></td>
+<td>Edit hours, hero, etc.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cross-cutting">Cross-cutting</h3>
+<ul>
+<li>Pagination: <code>page</code>, <code>size</code> (default 20).</li>
+<li>Errors: RFC 7807 <code>application/problem+json</code>.</li>
+<li>Rate limiting on POST endpoints: 10 req/min/IP via Bucket4j.</li>
+<li>CORS: only the public domain.</li>
+<li>Idempotency: <code>Idempotency-Key</code> header accepted on <code>pickup-orders</code> and <code>reservations</code>.</li>
+<li>Alcohol guard: validation layer on <code>POST /pickup-orders</code> rejects any item where the joined <code>product.is_alcohol = true</code>. Tested explicitly in the integration suite.</li>
+<li>Notifications: <code>pickup-orders</code>, <code>event-reservations</code>, <code>inquiries</code> POSTs emit a server-side WhatsApp message (via 360dialog or Twilio Business API) to the owner number, plus an email digest at end of day to avoid notification fatigue.</li>
+</ul>
+<hr />
+<h2 id="14-main-react-components">14. Main React Components</h2>
+<pre><code>src/
+├── app/
+│   ├── routes.tsx
+│   ├── App.tsx
+│   └── providers/        (QueryClient, Theme, Cart, Analytics)
+├── design-system/
+│   ├── tokens.css        (CSS variables — see section 17)
+│   ├── Button.tsx
+│   ├── Tag.tsx
+│   ├── Badge.tsx
+│   ├── Input.tsx
+│   ├── Select.tsx
+│   ├── Modal.tsx
+│   └── Section.tsx
+├── components/
+│   ├── layout/
+│   │   ├── Header.tsx        (logo, minimal nav, IG/WA/Maps icons)
+│   │   ├── Footer.tsx        (legal, newsletter, hours)
+│   │   ├── StickyCTA.tsx     (mobile floating &quot;Reservar/Mi tabla&quot;)
+│   │   └── CookieBanner.tsx
+│   ├── home/
+│   │   ├── Hero.tsx
+│   │   ├── SeasonalShowcase.tsx
+│   │   ├── CategoryStrips.tsx
+│   │   ├── EventsTeaser.tsx
+│   │   ├── InstagramStrip.tsx
+│   │   ├── Testimonials.tsx
+│   │   └── VisitBlock.tsx     (hours, map, CTAs)
+│   ├── catalog/
+│   │   ├── CatalogToolbar.tsx (filters, search, sort)
+│   │   ├── ProductCard.tsx
+│   │   ├── ProductGrid.tsx
+│   │   └── EmptyState.tsx
+│   ├── product/
+│   │   ├── ProductGallery.tsx
+│   │   ├── ProductMeta.tsx       (producer, region, pairings)
+│   │   ├── ProductLongRead.tsx
+│   │   ├── AddToTablaButton.tsx  (rendered when !product.is_alcohol)
+│   │   ├── WineWhatsAppButton.tsx (rendered when product.is_alcohol)
+│   │   └── RelatedProducts.tsx
+│   ├── tabla/
+│   │   ├── TablaDrawer.tsx    (cart-like overlay)
+│   │   ├── TablaSummary.tsx
+│   │   └── PickupForm.tsx
+│   ├── events/
+│   │   ├── EventCard.tsx
+│   │   ├── EventDetail.tsx
+│   │   └── ReservationForm.tsx
+│   ├── forms/
+│   │   ├── ContactForm.tsx
+│   │   ├── WholesaleForm.tsx
+│   │   └── NewsletterForm.tsx
+│   └── admin/
+│       ├── AdminShell.tsx
+│       ├── ProductTable.tsx
+│       ├── ProductEditor.tsx
+│       ├── EventEditor.tsx
+│       ├── CampaignEditor.tsx
+│       └── InquiriesTable.tsx
+├── pages/
+│   ├── HomePage.tsx
+│   ├── CatalogPage.tsx
+│   ├── ProductPage.tsx
+│   ├── EventsPage.tsx
+│   ├── EventDetailPage.tsx
+│   ├── AboutPage.tsx
+│   ├── ContactPage.tsx
+│   ├── WholesalePage.tsx
+│   ├── PickupConfirmPage.tsx
+│   ├── LegalPage.tsx
+│   └── admin/...
+├── hooks/                (useTabla, useProducts, useEvent, useAuth)
+├── lib/                  (api client, analytics, format, schema.org)
+└── styles/               (global.css, fonts.css)
+</code></pre>
+<p><strong>Key libraries (intentionally minimal):</strong> React 18, Vite, React Router, TanStack Query (cache + retries), Zustand (Mi Tabla state), Zod (form schemas), React Hook Form, Framer Motion (subtle reveals only), Lucide icons. Tailwind <strong>optional</strong> — pure CSS modules + tokens are recommended to keep the editorial feel and avoid utility-class cluttering of editorial typography.</p>
+<hr />
+<h2 id="15-main-java-backend-modules">15. Main Java Backend Modules</h2>
+<pre><code>src/main/java/com/crudo/
+├── CrudoApplication.java
+├── config/
+│   ├── SecurityConfig.java     (JWT filter, CORS, public/admin paths)
+│   ├── OpenApiConfig.java
+│   ├── RateLimitConfig.java
+│   └── StorageConfig.java      (S3/R2 client)
+├── catalog/
+│   ├── domain/                 (Product, Category, Image entities)
+│   ├── repository/
+│   ├── service/
+│   ├── web/                    (PublicProductController, AdminProductController)
+│   └── dto/
+├── campaign/
+├── event/
+├── pickup/
+│   ├── domain/                 (PickupOrder, PickupOrderItem)
+│   ├── service/                (price calc, slot validation, notification)
+│   └── web/
+├── inquiry/
+├── newsletter/                 (Brevo client wrapper)
+├── notification/               (email + WhatsApp owner ping via Twilio/360dialog)
+├── auth/                       (AdminUser, JwtService, AuthController)
+├── site/                       (SiteConfig — hours, hero, etc.)
+├── common/
+│   ├── error/                  (Problem JSON handler)
+│   ├── audit/                  (Auditing aspect)
+│   ├── slug/
+│   └── validation/
+└── infra/
+    └── flyway/                 (V1__init.sql, V2__seed.sql)
+</code></pre>
+<p><strong>Cross-cutting choices:</strong> Spring Boot 3.x, Java 21, Hibernate 6, Flyway for migrations, MapStruct for DTOs, Bucket4j for rate limiting, Resilience4j for retries on external calls, Springdoc-OpenAPI for Swagger, JJWT for tokens.</p>
+<hr />
+<h2 id="16-docker-amp-environments">16. Docker &amp; Environments</h2>
+<h3 id="docker-composeyml-dev"><code>docker-compose.yml</code> (dev)</h3>
+<pre><code class="language-yaml">services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: crudo
+      POSTGRES_USER: crudo
+      POSTGRES_PASSWORD: crudo
+    volumes: [pgdata:/var/lib/postgresql/data]
+    ports: [&quot;5432:5432&quot;]
+
+  api:
+    build: ./api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/crudo
+      SPRING_DATASOURCE_USERNAME: crudo
+      SPRING_DATASOURCE_PASSWORD: crudo
+      JWT_SECRET: ${JWT_SECRET}
+      STORAGE_ENDPOINT: ${STORAGE_ENDPOINT}
+      STORAGE_BUCKET: ${STORAGE_BUCKET}
+      STORAGE_KEY: ${STORAGE_KEY}
+      STORAGE_SECRET: ${STORAGE_SECRET}
+      BREVO_API_KEY: ${BREVO_API_KEY}
+      OWNER_WHATSAPP: ${OWNER_WHATSAPP}
+    depends_on: [db]
+    ports: [&quot;8080:8080&quot;]
+
+  web:
+    build: ./web
+    environment:
+      VITE_API_BASE: http://localhost:8080/api/v1
+      VITE_GA_ID: ${VITE_GA_ID}
+      VITE_META_PIXEL: ${VITE_META_PIXEL}
+    ports: [&quot;5173:5173&quot;]
+
+volumes:
+  pgdata:
+</code></pre>
+<h3 id="environments">Environments</h3>
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>URL pattern</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>local</code></td>
+<td><code>localhost</code></td>
+<td>Developer machine, seed data</td>
+</tr>
+<tr>
+<td><code>staging</code></td>
+<td><code>staging.&lt;canonical-domain&gt;</code></td>
+<td>Owner reviews, content load, basic-auth gated, <code>noindex</code></td>
+</tr>
+<tr>
+<td><code>production</code></td>
+<td><code>&lt;canonical-domain&gt;</code> (see Appendix C — likely <code>crudo.world</code> or <code>crudo.es</code>)</td>
+<td>Public, behind Cloudflare</td>
+</tr>
+</tbody>
+</table>
+<h3 id="env-discipline"><code>.env</code> discipline</h3>
+<ul>
+<li>One <code>.env.example</code> committed; secrets never committed.</li>
+<li>All secrets in environment variables consumed by Spring's <code>@Value</code> and Vite's <code>import.meta.env</code>.</li>
+</ul>
+<h3 id="cicd-lightweight">CI/CD (lightweight)</h3>
+<ul>
+<li>GitHub Actions:
+  1. <code>pr.yml</code>: lint + unit tests + build images.
+  2. <code>staging.yml</code>: on <code>main</code> → SSH deploy to staging via <code>docker compose pull &amp;&amp; up -d</code>.
+  3. <code>production.yml</code>: manual trigger.</li>
+<li>Image registry: GitHub Container Registry.</li>
+<li>Backups: nightly cron on VPS → <code>pg_dump</code> → R2 with 30-day retention.</li>
+</ul>
+<hr />
+<h2 id="17-recommended-visual-design-highly-specific-amp-actionable">17. Recommended Visual Design (Highly Specific &amp; Actionable)</h2>
+<h3 id="171-style-direction">17.1 Style Direction</h3>
+<p>CRUDO's visual language is <strong>dark editorial gastronomy</strong> — the world of a candle-lit cellar at 9pm, not a bright deli at noon. It draws from the Piscolabis family (dark, moody, artisan) and differentiates with:</p>
+<ul>
+<li><strong>A deeper, greener base palette</strong> (not Piscolabis' charcoal-brown-leaning tones) — this is wine cellar, not jamonería.</li>
+<li><strong>Cormorant Garamond</strong> as headline serif (more aged and gastronomic than Playfair Display, which is now over-used in restaurants).</li>
+<li><strong>Terracotta + aged gold accents</strong> for CTAs (warmer than ochre, less "gold leaf" than Piscolabis).</li>
+<li><strong>Letter-spaced uppercase microcopy</strong> for section labels — editorial magazine feel.</li>
+<li><strong>Photography contrast turned slightly down</strong> — low-key, warm, never saturated.</li>
+</ul>
+<h3 id="172-color-palette-final-hex-tokens">17.2 Color Palette (final hex tokens)</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Hex</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--color-bg-primary</code></td>
+<td><code>#1A1F14</code></td>
+<td>Page background — deep forest/olive</td>
+</tr>
+<tr>
+<td><code>--color-bg-secondary</code></td>
+<td><code>#1E1C18</code></td>
+<td>Section backgrounds, cards</td>
+</tr>
+<tr>
+<td><code>--color-bg-elevated</code></td>
+<td><code>#252420</code></td>
+<td>Modals, dropdowns, drawers</td>
+</tr>
+<tr>
+<td><code>--color-bg-light</code></td>
+<td><code>#F2EAD8</code></td>
+<td>Inverted/light sections (About, Legal)</td>
+</tr>
+<tr>
+<td><code>--color-bg-light-soft</code></td>
+<td><code>#EAE0CB</code></td>
+<td>Light-section card backgrounds</td>
+</tr>
+<tr>
+<td><code>--color-text-primary</code></td>
+<td><code>#F2EAD8</code></td>
+<td>Body text on dark</td>
+</tr>
+<tr>
+<td><code>--color-text-secondary</code></td>
+<td><code>#C7BFAD</code></td>
+<td>Secondary text on dark</td>
+</tr>
+<tr>
+<td><code>--color-text-muted</code></td>
+<td><code>#8A8473</code></td>
+<td>Captions, micro</td>
+</tr>
+<tr>
+<td><code>--color-text-inverse</code></td>
+<td><code>#1A1F14</code></td>
+<td>Text on light sections</td>
+</tr>
+<tr>
+<td><code>--color-accent</code></td>
+<td><code>#B5713A</code></td>
+<td>Primary CTA — muted terracotta</td>
+</tr>
+<tr>
+<td><code>--color-accent-hover</code></td>
+<td><code>#C8804A</code></td>
+<td>Hover state</td>
+</tr>
+<tr>
+<td><code>--color-accent-soft</code></td>
+<td><code>#3A2A1E</code></td>
+<td>Tinted accent for backgrounds/badges</td>
+</tr>
+<tr>
+<td><code>--color-gold</code></td>
+<td><code>#B89668</code></td>
+<td>Secondary accent — aged gold (icons, dividers)</td>
+</tr>
+<tr>
+<td><code>--color-success</code></td>
+<td><code>#6B8E5A</code></td>
+<td>Confirmation states</td>
+</tr>
+<tr>
+<td><code>--color-warning</code></td>
+<td><code>#C8893E</code></td>
+<td>"Pocas unidades"</td>
+</tr>
+<tr>
+<td><code>--color-error</code></td>
+<td><code>#A8443A</code></td>
+<td>Form errors</td>
+</tr>
+<tr>
+<td><code>--color-border</code></td>
+<td><code>rgba(242,234,216,0.12)</code></td>
+<td>Hairline dividers on dark</td>
+</tr>
+<tr>
+<td><code>--color-border-strong</code></td>
+<td><code>rgba(242,234,216,0.24)</code></td>
+<td>Cards on dark</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Forbidden:</strong> <code>#FFFFFF</code>, <code>#000000</code>, cool grays, blues, neon anything.</p>
+<h3 id="173-typography">17.3 Typography</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Font</th>
+<th>Weights</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--font-display</code></td>
+<td><strong>Cormorant Garamond</strong></td>
+<td>400, 500, 600, 700 italic</td>
+<td>H1, H2, hero titles, product names, editorial pull-quotes</td>
+</tr>
+<tr>
+<td><code>--font-body</code></td>
+<td><strong>Inter</strong></td>
+<td>400, 500, 600</td>
+<td>Body, navigation, forms, UI</td>
+</tr>
+<tr>
+<td><code>--font-mono</code></td>
+<td><strong>JetBrains Mono</strong></td>
+<td>400</td>
+<td>Prices on PDP (subtle), order IDs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Type scale (mobile-first; values in <code>rem</code> assuming 16px base):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Size</th>
+<th>Line height</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--text-display</code></td>
+<td>3.0rem (mob) / 4.5rem (desk)</td>
+<td>1.05</td>
+<td>Hero H1 — Cormorant 500 italic</td>
+</tr>
+<tr>
+<td><code>--text-h1</code></td>
+<td>2.25rem / 3.0rem</td>
+<td>1.1</td>
+<td>Page H1 — Cormorant 500</td>
+</tr>
+<tr>
+<td><code>--text-h2</code></td>
+<td>1.75rem / 2.25rem</td>
+<td>1.15</td>
+<td>Section titles — Cormorant 500</td>
+</tr>
+<tr>
+<td><code>--text-h3</code></td>
+<td>1.375rem / 1.5rem</td>
+<td>1.25</td>
+<td>Subsection — Cormorant 600</td>
+</tr>
+<tr>
+<td><code>--text-eyebrow</code></td>
+<td>0.75rem / 0.8125rem</td>
+<td>1.4</td>
+<td>Labels — Inter 500, uppercase, letter-spacing 0.18em</td>
+</tr>
+<tr>
+<td><code>--text-body</code></td>
+<td>1.0rem / 1.0625rem</td>
+<td>1.6</td>
+<td>Body — Inter 400</td>
+</tr>
+<tr>
+<td><code>--text-body-lg</code></td>
+<td>1.125rem / 1.25rem</td>
+<td>1.55</td>
+<td>Lead paragraphs — Inter 400</td>
+</tr>
+<tr>
+<td><code>--text-small</code></td>
+<td>0.875rem</td>
+<td>1.5</td>
+<td>Captions — Inter 400</td>
+</tr>
+<tr>
+<td><code>--text-micro</code></td>
+<td>0.75rem</td>
+<td>1.4</td>
+<td>Legal, meta — Inter 400</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules:</strong>
+- All H1/H2/H3 use Cormorant Garamond. Italic is reserved for <code>--text-display</code> and pull quotes.
+- Body uses Inter — never use Cormorant for body, it kills readability.
+- Eyebrow labels are always uppercase, Inter 500, letter-spaced — they replace decorative dividers in most places.
+- Line length on body: 60–72ch max.</p>
+<h3 id="174-spacing-radii-elevation">17.4 Spacing, Radii, Elevation</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--space-1</code> → <code>--space-12</code></td>
+<td>4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 160, 200 px</td>
+</tr>
+<tr>
+<td><code>--radius-sm</code></td>
+<td>2px (inputs, tags)</td>
+</tr>
+<tr>
+<td><code>--radius-md</code></td>
+<td>4px (cards, buttons)</td>
+</tr>
+<tr>
+<td><code>--radius-lg</code></td>
+<td>8px (modals)</td>
+</tr>
+<tr>
+<td><code>--radius-pill</code></td>
+<td>999px (badges)</td>
+</tr>
+<tr>
+<td><code>--shadow-soft</code></td>
+<td><code>0 8px 32px rgba(0,0,0,0.35)</code></td>
+</tr>
+<tr>
+<td><code>--shadow-elev</code></td>
+<td><code>0 16px 48px rgba(0,0,0,0.45)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Rounded corners are <strong>subtle</strong> — this is editorial, not consumer SaaS. Avoid <code>--radius-lg</code> on buttons/cards.</p>
+<h3 id="175-brand-feeling-in-5-words">17.5 Brand Feeling (in 5 words)</h3>
+<p><strong>Curated. Warm. Artisan. Confident. Local.</strong></p>
+<p>It should feel like the printed menu of a wine bar that knows exactly what it's pouring tonight — not the website of a startup.</p>
+<h3 id="176-experience-references">17.6 Experience References</h3>
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>What to take</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://piscolabismadriz.com/">piscolabismadriz.com</a></td>
+<td>Dark moody backgrounds, editorial CTAs, single-page rhythm</td>
+</tr>
+<tr>
+<td><a href="https://neighbourhoodwine.com.au/">neighbourhoodwine.com.au</a></td>
+<td>Wine card density, producer storytelling</td>
+</tr>
+<tr>
+<td><a href="https://noma.dk/">noma.dk</a></td>
+<td>Editorial restraint, big typography on dark, photography reverence</td>
+</tr>
+<tr>
+<td><a href="https://murrayscheese.com/">murraysmadison.com</a></td>
+<td>Cheese catalog density done well</td>
+</tr>
+<tr>
+<td><a href="https://www.eataly.com/">eataly.com</a></td>
+<td>Catalog filter UX (but with our editorial feel)</td>
+</tr>
+<tr>
+<td><a href="https://naturalwinedealers.com/">naturalwinedealers.com</a></td>
+<td>Tag/filter system tone for natural wines</td>
+</tr>
+</tbody>
+</table>
+<h3 id="177-component-level-design-notes">17.7 Component-Level Design Notes</h3>
+<p><strong>Hero (Home)</strong>
+- Full-bleed, 90vh on mobile, 80vh on desktop.
+- Background: a single hero photo (overhead cheese board with wine pour, low-key lit), warm overlay <code>rgba(26,31,20,0.55)</code>.
+- Eyebrow: <code>VINOS Y QUESOS · MADRID</code> (Inter eyebrow style, gold).
+- H1: Cormorant Garamond italic, ~6 words max ("Lo crudo, lo vivo, lo nuestro" or owner-supplied).
+- Subtitle: 1 sentence, body-lg, cream.
+- Two CTAs side-by-side: primary "Reservar mi tabla" (terracotta solid), secondary "Cómo llegar" (transparent with cream border).
+- Tiny metadata strip below CTAs: hours today + "Abierto ahora" green dot if open.</p>
+<p><strong>Catalog Card</strong>
+- Vertical, square image top, no rounded image corners (editorial).
+- Above image: thin gold tag for <code>Temporada</code> or <code>Nuevo</code> if applicable, top-left.
+- Below image, padding 16px:
+  - Eyebrow: producer + region, uppercase, gold-muted.
+  - Title: Cormorant 500, 1.25rem, 2 lines max, ellipsis.
+  - One-line tasting note in body, muted cream.
+  - Price right-aligned in JetBrains Mono small.
+- Hover (desktop): subtle lift (translateY -2px) + image scale 1.02 — 250ms ease-out. No box-shadow color change.
+- Mobile: tap takes to PDP; no hover state.</p>
+<p><strong>Product Detail (PDP)</strong>
+- Two-column on desktop (image gallery left, sticky meta right). Stacked on mobile.
+- Image gallery: large primary + thumbnails strip; supports portrait &amp; square.
+- Meta column:
+  - Eyebrow: type (QUESO · ASTURIAS · LECHE CRUDA).
+  - H1 product name: Cormorant 500.
+  - Price: JetBrains Mono, large.
+  - Short description, 2–3 lines.
+  - "Añadir a mi tabla" — full-width primary CTA.
+  - Quantity stepper minimal, no rounded buttons.
+  - Producer story in expandable "Sobre el productor" panel.
+  - Pairings: 3 horizontal mini-cards.
+- Long-form below, single column, 65ch max, body-lg.</p>
+<p><strong>Mi Tabla (cart-like drawer) — non-alcohol items only</strong>
+- Right-side drawer on desktop, full-screen sheet on mobile.
+- Background <code>--color-bg-elevated</code>.
+- Each line: thumbnail + name + qty stepper + price; "Quitar" as small text-link.
+- Footer: total + "Reservar para recoger" CTA (gold border around it to emphasize this is a reservation, not a checkout).
+- A small contextual line near the footer reminds: <em>"Para reservar vinos, escríbenos por WhatsApp."</em></p>
+<p><strong>Wine PDP — visibility-only path</strong>
+- Same editorial layout as cheese PDPs (gallery, producer story, tasting notes).
+- Instead of "Añadir a mi tabla", the primary CTA is <strong>"Pregúntanos por WhatsApp"</strong> (terracotta, full-width).
+- Tapping it opens <code>wa.me/+34XXXXXXXXX?text=...</code> with a prefilled message: <em>"Hola, me interesa el {nombre del vino}. ¿Lo tenéis disponible?"</em>
+- A discreet info line under the CTA: <em>"Los vinos se reservan y se pagan en CRUDO."</em>
+- This is the only path that differs from non-alcohol products — everything else (gallery, related, schema.org) is identical.</p>
+<p><strong>Pickup form</strong>
+- Single-column, generous spacing.
+- Inputs: cream text on bg-secondary, 1px border, 2px focus border in terracotta.
+- Date: inline calendar restricted to opening days.
+- Pickup slot: pill selector, 30-min increments.
+- Mandatory disclaimer above CTA: <em>"Reserva tu tabla. El pago se realiza en CRUDO al recoger. Te confirmaremos por WhatsApp en menos de 24 horas."</em> — body-small, muted. (24h SLA reflects single-operator reality — see Section 0, A2.)
+- CTA: "Confirmar reserva" — terracotta, full-width.</p>
+<p><strong>Sticky mobile CTA bar</strong>
+- Fixed bottom on mobile only.
+- Two segments: "WhatsApp" (gold outline) + "Mi tabla (3)" (terracotta solid, with item count badge).
+- Hides on scroll-up to footer to avoid covering legal links.</p>
+<p><strong>Footer</strong>
+- Three-column on desktop, stacked mobile.
+- Col 1: short address + hours (today emphasized) + map link.
+- Col 2: legal links (Aviso Legal, Privacidad, Cookies, +18).
+- Col 3: newsletter capture — single email field + "Apúntate".
+- Bottom strip: "© 2026 CRUDO · Madrid · Beber con moderación. Prohibida la venta a menores de 18 años."</p>
+<h3 id="178-motion">17.8 Motion</h3>
+<ul>
+<li>Sparing. Section reveals on scroll: opacity 0→1 + 12px upward, 400ms, once. Use <code>prefers-reduced-motion</code> to disable.</li>
+<li>No parallax, no scroll-jacking, no auto-rotating carousels.</li>
+</ul>
+<h3 id="179-accessibility-targets">17.9 Accessibility Targets</h3>
+<ul>
+<li>WCAG 2.2 AA. Cream <code>#F2EAD8</code> on <code>#1A1F14</code> exceeds 12:1 contrast — strong.</li>
+<li>All CTAs: minimum 44×44px tap target.</li>
+<li>Focus rings visible (2px terracotta outline, 2px offset).</li>
+<li>Form errors not color-only; include text + icon.</li>
+<li>Alt text for every product image (autocomposed: "{producer} {name}, {region}").</li>
+</ul>
+<hr />
+<h2 id="18-required-content-before-building">18. Required Content Before Building</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Item</th>
+<th>Format</th>
+<th>Quantity</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Photos</td>
+<td>Hero photo (Home)</td>
+<td>16:9 + 9:16, ≥ 2400px wide, RAW or JPG</td>
+<td>1–2 options</td>
+<td>Owner / shoot</td>
+</tr>
+<tr>
+<td>Photos</td>
+<td>Product shots</td>
+<td>Square 1:1, 1600×1600 min, isolated on dark wood. <strong>Confirmed: 20–40 total</strong></td>
+<td>20–40</td>
+<td>Owner / shoot</td>
+</tr>
+<tr>
+<td>Photos</td>
+<td>Lifestyle / atmosphere</td>
+<td>Mixed crops, included in the 20–40 budget if needed</td>
+<td>6–10</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Photos</td>
+<td>About — owner portrait + space</td>
+<td>Mixed, included in the 20–40 budget</td>
+<td>3–5</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Photos</td>
+<td>Event hero photos</td>
+<td>16:9</td>
+<td>1 per event</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Photo direction</td>
+<td>Photography brief PDF — lighting (warm low-key), background (dark wood, slate), framing (overhead + 3/4), color reference (palette in Section 17)</td>
+<td>1 brief</td>
+<td>1</td>
+<td>PM + designer</td>
+</tr>
+<tr>
+<td>Photo direction</td>
+<td>If owner cannot supply, plan a <strong>half-day shoot</strong> with a local Madrid food photographer; budget €600–900</td>
+<td>1 shoot</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Brand manifesto (About)</td>
+<td>200–300 words</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Hero headline + subtitle</td>
+<td>6 + 15 words</td>
+<td>2 options</td>
+<td>Copy</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Product short descriptions</td>
+<td>~30 words each — <strong>simple Spanish, Google-Translate-friendly</strong></td>
+<td>20–40</td>
+<td>Owner + copywriter</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Product long descriptions</td>
+<td>~150 words each — <strong>simple Spanish, no idioms that mistranslate</strong></td>
+<td>20–40</td>
+<td>Owner + copywriter</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Section eyebrows + microcopy</td>
+<td>Various</td>
+<td>All</td>
+<td>Copywriter</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Newsletter incentive line</td>
+<td>1 sentence</td>
+<td>1</td>
+<td>Copy</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Pickup confirmation message (post-form)</td>
+<td>1 paragraph + WhatsApp expectation</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Products</td>
+<td>Product list</td>
+<td>CSV or Notion: name, type, <strong>is_alcohol</strong>, producer, region, price, seasonal flag, stock</td>
+<td>20–40</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Prices</td>
+<td>All prices in EUR, VAT-inclusive</td>
+<td>Decimal</td>
+<td>All</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Events</td>
+<td>First 3 events with dates, capacity, prices, descriptions</td>
+<td>Notion / form</td>
+<td>3</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Legal</td>
+<td>Razón social + CIF + dirección fiscal + email contacto + nombre responsable de tratamiento</td>
+<td>Text</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Legal</td>
+<td>Aviso Legal, Política de Privacidad, Política de Cookies</td>
+<td>Drafted by lawyer or trusted template, reviewed</td>
+<td>3 docs</td>
+<td>Lawyer</td>
+</tr>
+<tr>
+<td>Legal</td>
+<td>Cookie consent categories (necessary, analytics, marketing)</td>
+<td>Mapping</td>
+<td>1</td>
+<td>PM</td>
+</tr>
+<tr>
+<td>Misc</td>
+<td>Domain access (DNS)</td>
+<td>Cloudflare or registrar</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Misc</td>
+<td>Google Business Profile access</td>
+<td>OAuth</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Misc</td>
+<td>Instagram Business account confirmation</td>
+<td>—</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Misc</td>
+<td>WhatsApp number for owner notifications</td>
+<td>Phone</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Misc</td>
+<td>Brevo / Mailchimp account</td>
+<td>API key</td>
+<td>1</td>
+<td>Owner</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="19-discovery-checklist-remaining-questions-for-crudo-s-owner">19. Discovery Checklist (remaining questions for CRUDO's owner)</h2>
+<p>The high-level assumptions are now answered (see Section 0). The remaining questions are the <strong>operational</strong> and <strong>financial</strong> ones the team must close before week 2.</p>
+<h3 id="already-answered-from-your-responses">Already answered (from your responses)</h3>
+<ul>
+<li>✅ Single owner-operator; primary V1 goal = generate revenue to fund first hire.</li>
+<li>✅ Single Madrid location for 12 months; second location goal in 2–3 years.</li>
+<li>✅ No online payment in V1 — pay &amp; pick up at store.</li>
+<li>✅ Wine: visibility-only catalog, WhatsApp inquiries (no online sale of alcohol).</li>
+<li>✅ Spanish primary, English via Google Translate.</li>
+<li>✅ ~20–40 product photos to be supplied by owner.</li>
+<li>✅ Domain not yet acquired (see Appendix C for recommendation).</li>
+<li>✅ Legal entity exists.</li>
+</ul>
+<h3 id="financial-baseline-critical-needed-by-w1">Financial baseline (critical — needed by W1)</h3>
+<ol>
+<li>Today's average weekly net revenue (€) — even a rough number anchors the "first hire" target.</li>
+<li>Estimated cost of the first hire (gross monthly + employer charges in Madrid hospitality).</li>
+<li>What part of revenue comes from in-bar consumption vs. to-go cheese vs. events today?</li>
+<li>Are there months where revenue is much higher (e.g., December)? Plan campaigns around them.</li>
+<li>Budget envelope for V1 build + first year of hosting &amp; tools.</li>
+</ol>
+<h3 id="operations">Operations</h3>
+<ol start="6">
+<li>Exact opening hours, weekly day-off, holiday closures next 12 months.</li>
+<li>Pickup capacity per day (how many "tablas" can you prepare without disrupting the bar)?</li>
+<li>What's the realistic SLA on confirming a pickup inquiry — "within 2 hours during opening hours" or "by end of day"?</li>
+<li>Stock visibility: show "pocas unidades" / "agotado" or hide?</li>
+<li>Owner WhatsApp number that should receive notifications (will be different from the public WhatsApp if any).</li>
+<li>Do you want a "kill switch" in admin to pause new pickup orders on overloaded days?</li>
+</ol>
+<h3 id="catalog">Catalog</h3>
+<ol start="12">
+<li>Final list of 20–40 products to launch with — names, producers, regions, prices, alcohol/non-alcohol.</li>
+<li>Categorization preference: by type (queso/vino), by region, by intensity, by pairing?</li>
+<li>How often will the catalog change (weekly, monthly, seasonally)?</li>
+</ol>
+<h3 id="brand">Brand</h3>
+<ol start="15">
+<li>Existing logo file (vector preferred)?</li>
+<li>Tone: literary/poetic vs. plainspoken/expert? 1–2 reference voices you love.</li>
+<li>Owner portrait + interior shots quality — do we need a 1-day photo shoot?</li>
+</ol>
+<h3 id="tech-legal">Tech / Legal</h3>
+<ol start="18">
+<li>Domain choice confirmed (see Appendix C)?</li>
+<li>DNS access (Cloudflare account or registrar)?</li>
+<li>Existing Google Business Profile, Meta Business Manager?</li>
+<li>Do you have a lawyer for the privacy / legal docs, or do we coordinate one?</li>
+<li>Cookie consent provider preference (Cookiebot, Iubenda, custom)?</li>
+<li>Newsletter tool — confirm Brevo (recommended for Spain, free up to 9k contacts).</li>
+</ol>
+<h3 id="events-content">Events &amp; content</h3>
+<ol start="24">
+<li>First 3 events to publish at launch (dates, prices, capacity)?</li>
+<li>Posting cadence on @crudomov — can we plan a launch story/reel?</li>
+<li>Press coverage to surface as social proof?</li>
+</ol>
+<h3 id="success-definition">Success definition</h3>
+<ol start="27">
+<li>Hard launch date or window?</li>
+<li>Beyond Tier 0 KPIs in Section 25, what would make YOU personally feel V1 is a success at day 60?</li>
+</ol>
+<hr />
+<h2 id="20-prioritized-backlog">20. Prioritized Backlog</h2>
+<h3 id="must-have-v1-blocks-launch">Must Have (V1 — blocks launch)</h3>
+<ul>
+<li>Public site: Home, Catalog (filters), PDP, Events, About, Contact, Legal pages</li>
+<li>Mi Tabla pickup inquiry flow (no online payment) — non-alcohol items only</li>
+<li>Wine PDP "Pregúntanos por WhatsApp" path with prefilled message</li>
+<li>Owner WhatsApp ping on new pickup orders + event reservations + contact inquiries</li>
+<li>Newsletter capture + double opt-in via Brevo</li>
+<li>Admin: products (incl. <code>is_alcohol</code> flag), events, campaigns, inquiries, pickup orders — phone-friendly UI</li>
+<li>JWT-based admin auth</li>
+<li>Image upload to R2</li>
+<li>Cookie banner + 3 legal pages + age notice</li>
+<li>GA4 + Search Console + Meta Pixel + conversion events (incl. <code>wine_whatsapp_click</code>, <code>pickup_request</code>)</li>
+<li>Mobile-first responsive</li>
+<li>Lighthouse ≥ 90 (Perf, A11y, SEO, BP)</li>
+<li>WhatsApp + Maps + Instagram CTAs</li>
+<li>Schema.org: Restaurant, Product, Event, FAQ on Home</li>
+<li>Sitemap.xml + robots.txt</li>
+<li>Spanish primary + Google-Translate-friendly markup</li>
+</ul>
+<h3 id="should-have-v11-within-30-days-post-launch">Should Have (V1.1 — within 30 days post-launch)</h3>
+<ul>
+<li>Wholesale ("Mayoristas") inquiry form &amp; landing block</li>
+<li>Editorial blog post template (1 post — producer story)</li>
+<li>Site-wide search (basic)</li>
+<li>"Pocas unidades" stock state on PDP</li>
+<li>Email transactional templates branded (Brevo)</li>
+<li>Admin: bulk product CSV import</li>
+<li>Admin "kill switch" to pause new pickup orders on overloaded days</li>
+<li>Owner-friendly weekly digest email summarising Tier 0 KPIs</li>
+</ul>
+<h3 id="could-have-v2-candidates">Could Have (V2 candidates)</h3>
+<ul>
+<li>English version (i18n routing)</li>
+<li>Online card payment (Stripe or Redsys), with age-gate enforcement</li>
+<li>Member account (saved tablas, order history)</li>
+<li>Gift cards</li>
+<li>Native table reservation (replacing TheFork link)</li>
+<li>Reviews / ratings on PDP</li>
+<li>Loyalty perks (after N pickups: invite to private tasting)</li>
+<li>Editorial section / proper blog with categories</li>
+</ul>
+<h3 id="later-v3">Later (V3+)</h3>
+<ul>
+<li>Native mobile app</li>
+<li>Real-time stock sync with POS</li>
+<li>Subscription box ("Caja del mes")</li>
+<li>Marketplace / multi-vendor for partner producers</li>
+<li>Personalization engine</li>
+</ul>
+<hr />
+<h2 id="21-user-stories-with-acceptance-criteria">21. User Stories with Acceptance Criteria</h2>
+<p><strong>US-01 — Browse seasonal cheese on mobile</strong></p>
+<blockquote>
+<p><em>As a foodie visiting from Instagram, I want to see what cheese is in season this week so I can decide quickly if I want to pick something up.</em>
+- AC1: Home shows a "Esta temporada" section with at least 4 products marked <code>is_seasonal=true</code>.
+- AC2: Section visible above the fold within first scroll on iPhone 13.
+- AC3: Each card links to PDP and tracks <code>select_item</code> GA4 event.
+- AC4: Lazy-loaded images, no CLS.</p>
+</blockquote>
+<p><strong>US-02 — Reserve a tabla for pickup (non-alcohol)</strong></p>
+<blockquote>
+<p><em>As a customer, I want to assemble a cheese tabla and reserve it for pickup so I can grab it on my way home tonight.</em>
+- AC1: I can add at least 2 non-alcohol products to "Mi tabla" from PDP or catalog card.
+- AC2: Wine PDPs show <strong>no</strong> "Añadir a mi tabla" button — only the "Pregúntanos por WhatsApp" CTA.
+- AC3: Drawer shows running total VAT-inclusive.
+- AC4: I can pick a date (only opening days) and a 30-min slot.
+- AC5: On submit, I receive a confirmation page with order ID + expectation that CRUDO will confirm by WhatsApp within 24h.
+- AC6: Owner receives a WhatsApp ping + end-of-day email digest with full order.
+- AC7: GA4 + Pixel <code>purchase</code>-equivalent custom event fires (<code>pickup_request</code>) with cart contents and total.
+- AC8: Form fails gracefully on validation, never on network — retries once.
+- AC9: API <code>POST /pickup-orders</code> rejects with HTTP 422 if any line item references <code>is_alcohol=true</code> (defensive — UI already prevents this).</p>
+</blockquote>
+<p><strong>US-02b — Inquire about a wine via WhatsApp</strong></p>
+<blockquote>
+<p><em>As a wine-curious customer, I want a fast way to ask if a specific bottle is available and reserve it for pickup.</em>
+- AC1: Each wine PDP has a primary CTA "Pregúntanos por WhatsApp".
+- AC2: Tapping it opens <code>wa.me/+34...?text=...</code> with a prefilled message including product name and slug.
+- AC3: A discreet info line confirms: <em>"Los vinos se reservan y se pagan en CRUDO."</em>
+- AC4: GA4 outbound event <code>wine_whatsapp_click</code> fires with product slug.
+- AC5: On iOS Safari and Instagram in-app browser, the link opens WhatsApp without intermediate page.</p>
+</blockquote>
+<p><strong>US-03 — Reserve a tasting</strong></p>
+<blockquote>
+<p><em>As a customer, I want to reserve a seat at the natural wine tasting so I can attend.</em>
+- AC1: Event detail page shows date, capacity, remaining seats (or "quedan pocas plazas" if &lt; 30%).
+- AC2: Reservation form: name, email, phone, party size (1–4).
+- AC3: On submit, confirmation email sent + admin sees reservation.
+- AC4: If event is full, form is replaced by waitlist input.</p>
+</blockquote>
+<p><strong>US-04 — Subscribe to newsletter</strong></p>
+<blockquote>
+<p><em>As a visitor, I want to subscribe to the newsletter so I get notified about new arrivals and tastings.</em>
+- AC1: Email field visible in footer + post-pickup confirmation.
+- AC2: Double opt-in via Brevo.
+- AC3: Consent timestamp + IP stored for RGPD compliance.
+- AC4: GA4 <code>generate_lead</code> event.</p>
+</blockquote>
+<p><strong>US-05 — Owner adds a new wine</strong></p>
+<blockquote>
+<p><em>As the CRUDO owner, I want to add a new wine to the catalog without calling a developer.</em>
+- AC1: Login at <code>/admin</code> with email + password (JWT).
+- AC2: "Nuevo producto" form: name, type, producer, region, price, descriptions, seasonal/featured flags, primary image upload.
+- AC3: Save → product available on the public site within 60 seconds.
+- AC4: Validation prevents missing required fields.
+- AC5: Audit field <code>updated_by</code> recorded.</p>
+</blockquote>
+<p><strong>US-06 — Owner publishes an event</strong></p>
+<blockquote>
+<p><em>As the CRUDO owner, I want to publish a new tasting event with a hero image and reservation cap.</em>
+- AC1: Event editor with date/time picker, capacity, price, description (markdown), image upload.
+- AC2: "Publicar" toggle controls visibility on public site.
+- AC3: Once published, event appears in /eventos sorted by date.</p>
+</blockquote>
+<p><strong>US-07 — Cookie consent compliant with AEPD</strong></p>
+<blockquote>
+<p><em>As any visitor, I want a clear cookie banner so my consent is properly captured.</em>
+- AC1: First visit: banner with Aceptar / Rechazar / Configurar — equal visual weight.
+- AC2: No non-essential cookies set before consent.
+- AC3: GA4 + Pixel only fire after analytics/marketing consent.
+- AC4: Consent log stored 24 months.
+- AC5: Cookie policy page lists all cookies with provider, purpose, duration.</p>
+</blockquote>
+<hr />
+<h2 id="22-main-risks-and-mitigation">22. Main Risks and Mitigation</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R1</td>
+<td>Content not ready by build phase → launch slips</td>
+<td>High</td>
+<td>High</td>
+<td>Lock content checklist in week 1, weekly content checkpoint, build with placeholders that are clearly marked</td>
+</tr>
+<tr>
+<td>R2</td>
+<td>Owner can't keep catalog updated → stale site</td>
+<td>High</td>
+<td>High</td>
+<td>Single-operator reality. Mitigations: phone-first admin UI, batch-friendly product editor, weekly 5-min check-in for first 8 weeks post-launch, screen-recorded how-to, "publish later" scheduling so owner can prep on slow afternoons</td>
+</tr>
+<tr>
+<td>R2b</td>
+<td>Single-owner burnout from new inquiry channel — site succeeds and overwhelms one person</td>
+<td>Medium</td>
+<td>High</td>
+<td>Set realistic SLA on confirmation page ("Confirmaremos en 24h"), batch notifications, clear pickup slots that respect bar workload, kill switch in admin to pause new pickup orders if overloaded</td>
+</tr>
+<tr>
+<td>R3</td>
+<td>Scope creep into full ecommerce mid-build</td>
+<td>High</td>
+<td>High</td>
+<td>Written V1 scope sign-off in week 1; "no" by default to new features until V2</td>
+</tr>
+<tr>
+<td>R4</td>
+<td>Spain alcohol-online legal complications if payment added late</td>
+<td>Medium</td>
+<td>High</td>
+<td>Defer online payment to V2; document V2 prerequisites (age verification flow, Stripe/Redsys setup)</td>
+</tr>
+<tr>
+<td>R5</td>
+<td>Mobile performance degraded by heavy images</td>
+<td>High</td>
+<td>Medium</td>
+<td>Image pipeline at upload: resize + WebP/AVIF, lazy load, CDN</td>
+</tr>
+<tr>
+<td>R6</td>
+<td>Cookie banner blocks GA4 events → no measurement</td>
+<td>Medium</td>
+<td>High</td>
+<td>Implement Consent Mode v2; QA event firing in both consent states</td>
+</tr>
+<tr>
+<td>R7</td>
+<td>Single VPS goes down</td>
+<td>Low</td>
+<td>High</td>
+<td>Cloudflare in front, status monitor (UptimeRobot), nightly backups, runbook</td>
+</tr>
+<tr>
+<td>R8</td>
+<td>SEO fails because SPA isn't crawled</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Prerender catalog &amp; PDP at build; rich schema; submit sitemap to GSC at launch</td>
+</tr>
+<tr>
+<td>R9</td>
+<td>Spam in pickup/reservation forms</td>
+<td>High</td>
+<td>Medium</td>
+<td>Rate limit, hCaptcha, honeypot field, server-side validation</td>
+</tr>
+<tr>
+<td>R10</td>
+<td>Owner overwhelmed by inquiries</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Set expectations on confirmation page; group notifications per hour</td>
+</tr>
+<tr>
+<td>R11</td>
+<td>Brand drifts from artisan to generic SaaS during dev</td>
+<td>Medium</td>
+<td>High</td>
+<td>Lock design tokens in code; design QA before each merge; reference shots in PR template</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="23-minimum-testing-for-v1">23. Minimum Testing for V1</h2>
+<p><strong>Backend (JUnit 5 + Testcontainers)</strong>
+- Unit tests on services (price calc, slug generation, pickup validation).
+- Repository tests against a Postgres Testcontainer.
+- Web layer tests with <code>@WebMvcTest</code> for happy + unhappy paths on all POST endpoints.
+- Security tests: admin endpoints reject unauthenticated requests.
+- Target: ≥ 60% coverage on <code>service</code> and <code>web</code> packages.</p>
+<p><strong>Frontend (Vitest + Testing Library)</strong>
+- Component smoke tests for ProductCard, PickupForm, ReservationForm, CookieBanner.
+- Form validation tests (Zod schemas).
+- A11y test pass with <code>@axe-core/react</code> on Home + PDP + form pages.</p>
+<p><strong>End-to-end (Playwright, ~6 critical journeys)</strong>
+1. Browse home → catalog → cheese PDP → add to tabla → submit pickup → see confirmation.
+2. Browse wine PDP → tap "Pregúntanos por WhatsApp" → assert <code>wa.me/...</code> URL with prefilled text.
+3. Open event → reserve seat → confirmation.
+4. Submit contact form.
+5. Subscribe to newsletter (double opt-in mocked).
+6. Admin (mobile viewport): log in → create product with <code>is_alcohol=true</code> → assert it appears on the public catalog with WhatsApp CTA, not Mi Tabla button.</p>
+<p><strong>Server-side test for the alcohol guard:</strong>
+- Negative test: <code>POST /api/v1/pickup-orders</code> with a wine line item → expect HTTP 422 + RFC 7807 problem detail.</p>
+<p><strong>Manual QA checklist</strong>
+- iPhone (Safari + IG in-app browser), Android Chrome, iPad, Desktop Chrome/Safari/Firefox.
+- Slow 3G profile load.
+- All forms with broken network.
+- Cookie consent flows.
+- Lighthouse ≥ 90 on Home, Catalog, PDP.</p>
+<hr />
+<h2 id="24-launch-checklist">24. Launch Checklist</h2>
+<h3 id="pre-launch-t-7-days">Pre-launch (T-7 days)</h3>
+<ul>
+<li>[ ] All content loaded (products, events, About, hero photo)</li>
+<li>[ ] Legal pages reviewed by lawyer</li>
+<li>[ ] Cookie banner validated (AEPD-compliant; consent log working)</li>
+<li>[ ] GA4 events firing in both consent states</li>
+<li>[ ] Search Console verified, sitemap submitted</li>
+<li>[ ] Meta Pixel firing on Pageview + custom events</li>
+<li>[ ] Schema.org Restaurant + Product + Event passing Rich Results Test</li>
+<li>[ ] Open Graph + Twitter Card meta on all pages</li>
+<li>[ ] Favicon set (32, 192, 512 + apple-touch-icon)</li>
+<li>[ ] 404 page styled</li>
+<li>[ ] Robots.txt allows production, blocks staging</li>
+<li>[ ] Lighthouse mobile: Perf ≥ 90, A11y ≥ 95, SEO 100, BP 100</li>
+<li>[ ] Real device test on iPhone via Instagram in-app browser</li>
+<li>[ ] WhatsApp link tested (<code>wa.me/+34...</code>)</li>
+<li>[ ] Google Maps link opens correct location on iOS + Android</li>
+<li>[ ] Backups verified (restore test)</li>
+<li>[ ] Uptime monitor configured</li>
+<li>[ ] DNS TTL lowered to 300s 24h before cutover</li>
+</ul>
+<h3 id="launch-day-t-0">Launch day (T-0)</h3>
+<ul>
+<li>[ ] DNS cutover to production</li>
+<li>[ ] HTTPS green (Caddy auto-cert)</li>
+<li>[ ] Smoke tests on all critical journeys</li>
+<li>[ ] Submit URL in Search Console "Inspect URL"</li>
+<li>[ ] Update Google Business Profile website link</li>
+<li>[ ] Update @crudomov bio link to the canonical domain (see Appendix C)</li>
+<li>[ ] First Instagram story announcing the site</li>
+<li>[ ] Send launch email to existing contacts (if list exists)</li>
+<li>[ ] Owner trained on admin and equipped with cheat sheet PDF</li>
+<li>[ ] Monitoring channel for errors active (Slack/Telegram via Sentry)</li>
+</ul>
+<h3 id="post-launch-t7">Post-launch (T+7)</h3>
+<ul>
+<li>[ ] Review GA4 funnels — first conversion data</li>
+<li>[ ] Review Search Console for crawl errors</li>
+<li>[ ] Owner retro: what's missing in admin? What inquiries are coming in?</li>
+<li>[ ] First fix-list prioritized</li>
+</ul>
+<hr />
+<h2 id="25-first-month-metrics-kpis">25. First-Month Metrics / KPIs</h2>
+<p>KPIs are organized in three tiers. Tier 0 is the <strong>business outcome</strong> (north star); Tier 1 is <strong>funnel performance</strong>; Tier 2 is <strong>technical health</strong>. Tier 0 is the only metric that decides whether V1 is succeeding.</p>
+<h3 id="tier-0-north-star-first-hire-trigger">Tier 0 — North Star: "First Hire Trigger"</h3>
+<p>This is the only metric that ultimately matters for V1.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Source</th>
+<th>Month 1</th>
+<th>Month 3</th>
+<th>Month 6</th>
+<th>Month 12 (Hire trigger)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Incremental monthly revenue attributable to web/IG (€) — owner-attested</td>
+<td>Owner log + GA4-attributed pickup totals</td>
+<td>+€500</td>
+<td>+€1,500</td>
+<td>+€2,200</td>
+<td><strong>≥ €2,400 sustained for 2 consecutive months → start hiring process</strong></td>
+</tr>
+<tr>
+<td>Incremental walk-ins/week (web or IG-driven, owner-asked at door)</td>
+<td>Daily tally sheet</td>
+<td>≥ 5</td>
+<td>≥ 15</td>
+<td>≥ 25</td>
+<td>≥ 35</td>
+</tr>
+<tr>
+<td>Pickup pre-orders fulfilled / month</td>
+<td>Admin (status=PICKED_UP)</td>
+<td>≥ 10</td>
+<td>≥ 30</td>
+<td>≥ 60</td>
+<td>≥ 100</td>
+</tr>
+<tr>
+<td>Avg ticket size of pickup pre-orders (€)</td>
+<td>Admin</td>
+<td>≥ 25</td>
+<td>≥ 30</td>
+<td>≥ 35</td>
+<td>≥ 40</td>
+</tr>
+<tr>
+<td>Event revenue / month</td>
+<td>Admin × event price</td>
+<td>≥ €300</td>
+<td>≥ €900</td>
+<td>≥ €1,500</td>
+<td>≥ €2,200</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Hire trigger rule of thumb (to refine with owner):</strong> when <em>incremental</em> monthly net contribution from the web channel covers ~€2,400 for 2 consecutive months, the operation can absorb a part-time second-person hire. Adjust threshold once the owner shares actual cost numbers in discovery.</p>
+<h3 id="tier-1-funnel-performance">Tier 1 — Funnel Performance</h3>
+<table>
+<thead>
+<tr>
+<th>Bucket</th>
+<th>KPI</th>
+<th>Month 1</th>
+<th>Month 3</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Acquisition</td>
+<td>Sessions</td>
+<td>1,500</td>
+<td>4,000</td>
+<td>GA4</td>
+</tr>
+<tr>
+<td>Acquisition</td>
+<td>% from Instagram</td>
+<td>≥ 35%</td>
+<td>≥ 30%</td>
+<td>GA4 (utm)</td>
+</tr>
+<tr>
+<td>Acquisition</td>
+<td>% from Google organic</td>
+<td>≥ 25%</td>
+<td>≥ 40%</td>
+<td>GA4 + GSC</td>
+</tr>
+<tr>
+<td>Acquisition</td>
+<td>% from Google Maps</td>
+<td>≥ 10%</td>
+<td>≥ 15%</td>
+<td>GBP insights</td>
+</tr>
+<tr>
+<td>Engagement</td>
+<td>Avg engagement time</td>
+<td>≥ 1:30</td>
+<td>≥ 1:45</td>
+<td>GA4</td>
+</tr>
+<tr>
+<td>Engagement</td>
+<td>PDP views per session</td>
+<td>≥ 2.0</td>
+<td>≥ 2.5</td>
+<td>GA4</td>
+</tr>
+<tr>
+<td>Engagement</td>
+<td>English-translation usage (Translate detected)</td>
+<td>tracked</td>
+<td>tracked</td>
+<td>GA4 lang dimension</td>
+</tr>
+<tr>
+<td>Conversion</td>
+<td>Pickup inquiries submitted</td>
+<td>≥ 15</td>
+<td>≥ 40</td>
+<td>GA4 <code>pickup_request</code></td>
+</tr>
+<tr>
+<td>Conversion</td>
+<td>Wine WhatsApp clicks (per-bottle)</td>
+<td>≥ 30</td>
+<td>≥ 80</td>
+<td>GA4 outbound event</td>
+</tr>
+<tr>
+<td>Conversion</td>
+<td>Event reservations</td>
+<td>Fill 70% of seats</td>
+<td>Fill 80%</td>
+<td>Admin</td>
+</tr>
+<tr>
+<td>Conversion</td>
+<td>Newsletter subs</td>
+<td>+100</td>
+<td>+400</td>
+<td>Brevo</td>
+</tr>
+<tr>
+<td>Conversion</td>
+<td>General WhatsApp clicks</td>
+<td>≥ 80</td>
+<td>≥ 200</td>
+<td>GA4 outbound event</td>
+</tr>
+<tr>
+<td>Conversion</td>
+<td>Maps "Cómo llegar" clicks</td>
+<td>≥ 60</td>
+<td>≥ 150</td>
+<td>GA4 outbound event</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>Pickup → fulfilled rate (owner-reported)</td>
+<td>≥ 70%</td>
+<td>≥ 80%</td>
+<td>Admin</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>Owner daily admin time</td>
+<td>≤ 5 min</td>
+<td>≤ 5 min</td>
+<td>Owner self-report</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tier-2-technical-health">Tier 2 — Technical Health</h3>
+<table>
+<thead>
+<tr>
+<th>KPI</th>
+<th>Month 1</th>
+<th>Month 3</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lighthouse mobile perf</td>
+<td>≥ 90</td>
+<td>≥ 90</td>
+<td>CI weekly</td>
+</tr>
+<tr>
+<td>Uptime</td>
+<td>≥ 99.5%</td>
+<td>≥ 99.8%</td>
+<td>UptimeRobot</td>
+</tr>
+<tr>
+<td>Median TTFB</td>
+<td>≤ 400ms</td>
+<td>≤ 300ms</td>
+<td>GA4 web vitals</td>
+</tr>
+<tr>
+<td>Sentry error rate</td>
+<td>≤ 0.5% sessions</td>
+<td>≤ 0.2% sessions</td>
+<td>Sentry</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Weekly review ritual:</strong> Friday 15-min stand-up between PM + Owner — review Tier 0 numbers, pick <strong>one</strong> content/event lever for next week. Don't micromanage Tier 1 until Tier 0 is healthy.</p>
+<hr />
+<h2 id="26-improvements-for-v2">26. Improvements for V2</h2>
+<table>
+<thead>
+<tr>
+<th>Theme</th>
+<th>V2 improvement</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Commerce</td>
+<td>Online payment via Stripe/Redsys, with mandatory age verification</td>
+<td>Removes friction; only after V1 proves demand</td>
+</tr>
+<tr>
+<td>Catalog</td>
+<td>Real-time stock sync with POS</td>
+<td>Prevents oversells</td>
+</tr>
+<tr>
+<td>International</td>
+<td>English (and possibly Catalan) version</td>
+<td>Madrid tourism + national reach</td>
+</tr>
+<tr>
+<td>Loyalty</td>
+<td>Customer accounts, saved tablas, order history</td>
+<td>Repeat-purchase lever</td>
+</tr>
+<tr>
+<td>Subscription</td>
+<td>"Caja del mes" — curated monthly box</td>
+<td>Recurring revenue, content engine</td>
+</tr>
+<tr>
+<td>Editorial</td>
+<td>Proper blog with producer stories, pairing guides</td>
+<td>SEO compound + brand depth</td>
+</tr>
+<tr>
+<td>Discovery</td>
+<td>Personalized "para ti" based on past inquiries</td>
+<td>Conversion lift</td>
+</tr>
+<tr>
+<td>Reviews</td>
+<td>UGC reviews with photo upload</td>
+<td>Social proof on PDP</td>
+</tr>
+<tr>
+<td>Reservations</td>
+<td>Native table reservation system</td>
+<td>Drop dependency on TheFork</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td>Owner-facing dashboard with weekly digest</td>
+<td>Adoption + retention</td>
+</tr>
+<tr>
+<td>Tech</td>
+<td>Migrate prerender → Next.js if SEO depth demands</td>
+<td>Only when justified</td>
+</tr>
+<tr>
+<td>B2B</td>
+<td>Dedicated wholesale portal with price lists, order history</td>
+<td>Revenue diversification</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendix-a-single-source-of-truth-design-tokens-css-file-stub">Appendix A — Single-source-of-truth design tokens (CSS file stub)</h2>
+<pre><code class="language-css">:root {
+  /* Color */
+  --color-bg-primary: #1A1F14;
+  --color-bg-secondary: #1E1C18;
+  --color-bg-elevated: #252420;
+  --color-bg-light: #F2EAD8;
+  --color-bg-light-soft: #EAE0CB;
+  --color-text-primary: #F2EAD8;
+  --color-text-secondary: #C7BFAD;
+  --color-text-muted: #8A8473;
+  --color-text-inverse: #1A1F14;
+  --color-accent: #B5713A;
+  --color-accent-hover: #C8804A;
+  --color-accent-soft: #3A2A1E;
+  --color-gold: #B89668;
+  --color-success: #6B8E5A;
+  --color-warning: #C8893E;
+  --color-error: #A8443A;
+  --color-border: rgba(242,234,216,0.12);
+  --color-border-strong: rgba(242,234,216,0.24);
+
+  /* Typography */
+  --font-display: &quot;Cormorant Garamond&quot;, &quot;Times New Roman&quot;, serif;
+  --font-body: &quot;Inter&quot;, system-ui, -apple-system, sans-serif;
+  --font-mono: &quot;JetBrains Mono&quot;, ui-monospace, monospace;
+
+  /* Spacing */
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+  --space-5: 24px; --space-6: 32px;  --space-7: 48px;  --space-8: 64px;
+  --space-9: 96px; --space-10: 128px;--space-11: 160px;--space-12: 200px;
+
+  /* Radius */
+  --radius-sm: 2px; --radius-md: 4px; --radius-lg: 8px; --radius-pill: 999px;
+
+  /* Elevation */
+  --shadow-soft: 0 8px 32px rgba(0,0,0,0.35);
+  --shadow-elev: 0 16px 48px rgba(0,0,0,0.45);
+}
+</code></pre>
+<hr />
+<h2 id="appendix-b-suggested-folder-layout-monorepo">Appendix B — Suggested folder layout (monorepo)</h2>
+<pre><code>crudo/
+├── api/                  # Spring Boot
+│   ├── Dockerfile
+│   ├── pom.xml
+│   └── src/...
+├── web/                  # React + Vite
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/...
+├── infra/
+│   ├── docker-compose.yml
+│   ├── caddy/Caddyfile
+│   └── scripts/backup.sh
+├── docs/
+│   ├── discovery.md
+│   ├── content-checklist.md
+│   ├── owner-admin-guide.md
+│   └── runbook.md
+├── .github/workflows/
+└── README.md
+</code></pre>
+<hr />
+<h2 id="appendix-c-domain-name-analysis-amp-recommendation">Appendix C — Domain Name Analysis &amp; Recommendation</h2>
+<p>You are evaluating <code>crudo.world</code> and other ideas. Here is a structured analysis with a clear recommendation.</p>
+<h3 id="evaluation-criteria-in-order-of-weight-for-crudo">Evaluation criteria (in order of weight for CRUDO)</h3>
+<ol>
+<li><strong>Local discoverability in Madrid / Spain</strong> — does Google treat it as Spanish-relevant?</li>
+<li><strong>Brand fit</strong> — does it feel premium, gastronomic, artisan?</li>
+<li><strong>Memorability for word-of-mouth</strong> — can a customer tell a friend the URL after a glass of wine?</li>
+<li><strong>Cost &amp; availability</strong></li>
+<li><strong>Future-proofing for second location</strong> — does the TLD constrain you geographically?</li>
+<li><strong>Email &amp; operational</strong> — does it support pro email (<code>hola@…</code>) cleanly?</li>
+</ol>
+<h3 id="options-analyzed">Options analyzed</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Pros</th>
+<th>Cons</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>crudo.es</code></strong></td>
+<td>Strongest local SEO signal in Spain, instantly recognizable as Spanish business, cheap (~€8/yr), simple to type, great for Spain-first strategy</td>
+<td>Likely <strong>already taken</strong> (verify); restricts to Spain narrative if you ever expand to Latin America/Italy</td>
+<td><strong>Best if available — first to check</strong></td>
+</tr>
+<tr>
+<td><strong><code>crudo.world</code></strong></td>
+<td>Available, suggests aspiration &amp; global curation (fits "we bring world wines/cheeses to Madrid"), distinctive</td>
+<td>Newer TLD, slightly less trusted by older audiences, less obvious .es-equivalent local SEO weight (mitigated by hreflang + GMB)</td>
+<td><strong>Strong second choice</strong> — works narratively</td>
+</tr>
+<tr>
+<td><strong><code>crudomov.com</code> / <code>.es</code></strong></td>
+<td>Reuses your IG handle, easy bridge from @crudomov</td>
+<td>"MOV" is opaque to non-followers, weakens the elegant single-word brand</td>
+<td>Avoid — IG handle ≠ best domain</td>
+</tr>
+<tr>
+<td><strong><code>crudomadrid.es</code> / <code>.com</code></strong></td>
+<td>Disambiguates from other "crudo" businesses, very strong local SEO</td>
+<td>Long, less elegant, hard to maintain if you open a second location in another city in 2–3 years</td>
+<td>OK fallback if <code>.es</code> and <code>.world</code> both fail</td>
+</tr>
+<tr>
+<td><strong><code>crudo.bar</code></strong></td>
+<td>On-brand for a wine bar, available in most cases</td>
+<td><code>.bar</code> is niche TLD, slightly less universal trust, costs more (~€60/yr)</td>
+<td>Niche choice, not recommended primary</td>
+</tr>
+<tr>
+<td><strong><code>crudo.wine</code></strong></td>
+<td>Hyper-relevant TLD, premium feel</td>
+<td>Limits brand to wine — you also distribute cheese; expensive (~€40/yr)</td>
+<td>Limits the brand — not recommended</td>
+</tr>
+<tr>
+<td><strong><code>crudo.cafe</code></strong></td>
+<td>Available, food-adjacent</td>
+<td>Misleading — you're a wine bar, not a café</td>
+<td>Avoid</td>
+</tr>
+<tr>
+<td><strong><code>crudo.shop</code></strong></td>
+<td>Hints at the catalog/pickup commercial intent</td>
+<td>Cheapens the brand from "wine bar" to "shop"</td>
+<td>Avoid</td>
+</tr>
+<tr>
+<td><strong><code>somoscrudo.com</code> / <code>.es</code></strong></td>
+<td>Brandable, ownership feel ("we are CRUDO"), almost certainly available</td>
+<td>Loses the clean single-word</td>
+<td>Backup option</td>
+</tr>
+<tr>
+<td><strong><code>barcrudo.com</code> / <code>.es</code></strong></td>
+<td>Clear category, local</td>
+<td>"Bar" prefix feels generic Spanish</td>
+<td>OK but bland</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recommendation">Recommendation</h3>
+<p><strong>Pursue this order, take the first that's available:</strong></p>
+<ol>
+<li><strong><code>crudo.es</code></strong> — register <em>immediately</em> if free. This is the single best signal for local SEO + brand simplicity. Combine with <code>crudo.com</code> if affordable as a redirect.</li>
+<li><strong><code>crudo.world</code></strong> — your current candidate. It works narratively ("we bring the world's natural wines and artisan cheeses to a corner of Madrid"). Pair it with strong local SEO signals (hreflang <code>es-ES</code>, Google Business Profile, schema.org <code>Restaurant.address.addressCountry=ES</code>, Madrid-targeted content).</li>
+<li><strong><code>crudomadrid.es</code></strong> — fallback if both above are unavailable or unreasonable.</li>
+</ol>
+<h3 id="operational-must-haves-regardless-of-choice">Operational must-haves regardless of choice</h3>
+<ul>
+<li>Register the matching <code>.com</code> and <code>.es</code> even if you don't use them (defensive registrations, ~€20/yr total).</li>
+<li>Email: set up <code>hola@&lt;domain&gt;</code> and <code>pedidos@&lt;domain&gt;</code> via Google Workspace (€6/user/mo) or Zoho Mail (free tier).</li>
+<li>Cloudflare for DNS + CDN (free).</li>
+<li><code>.es</code> requires a Spanish CIF/NIE for registration — your existing legal entity covers this.</li>
+<li>301 redirect any non-canonical domains to the canonical one for SEO consolidation.</li>
+</ul>
+<h3 id="if-you-go-with-crudoworld-your-current-lean">If you go with <code>crudo.world</code> (your current lean)</h3>
+<p>To compensate for the non-Spanish TLD on local SEO:
+- Set Google Search Console <strong>International Targeting → Country = Spain</strong>.
+- Use <code>&lt;html lang="es"&gt;</code> and <code>&lt;link rel="alternate" hreflang="es-ES" href="..."&gt;</code>.
+- Strong, consistent NAP (Name-Address-Phone) across web + Google Business Profile + Instagram bio.
+- Aggressive local link-building: Madrid food blogs, Time Out Madrid, Spanish wine press.
+- Schema.org <code>Restaurant</code> with full address — this is what Google's local pack uses, not the TLD.</p>
+<p>With these in place, <code>crudo.world</code> will not meaningfully underperform a <code>.es</code> domain in the local pack.</p>
+<hr />
+<h2 id="appendix-d-owner-daily-operating-rhythm-5-min-day">Appendix D — Owner Daily Operating Rhythm (≤ 5 min/day)</h2>
+<p>Because Section 0 confirmed CRUDO is run by a single person, here is the explicit operational rhythm V1 must support without burdening the owner. The admin and notification flow are designed against this rhythm — it is a constraint, not an aspiration.</p>
+<h3 id="morning-90-seconds-on-phone-with-coffee">Morning (≤ 90 seconds, on phone, with coffee)</h3>
+<ul>
+<li>Open admin bookmark on phone.</li>
+<li>See dashboard: today's pickup orders, today's events, new contact inquiries.</li>
+<li>Tap each pickup order → confirm via "Confirmar" (auto-sends WhatsApp + status email to customer with prefilled message).</li>
+<li>Mark sold-out cheeses (if any) — single tap toggle on product card.</li>
+</ul>
+<h3 id="during-service-zero-admin">During service (zero admin)</h3>
+<ul>
+<li>Server-side WhatsApp pings for new pickup inquiries arrive on phone.</li>
+<li>Owner <strong>does not</strong> need to act in real time — confirmation SLA is "within 24h" so this can wait until next morning.</li>
+<li>Optional: tap a one-tap "Recibido, te confirmamos pronto" reply if comfortable.</li>
+</ul>
+<h3 id="end-of-day-90-seconds">End of day (≤ 90 seconds)</h3>
+<ul>
+<li>Mark fulfilled pickups as <code>PICKED_UP</code> (single tap).</li>
+<li>Quick scan of contact form inquiries → reply via WhatsApp/email next morning if relevant.</li>
+</ul>
+<h3 id="weekly-10-min-sunday">Weekly (≤ 10 min, Sunday)</h3>
+<ul>
+<li>Post one weekly campaign update (e.g., new arrivals, week's tasting).</li>
+<li>Review Tier 0 KPIs.</li>
+<li>Add upcoming event if not already scheduled.</li>
+</ul>
+<p>The admin UI must be designed so each of the above bullets is <strong>one tap</strong> or <strong>one form submission</strong>. If during build any flow exceeds 3 taps, escalate as a scope-correction issue.</p>
+<hr />
+<p><strong>End of Visual Master Plan v1.1</strong> — Updated with owner-confirmed assumptions. Ready to be used as the foundation document for design, development, and launch coordination.</p>
+  </main>
+</div>
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    fontFamily: 'Inter, system-ui, sans-serif',
+    primaryColor: '#F2EAD8',
+    primaryTextColor: '#1A1F14',
+    primaryBorderColor: '#1A1F14',
+    lineColor: '#3A2A1E',
+    secondaryColor: '#EAE0CB',
+    tertiaryColor: '#FFFFFF',
+    edgeLabelBackground: '#F2EAD8',
+    clusterBkg: '#EAE0CB',
+    clusterBorder: '#8A8473',
+    nodeTextColor: '#1A1F14',
+    sectionBkgColor: '#EAE0CB',
+    altSectionBkgColor: '#F2EAD8',
+    cScale0: '#B5713A',
+    cScale1: '#B89668',
+    cScale2: '#6B8E5A',
+    actorBkg: '#F2EAD8',
+    actorBorder: '#1A1F14',
+    actorTextColor: '#1A1F14',
+    activationBorderColor: '#B5713A',
+    activationBkgColor: '#EAE0CB'
+  },
+  flowchart: { curve: 'basis', useMaxWidth: true },
+  gantt: {
+    barHeight: 22,
+    fontSize: 12,
+    sectionFontSize: 13
+  },
+  journey: { useMaxWidth: true },
+  er: { useMaxWidth: true }
+});
+</script>
+</body>
+</html>
