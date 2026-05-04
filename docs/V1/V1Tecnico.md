@@ -3,8 +3,8 @@
 Documento operativo para programar la V1 de CRUDO usando Claude Opus como agente de desarrollo.
 
 Fuentes obligatorias:
-- `CRUDO_V1_Visual_Master_Plan.html`
-- `AGENTS_Javi.md`
+- `docs/V1/CRUDO_V1_Visual_Master_Plan.html`
+- `docs/AGENTS_Javi.md`
 
 Este documento no sustituye a esas fuentes. Es una guia de ejecucion por fases con prompts copiables para que Opus implemente la web sin desviarse del alcance del V1.
 
@@ -14,7 +14,7 @@ Este documento no sustituye a esas fuentes. Es una guia de ejecucion por fases c
 2. Pega siempre primero el **Prompt base obligatorio**.
 3. Despues pega el prompt de la fase que toque.
 4. No avances a la fase siguiente hasta que la fase actual tenga build, tests y criterios de aceptacion verdes.
-5. Si Opus propone cambios de alcance, dependencias nuevas o arquitectura distinta, debe justificarlo contra `CRUDO_V1_Visual_Master_Plan.html` y `AGENTS_Javi.md`. Si no hay justificacion clara, se rechaza.
+5. Si Opus propone cambios de alcance, dependencias nuevas o arquitectura distinta, debe justificarlo contra `docs/V1/CRUDO_V1_Visual_Master_Plan.html` y `docs/AGENTS_Javi.md`. Si no hay justificacion clara, se rechaza.
 
 ## 0.1 Estado vivo del proyecto
 
@@ -34,7 +34,7 @@ state_version: 1
 last_updated: 2026-05-04
 current_phase: 0
 current_phase_name: "Preparacion, repo y contexto"
-current_focus: "Documento tecnico creado; todavia no se ha empezado a implementar codigo"
+current_focus: "Documentacion tecnica V1 creada y organizada en docs/V1; todavia no se ha empezado a implementar codigo"
 next_recommended_prompt: "Fase 0 - Preparacion, repo y contexto"
 overall_status: "NOT_STARTED"
 ```
@@ -52,7 +52,7 @@ overall_status: "NOT_STARTED"
 
 | Fase | Nombre | Estado | Implementado | Falta | Bloqueos / notas |
 |------|--------|--------|--------------|-------|------------------|
-| 0 | Preparacion, repo y contexto | NOT_STARTED | `V1Tecnico.md` creado | Estructura repo, README, `.env.example`, docs base | Sin bloqueos |
+| 0 | Preparacion, repo y contexto | NOT_STARTED | `docs/V1/V1Tecnico.md`, `docs/V1/v1TecnicoVisual.html` y documentos V1 organizados en `docs/V1/` | Estructura repo de codigo, README, `.env.example`, docs base de implementacion | Sin bloqueos |
 | 1 | Scaffold backend Spring Boot | NOT_STARTED | Nada | `api/`, Maven, OpenAPI inicial, profiles, tests smoke | Pendiente Fase 0 |
 | 2 | Modelo de datos, Flyway y seed local | NOT_STARTED | Nada | Schema, entidades, repositories, seeds, tests | Pendiente Fase 1 |
 | 3 | OpenAPI completo y servicios publicos | NOT_STARTED | Nada | Catalogo, campanas, eventos, inquiries, newsletter, consent, site config | Pendiente Fase 2 |
@@ -98,7 +98,7 @@ Actualizar esta lista al terminar cada sesion con codigo. Mantener bullets concr
 - `Mi Tabla` solo para no alcohol.
 - Espanol como idioma primario; ingles via Google Translate.
 - Admin disenado para owner single-operator, menos de 5 minutos al dia.
-- `AGENTS_Javi.md` no se modifica.
+- `docs/AGENTS_Javi.md` no se modifica.
 
 ### Bloqueos actuales
 
@@ -128,6 +128,7 @@ Anadir una linea por sesion de trabajo. Formato recomendado:
 Registro:
 
 - 2026-05-04 | Fase docs | Creado V1Tecnico.md con fases y prompts para Opus | Verificacion: estructura revisada | Siguiente: Fase 0
+- 2026-05-04 | Fase docs | Organizados documentos en `docs/` y V1 en `docs/V1/`; creado roadmap visual V1 | Verificacion: rutas revisadas | Siguiente: Fase 0
 
 ### Instrucciones para actualizar este estado
 
@@ -171,12 +172,12 @@ Estas reglas deben aparecer en todos los prompts importantes.
 - Stack V1: React + Vite, Spring Boot Java, PostgreSQL, Docker Compose, Caddy, Cloudflare, R2/Bunny para imagenes, Brevo para newsletter.
 - No Stripe, Redsys, cuentas de usuario, loyalty, reviews, app movil, stock realtime ni i18n completo en V1.
 
-## 2. Reglas de ingenieria desde AGENTS_Javi.md
+## 2. Reglas de ingenieria desde docs/AGENTS_Javi.md
 
 Opus debe seguir estas reglas durante todo el proyecto.
 
-- No modificar `AGENTS_Javi.md`. Es contrato de solo lectura.
-- Leer contexto antes de actuar: `AGENTS_Javi.md`, `CRUDO_V1_Visual_Master_Plan.html`, README/docs si ya existen, arquitectura si existe, historial git si hace falta.
+- No modificar `docs/AGENTS_Javi.md`. Es contrato de solo lectura.
+- Leer contexto antes de actuar: `docs/AGENTS_Javi.md`, `docs/V1/CRUDO_V1_Visual_Master_Plan.html`, README/docs si ya existen, arquitectura si existe, historial git si hace falta.
 - Codigo, clases, variables, comentarios tecnicos inline y tests en ingles.
 - Documentacion tecnica, README y guias en espanol.
 - SQL con keywords en INGLES MAYUSCULAS e identificadores en `snake_case`.
@@ -430,13 +431,13 @@ Pega esto al inicio de cada sesion de Opus.
 Actua como agente senior full-stack para construir la V1 de CRUDO.
 
 Antes de tocar codigo, lee y respeta estos archivos:
-- AGENTS_Javi.md
-- CRUDO_V1_Visual_Master_Plan.html
-- V1Tecnico.md
+- docs/AGENTS_Javi.md
+- docs/V1/CRUDO_V1_Visual_Master_Plan.html
+- docs/V1/V1Tecnico.md
 - README.md, docs/, ARCHITECTURE.md o contexto existente si existen
 
 Reglas obligatorias:
-- No modifiques AGENTS_Javi.md.
+- No modifiques docs/AGENTS_Javi.md.
 - No inventes alcance fuera del V1.
 - Documentacion en espanol; codigo, variables, clases, comentarios tecnicos y tests en ingles.
 - Backend Java 21 + Spring Boot 3.x + PostgreSQL + Flyway + MapStruct.
@@ -452,7 +453,7 @@ Reglas obligatorias:
 - Add focused tests and run verification before DONE.
 
 Workflow:
-1. Read section `0.1 Estado vivo del proyecto` inside V1Tecnico.md.
+1. Read section `0.1 Estado vivo del proyecto` inside `docs/V1/V1Tecnico.md`.
 2. Inspect current repo state and existing files.
 3. Compare the real repo state against the estado vivo. If they differ, update the estado vivo or report the mismatch before implementing.
 4. Summarize what already exists, what phase we are in, and what you will change.
@@ -503,7 +504,7 @@ Tareas:
    - comandos locales previstos
    - estructura del repo
    - reglas criticas: no pago online, no venta online de alcohol, vino solo WhatsApp, Mi Tabla solo no alcohol
-4. Crea .gitignore segun AGENTS_Javi.md:
+4. Crea .gitignore segun `docs/AGENTS_Javi.md`:
    - IDEs
    - node_modules, dist, build
    - target
@@ -561,7 +562,7 @@ Criterios de aceptacion:
 - No hay secretos reales.
 - Los docs estan en espanol.
 - El alcance V1/V1.1/V2 queda claro.
-- AGENTS_Javi.md no se modifica.
+- `docs/AGENTS_Javi.md` no se modifica.
 - El repo queda listo para scaffold tecnico.
 
 Verificacion:
@@ -1857,10 +1858,10 @@ Usar cuando no este claro por donde va el proyecto, despues de trabajar fuera de
 ```text
 Usa el Prompt base obligatorio.
 
-Sin implementar funcionalidades nuevas, sincroniza el estado vivo de V1Tecnico.md con el estado real del repositorio.
+Sin implementar funcionalidades nuevas, sincroniza el estado vivo de `docs/V1/V1Tecnico.md` con el estado real del repositorio.
 
 Tareas:
-1. Lee `V1Tecnico.md`, especialmente la seccion `0.1 Estado vivo del proyecto`.
+1. Lee `docs/V1/V1Tecnico.md`, especialmente la seccion `0.1 Estado vivo del proyecto`.
 2. Inspecciona el repo:
    - estructura de carpetas
    - README y docs
@@ -1902,8 +1903,8 @@ Usa el Prompt base obligatorio.
 Haz una revision critica de arquitectura del estado actual de CRUDO V1.
 
 Busca:
-- Desviaciones de CRUDO_V1_Visual_Master_Plan.html.
-- Desviaciones de AGENTS_Javi.md.
+- Desviaciones de `docs/V1/CRUDO_V1_Visual_Master_Plan.html`.
+- Desviaciones de `docs/AGENTS_Javi.md`.
 - Endpoints fuera de OpenAPI-first.
 - DTOs manuales que deberian generarse.
 - Entidades o tablas innecesarias de V2 metidas en V1.
@@ -1992,7 +1993,7 @@ Cada fase o feature queda DONE solo si:
 - Frontend: `npm run build` y tests pasan.
 - Docker local funciona si aplica.
 - Docs actualizadas si hay cambio de comandos, env vars o arquitectura.
-- `V1Tecnico.md` se actualiza en la seccion `0.1 Estado vivo del proyecto` con fase, implementado, pendiente, bloqueos, registro de sesion y siguiente prompt recomendado.
+- `docs/V1/V1Tecnico.md` se actualiza en la seccion `0.1 Estado vivo del proyecto` con fase, implementado, pendiente, bloqueos, registro de sesion y siguiente prompt recomendado.
 - El alcohol guard sigue cubierto por tests.
 - La experiencia mobile no queda rota.
 - Un staff engineer aprobaria la solucion.

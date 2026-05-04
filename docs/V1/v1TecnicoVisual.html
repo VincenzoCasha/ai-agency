@@ -546,7 +546,7 @@ h3 {
     <div>
       <div class="eyebrow">Roadmap tecnico vivo</div>
       <h1 id="page-title">CRUDO V1</h1>
-      <p class="lead">Vista visual del estado de desarrollo. Este archivo debe actualizarse junto con la seccion <code>0.1 Estado vivo del proyecto</code> de <code>V1Tecnico.md</code> al final de cada sesion.</p>
+      <p class="lead">Vista visual del estado de desarrollo. Este archivo debe actualizarse junto con la seccion <code>0.1 Estado vivo del proyecto</code> de <code>docs/V1/V1Tecnico.md</code> al final de cada sesion.</p>
       <div class="meta-row" id="heroMeta"></div>
     </div>
   </section>
@@ -622,15 +622,15 @@ h3 {
     <div class="eyebrow">Instrucciones para Opus</div>
     <h2 id="instructions-title">Como actualizar este roadmap</h2>
     <ol>
-      <li>Lee primero <code>V1Tecnico.md</code>, seccion <code>0.1 Estado vivo del proyecto</code>, y despues este archivo.</li>
+      <li>Lee primero <code>docs/V1/V1Tecnico.md</code>, seccion <code>0.1 Estado vivo del proyecto</code>, y despues este archivo.</li>
       <li>Al terminar una sesion, actualiza el objeto <code>roadmapState</code> dentro de este HTML.</li>
-      <li>Sincroniza los mismos cambios en <code>V1Tecnico.md</code>: fase actual, progreso, implementado, pendiente, bloqueos y registro.</li>
+      <li>Sincroniza los mismos cambios en <code>docs/V1/V1Tecnico.md</code>: fase actual, progreso, implementado, pendiente, bloqueos y registro.</li>
       <li>No marques una fase como <code>DONE</code> sin build/tests/verificacion.</li>
       <li>Si el codigo real contradice este HTML, corrige este HTML y deja nota en el registro de sesiones.</li>
     </ol>
   </section>
 
-  <p class="footer-note">CRUDO V1 - Roadmap tecnico visual. Fuente principal: V1Tecnico.md.</p>
+  <p class="footer-note">CRUDO V1 - Roadmap tecnico visual. Fuente principal: docs/V1/V1Tecnico.md.</p>
 </main>
 
 <script>
@@ -640,7 +640,7 @@ const roadmapState = {
   lastUpdated: "2026-05-04",
   currentPhase: 0,
   currentPhaseName: "Preparacion, repo y contexto",
-  currentFocus: "Documento tecnico creado; todavia no se ha empezado a implementar codigo",
+  currentFocus: "Documentacion tecnica V1 creada y organizada en docs/V1; todavia no se ha empezado a implementar codigo",
   nextRecommendedPrompt: "Fase 0 - Preparacion, repo y contexto",
   overallStatus: "NOT_STARTED",
   phases: [
@@ -648,8 +648,8 @@ const roadmapState = {
       id: 0,
       name: "Preparacion, repo y contexto",
       status: "NOT_STARTED",
-      implemented: "V1Tecnico.md creado",
-      missing: "Estructura repo, README, .env.example, docs base",
+      implemented: "docs/V1/V1Tecnico.md, docs/V1/v1TecnicoVisual.html y documentos V1 organizados en docs/V1/",
+      missing: "Estructura repo de codigo, README, .env.example, docs base de implementacion",
       notes: "Sin bloqueos",
       prompt: "Fase 0",
       progress: 10
@@ -829,7 +829,7 @@ const roadmapState = {
     "Mi Tabla solo para no alcohol.",
     "Espanol como idioma primario; ingles via Google Translate.",
     "Admin disenado para owner single-operator, menos de 5 minutos al dia.",
-    "AGENTS_Javi.md no se modifica."
+    "docs/AGENTS_Javi.md no se modifica."
   ],
   blockers: [
     "No hay codigo inicial todavia.",
@@ -850,8 +850,8 @@ const roadmapState = {
     {
       date: "2026-05-04",
       phase: "Fase docs",
-      work: "Creado V1Tecnico.md con fases y prompts para Opus; creado v1TecnicoVisual.html como roadmap visual vivo.",
-      verification: "Estructura revisada.",
+      work: "Creado V1Tecnico.md con fases y prompts para Opus; creado v1TecnicoVisual.html como roadmap visual vivo; documentos organizados en docs/ y docs/V1/.",
+      verification: "Estructura y rutas revisadas.",
       next: "Fase 0"
     }
   ]
