@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -640,7 +640,7 @@ const roadmapState = {
   lastUpdated: "2026-05-04",
   currentPhase: 0,
   currentPhaseName: "Preparacion, repo y contexto",
-  currentFocus: "Documentacion tecnica V1 creada y organizada en docs/V1; todavia no se ha empezado a implementar codigo",
+  currentFocus: "Documentacion tecnica V1 actualizada a monolito JavaScript: React 19/Vite + Node.js/Express + MariaDB + Tailwind; despliegue previsto en Contabo con Plesk",
   nextRecommendedPrompt: "Fase 0 - Preparacion, repo y contexto",
   overallStatus: "NOT_STARTED",
   phases: [
@@ -656,30 +656,30 @@ const roadmapState = {
     },
     {
       id: 1,
-      name: "Scaffold backend Spring Boot",
+      name: "Scaffold monolito Node.js Express",
       status: "NOT_STARTED",
       implemented: "Nada",
-      missing: "api/, Maven, OpenAPI inicial, profiles, tests smoke",
+      missing: "package.json CommonJS, server.js, src/, server/, db/, MariaDB pool, health, tests smoke",
       notes: "Pendiente Fase 0",
       prompt: "Fase 1",
       progress: 0
     },
     {
       id: 2,
-      name: "Modelo de datos, Flyway y seed local",
+      name: "Modelo de datos MariaDB y seed local",
       status: "NOT_STARTED",
       implemented: "Nada",
-      missing: "Schema, entidades, repositories, seeds, tests",
+      missing: "migraciones SQL, pool mariadb, seed local, tests repository/service",
       notes: "Pendiente Fase 1",
       prompt: "Fase 2",
       progress: 0
     },
     {
       id: 3,
-      name: "OpenAPI completo y servicios publicos",
+      name: "API Express y servicios publicos",
       status: "NOT_STARTED",
       implemented: "Nada",
-      missing: "Catalogo, campanas, eventos, inquiries, newsletter, consent, site config",
+      missing: "Catalogo, campanas, eventos, inquiries, newsletter, consent, site config con validadores de request",
       notes: "Pendiente Fase 2",
       prompt: "Fase 3",
       progress: 0
@@ -706,10 +706,10 @@ const roadmapState = {
     },
     {
       id: 6,
-      name: "Docker Compose e infraestructura local",
+      name: "Scripts npm, build y despliegue Plesk/Contabo",
       status: "NOT_STARTED",
       implemented: "Nada",
-      missing: "Compose, Dockerfiles, Caddy, backup, CI",
+      missing: "npm run dev, vite build, server.js sirviendo dist, guia Plesk, backups MariaDB, CI",
       notes: "Puede avanzar tras backend scaffold",
       prompt: "Fase 6",
       progress: 0
@@ -719,7 +719,7 @@ const roadmapState = {
       name: "Scaffold frontend y design system",
       status: "NOT_STARTED",
       implemented: "Nada",
-      missing: "Vite, rutas, tokens, layout, cookie banner base",
+      missing: "React 19, Vite, Tailwind, rutas, tokens, layout, cookie banner base",
       notes: "Puede avanzar tras Fase 0",
       prompt: "Fase 7",
       progress: 0
@@ -809,7 +809,7 @@ const roadmapState = {
     "Ninguna funcionalidad de codigo implementada todavia."
   ],
   pendingCritical: [
-    "Backend OpenAPI-first.",
+    "Backend Node.js/Express con rutas, controladores, servicios y validacion de requests.",
     "Modelo de datos con is_alcohol.",
     "Alcohol guard backend con HTTP 422 en POST /api/v1/pickup-orders.",
     "Public frontend.",
@@ -818,11 +818,12 @@ const roadmapState = {
     "Cookie consent AEPD.",
     "SEO/prerender.",
     "Analytics gated by consent.",
-    "Docker/infra.",
+    "Scripts npm + despliegue Plesk/Contabo.",
     "Tests E2E."
   ],
   decisions: [
-    "Stack V1: React + Vite, Spring Boot Java, PostgreSQL, Docker Compose.",
+    "Stack V1: JavaScript, Node.js + Express, MariaDB con paquete mariadb, React 19 + Vite, Tailwind CSS, PostCSS, Autoprefixer, monolito CommonJS, server.js sirviendo dist, despliegue en Contabo con Plesk.",
+    "Stripe queda preparado solo para V2; V1 no activa pago online.",
     "V1 sin pago online.",
     "V1 sin venta online de alcohol.",
     "Vino visible en catalogo/PDP, pero solo WhatsApp.",
@@ -844,13 +845,14 @@ const roadmapState = {
     "Brevo confirmado o alternativa.",
     "Cookie provider: custom, Cookiebot, Iubenda u otro.",
     "Primeros 20-40 productos con precios y is_alcohol.",
-    "Primeros 3 eventos."
+    "Primeros 3 eventos.",
+    "Plan Plesk definitivo: dominio principal, subdominio staging, estrategia Node app, backups y variables de entorno."
   ],
   sessionLog: [
     {
       date: "2026-05-04",
       phase: "Fase docs",
-      work: "Creado V1Tecnico.md con fases y prompts para Opus; creado v1TecnicoVisual.html como roadmap visual vivo; documentos organizados en docs/ y docs/V1/.",
+      work: "Creado V1Tecnico.md con fases y prompts para Opus; creado v1TecnicoVisual.html como roadmap visual vivo; documentos organizados en docs/ y docs/V1/; stack actualizado a monolito JavaScript Node/Express/MariaDB + React 19/Vite/Tailwind + Contabo/Plesk.",
       verification: "Estructura y rutas revisadas.",
       next: "Fase 0"
     }
@@ -980,3 +982,5 @@ render();
 </script>
 </body>
 </html>
+
+

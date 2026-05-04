@@ -1,0 +1,1375 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRUDO - Roadmap No Tecnico V1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color-bg-primary: #1A1F14;
+  --color-bg-secondary: #1E1C18;
+  --color-bg-elevated: #252420;
+  --color-bg-light: #F2EAD8;
+  --color-bg-light-soft: #EAE0CB;
+  --color-text-primary: #F2EAD8;
+  --color-text-secondary: #C7BFAD;
+  --color-text-muted: #8A8473;
+  --color-text-inverse: #1A1F14;
+  --color-accent: #B5713A;
+  --color-accent-hover: #C8804A;
+  --color-accent-soft: #3A2A1E;
+  --color-gold: #B89668;
+  --color-success: #6B8E5A;
+  --color-warning: #C8893E;
+  --color-error: #A8443A;
+  --color-border: rgba(242,234,216,0.12);
+  --color-border-strong: rgba(242,234,216,0.24);
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(26,31,20,0.96), rgba(26,31,20,1) 460px),
+    radial-gradient(circle at 18% 0%, rgba(181,113,58,0.14), transparent 30%);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.58;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+}
+
+a {
+  color: var(--color-gold);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+.page {
+  width: min(1220px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 64px;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  padding: 12px 0;
+  backdrop-filter: blur(18px);
+  background: rgba(26,31,20,0.82);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.brand strong {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.brand span {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav a {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+}
+
+.nav a:hover {
+  border-color: var(--color-gold);
+  color: var(--color-text-primary);
+}
+
+.hero {
+  min-height: 56vh;
+  display: grid;
+  align-items: end;
+  padding: 54px 0 42px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.eyebrow {
+  margin-bottom: 12px;
+  color: var(--color-gold);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+h1 {
+  max-width: 930px;
+  font-size: clamp(3rem, 7vw, 6.6rem);
+  font-style: italic;
+}
+
+h2 {
+  font-size: clamp(2rem, 4.2vw, 3.2rem);
+}
+
+h3 {
+  font-size: 1.55rem;
+}
+
+.lead {
+  max-width: 780px;
+  margin: 20px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 1.08rem;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.pill {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: rgba(242,234,216,0.04);
+  color: var(--color-text-secondary);
+  font-size: 0.84rem;
+}
+
+.pill strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+}
+
+.status-dot.todo { background: var(--color-text-muted); }
+.status-dot.doing { background: var(--color-warning); }
+.status-dot.blocked { background: var(--color-error); }
+.status-dot.review { background: var(--color-gold); }
+.status-dot.done { background: var(--color-success); }
+
+.grid {
+  display: grid;
+  gap: 18px;
+}
+
+.summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 30px 0 46px;
+}
+
+.metric {
+  min-height: 132px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  border-radius: 6px;
+}
+
+.metric .label {
+  color: var(--color-text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.metric .value {
+  margin-top: 10px;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.metric .hint {
+  margin-top: 10px;
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+}
+
+.section {
+  margin-top: 54px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 22px;
+  margin-bottom: 20px;
+}
+
+.section-header p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.phase-list {
+  display: grid;
+  gap: 16px;
+}
+
+.phase {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  border-radius: 6px;
+}
+
+.phase.current {
+  border-color: var(--color-gold);
+  box-shadow: inset 4px 0 0 var(--color-gold);
+}
+
+.phase.done {
+  border-color: rgba(107,142,90,0.45);
+}
+
+.phase.blocked {
+  border-color: rgba(168,68,58,0.55);
+}
+
+.phase-index {
+  display: grid;
+  place-items: center;
+  min-height: 90px;
+  border-right: 1px solid var(--color-border);
+  color: var(--color-gold);
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+}
+
+.phase-main {
+  min-width: 0;
+}
+
+.phase-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.phase-title h3 {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.tag {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 9px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tag.todo { color: var(--color-text-muted); }
+.tag.doing { color: var(--color-warning); border-color: rgba(200,137,62,0.5); }
+.tag.blocked { color: var(--color-error); border-color: rgba(168,68,58,0.55); }
+.tag.review { color: var(--color-gold); border-color: rgba(184,150,104,0.55); }
+.tag.done { color: var(--color-success); border-color: rgba(107,142,90,0.55); }
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 16px;
+}
+
+.steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  color: var(--color-text-secondary);
+  font-size: 0.93rem;
+}
+
+.check {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.step.done .check {
+  border-color: rgba(107,142,90,0.75);
+  background: rgba(107,142,90,0.14);
+  color: var(--color-success);
+}
+
+.step.blocked .check {
+  border-color: rgba(168,68,58,0.75);
+  color: var(--color-error);
+}
+
+.deliverable {
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  background: rgba(242,234,216,0.03);
+  border-radius: 4px;
+}
+
+.deliverable strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.deliverable p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.91rem;
+}
+
+.progress-track {
+  height: 9px;
+  overflow: hidden;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: rgba(242,234,216,0.08);
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-gold);
+}
+
+.lane-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.panel {
+  padding: 22px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  border-radius: 6px;
+}
+
+.panel h3 {
+  margin-bottom: 14px;
+}
+
+.list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  position: relative;
+  padding-left: 20px;
+  color: var(--color-text-secondary);
+}
+
+.list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-gold);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-bg-secondary);
+}
+
+th, td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+td {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+.warning-panel {
+  border-color: rgba(200,137,62,0.5);
+  background: linear-gradient(180deg, rgba(58,42,30,0.74), rgba(37,36,32,0.98));
+}
+
+.instructions {
+  padding: 24px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-bg-elevated);
+  border-radius: 6px;
+}
+
+.instructions code {
+  color: var(--color-gold);
+  font-family: var(--font-mono);
+}
+
+.footer-note {
+  margin: 44px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+}
+
+@media (max-width: 980px) {
+  .summary-grid,
+  .lane-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .phase {
+    grid-template-columns: 1fr;
+  }
+
+  .phase-index {
+    place-items: start;
+    min-height: 0;
+    padding-bottom: 10px;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .phase-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .page {
+    width: min(100% - 24px, 1220px);
+    padding-top: 12px;
+  }
+
+  .topbar {
+    position: static;
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .hero {
+    min-height: 42vh;
+    padding-top: 34px;
+  }
+
+  .summary-grid,
+  .lane-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    display: block;
+  }
+
+  .section-header p {
+    margin-top: 10px;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+    color: #1A1F14;
+  }
+
+  .topbar {
+    position: static;
+    background: white;
+  }
+
+  .page {
+    width: 100%;
+    padding: 0;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .metric,
+  .phase,
+  .panel,
+  .instructions,
+  table {
+    background: white;
+    border-color: #999;
+  }
+
+  h1, h2, h3,
+  .metric .value,
+  .metric .label,
+  .phase-title h3,
+  th {
+    color: #1A1F14;
+  }
+
+  .lead,
+  .metric .hint,
+  .step,
+  .deliverable p,
+  .list li,
+  td,
+  .footer-note {
+    color: #333;
+  }
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="topbar" aria-label="Navegacion interna">
+    <div class="brand">
+      <strong>CRUDO</strong>
+      <span>V1 no tecnico</span>
+    </div>
+    <div class="nav">
+      <a href="#roadmap">Roadmap</a>
+      <a href="#workstreams">Areas</a>
+      <a href="#content">Contenido</a>
+      <a href="#launch">Launch</a>
+      <a href="#kpis">KPIs</a>
+    </div>
+  </nav>
+
+  <section class="hero" aria-labelledby="page-title">
+    <div>
+      <div class="eyebrow">Operaciones, contenido y lanzamiento</div>
+      <h1 id="page-title">La V1 que no se programa</h1>
+      <p class="lead">Roadmap visual y accionable para todo lo que debe pasar fuera del codigo: decisiones del owner, producto, fotos, copy, legal, marketing, lanzamiento, formacion y seguimiento comercial.</p>
+      <div class="meta-row" id="heroMeta"></div>
+    </div>
+  </section>
+
+  <section class="grid summary-grid" aria-label="Resumen" id="summary"></section>
+
+  <section class="section warning-panel panel" aria-labelledby="rules-title">
+    <div class="eyebrow">Reglas de alcance</div>
+    <h2 id="rules-title">No negociables de la V1</h2>
+    <ul class="list" id="rulesList"></ul>
+  </section>
+
+  <section class="section" id="roadmap" aria-labelledby="roadmap-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Paso a paso</div>
+        <h2 id="roadmap-title">Roadmap no tecnico</h2>
+      </div>
+      <p>El orden esta pensado para no bloquear al equipo tecnico: primero decisiones y contenido, despues validacion, lanzamiento y rutina comercial.</p>
+    </div>
+    <div class="phase-list" id="phaseList"></div>
+  </section>
+
+  <section class="section" id="workstreams" aria-labelledby="workstreams-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Responsables</div>
+        <h2 id="workstreams-title">Areas de trabajo</h2>
+      </div>
+      <p>Cada area tiene tareas no tecnicas que deben cerrarse aunque el codigo avance perfecto.</p>
+    </div>
+    <div class="grid lane-grid" id="workstreamGrid"></div>
+  </section>
+
+  <section class="section" id="content" aria-labelledby="content-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Assets</div>
+        <h2 id="content-title">Checklist de contenido</h2>
+      </div>
+      <p>Lo que debe existir para que la web no salga con placeholders ni textos genericos.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Categoria</th>
+            <th>Elemento</th>
+            <th>Formato</th>
+            <th>Cantidad</th>
+            <th>Responsable</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="contentTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="launch" aria-labelledby="launch-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Salida publica</div>
+        <h2 id="launch-title">Checklist de lanzamiento</h2>
+      </div>
+      <p>Separado en pre-launch, launch day y primera semana para reducir improvisacion.</p>
+    </div>
+    <div class="grid lane-grid" id="launchGrid"></div>
+  </section>
+
+  <section class="section" id="kpis" aria-labelledby="kpi-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Medicion comercial</div>
+        <h2 id="kpi-title">KPIs del primer mes</h2>
+      </div>
+      <p>El objetivo no es solo trafico: es actividad comercial suficiente para acercar la primera contratacion.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th>Mes 1</th>
+            <th>Fuente</th>
+            <th>Ritmo de revision</th>
+          </tr>
+        </thead>
+        <tbody id="kpiTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="operating-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Owner</div>
+        <h2 id="operating-title">Ritmo operativo despues del launch</h2>
+      </div>
+      <p>La web solo funciona si el owner puede mantenerla sin quemarse.</p>
+    </div>
+    <div class="grid lane-grid" id="operatingGrid"></div>
+  </section>
+
+  <section class="section" aria-labelledby="risks-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Riesgos no tecnicos</div>
+        <h2 id="risks-title">Riesgos y mitigacion</h2>
+      </div>
+      <p>Estos son los puntos que mas probablemente retrasan o debilitan la V1 aunque el desarrollo vaya bien.</p>
+    </div>
+    <div class="grid lane-grid" id="riskGrid"></div>
+  </section>
+
+  <section class="section instructions" aria-labelledby="update-title">
+    <div class="eyebrow">Estado vivo</div>
+    <h2 id="update-title">Como actualizar este HTML</h2>
+    <ol>
+      <li>Actualiza el objeto <code>nonTechState</code> al final de cada sesion de negocio, contenido, legal o launch.</li>
+      <li>Usa los estados <code>TODO</code>, <code>DOING</code>, <code>BLOCKED</code>, <code>REVIEW</code> y <code>DONE</code>.</li>
+      <li>No marques nada como <code>DONE</code> si no hay entregable real: decision escrita, archivo recibido, cuenta creada, copy aprobado o checklist validado.</li>
+      <li>Si cambia una decision importante, actualiza tambien <code>docs/V1/V1Tecnico.md</code> si afecta al equipo tecnico.</li>
+      <li>Este archivo es del lado no tecnico; no lo uses para pedir codigo.</li>
+    </ol>
+  </section>
+
+  <p class="footer-note">Fuente: docs/V1/CRUDO_V1_Visual_Master_Plan.html y docs/AGENTS_Javi.md. Documento visual no tecnico para CRUDO V1.</p>
+</main>
+
+<script>
+const nonTechState = {
+  project: "CRUDO V1",
+  lastUpdated: "2026-05-04",
+  overallStatus: "TODO",
+  currentPhase: 0,
+  nextAction: "Cerrar discovery financiero-operativo, reunir contenido base y preparar dominio/Contabo/Plesk",
+  phases: [
+    {
+      id: 0,
+      title: "Alineacion y alcance V1",
+      status: "TODO",
+      progress: 0,
+      owner: "PM + Owner",
+      doneWhen: "Scope firmado: sin pago online, vino solo WhatsApp, Mi Tabla solo no alcohol, objetivo primera contratacion.",
+      steps: [
+        ["Confirmar objetivo North Star: ingresos suficientes para contratar segunda persona.", "todo"],
+        ["Firmar alcance IN/OUT de V1 y dejar V2 fuera de la conversacion diaria.", "todo"],
+        ["Definir fecha objetivo de soft launch y public launch.", "todo"],
+        ["Cerrar responsables: owner, PM, copy, foto, legal, marketing.", "todo"]
+      ]
+    },
+    {
+      id: 1,
+      title: "Discovery financiero y operativo",
+      status: "TODO",
+      progress: 0,
+      owner: "Owner + PM",
+      doneWhen: "Hay baseline comercial, horarios, capacidad pickup y SLA documentados.",
+      steps: [
+        ["Recoger facturacion semanal media actual.", "todo"],
+        ["Estimar coste mensual real de la primera contratacion.", "todo"],
+        ["Separar ingresos actuales: barra, queso para llevar, eventos.", "todo"],
+        ["Definir meses fuertes y oportunidades de campana.", "todo"],
+        ["Cerrar horarios, dias libres y cierres proximos 12 meses.", "todo"],
+        ["Definir capacidad diaria de pickup sin romper el servicio.", "todo"],
+        ["Confirmar SLA de respuesta: por defecto menos de 24h.", "todo"],
+        ["Decidir si se mostrara agotado/pocas unidades o se ocultaran productos.", "todo"]
+      ]
+    },
+    {
+      id: 2,
+      title: "Dominio, Contabo, Plesk, cuentas y accesos",
+      status: "TODO",
+      progress: 0,
+      owner: "PM + Owner",
+      doneWhen: "Dominio registrado, servidor Contabo contratado, Plesk operativo, accesos listos y cuentas de marketing/local SEO disponibles.",
+      steps: [
+        ["Comprobar disponibilidad en orden: crudo.es, crudo.world, crudomadrid.es.", "todo"],
+        ["Registrar dominio canonico y defensivos si procede.", "todo"],
+        ["Comprar servidor en Contabo y guardar acceso de forma segura.", "todo"],
+        ["Instalar o activar Plesk en el servidor Contabo.", "todo"],
+        ["Crear suscripcion/dominio en Plesk para CRUDO.", "todo"],
+        ["Crear o preparar email profesional: hola@ y pedidos@.", "todo"],
+        ["Decidir gestion DNS: Plesk o registrador. CDN/DNS externo queda opcional, no obligatorio.", "todo"],
+        ["Crear subdominio staging en Plesk.", "todo"],
+        ["Verificar Google Business Profile.", "todo"],
+        ["Verificar Meta Business Manager e Instagram @crudomov.", "todo"],
+        ["Confirmar Brevo como herramienta newsletter.", "todo"]
+      ]
+    },
+    {
+      id: 3,
+      title: "Catalogo inicial",
+      status: "TODO",
+      progress: 0,
+      owner: "Owner + PM",
+      doneWhen: "Lista de 20-40 productos lista para cargar, con alcohol/no alcohol claramente marcado.",
+      steps: [
+        ["Seleccionar 20-40 productos de lanzamiento.", "todo"],
+        ["Completar nombre, productor, region, tipo, precio y stock inicial.", "todo"],
+        ["Marcar cada producto como alcohol o no alcohol.", "todo"],
+        ["Elegir 4+ productos de temporada para Home.", "todo"],
+        ["Elegir productos destacados para primera campana.", "todo"],
+        ["Definir categorias: queso/vino, region, intensidad o maridaje.", "todo"],
+        ["Revisar que ningun vino aparezca como reservable por Mi Tabla.", "todo"]
+      ]
+    },
+    {
+      id: 4,
+      title: "Fotos y direccion visual",
+      status: "TODO",
+      progress: 0,
+      owner: "Owner + Fotografo + PM",
+      doneWhen: "Hero, producto, ambiente, owner y eventos tienen assets suficientes y aprobados.",
+      steps: [
+        ["Crear brief fotografico: luz calida low-key, madera oscura, pizarra, 3/4 y overhead.", "todo"],
+        ["Reunir hero 16:9 y 9:16 minimo 2400px.", "todo"],
+        ["Fotografiar 20-40 productos en 1:1 minimo 1600x1600.", "todo"],
+        ["Reunir 6-10 fotos de ambiente.", "todo"],
+        ["Reunir 3-5 fotos owner/interior.", "todo"],
+        ["Reunir una imagen 16:9 por evento inicial.", "todo"],
+        ["Decidir si hace falta shoot de medio dia en Madrid, presupuesto 600-900 euros.", "todo"]
+      ]
+    },
+    {
+      id: 5,
+      title: "Copy y marca",
+      status: "TODO",
+      progress: 0,
+      owner: "Copy + Owner",
+      doneWhen: "Textos aprobados en espanol claro, traducibles por Google Translate y coherentes con CRUDO.",
+      steps: [
+        ["Definir tono: experto, local, artesanal, calido, no generico.", "todo"],
+        ["Escribir manifesto Sobre CRUDO de 200-300 palabras.", "todo"],
+        ["Elegir H1 hero de maximo 6 palabras y subtitulo de 1 frase.", "todo"],
+        ["Escribir descripciones cortas de producto, unas 30 palabras cada una.", "todo"],
+        ["Escribir descripciones largas de producto, unas 150 palabras cada una.", "todo"],
+        ["Crear microcopy para Mi Tabla, vino WhatsApp, newsletter, contacto y eventos.", "todo"],
+        ["Revisar que no haya modismos que traduzcan mal al ingles.", "todo"]
+      ]
+    },
+    {
+      id: 6,
+      title: "Eventos y campanas",
+      status: "TODO",
+      progress: 0,
+      owner: "Owner + PM",
+      doneWhen: "Hay 3 eventos iniciales y una campana de temporada lista para publicar.",
+      steps: [
+        ["Definir primeros 3 eventos: titulo, fecha, hora, capacidad y precio.", "todo"],
+        ["Escribir descripcion de cada evento.", "todo"],
+        ["Elegir imagen hero por evento.", "todo"],
+        ["Definir politica de reserva, confirmacion y cancelacion.", "todo"],
+        ["Crear primera campana: temporada, producto nuevo o cata.", "todo"],
+        ["Planificar 4 semanas de posts/stories conectados al launch.", "todo"]
+      ]
+    },
+    {
+      id: 7,
+      title: "Legal, privacidad y cookies",
+      status: "TODO",
+      progress: 0,
+      owner: "Legal + PM + Owner",
+      doneWhen: "Aviso Legal, Privacidad, Cookies y aviso +18 estan revisados y listos.",
+      steps: [
+        ["Confirmar datos de entidad legal.", "todo"],
+        ["Coordinar abogado o responsable legal.", "todo"],
+        ["Redactar/revisar Aviso Legal.", "todo"],
+        ["Redactar/revisar Politica de Privacidad RGPD/LOPDGDD.", "todo"],
+        ["Redactar/revisar Politica de Cookies.", "todo"],
+        ["Confirmar proveedor/criterio de consentimiento: custom, Cookiebot o Iubenda.", "todo"],
+        ["Validar copy +18: vino visible, no venta online de alcohol.", "todo"]
+      ]
+    },
+    {
+      id: 8,
+      title: "Marketing local y medicion",
+      status: "TODO",
+      progress: 0,
+      owner: "Marketing + PM",
+      doneWhen: "Las cuentas y UTM estan preparadas para medir web, Instagram, Maps, newsletter y eventos.",
+      steps: [
+        ["Crear plan UTM para Instagram bio, stories y campanas.", "todo"],
+        ["Preparar Google Search Console.", "todo"],
+        ["Preparar GA4 y lista de eventos a revisar.", "todo"],
+        ["Preparar Meta Pixel desde Meta Business Manager.", "todo"],
+        ["Actualizar o preparar Google Business Profile.", "todo"],
+        ["Definir 5 queries locales objetivo: vino y queso Madrid, etc.", "todo"],
+        ["Crear plantilla simple de tally diario para walk-ins atribuidos a web/IG.", "todo"]
+      ]
+    },
+    {
+      id: 9,
+      title: "Formacion del owner y operativa diaria",
+      status: "TODO",
+      progress: 0,
+      owner: "PM + Owner",
+      doneWhen: "Owner puede operar pedidos, stock, eventos y consultas desde movil en menos de 5 minutos/dia.",
+      steps: [
+        ["Preparar guia rapida de admin en una pagina.", "todo"],
+        ["Grabar mini videos: crear producto, marcar agotado, confirmar pickup, publicar evento.", "todo"],
+        ["Definir rutina manana: pedidos de hoy, eventos, consultas, stock.", "todo"],
+        ["Definir rutina cierre: marcar picked up y revisar mensajes.", "todo"],
+        ["Definir rutina semanal: campana, KPI Tier 0 y proximo evento.", "todo"],
+        ["Hacer prueba real en movil con owner.", "todo"]
+      ]
+    },
+    {
+      id: 10,
+      title: "QA no tecnico y soft launch",
+      status: "TODO",
+      progress: 0,
+      owner: "PM + Owner + QA",
+      doneWhen: "El owner y usuarios de prueba validan contenido, flujos, mobile, WhatsApp, Maps y legal.",
+      steps: [
+        ["Revisar todas las paginas con contenido real.", "todo"],
+        ["Probar WhatsApp en iPhone, Android e Instagram in-app browser.", "todo"],
+        ["Probar Google Maps en iOS y Android.", "todo"],
+        ["Revisar que vino no invite a compra online.", "todo"],
+        ["Revisar formularios con red mala y mensajes de error.", "todo"],
+        ["Hacer soft launch sin anuncio publico.", "todo"],
+        ["Recoger feedback y priorizar fix-list.", "todo"]
+      ]
+    },
+    {
+      id: 11,
+      title: "Launch publico y primera semana",
+      status: "TODO",
+      progress: 0,
+      owner: "Todo el equipo",
+      doneWhen: "Web publica, Instagram y Google actualizados, medicion viva, owner entrenado y retro T+7 cerrada.",
+      steps: [
+        ["Actualizar bio de @crudomov con dominio canonico.", "todo"],
+        ["Confirmar dominio y SSL activos desde Plesk.", "todo"],
+        ["Actualizar Google Business Profile.", "todo"],
+        ["Publicar story/reel de lanzamiento.", "todo"],
+        ["Enviar email de lanzamiento si existe lista previa.", "todo"],
+        ["Revisar eventos GA4, Pixel y Search Console.", "todo"],
+        ["Revisar primeras consultas con owner.", "todo"],
+        ["Hacer retro T+7 y priorizar primera lista de mejoras.", "todo"]
+      ]
+    }
+  ],
+  rules: [
+    "V1 sin pago online.",
+    "V1 sin venta online de alcohol.",
+    "Vino visible para descubrimiento, pero solo via WhatsApp.",
+    "Mi Tabla solo para productos no alcoholicos.",
+    "Contenido primario en espanol, simple y compatible con Google Translate.",
+    "Owner single-operator: todo debe sostenerse en <= 5 min/dia.",
+    "El objetivo comercial es acercar la primera contratacion en 12 meses."
+  ],
+  workstreams: [
+    {
+      title: "Estrategia y negocio",
+      items: [
+        "Baseline financiero actual.",
+        "Coste real de contratar segunda persona.",
+        "Objetivo de ingresos incremental por mes.",
+        "Fecha objetivo de lanzamiento.",
+        "Scope sign-off V1/V1.1/V2."
+      ]
+    },
+    {
+      title: "Contenido y producto",
+      items: [
+        "20-40 productos completos.",
+        "Alcohol/no alcohol marcado.",
+        "Fotos producto y lifestyle.",
+        "Copy corto/largo por producto.",
+        "Campana inicial y 3 eventos."
+      ]
+    },
+    {
+      title: "Legal y confianza",
+      items: [
+        "Aviso Legal.",
+        "Privacidad RGPD/LOPDGDD.",
+        "Politica de Cookies.",
+        "Aviso +18.",
+        "Consentimiento AEPD validado."
+      ]
+    },
+    {
+      title: "Marketing y local SEO",
+      items: [
+        "Dominio canonico.",
+        "Servidor Contabo.",
+        "Plesk configurado para dominio, SSL, Node app, MariaDB y backups.",
+        "Google Business Profile.",
+        "Instagram bio y story plan.",
+        "Search Console.",
+        "UTMs y tracking plan."
+      ]
+    },
+    {
+      title: "Operacion owner",
+      items: [
+        "Rutina manana/cierre.",
+        "Guia admin de una pagina.",
+        "Videos cortos de uso.",
+        "Capacidad pickup diaria.",
+        "SLA de confirmacion."
+      ]
+    },
+    {
+      title: "Launch y aprendizaje",
+      items: [
+        "Soft launch.",
+        "QA real en movil.",
+        "Public launch.",
+        "Retro T+7.",
+        "Revision semanal de KPIs."
+      ]
+    }
+  ],
+  contentChecklist: [
+    ["Fotos", "Hero Home", "16:9 + 9:16, minimo 2400px", "1-2 opciones", "Owner / fotografo", "TODO"],
+    ["Fotos", "Producto", "1:1, minimo 1600x1600, fondo madera oscura", "20-40", "Owner / fotografo", "TODO"],
+    ["Fotos", "Ambiente/lifestyle", "Crops mixtos", "6-10", "Owner", "TODO"],
+    ["Fotos", "Owner + espacio", "Interior, retrato, detalles", "3-5", "Owner", "TODO"],
+    ["Fotos", "Eventos", "16:9", "1 por evento", "Owner", "TODO"],
+    ["Copy", "Manifesto Sobre CRUDO", "200-300 palabras", "1", "Owner + copy", "TODO"],
+    ["Copy", "Hero headline + subtitulo", "6 palabras + 1 frase", "2 opciones", "Copy", "TODO"],
+    ["Copy", "Descripciones cortas", "30 palabras, espanol simple", "20-40", "Owner + copy", "TODO"],
+    ["Copy", "Descripciones largas", "150 palabras, sin modismos", "20-40", "Owner + copy", "TODO"],
+    ["Catalogo", "Lista de productos", "Nombre, productor, region, precio, alcohol/no alcohol", "20-40", "Owner", "TODO"],
+    ["Eventos", "Eventos iniciales", "Fecha, precio, capacidad, descripcion", "3", "Owner + PM", "TODO"],
+    ["Legal", "Textos legales", "Aviso, privacidad, cookies, +18", "4 piezas", "Legal", "TODO"]
+  ],
+  launchChecklist: [
+    {
+      title: "Pre-launch T-7",
+      items: [
+        "Contenido cargado: productos, eventos, About y hero.",
+        "Paginas legales revisadas.",
+        "Cookie banner validado.",
+        "GA4/Search Console/Pixel preparados.",
+        "Schema, OG y favicon revisados.",
+        "WhatsApp y Maps probados en movil.",
+        "Owner entrenado con guia rapida."
+      ]
+    },
+    {
+      title: "Launch day",
+      items: [
+        "Dominio publico activo en Plesk.",
+        "SSL activo desde Plesk.",
+        "Smoke test de journeys criticos.",
+        "URL enviada a Search Console.",
+        "Google Business Profile actualizado.",
+        "Instagram bio actualizada.",
+        "Story/reel de lanzamiento.",
+        "Canal de errores/feedback abierto."
+      ]
+    },
+    {
+      title: "Post-launch T+7",
+      items: [
+        "Revisar funnels GA4.",
+        "Revisar errores de Search Console.",
+        "Revisar preguntas reales recibidas.",
+        "Owner retro: que falta en admin/contenido.",
+        "Priorizar primera fix-list.",
+        "Elegir una palanca comercial para la semana 2."
+      ]
+    }
+  ],
+  kpis: [
+    ["Ingresos incrementales web/IG", "+500 EUR", "Owner log + admin + GA4", "Semanal"],
+    ["Walk-ins atribuidos a web/IG", ">= 5/semana", "Tally diario owner", "Semanal"],
+    ["Pickup fulfilled", ">= 10/mes", "Admin status PICKED_UP", "Semanal"],
+    ["Ticket medio pickup", ">= 25 EUR", "Admin", "Semanal"],
+    ["Wine WhatsApp clicks", ">= 30/mes", "GA4", "Semanal"],
+    ["Eventos", "70% plazas", "Admin + owner", "Por evento"],
+    ["Newsletter", "+100 subs", "Brevo", "Semanal"],
+    ["Owner admin time", "<= 5 min/dia", "Owner self-report", "Semanal"]
+  ],
+  operatingRhythm: [
+    {
+      title: "Manana <= 90s",
+      items: [
+        "Abrir admin en movil.",
+        "Ver pickups de hoy, eventos y consultas nuevas.",
+        "Confirmar pedidos con respuesta WhatsApp.",
+        "Marcar productos agotados si hace falta."
+      ]
+    },
+    {
+      title: "Durante servicio",
+      items: [
+        "No hacer admin obligatorio.",
+        "Recibir pings WhatsApp de nuevos pedidos.",
+        "Responder solo si es comodo.",
+        "Mantener SLA de 24h sin ansiedad."
+      ]
+    },
+    {
+      title: "Cierre <= 90s",
+      items: [
+        "Marcar pickups como recogidos.",
+        "Escanear consultas.",
+        "Anotar walk-ins web/IG.",
+        "Preparar pendientes para manana."
+      ]
+    },
+    {
+      title: "Domingo <= 10 min",
+      items: [
+        "Publicar o preparar campana semanal.",
+        "Revisar KPIs Tier 0.",
+        "Anadir evento si toca.",
+        "Elegir una accion comercial para la semana."
+      ]
+    }
+  ],
+  risks: [
+    {
+      title: "Contenido llega tarde",
+      mitigation: "Cerrar lista de productos, fotos y copy en semana 1. Usar placeholders solo marcados como temporales."
+    },
+    {
+      title: "Owner se satura",
+      mitigation: "SLA 24h, slots limitados, batch de notificaciones y rutina diaria de <= 5 minutos."
+    },
+    {
+      title: "Scope creep ecommerce",
+      mitigation: "Stripe puede quedar como preparacion tecnica para V2, pero en V1 no hay pago online ni venta online de alcohol. Nuevas ideas van a V1.1/V2."
+    },
+    {
+      title: "Legal bloquea launch",
+      mitigation: "Legal empieza en paralelo con discovery. Revisar cookies, privacidad y aviso +18 antes de QA."
+    },
+    {
+      title: "Fotos no tienen nivel",
+      mitigation: "Brief visual claro y decision temprana sobre shoot de medio dia."
+    },
+    {
+      title: "No se mide el impacto",
+      mitigation: "UTMs, tally de walk-ins, GA4 y revision semanal de Tier 0 desde la primera semana."
+    }
+  ]
+};
+
+const statusLabels = {
+  TODO: "Pendiente",
+  DOING: "En curso",
+  BLOCKED: "Bloqueado",
+  REVIEW: "Revision",
+  DONE: "Hecho"
+};
+
+function statusClass(status) {
+  const map = { TODO: "todo", DOING: "doing", BLOCKED: "blocked", REVIEW: "review", DONE: "done" };
+  return map[status] || "todo";
+}
+
+function tag(status) {
+  const cls = statusClass(status);
+  return `<span class="tag ${cls}"><span class="status-dot ${cls}"></span>${statusLabels[status] || status}</span>`;
+}
+
+function renderHero() {
+  const heroMeta = document.getElementById("heroMeta");
+  const cls = statusClass(nonTechState.overallStatus);
+  heroMeta.innerHTML = `
+    <span class="pill"><strong>Actualizado</strong> ${nonTechState.lastUpdated}</span>
+    <span class="pill"><span class="status-dot ${cls}"></span><strong>Estado</strong> ${statusLabels[nonTechState.overallStatus]}</span>
+    <span class="pill"><strong>Fase actual</strong> ${nonTechState.currentPhase}</span>
+    <span class="pill"><strong>Siguiente accion</strong> ${nonTechState.nextAction}</span>
+  `;
+}
+
+function renderSummary() {
+  const total = nonTechState.phases.length;
+  const done = nonTechState.phases.filter((phase) => phase.status === "DONE").length;
+  const doing = nonTechState.phases.filter((phase) => phase.status === "DOING").length;
+  const blocked = nonTechState.phases.filter((phase) => phase.status === "BLOCKED").length;
+  const progress = Math.round(nonTechState.phases.reduce((sum, phase) => sum + phase.progress, 0) / total);
+  document.getElementById("summary").innerHTML = `
+    <article class="metric">
+      <div class="label">Progreso no tecnico</div>
+      <div class="value">${progress}%</div>
+      <div class="hint">Media de fases operativas.</div>
+    </article>
+    <article class="metric">
+      <div class="label">Fases cerradas</div>
+      <div class="value">${done}/${total}</div>
+      <div class="hint">Solo entregables verificados.</div>
+    </article>
+    <article class="metric">
+      <div class="label">En curso</div>
+      <div class="value">${doing}</div>
+      <div class="hint">Trabajo activo ahora.</div>
+    </article>
+    <article class="metric">
+      <div class="label">Bloqueos</div>
+      <div class="value">${blocked}</div>
+      <div class="hint">Necesitan decision o material.</div>
+    </article>
+  `;
+}
+
+function renderRules() {
+  document.getElementById("rulesList").innerHTML = nonTechState.rules.map((rule) => `<li>${rule}</li>`).join("");
+}
+
+function renderPhases() {
+  document.getElementById("phaseList").innerHTML = nonTechState.phases.map((phase) => {
+    const isCurrent = phase.id === nonTechState.currentPhase ? " current" : "";
+    const cls = statusClass(phase.status);
+    return `
+      <article class="phase ${cls}${isCurrent}">
+        <div class="phase-index">${String(phase.id).padStart(2, "0")}</div>
+        <div class="phase-main">
+          <div class="phase-title">
+            <h3>${phase.title}</h3>
+            ${tag(phase.status)}
+            <span class="pill"><strong>Responsable</strong> ${phase.owner}</span>
+          </div>
+          <div class="phase-grid">
+            <ul class="steps">
+              ${phase.steps.map(([text, state]) => `
+                <li class="step ${state}">
+                  <span class="check">${state === "done" ? "✓" : state === "blocked" ? "!" : ""}</span>
+                  <span>${text}</span>
+                </li>
+              `).join("")}
+            </ul>
+            <div>
+              <div class="deliverable">
+                <strong>Done cuando</strong>
+                <p>${phase.doneWhen}</p>
+              </div>
+              <div class="progress-track" aria-label="Progreso ${phase.progress}%">
+                <div class="progress-fill" style="width:${phase.progress}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function renderWorkstreams() {
+  document.getElementById("workstreamGrid").innerHTML = nonTechState.workstreams.map((lane) => `
+    <article class="panel">
+      <h3>${lane.title}</h3>
+      <ul class="list">${lane.items.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </article>
+  `).join("");
+}
+
+function renderContentTable() {
+  document.getElementById("contentTable").innerHTML = nonTechState.contentChecklist.map((row) => `
+    <tr>
+      <td>${row[0]}</td>
+      <td>${row[1]}</td>
+      <td>${row[2]}</td>
+      <td>${row[3]}</td>
+      <td>${row[4]}</td>
+      <td>${tag(row[5])}</td>
+    </tr>
+  `).join("");
+}
+
+function renderLaunch() {
+  document.getElementById("launchGrid").innerHTML = nonTechState.launchChecklist.map((lane) => `
+    <article class="panel">
+      <h3>${lane.title}</h3>
+      <ul class="list">${lane.items.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </article>
+  `).join("");
+}
+
+function renderKpis() {
+  document.getElementById("kpiTable").innerHTML = nonTechState.kpis.map((row) => `
+    <tr>
+      <td>${row[0]}</td>
+      <td>${row[1]}</td>
+      <td>${row[2]}</td>
+      <td>${row[3]}</td>
+    </tr>
+  `).join("");
+}
+
+function renderOperating() {
+  document.getElementById("operatingGrid").innerHTML = nonTechState.operatingRhythm.map((lane) => `
+    <article class="panel">
+      <h3>${lane.title}</h3>
+      <ul class="list">${lane.items.map((item) => `<li>${item}</li>`).join("")}</ul>
+    </article>
+  `).join("");
+}
+
+function renderRisks() {
+  document.getElementById("riskGrid").innerHTML = nonTechState.risks.map((risk) => `
+    <article class="panel">
+      <h3>${risk.title}</h3>
+      <p class="lead" style="font-size:0.94rem;margin-top:0">${risk.mitigation}</p>
+    </article>
+  `).join("");
+}
+
+function render() {
+  renderHero();
+  renderSummary();
+  renderRules();
+  renderPhases();
+  renderWorkstreams();
+  renderContentTable();
+  renderLaunch();
+  renderKpis();
+  renderOperating();
+  renderRisks();
+}
+
+render();
+</script>
+</body>
+</html>

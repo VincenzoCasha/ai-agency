@@ -1,4 +1,4 @@
-# CRUDO - V1 Tecnico para Opus
+﻿# CRUDO - V1 Tecnico para Opus
 
 Documento operativo para programar la V1 de CRUDO usando Claude Opus como agente de desarrollo.
 
@@ -34,7 +34,7 @@ state_version: 1
 last_updated: 2026-05-04
 current_phase: 0
 current_phase_name: "Preparacion, repo y contexto"
-current_focus: "Documentacion tecnica V1 creada y organizada en docs/V1; todavia no se ha empezado a implementar codigo"
+current_focus: "Documentacion tecnica V1 actualizada a monolito JavaScript: React 19/Vite + Node.js/Express + MariaDB + Tailwind; despliegue previsto en servidor Contabo gestionado con Plesk"
 next_recommended_prompt: "Fase 0 - Preparacion, repo y contexto"
 overall_status: "NOT_STARTED"
 ```
@@ -53,13 +53,13 @@ overall_status: "NOT_STARTED"
 | Fase | Nombre | Estado | Implementado | Falta | Bloqueos / notas |
 |------|--------|--------|--------------|-------|------------------|
 | 0 | Preparacion, repo y contexto | NOT_STARTED | `docs/V1/V1Tecnico.md`, `docs/V1/v1TecnicoVisual.html` y documentos V1 organizados en `docs/V1/` | Estructura repo de codigo, README, `.env.example`, docs base de implementacion | Sin bloqueos |
-| 1 | Scaffold backend Spring Boot | NOT_STARTED | Nada | `api/`, Maven, OpenAPI inicial, profiles, tests smoke | Pendiente Fase 0 |
-| 2 | Modelo de datos, Flyway y seed local | NOT_STARTED | Nada | Schema, entidades, repositories, seeds, tests | Pendiente Fase 1 |
-| 3 | OpenAPI completo y servicios publicos | NOT_STARTED | Nada | Catalogo, campanas, eventos, inquiries, newsletter, consent, site config | Pendiente Fase 2 |
+| 1 | Scaffold monolito Node.js Express | NOT_STARTED | Nada | `package.json`, `server.js`, `src/`, `config/`, `routes/`, `controllers/`, `services/`, `db/`, health, tests smoke | Pendiente Fase 0 |
+| 2 | Modelo de datos MariaDB y seed local | NOT_STARTED | Nada | SQL schema, migraciones SQL, pool MariaDB, seed local, tests repository/service | Pendiente Fase 1 |
+| 3 | API Express y servicios publicos | NOT_STARTED | Nada | Catalogo, campanas, eventos, inquiries, newsletter, consent, site config con validacion de requests | Pendiente Fase 2 |
 | 4 | Mi Tabla y alcohol guard | NOT_STARTED | Nada | Pickup backend, 422 alcohol, idempotency, notificaciones | Pendiente Fase 3 |
 | 5 | Admin backend y seguridad JWT | NOT_STARTED | Nada | Auth, dashboard, CRUD admin, audit, storage | Pendiente Fase 4 |
-| 6 | Docker Compose e infraestructura local | NOT_STARTED | Nada | Compose, Dockerfiles, Caddy, backup, CI | Puede avanzar tras backend scaffold |
-| 7 | Scaffold frontend y design system | NOT_STARTED | Nada | Vite, rutas, tokens, layout, cookie banner base | Puede avanzar tras Fase 0 |
+| 6 | Scripts npm, build y despliegue Plesk/Contabo | NOT_STARTED | Nada | `npm run dev`, `vite build`, `server.js` sirviendo `dist/`, guia Plesk, backups MariaDB, CI | Puede avanzar tras scaffold |
+| 7 | Frontend React/Vite y design system | NOT_STARTED | Nada | React 19, Vite, Tailwind, rutas, tokens, layout, cookie banner base | Puede avanzar tras Fase 0 |
 | 8 | Public frontend: Home, Catalogo y PDP | NOT_STARTED | Nada | Home, catalogo, PDP, vino WhatsApp-only, schema | Pendiente Fase 7 y API estable |
 | 9 | Mi Tabla frontend y pickup flow | NOT_STARTED | Nada | Store, drawer, form, confirmacion, analytics | Pendiente Fase 8 y Fase 4 |
 | 10 | Eventos, contacto, newsletter, sobre y mayoristas | NOT_STARTED | Nada | Rutas publicas secundarias y formularios | Pendiente Fase 3 y Fase 7 |
@@ -77,7 +77,7 @@ Actualizar esta lista al terminar cada sesion con codigo. Mantener bullets concr
 
 ### Funcionalidades pendientes criticas de V1
 
-- Backend OpenAPI-first.
+- Backend Node.js/Express con rutas, controladores, servicios y validacion de requests.
 - Modelo de datos con `is_alcohol`.
 - Alcohol guard backend con HTTP 422 en `POST /api/v1/pickup-orders`.
 - Public frontend.
@@ -86,12 +86,12 @@ Actualizar esta lista al terminar cada sesion con codigo. Mantener bullets concr
 - Cookie consent AEPD.
 - SEO/prerender.
 - Analytics gated by consent.
-- Docker/infra.
+- scripts npm + despliegue Plesk/Contabo.
 - Tests E2E.
 
 ### Decisiones confirmadas
 
-- Stack V1: React + Vite, Spring Boot Java, PostgreSQL, Docker Compose.
+- Stack V1: JavaScript, Node.js + Express, MariaDB con paquete `mariadb`, React 19 + Vite, Tailwind CSS, PostCSS, Autoprefixer, monolito CommonJS, `server.js` sirviendo `dist/`, despliegue en Contabo con Plesk.
 - V1 sin pago online.
 - V1 sin venta online de alcohol.
 - Vino visible en catalogo/PDP, pero solo WhatsApp.
@@ -116,6 +116,7 @@ Actualizar esta lista al terminar cada sesion con codigo. Mantener bullets concr
 - Cookie provider: custom, Cookiebot, Iubenda u otro.
 - Primeros 20-40 productos con precios y `is_alcohol`.
 - Primeros 3 eventos.
+- Plan Plesk definitivo: dominio principal, subdominio staging, estrategia Node app, backups y variables de entorno.
 
 ### Registro de sesiones
 
@@ -129,6 +130,7 @@ Registro:
 
 - 2026-05-04 | Fase docs | Creado V1Tecnico.md con fases y prompts para Opus | Verificacion: estructura revisada | Siguiente: Fase 0
 - 2026-05-04 | Fase docs | Organizados documentos en `docs/` y V1 en `docs/V1/`; creado roadmap visual V1 | Verificacion: rutas revisadas | Siguiente: Fase 0
+- 2026-05-04 | Fase docs | Stack actualizado a monolito JavaScript: React 19/Vite + Node.js/Express + MariaDB + Tailwind; despliegue objetivo Contabo + Plesk | Verificacion: documentos en revision | Siguiente: Fase 0
 
 ### Instrucciones para actualizar este estado
 
@@ -169,8 +171,9 @@ Estas reglas deben aparecer en todos los prompts importantes.
 - Cookie banner AEPD: Aceptar, Rechazar, Configurar con peso visual equivalente; GA4 y Pixel solo tras consentimiento.
 - Analytics: GA4, Search Console, Meta Pixel y eventos `select_item`, `pickup_request`, `wine_whatsapp_click`, `generate_lead`.
 - SEO: prerender de catalogo y PDP, sitemap.xml, robots.txt, Open Graph, schema.org Restaurant/Product/Event/FAQ.
-- Stack V1: React + Vite, Spring Boot Java, PostgreSQL, Docker Compose, Caddy, Cloudflare, R2/Bunny para imagenes, Brevo para newsletter.
-- No Stripe, Redsys, cuentas de usuario, loyalty, reviews, app movil, stock realtime ni i18n completo en V1.
+- Stack V1: JavaScript, Node.js + Express, MariaDB con paquete `mariadb`, React 19 + Vite, Tailwind CSS, PostCSS, Autoprefixer, monolito CommonJS, `server.js` sirviendo `dist/`, Contabo + Plesk para despliegue, almacenamiento local/Plesk para V1, Brevo/nodemailer para emails.
+- Stripe queda instalado/documentado solo como preparacion tecnica si se decide V2; en V1 no se activa pago online ni webhooks reales.
+- No Redsys, cuentas de usuario cliente, loyalty, reviews, app movil, stock realtime ni i18n completo en V1.
 
 ## 2. Reglas de ingenieria desde docs/AGENTS_Javi.md
 
@@ -181,42 +184,62 @@ Opus debe seguir estas reglas durante todo el proyecto.
 - Codigo, clases, variables, comentarios tecnicos inline y tests en ingles.
 - Documentacion tecnica, README y guias en espanol.
 - SQL con keywords en INGLES MAYUSCULAS e identificadores en `snake_case`.
-- Java 21 LTS.
-- Spring Boot 3.x estable.
-- PostgreSQL 16.
-- Maven wrapper incluido.
-- Arquitectura backend por capas salvo que exista una arquitectura documentada distinta: Controller -> Service Interface -> Service Impl -> Repository -> Entity.
-- API OpenAPI-first: definir `openapi.yml` antes de controllers, generar DTOs/interfaces, controllers implementan interfaces generadas.
-- Flyway: `V1` a `V899` solo schema; seeds `V900+` en `db/migration/seed`, solo local/dev.
-- MapStruct para mapeos, no ModelMapper.
+- JavaScript en frontend y backend.
+- CommonJS en `package.json` para backend y scripts de servidor.
+- Node.js con Express como backend principal.
+- MariaDB como base de datos usando el paquete `mariadb`.
+- SQL versionado en archivos `.sql` dentro de `db/migrations/`; seeds locales en `db/seeds/`.
+- `package-lock.json` o `pnpm-lock.yaml` versionado; elegir un gestor y no mezclar.
+- Arquitectura backend por modulos: Route -> Controller -> Service -> Repository -> MariaDB.
+- Validacion de requests por middleware/helper centralizado; no validar de forma dispersa en cada controlador.
+- Mapeos simples en JavaScript; no crear capas innecesarias.
 - Sin secretos hardcodeados. Todo via variables de entorno y `.env.example`.
-- Tests: backend JUnit 5, Mockito, AssertJ, Testcontainers; frontend Vitest, Testing Library, Zod, axe; E2E Playwright.
+- Tests: backend Vitest o Jest + Supertest, MariaDB test DB si aplica; frontend Vitest, Testing Library, axe; E2E Playwright.
 - Cobertura objetivo del contrato: >80% cuando aplique. El V1 minimo pide al menos 60% en paquetes `service` y `web`, pero se debe apuntar a 80%.
 - Error handling con RFC 7807 `application/problem+json`.
-- Antes de declarar DONE: type-check, lint, tests, build, Docker sin crash, docs actualizadas, sin secretos.
+- Antes de declarar DONE: lint, tests, build, arranque local sin crash si aplica, docs actualizadas, sin secretos.
 
 ## 3. Stack y estructura objetivo
 
-Estructura monorepo:
+Estructura monolito:
 
 ```text
 crudo/
-  api/                         # Spring Boot
-    Dockerfile
-    pom.xml
-    src/main/resources/openapi/api.yml
-    src/main/resources/db/migration/
-    src/main/resources/db/migration/seed/
-    src/main/java/com/crudo/...
-    src/test/java/com/crudo/...
-  web/                         # React + Vite
-    Dockerfile
-    package.json
-    src/
+  package.json                 # CommonJS
+  server.js                    # Express API + static dist server
+  vite.config.js
+  tailwind.config.js
+  postcss.config.js
+  eslint.config.js
+  index.html
+  src/                         # React 19 + Vite frontend
+    main.jsx
+    App.jsx
+    pages/
+    components/
+    hooks/
+    lib/
+    styles/
+  server/                      # Express backend
+    app.js
+    routes/
+    controllers/
+    services/
+    repositories/
+    middleware/
+    config/
+    utils/
+  db/
+    pool.js
+    migrations/
+    seeds/
+  uploads/
+    .gitkeep
   infra/
-    docker-compose.yml
-    caddy/Caddyfile
-    scripts/backup.sh
+    plesk/
+      README.md
+    scripts/
+      backup-notes.md
   docs/
     discovery.md
     content-checklist.md
@@ -228,39 +251,50 @@ crudo/
 ```
 
 Frontend recomendado:
-- React 18
+- React 19
 - Vite
+- JavaScript
+- Tailwind CSS
+- PostCSS
+- Autoprefixer
 - React Router
-- TanStack Query
-- Zustand para `Mi Tabla`
-- Zod
-- React Hook Form
-- Framer Motion solo para reveals sutiles
+- axios para llamadas API
+- estado ligero propio para `Mi Tabla` o helper dedicado
+- clsx, class-variance-authority y tailwind-merge para variantes visuales
 - Lucide icons
-- CSS modules + tokens CSS como preferencia
-- Tailwind solo si Opus justifica que no rompe el lenguaje editorial
+- canvas-confetti solo para microcelebracion de confirmacion si no degrada performance
+- Tokens CRUDO mapeados en `tailwind.config.js`
+- CSS global minimo para fuentes, scroll, focus rings y tokens que Tailwind no cubra bien
 
 Backend recomendado:
-- Java 21
-- Spring Boot 3.x
-- Spring Web
-- Spring Data JPA
-- Spring Security
-- Flyway
-- PostgreSQL driver
-- MapStruct
-- Springdoc/OpenAPI generator
-- Bucket4j
-- Resilience4j
-- JJWT
-- Testcontainers
+- Node.js
+- Express
+- MariaDB con paquete `mariadb`
+- bcryptjs
+- jsonwebtoken
+- helmet
+- express-rate-limit
+- cookie-parser
+- cors
+- dotenv
+- multer y sharp para imagenes
+- nodemailer para correos
+- pdfkit, pdf-lib y exceljs solo si hay exportes/documentos admin realmente requeridos
+- stripe y `@stripe/stripe-js` preparados solo para V2; no activar pago online en V1
+- axios, slugify, xmlbuilder2 y sepa-xml solo donde haya uso real
+- ESLint
+- concurrently
+- Vitest/Jest + Supertest
 
 Infra:
-- Docker Compose local/staging/prod
-- Caddy reverse proxy + HTTPS
-- PostgreSQL 16
-- Cloudflare DNS/CDN/WAF
-- R2 o Bunny para imagenes
+- `npm run dev` con concurrently para Vite + Express
+- `vite build` genera `dist/`
+- `server.js` sirve `dist/` y la API Express bajo `/api/v1`
+- Servidor Contabo como VPS/servidor productivo
+- Plesk para dominio, SSL, Node.js app, MariaDB, backups y despliegue
+- MariaDB gestionada desde Plesk/Contabo
+- DNS gestionado desde el registrador o Plesk segun configuracion final; CDN externo queda opcional, no obligatorio en V1
+- Imagenes en filesystem gestionado por Plesk para V1; object storage/CDN queda aplazado si el volumen lo justifica
 - Brevo newsletter y emails
 - WhatsApp Business via Twilio/360dialog o adaptador simulable localmente
 
@@ -365,7 +399,7 @@ Cross-cutting:
 
 ## 7. Design tokens obligatorios
 
-Crear `web/src/design-system/tokens.css` con estos tokens como fuente unica:
+Crear `src/styles/tokens.css` o definir tokens en `src/styles/global.css` con estos valores como fuente unica:
 
 ```css
 :root {
@@ -440,16 +474,17 @@ Reglas obligatorias:
 - No modifiques docs/AGENTS_Javi.md.
 - No inventes alcance fuera del V1.
 - Documentacion en espanol; codigo, variables, clases, comentarios tecnicos y tests en ingles.
-- Backend Java 21 + Spring Boot 3.x + PostgreSQL + Flyway + MapStruct.
-- API OpenAPI-first: define/actualiza openapi.yml antes de implementar controllers. Controllers implementan interfaces generadas.
-- Frontend React 18 + Vite, mobile-first, espanol, semantic HTML, compatible con Google Translate.
+- Backend Node.js + Express + MariaDB usando el paquete `mariadb`.
+- Frontend React 19 + Vite + Tailwind CSS, mobile-first, espanol, semantic HTML, compatible con Google Translate.
+- Arquitectura monolito CommonJS: `server.js` sirve API `/api/v1` y el build `dist/`; frontend en `src/`, backend en `server/`, SQL en `db/`.
+- Validacion de requests centralizada antes de controladores. No dupliques reglas de negocio entre UI y backend.
 - No pagos online.
 - No venta online de alcohol.
 - Wine/products with is_alcohol=true are visible in catalog/PDP but cannot be added to Mi Tabla.
 - POST /api/v1/pickup-orders must reject alcohol items with HTTP 422 and RFC 7807 problem detail.
 - Admin must be phone-friendly and usable in <= 5 min/day by one owner.
 - Secrets only via env vars and .env.example.
-- Use Docker Compose for local execution.
+- Usa `npm run dev` para desarrollo y `vite build` + `server.js` para produccion. Production target: Contabo server managed with Plesk.
 - Add focused tests and run verification before DONE.
 
 Workflow:
@@ -459,7 +494,7 @@ Workflow:
 4. Summarize what already exists, what phase we are in, and what you will change.
 5. Implement only the requested/current phase.
 6. Add/update tests for the changed behavior.
-7. Run relevant commands: format/lint/type-check/tests/build.
+7. Run relevant commands: format/lint/tests/build.
 8. Update section `0.1 Estado vivo del proyecto` with phase status, implemented work, missing work, blockers, session log, next recommended prompt, and checklist items that are truly verified.
 9. Report files changed, verification result, remaining risks, and next recommended phase.
 
@@ -471,7 +506,7 @@ Do not finish with only a plan unless blocked. Implement.
 Objetivo: dejar el repo listo para programar sin ambiguedades.
 
 Entregables:
-- Estructura monorepo creada.
+- Estructura monolito creada.
 - `README.md` con comandos.
 - `.gitignore`.
 - `.env.example`.
@@ -490,11 +525,13 @@ Implementa la Fase 0 de CRUDO V1: preparacion del repositorio y contexto operati
 
 Tareas:
 1. Audita el directorio actual y detecta si ya existe codigo, docs o configuracion.
-2. Crea la estructura monorepo:
-   - api/
-   - web/
+2. Crea la estructura monolito:
+   - src/
+   - server/
+   - db/
+   - uploads/
    - infra/
-   - infra/caddy/
+   - infra/plesk/
    - infra/scripts/
    - docs/
    - .github/workflows/
@@ -511,14 +548,15 @@ Tareas:
    - .env
    - logs/cache
 5. Crea .env.example con todas las variables previstas:
-   - POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD
-   - SPRING_PROFILES_ACTIVE
+   - DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
    - JWT_SECRET
    - CORS_ALLOWED_ORIGINS
-   - STORAGE_ENDPOINT, STORAGE_BUCKET, STORAGE_KEY, STORAGE_SECRET
+   - UPLOADS_DIR
    - BREVO_API_KEY
+   - SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
    - OWNER_WHATSAPP
    - OWNER_EMAIL
+   - STRIPE_SECRET_KEY, VITE_STRIPE_PUBLIC_KEY como placeholders V2 desactivados
    - VITE_API_BASE
    - VITE_GA_ID
    - VITE_META_PIXEL
@@ -570,19 +608,16 @@ Verificacion:
 - Ejecuta git status.
 ```
 
-## 10. Fase 1 - Scaffold backend Spring Boot
-
-Objetivo: levantar API base con Java 21, OpenAPI-first, Flyway, PostgreSQL, Docker y profile local.
+## 10. Fase 1 - Scaffold monolito Node.js Express
 
 Entregables:
-- `api/pom.xml`
-- Maven wrapper
-- Spring Boot app
-- `api/src/main/resources/openapi/api.yml` inicial
-- `application.yml`, `application-local.yml`, `application-prod.yml`
-- Flyway base
+- `package.json` CommonJS
+- `server.js`
+- Express app en `server/app.js`
+- Pool MariaDB inicial en `db/pool.js`
+- Rutas/controladores/servicios base
+- Configuracion por env
 - Health endpoint
-- Dockerfile API
 - Tests smoke
 
 Prompt para Opus:
@@ -590,101 +625,101 @@ Prompt para Opus:
 ```text
 Usa el Prompt base obligatorio.
 
-Implementa la Fase 1: scaffold backend Spring Boot de CRUDO V1.
+Implementa la Fase 1: scaffold monolito Node.js Express de CRUDO V1.
 
 Stack obligatorio:
-- Java 21
-- Spring Boot 3.x
-- Maven wrapper
-- PostgreSQL
-- Flyway
-- Spring Web
-- Spring Data JPA
-- Spring Security
-- Validation
-- Springdoc/OpenAPI + openapi-generator-maven-plugin
-- MapStruct
-- JJWT
-- Bucket4j
-- Testcontainers
-- JUnit 5, Mockito, AssertJ
+- Node.js
+- JavaScript
+- CommonJS
+- Express
+- MariaDB con paquete `mariadb`
+- dotenv
+- cors
+- helmet
+- express-rate-limit
+- cookie-parser
+- Vitest
+- Supertest para tests HTTP
 
 Tareas:
-1. Crea el proyecto Spring Boot dentro de api/.
-2. Configura Maven wrapper.
-3. Configura openapi-generator-maven-plugin:
-   - inputSpec: src/main/resources/openapi/api.yml
-   - generatorName: spring
-   - interfaceOnly: true
-   - useSpringBoot3: true
-   - useTags: true
-   - skipDefaultInterface: true
-4. Crea openapi/api.yml minimo con:
-   - health
-   - products list/detail como placeholders
-   - problem detail schema RFC 7807
-5. Crea estructura de paquetes:
-   - com.crudo.config
-   - com.crudo.catalog
-   - com.crudo.campaign
-   - com.crudo.event
-   - com.crudo.pickup
-   - com.crudo.inquiry
-   - com.crudo.newsletter
-   - com.crudo.notification
-   - com.crudo.auth
-   - com.crudo.site
-   - com.crudo.common.error
-   - com.crudo.common.audit
-   - com.crudo.common.slug
-   - com.crudo.common.validation
-6. Configura application-local.yml:
-   - postgres local/docker
-   - flyway locations con seed
-   - seguridad local simple o desactivada para endpoints publicos
-7. Configura application-prod.yml:
-   - variables de entorno
-   - sin seeds
-8. Crea Flyway V1__initial_schema.sql solo con infraestructura minima si todavia no implementas entidades.
-9. Crea endpoint health o usa actuator si lo anades y justificas.
-10. Crea Dockerfile para api.
-11. Crea tests smoke:
-   - contexto Spring levanta
+1. Crea el proyecto Node en la raiz del repo.
+2. Configura `package.json` con scripts:
+   - `dev`
+   - `dev:server`
+   - `dev:client`
+   - `build`
+   - `start`
+   - `lint`
+   - `test`
+   - `db:migrate`
+   - `db:seed`
+   - `deploy:plesk:notes` si procede
+3. Configura CommonJS en `package.json`.
+4. Crea estructura:
+   - `server.js`
+   - `server/app.js`
+   - `server/config/env.js`
+   - `server/routes/`
+   - `server/controllers/`
+   - `server/services/`
+   - `server/repositories/`
+   - `server/middleware/`
+   - `server/utils/problem.js`
+   - `db/pool.js`
+   - `db/migrations/`
+   - `db/seeds/`
+   - `tests/`
+5. Configura Express con:
+   - CORS por env
+   - rate limit preparado
+   - problem details handler
+   - helmet
+   - JSON/body parsers
+   - cookie-parser
+6. Crea helpers minimos para:
+   - validacion de requests
+   - problem detail RFC 7807
+   - async route handler
+7. Crea endpoint `GET /api/v1/health`.
+8. Crea conexion MariaDB inicial con pool:
+   - variables `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`
+   - health puede comprobar conexion si hay DB disponible; si no, debe degradar de forma clara en local
+9. Crea `.env.example` especifico de API si procede.
+10. Crea tests smoke:
+   - app levanta con Supertest
    - health responde
 
 Criterios de aceptacion:
-- `./mvnw test` pasa dentro de api.
-- `./mvnw compile` genera fuentes OpenAPI sin errores.
+- `npm test` pasa.
+- `npm run lint` pasa si ESLint esta configurado.
 - No hay secretos hardcodeados.
-- El profile local funciona sin OAuth ni dependencias externas.
+- La configuracion local funciona sin OAuth ni dependencias externas.
 - No se implementa todavia logica de negocio fuera del scaffold.
 
 Verificacion:
-- Ejecuta `./mvnw test`.
-- Ejecuta `./mvnw compile`.
+- Ejecuta `npm test`.
 - Reporta archivos cambiados y riesgos.
 ```
 
-## 11. Fase 2 - Modelo de datos, Flyway y seed local
+## 11. Fase 2 - Modelo de datos MariaDB y seed local
 
 Objetivo: crear schema real V1 y datos de desarrollo suficientes.
 
 Entregables:
-- Entidades JPA
-- Repositories
-- Migrations Flyway
-- Seeds V900+
-- Tests repository con Testcontainers
+- `db/migrations/*.sql`
+- Repositories/services JavaScript
+- Seed local en `db/seeds/seed.js` o `db/seeds/*.sql`
+- Tests repository/service con base de datos de test
 
 Prompt para Opus:
 
 ```text
 Usa el Prompt base obligatorio.
 
-Implementa la Fase 2: modelo de datos V1 de CRUDO con Flyway y JPA.
+Implementa la Fase 2: modelo de datos V1 de CRUDO con MariaDB.
 
 Tareas:
-1. Actualiza V1__initial_schema.sql con las tablas V1:
+1. Crea migraciones SQL en `db/migrations/` para las tablas V1:
    - product
    - product_image
    - category
@@ -700,63 +735,65 @@ Tareas:
    - admin_user
    - consent_log
    - audit_log
-2. Usa constraints:
+2. Usa constraints e indices:
    - slugs unicos
    - FK con nombres claros
    - CHECK para enums cuando sea razonable
    - `price_cents`, `total_cents`, `unit_price_cents` enteros no negativos
    - `qty > 0`
    - timestamps `created_at`, `updated_at`
-3. Crea entidades JPA en paquetes por dominio.
-4. Crea repositories Spring Data.
-5. Crea enums Java en ingles:
+3. Modela enums con `ENUM` MariaDB o `VARCHAR` con CHECK si la version lo soporta:
    - ProductType
    - StockStatus
    - ReservationStatus
    - InquiryType
    - WorkStatus/OrderStatus segun nombre elegido
    - AdminRole
-6. Crea V900__seed_dev_data.sql en `db/migration/seed` con:
+4. Crea repositories/services JavaScript por modulo, usando el pool MariaDB encapsulado:
+   - catalog repository/service
+   - event repository/service
+   - pickup repository/service
+   - auth repository/service
+5. Crea seed local con:
    - categorias de quesos y vinos
    - minimo 8 productos, incluyendo al menos 2 vinos con `is_alcohol=true`
    - minimo 4 productos `is_seasonal=true`
    - 1 campana activa
    - 2 eventos futuros
    - 1 admin user local con password documentada solo como hash de dev
-7. Configura profile local para cargar seeds.
-8. Configura profile prod para NO cargar seeds.
-9. Anade repository tests con PostgreSQL Testcontainers:
+6. Configura seed solo para local/dev. Produccion en Plesk no debe ejecutar seed automaticamente.
+7. Anade tests repository/service con MariaDB de test:
    - unique slug
    - product categories
    - seed alcohol/non-alcohol visible
    - pickup_order_item puede referenciar producto, pero la validacion de alcohol se hara en servicio en fase posterior
 
 Criterios de aceptacion:
-- Flyway migra desde cero.
+- Las migraciones SQL se pueden ejecutar desde cero.
 - Seeds solo cargan en local/dev.
 - `is_alcohol` existe y esta testeado.
 - No se guardan secretos reales.
-- SQL sigue snake_case y keywords mayusculas.
+- SQL usa nombres claros, tablas/columnas en `snake_case` y keywords en mayusculas.
 
 Verificacion:
-- Ejecuta `./mvnw test`.
-- Si hay docker local disponible, ejecuta tests Testcontainers.
+- Ejecuta `npm run db:migrate` si hay DB disponible.
+- Ejecuta `npm run db:seed` si hay DB disponible.
+- Ejecuta `npm test`.
 - Reporta cualquier test no ejecutado.
 ```
 
-## 12. Fase 3 - OpenAPI completo y servicios publicos
+## 12. Fase 3 - Contratos API y servicios publicos
 
 Objetivo: implementar endpoints publicos de catalogo, campanas, eventos, inquiries, newsletter y site config.
 
 Entregables:
-- `openapi.yml` completo para endpoints publicos
-- DTOs generados
+- Validadores completos para endpoints publicos
+- Rutas Express organizadas y documentadas
 - Services
-- Controllers implementando interfaces generadas
-- Mappers MapStruct
+- Routes Express por modulo
 - Problem JSON
 - Rate limiting
-- Tests web/service
+- Tests route/service
 
 Prompt para Opus:
 
@@ -765,7 +802,7 @@ Usa el Prompt base obligatorio.
 
 Implementa la Fase 3: API publica de CRUDO V1.
 
-Antes de escribir controllers, actualiza `api/src/main/resources/openapi/api.yml` con contratos para:
+Antes de escribir rutas, define/actualiza validadores de request/response esperada para:
 - GET /api/v1/products
 - GET /api/v1/products/{slug}
 - GET /api/v1/categories
@@ -813,19 +850,19 @@ Requisitos:
    - si proveedor externo no esta configurado, usar noop logger en local
 
 Arquitectura:
-- Controller -> Service Interface -> Service Impl -> Repository -> Entity.
-- DTOs desde OpenAPI.
-- MapStruct para mapeos.
-- Nada de DTOs manuales si estan en OpenAPI.
+- Route -> Validator middleware -> Controller -> Service -> Repository -> MariaDB.
+- Las reglas de validacion deben vivir en helpers/middlewares reutilizables.
+- No duplicar reglas criticas entre controlador y servicio; el servicio conserva reglas de negocio.
 
 Tests:
 - Service tests para filtros, eventos llenos, newsletter y consent.
-- Web tests para happy/unhappy paths.
+- Route tests para happy/unhappy paths usando Supertest.
 - Rate limit test si es razonable.
 
 Criterios de aceptacion:
-- `./mvnw compile` genera OpenAPI.
-- `./mvnw test` pasa.
+- `npm run lint` pasa si esta configurado.
+- `npm test` pasa.
+- Las rutas publicas estan documentadas en README/runbook o comentario de rutas.
 - Public endpoints devuelven datos seed.
 - No se implementa todavia pickup_order completo si queda para Fase 4, salvo contratos compartidos.
 ```
@@ -856,7 +893,7 @@ Esta es la regla mas importante:
 - El frontend tambien lo ocultara, pero el backend es la defensa final.
 
 Tareas:
-1. Actualiza OpenAPI para POST /api/v1/pickup-orders:
+1. Actualiza validadores para POST /api/v1/pickup-orders:
    - request: name, email, phone, pickup_date, pickup_slot, notes, items[{product_id o product_slug, qty}]
    - response: order_id, status NEW, total_cents, confirmation_message
    - errores: 400 validation, 404 product, 409 idempotency conflict, 422 alcohol/stock/slot invalid
@@ -894,7 +931,7 @@ Criterios de aceptacion:
 - Test explicito de alcohol guard verde.
 - Mensaje de confirmacion indica pago en tienda y confirmacion por WhatsApp en menos de 24h.
 - No se envia pago ni se integra Stripe/Redsys.
-- `./mvnw test` pasa.
+- `npm test` pasa.
 ```
 
 ## 14. Fase 5 - Admin backend y seguridad JWT
@@ -926,7 +963,7 @@ Requisitos operativos:
 - Cualquier flujo admin que requiera mas de 3 taps debe marcarse como riesgo.
 
 Tareas:
-1. Actualiza OpenAPI admin:
+1. Actualiza validadores admin:
    - POST /admin/auth/login
    - POST /admin/auth/refresh
    - GET /admin/dashboard
@@ -939,10 +976,10 @@ Tareas:
    - GET/PATCH /admin/event-reservations
    - GET/PUT /admin/site/config
    - GET /admin/kpis
-2. Implementa Spring Security:
+2. Implementa seguridad Express:
    - public paths abiertos
    - admin paths JWT
-   - passwords hasheadas con BCrypt
+   - passwords hasheadas con bcrypt o argon2
    - CORS por env
    - CSRF segun API token strategy
 3. Implementa AuthService y JwtService.
@@ -962,8 +999,9 @@ Tareas:
    - inquiries: NEW, IN_PROGRESS, DONE, SPAM si decides enum
    - reservations: NEW, CONFIRMED, CANCELLED
 8. Implementa image upload con interfaz StorageService:
-   - R2/S3 adapter
-   - local noop/fake adapter
+   - adapter local filesystem compatible con Plesk para V1
+   - adapter noop/fake para tests
+   - deja object storage/S3 compatible como posible V1.1 si se justifica CDN/volumen
    - generar alt text por defecto: "{producer} {name}, {region}"
 9. Tests:
    - admin endpoints rechazan no autenticado
@@ -978,19 +1016,20 @@ Criterios de aceptacion:
 - No hay secretos.
 - El CRUD de producto permite crear vino visible con `is_alcohol=true`.
 - Audit field queda registrado.
-- `./mvnw test` pasa.
+- `npm test` pasa.
 ```
 
-## 15. Fase 6 - Docker Compose e infraestructura local
+## 15. Fase 6 - scripts npm/MariaDB e infraestructura Plesk/Contabo
 
-Objetivo: levantar localmente web, API y DB con un comando.
+Objetivo: levantar localmente web, API y DB con un comando, y dejar documentado el despliegue productivo en servidor Contabo gestionado con Plesk.
 
 Entregables:
-- `infra/docker-compose.yml`
-- Dockerfile web
-- Dockerfile api revisado
-- Caddyfile local/prod base
-- Scripts backup
+- scripts npm revisados
+- build Vite en `dist/`
+- `server.js` sirviendo `dist/`
+- `infra/plesk/README.md`
+- Guia de variables/env en Plesk
+- Guia de backups Plesk/Contabo
 - CI inicial
 
 Prompt para Opus:
@@ -998,51 +1037,59 @@ Prompt para Opus:
 ```text
 Usa el Prompt base obligatorio.
 
-Implementa la Fase 6: Docker e infraestructura local/staging base.
+Implementa la Fase 6: scripts npm/MariaDB e infraestructura Plesk/Contabo.
 
 Tareas:
-1. Crea `infra/docker-compose.yml` con:
-   - db: postgres:16-alpine
-   - api: build ./api
-   - web: build ./web
-   - caddy opcional para entorno production/staging
+1. Configura scripts de desarrollo local:
+   - `npm run dev`: Express + Vite con concurrently
+   - `npm run dev:server`
+   - `npm run dev:client`
+   - `npm run build`: `vite build`
+   - `npm start`: `node server.js`
 2. Configura puertos:
-   - db 5432
-   - api 8080
-   - web 5173 en dev
+   - Express 3000 o el puerto que indique Plesk/env
+   - Vite 5173 en dev
+   - MariaDB segun Plesk/local env
 3. Usa variables desde .env y documentalas en .env.example.
-4. Crea Dockerfile api multi-stage si procede:
-   - build con Maven
-   - runtime JRE Java 21
-5. Crea Dockerfile web:
-   - dev o production segun estructura
-   - build Vite
-6. Crea `infra/caddy/Caddyfile`:
-   - reverse proxy para API bajo /api/*
-   - servir frontend
-   - HTTPS production con dominio env/documentado
-7. Crea `infra/scripts/backup.sh` documentado:
-   - pg_dump
-   - subida a R2 placeholder via env
-   - retencion 30 dias
+4. Asegura que `server.js`:
+   - monta API bajo `/api/v1`
+   - sirve assets estaticos de `dist/`
+   - devuelve `index.html` para rutas React
+   - no sirve `dist/` en modo dev si no existe
+5. Documenta build Vite y arranque con `node server.js`.
+6. Crea `infra/plesk/README.md` con:
+   - servidor Contabo como destino
+   - Plesk como panel de dominio, SSL, Node.js app, MariaDB y backups
+   - dominio principal y subdominio staging
+   - como configurar Node.js app en Plesk: document root, application root, startup file, variables de entorno
+   - como ejecutar `npm install`, `npm run build` y reiniciar la app Node
+   - como servir `dist/` desde `server.js`
+   - como configurar SSL Let's Encrypt desde Plesk
+   - como configurar backups programados en Plesk y snapshot/backup Contabo si aplica
+7. Crea `infra/scripts/backup-notes.md` o README documentando:
+   - backup DB MariaDB desde Plesk
+   - backup archivos subidos
+   - restore test manual
+   - retencion recomendada 30 dias
 8. Crea GitHub Actions:
-   - pr.yml: backend test, frontend test/build si existe, docker build si razonable
-   - staging.yml skeleton manual o main
-   - production.yml manual trigger skeleton
+   - pr.yml: lint, tests y `npm run build`
+   - staging.yml skeleton para deploy manual/SSH a Plesk si se decide automatizar
+   - production.yml manual trigger skeleton o documentar deploy manual por Plesk
 9. Actualiza README con comandos:
-   - docker compose up
-   - backend tests
-   - frontend tests
+   - npm run dev
+   - npm test
+   - npm run build
+   - npm start
 
 Criterios de aceptacion:
-- Un desarrollador puede arrancar local con Docker Compose.
+- Un desarrollador puede arrancar local con `npm run dev`.
 - No hay secretos.
 - Staging debe poder ser `noindex` y basic-auth gated en fases posteriores.
-- Caddy y backups estan documentados aunque algunas credenciales sean placeholders.
+- Plesk/Contabo y backups estan documentados aunque algunas credenciales sean placeholders.
 
 Verificacion:
 - Ejecuta los comandos disponibles.
-- Si Docker no esta disponible, indica exactamente que no se pudo verificar.
+- Si MariaDB local no esta disponible, indica exactamente que parte no se pudo verificar.
 ```
 
 ## 16. Fase 7 - Scaffold frontend y design system
@@ -1052,7 +1099,8 @@ Objetivo: crear la app React/Vite con rutas, tokens, layout y sistema visual CRU
 Entregables:
 - React/Vite funcionando
 - Rutas
-- Design tokens
+- Tailwind configurado con tokens CRUDO
+- Componentes base accesibles
 - Componentes base
 - Providers
 - API client
@@ -1066,47 +1114,55 @@ Usa el Prompt base obligatorio.
 Implementa la Fase 7: scaffold frontend React/Vite y design system editorial de CRUDO.
 
 Stack:
-- React 18
+- React 19
 - Vite
-- TypeScript
+- JavaScript
+- Tailwind CSS
 - React Router
-- TanStack Query
-- Zustand
-- Zod
-- React Hook Form
+- axios
+- clsx
+- class-variance-authority
+- tailwind-merge
 - Lucide icons
+- canvas-confetti si se usa con moderacion
 - Vitest + Testing Library
 - Playwright preparado para fases posteriores
 
 Tareas:
-1. Crea la app en web/.
-2. Configura TypeScript estricto.
+1. Crea la app React/Vite en `src/`.
+2. Configura Vite, Tailwind, PostCSS y Autoprefixer.
 3. Crea estructura:
-   - src/app/routes.tsx
-   - src/app/App.tsx
-   - src/app/providers/
-   - src/design-system/tokens.css
-   - src/design-system/Button.tsx
-   - src/design-system/Input.tsx
-   - src/design-system/Select.tsx
-   - src/design-system/Modal.tsx
-   - src/design-system/Tag.tsx
-   - src/design-system/Badge.tsx
-   - src/components/layout/Header.tsx
-   - src/components/layout/Footer.tsx
-   - src/components/layout/StickyCTA.tsx
-   - src/components/layout/CookieBanner.tsx
-   - src/lib/api.ts
-   - src/lib/analytics.ts
-   - src/lib/schemaOrg.ts
+   - src/main.jsx
+   - src/App.jsx
+   - src/routes.jsx
+   - src/components/ui/Button.jsx
+   - src/components/ui/Input.jsx
+   - src/components/ui/Select.jsx
+   - src/components/ui/Modal.jsx
+   - src/components/ui/Tag.jsx
+   - src/components/ui/Badge.jsx
+   - src/components/layout/Header.jsx
+   - src/components/layout/Footer.jsx
+   - src/components/layout/StickyCTA.jsx
+   - src/components/layout/CookieBanner.jsx
+   - src/lib/api.js
+   - src/lib/analytics.js
+   - src/lib/schemaOrg.js
    - src/styles/global.css
 4. Implementa design tokens exactos de V1.
-5. Carga fuentes:
+5. Mapea los tokens en `tailwind.config.js`:
+   - colores CRUDO
+   - fuentes
+   - spacing
+   - radius maximo 8px
+   - sombras
+6. Usa HTML semantico y componentes accesibles propios; anade librerias extra solo si reducen complejidad real.
+7. Carga fuentes:
    - Cormorant Garamond
    - Inter
    - JetBrains Mono
    con fallback correcto.
-6. Implementa rutas placeholder:
+8. Implementa rutas placeholder:
    - /
    - /catalogo
    - /catalogo/quesos
@@ -1124,28 +1180,28 @@ Tareas:
    - /privacidad
    - /cookies
    - /admin
-7. Implementa Header:
+9. Implementa Header:
    - logo CRUDO
    - nav minimo
    - iconos Instagram, WhatsApp, Maps con lucide si aplica
-8. Implementa Footer:
+10. Implementa Footer:
    - direccion/hours placeholder desde site config
    - legal links
    - newsletter form placeholder
    - copy +18 y beber con moderacion
-9. Implementa CookieBanner:
+11. Implementa CookieBanner:
    - Aceptar/Rechazar/Configurar
    - peso visual equivalente
    - no dispara analytics antes de consentimiento
    - persiste consentimiento local y prepara POST /consent
-10. Implementa analytics.ts:
+12. Implementa analytics.ts:
    - funciones typed para `select_item`, `pickup_request`, `wine_whatsapp_click`, `generate_lead`
    - no-op si no hay consentimiento
-11. Implementa componentes base con accesibilidad:
+13. Implementa componentes base con accesibilidad:
    - tap targets 44x44
    - focus ring visible
    - errores no solo color
-12. Tests:
+14. Tests:
    - render App
    - CookieBanner consent behavior
    - Button/Input accessibility smoke
@@ -1155,6 +1211,8 @@ Criterios de aceptacion:
 - `npm test` o equivalente pasa.
 - Visualmente respeta dark editorial gastronomy.
 - No usa blanco puro, negro puro, azul, neon o UI SaaS generica.
+- Tailwind no debe convertir la UI en generica: los tokens CRUDO mandan.
+- Los componentes propios deben mantener comportamiento accesible, foco visible y estados de error.
 - No hay texto ingles visible salvo placeholders tecnicos no publicos.
 ```
 
@@ -1234,11 +1292,11 @@ Reglas visuales:
    - track `wine_whatsapp_click`
 5. No alcohol:
    - mostrar `Anadir a mi tabla`
-   - actualizar estado Zustand
+   - actualizar estado local/helper de Mi Tabla
    - track select_item y add_to_tabla si decides nombre adicional
 
 Datos:
-- Usar TanStack Query contra API real.
+- Usar axios contra API real.
 - Si API no esta disponible en dev, usar mocks temporales claramente aislados en `src/lib/mockData.ts`, con TODO para retirar.
 
 SEO:
@@ -1289,7 +1347,7 @@ Reglas:
 - Texto obligatorio: `Reserva tu tabla. El pago se realiza en CRUDO al recoger. Te confirmaremos por WhatsApp en menos de 24 horas.`
 
 Tareas:
-1. Implementa Zustand store `useTabla`:
+1. Implementa store/helper `useTabla`:
    - addItem(product)
    - removeItem(productId)
    - updateQty(productId, qty)
@@ -1315,7 +1373,7 @@ Tareas:
    - pickup_date
    - pickup_slot 30-min
    - notes
-   - validation Zod
+   - validation helpers
    - date restricted to opening days desde site config
    - retries una vez en error de red
    - usa Idempotency-Key
@@ -1646,8 +1704,8 @@ Backend tests minimos:
   - slug generation
   - pickup validation
   - alcohol guard
-- Repository tests con PostgreSQL Testcontainer.
-- Web tests con happy/unhappy paths para POST endpoints.
+- Repository/service tests con MariaDB de test.
+- Route tests con happy/unhappy paths para POST endpoints.
 - Security tests: admin endpoints reject unauthenticated.
 
 Frontend tests minimos:
@@ -1655,7 +1713,7 @@ Frontend tests minimos:
 - PickupForm
 - ReservationForm
 - CookieBanner
-- Zod validation
+- Form validation
 - axe en Home, PDP y forms.
 
 Playwright journeys obligatorios:
@@ -1678,7 +1736,7 @@ Manual QA checklist:
 - Lighthouse Home/Catalog/PDP >= 90.
 
 Tareas:
-1. Configura Playwright en web/.
+1. Configura Playwright en la raiz del proyecto.
 2. Crea seed/test fixtures para E2E.
 3. Crea tests E2E anteriores.
 4. Configura axe si no existe.
@@ -1768,7 +1826,7 @@ Objetivo: desplegar con control, medicion y rollback.
 Entregables:
 - Staging
 - Production manual deploy
-- Caddy
+- Plesk domain/app config
 - HTTPS
 - Backups
 - Monitoring
@@ -1785,18 +1843,21 @@ Tareas:
 1. Revisa infra/ y docs/runbook.md.
 2. Prepara staging:
    - staging.<domain>
-   - basic-auth o acceso protegido
+   - subdominio en Plesk
+   - basic-auth o acceso protegido desde Plesk
    - noindex
    - robots bloqueado
    - env staging
 3. Prepara production:
    - <canonical-domain>
-   - Cloudflare delante
-   - Caddy auto HTTPS
+   - dominio configurado en Plesk
+   - SSL Let's Encrypt desde Plesk
+   - Node.js app configurada en Plesk para API
+   - build Vite servido desde hosting Plesk
    - env production
 4. Backups:
-   - nightly pg_dump
-   - R2
+   - backup programado Plesk para DB y archivos
+   - backup/snapshot Contabo si esta disponible
    - retencion 30 dias
    - restore test documentado
 5. Monitoring:
@@ -1806,7 +1867,7 @@ Tareas:
 6. CI/CD:
    - PR: lint/test/build
    - staging: deploy main
-   - production: manual trigger
+   - production: manual trigger o deploy manual documentado en Plesk
 7. Launch checklist pre T-7:
    - content loaded
    - legal reviewed
@@ -1865,11 +1926,11 @@ Tareas:
 2. Inspecciona el repo:
    - estructura de carpetas
    - README y docs
-   - api/
-   - web/
+   - server/
+   - src/
    - infra/
    - .github/workflows/
-   - package.json, pom.xml, docker-compose, migrations, OpenAPI, tests
+   - package.json, scripts npm, migraciones SQL, validadores, tests
 3. Detecta que fases estan realmente:
    - NOT_STARTED
    - IN_PROGRESS
@@ -1905,8 +1966,8 @@ Haz una revision critica de arquitectura del estado actual de CRUDO V1.
 Busca:
 - Desviaciones de `docs/V1/CRUDO_V1_Visual_Master_Plan.html`.
 - Desviaciones de `docs/AGENTS_Javi.md`.
-- Endpoints fuera de OpenAPI-first.
-- DTOs manuales que deberian generarse.
+- Endpoints/rutas sin validacion centralizada.
+- Reglas de validacion duplicadas entre frontend/backend sin justificacion.
 - Entidades o tablas innecesarias de V2 metidas en V1.
 - Riesgos de venta online de alcohol accidental.
 - Falta de alcohol guard en backend.
@@ -1987,11 +2048,11 @@ Cada fase o feature queda DONE solo si:
 - No introduce V2 salvo que sea estructura pasiva y justificada.
 - El codigo respeta SRP y SOLID pragmatico.
 - No hay secretos.
-- OpenAPI actualizado antes del backend.
+- Validadores actualizados antes de la ruta backend.
 - Tests nuevos o actualizados.
-- Backend: `./mvnw test` pasa.
+- Backend: `npm run lint` y `npm test` pasan.
 - Frontend: `npm run build` y tests pasan.
-- Docker local funciona si aplica.
+- scripts npm/MariaDB funciona si aplica.
 - Docs actualizadas si hay cambio de comandos, env vars o arquitectura.
 - `docs/V1/V1Tecnico.md` se actualiza en la seccion `0.1 Estado vivo del proyecto` con fase, implementado, pendiente, bloqueos, registro de sesion y siguiente prompt recomendado.
 - El alcohol guard sigue cubierto por tests.
@@ -2011,7 +2072,8 @@ Cada fase o feature queda DONE solo si:
 - Hacer SPA sin prerender de catalogo/PDP: riesgo SEO.
 - Usar copy en imagenes: rompe Google Translate.
 - Agregar dependencias grandes sin justificar.
-- Mezclar seeds con migraciones productivas.
+- Ejecutar seeds de desarrollo en produccion Plesk.
+- Depender de DNS/CDN/proxy/object storage externo como obligatorio cuando la decision actual es Plesk/Contabo.
 
 ## 28. Orden recomendado de ejecucion
 
@@ -2021,7 +2083,7 @@ Cada fase o feature queda DONE solo si:
 4. Fase 3 - API publica.
 5. Fase 4 - Mi Tabla backend y alcohol guard.
 6. Fase 5 - Admin backend.
-7. Fase 6 - Docker/infra local.
+7. Fase 6 - scripts npm/MariaDB e infra Plesk/Contabo.
 8. Fase 7 - Frontend scaffold/design system.
 9. Fase 8 - Home/Catalogo/PDP.
 10. Fase 9 - Mi Tabla frontend.
@@ -2032,7 +2094,7 @@ Cada fase o feature queda DONE solo si:
 15. Fase 14 - Contenido real.
 16. Fase 15 - Launch.
 
-Si solo hay un desarrollador, mantener backend hasta Fase 6 antes de construir frontend profundo. Si hay dos, backend Fases 1-5 y frontend Fases 7-8 pueden avanzar en paralelo tras cerrar OpenAPI inicial.
+Si solo hay un desarrollador, mantener backend hasta Fase 6 antes de construir frontend profundo. Si hay dos, backend Fases 1-5 y frontend Fases 7-8 pueden avanzar en paralelo tras cerrar validadores y responses iniciales.
 
 ## 29. Checklist final V1
 
@@ -2048,7 +2110,7 @@ Si solo hay un desarrollador, mantener backend hasta Fase 6 antes de construir f
 - [ ] Newsletter Brevo/double opt-in.
 - [ ] Admin JWT.
 - [ ] Admin mobile <= 5 min/dia.
-- [ ] Image upload R2/local adapter.
+- [ ] Image upload local/Plesk adapter.
 - [ ] Cookie banner AEPD.
 - [ ] Legal pages.
 - [ ] GA4, Search Console, Meta Pixel gated by consent.
@@ -2056,11 +2118,14 @@ Si solo hay un desarrollador, mantener backend hasta Fase 6 antes de construir f
 - [ ] Schema.org Restaurant/Product/Event/FAQ.
 - [ ] Sitemap/robots.
 - [ ] Prerender catalogo/PDP.
-- [ ] Docker Compose.
-- [ ] Caddy production.
+- [ ] scripts npm/MariaDB.
+- [ ] Plesk production configured.
+- [ ] Contabo server ready.
 - [ ] Backups.
 - [ ] CI.
 - [ ] Tests unit/integration/frontend/E2E.
 - [ ] Lighthouse mobile >= 90.
 - [ ] iPhone/Instagram browser tested.
 - [ ] Launch checklist executed.
+
+
