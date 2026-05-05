@@ -788,7 +788,17 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 1: scaffold monolito Node.js Express de CRUDO V1.
 
-Stack obligatorio:
+Objetivo de esta fase:
+Crear el scaffold tecnico real del monolito JavaScript para que CRUDO V1 tenga una base ejecutable, testeable y desplegable en Plesk/Contabo. Esta fase debe dejar Express, configuracion por entorno, health check, pool MariaDB inicial, helpers transversales y tests smoke funcionando. No implementes todavia modelo de datos real, catalogo, pickup, admin, React visual ni logica comercial.
+
+Contexto obligatorio:
+- La Fase 0 debe estar terminada o al menos suficientemente preparada. Si detectas que faltan archivos base criticos (`README.md`, `.env.example`, carpetas `server/`, `db/`, `docs/`), completa solo lo imprescindible para que Fase 1 sea coherente y documenta la diferencia.
+- Stack V1: JavaScript, CommonJS, Node.js + Express, MariaDB con paquete `mariadb`, React 19 + Vite en fases posteriores, Tailwind CSS en fases posteriores, monolito con `server.js` sirviendo API `/api/v1` y `dist/` en produccion.
+- Produccion objetivo: servidor Contabo gestionado con Plesk.
+- V1 sin pago online activo y sin venta online de alcohol.
+- No actives Stripe, Redsys, webhooks de pago, cuentas de cliente ni ecommerce de alcohol.
+
+Stack obligatorio de esta fase:
 - Node.js
 - JavaScript
 - CommonJS
@@ -801,65 +811,221 @@ Stack obligatorio:
 - cookie-parser
 - Vitest
 - Supertest para tests HTTP
+- ESLint
+
+Antes de editar:
+1. Lee el estado vivo en `docs/V1/V1Tecnico.md` y confirma si Fase 0 esta `DONE`, `REVIEW_READY`, `IN_PROGRESS` o `NOT_STARTED`.
+2. Inspecciona el repo:
+   - `git status --short`
+   - existencia de `package.json`, `package-lock.json`, `server.js`, `server/`, `src/`, `db/`, `.env.example`, `.gitignore`, `README.md`
+   - contenido de archivos que ya existan antes de sobrescribirlos
+3. Si `package.json` ya existe, actualizalo preservando scripts/dependencias utiles y evitando mezclar gestores. Usa npm y versiona `package-lock.json`.
+4. Si hay cambios ajenos en archivos que debes tocar, trabaja con ellos y no los reviertas.
+5. No modifiques `docs/AGENTS_Javi.md`.
+
+Dependencias recomendadas:
+- Produccion:
+  - `express`
+  - `mariadb`
+  - `dotenv`
+  - `cors`
+  - `helmet`
+  - `express-rate-limit`
+  - `cookie-parser`
+  - `morgan` solo si se usa de forma sobria y sin imprimir PII
+- Desarrollo:
+  - `vitest`
+  - `supertest`
+  - `eslint`
+  - `concurrently`
+  - `nodemon` si se usa para `dev:server`
+
+Puedes ejecutar `npm install` en esta fase. Si falla por red/sandbox, documenta el fallo y deja el comando exacto pendiente.
 
 Tareas:
-1. Crea el proyecto Node en la raiz del repo.
-2. Configura `package.json` con scripts:
-   - `dev`
-   - `dev:server`
-   - `dev:client`
-   - `build`
-   - `start`
-   - `lint`
-   - `test`
-   - `db:migrate`
-   - `db:seed`
-   - `deploy:plesk:notes` si procede
-3. Configura CommonJS en `package.json`.
-4. Crea estructura:
+1. Crea o actualiza el proyecto Node en la raiz del repo:
+   - `package.json` con `"type": "commonjs"` o sin `"type"` si CommonJS queda claro
+   - `package-lock.json` generado con npm
+   - nombre privado del paquete, por ejemplo `crudo-v1`
+   - `engines.node` recomendado para LTS par consolidada, preferiblemente `>=20`
+
+2. Configura scripts npm:
+   - `dev`: arranque local combinado preparado para backend y futuro Vite
+   - `dev:server`: servidor Express con reload si `nodemon` esta instalado
+   - `dev:client`: placeholder claro si Vite aun no existe, o `vite --host 0.0.0.0` si ya esta instalado
+   - `build`: si no existe frontend todavia, usa un placeholder honesto que no genere `dist/` ni finja un build completo
+   - `start`: `node server.js`
+   - `lint`: ESLint sobre `server/`, `db/`, `tests/` y `server.js`
+   - `test`: Vitest en modo run
+   - `db:migrate`: placeholder seguro que indique que Fase 2 creara migraciones reales
+   - `db:seed`: placeholder seguro que indique que Fase 2 creara seeds reales
+   - `deploy:plesk:notes`: imprime o referencia notas de `infra/plesk/README.md` si procede
+
+3. Crea o completa estructura:
    - `server.js`
    - `server/app.js`
    - `server/config/env.js`
+   - `server/config/index.js` solo si aporta claridad
    - `server/routes/`
+   - `server/routes/health.routes.js`
    - `server/controllers/`
+   - `server/controllers/health.controller.js`
    - `server/services/`
+   - `server/services/health.service.js`
    - `server/repositories/`
    - `server/middleware/`
+   - `server/middleware/error-handler.js`
+   - `server/middleware/not-found.js`
+   - `server/middleware/validate-request.js`
+   - `server/middleware/async-handler.js`
    - `server/utils/problem.js`
+   - `server/utils/http.js` si hace falta para constantes simples
    - `db/pool.js`
    - `db/migrations/`
    - `db/seeds/`
    - `tests/`
-5. Configura Express con:
-   - CORS por env
-   - rate limit preparado
-   - problem details handler
+   - `tests/health.test.js`
+   - `tests/app.test.js` si separas smoke general de health
+
+4. Configura `server/config/env.js`:
+   - cargar `.env` con dotenv
+   - validar y normalizar variables basicas sin libreria pesada si no es necesaria
+   - valores por defecto seguros para local:
+     - `NODE_ENV=development`
+     - `PORT=3000`
+     - `CLIENT_DEV_URL=http://localhost:5173`
+     - `CORS_ALLOWED_ORIGINS=http://localhost:5173`
+   - variables MariaDB:
+     - `DB_HOST`
+     - `DB_PORT`
+     - `DB_NAME`
+     - `DB_USER`
+     - `DB_PASSWORD`
+   - secretos como `JWT_SECRET` y `COOKIE_SECRET` deben venir de env; no hardcodees secretos reales
+   - en `test`, permite defaults seguros para que Supertest no dependa de una base de datos real
+
+5. Configura Express en `server/app.js`:
    - helmet
-   - JSON/body parsers
+   - CORS por env, aceptando solo origenes configurados
+   - JSON/body parsers con limites razonables
    - cookie-parser
-6. Crea helpers minimos para:
-   - validacion de requests
-   - problem detail RFC 7807
-   - async route handler
-7. Crea endpoint `GET /api/v1/health`.
-8. Crea conexion MariaDB inicial con pool:
+   - rate limit preparado para `/api/v1` o para POST publicos sin bloquear tests
+   - rutas bajo `/api/v1`
+   - `GET /api/v1/health`
+   - handler 404 RFC 7807
+   - error handler RFC 7807 con content type `application/problem+json`
+   - no exponer stack trace en produccion
+
+6. Crea helpers transversales minimos:
+   - `asyncHandler(fn)` para rutas async
+   - `createProblem()` o equivalente para RFC 7807
+   - `validateRequest(schemaOrRules)` como middleware centralizado preparado para fases posteriores
+   - no metas validaciones de negocio todavia
+
+7. Crea `server.js`:
+   - importa `app`
+   - arranca en `PORT`
+   - maneja `SIGTERM` y `SIGINT` cerrando el pool si existe
+   - en produccion debe estar preparado para servir `dist/` si existe
+   - si `dist/` no existe en local, no debe romper la API
+
+8. Crea `db/pool.js`:
+   - usa paquete `mariadb`
    - variables `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`
-   - health puede comprobar conexion si hay DB disponible; si no, debe degradar de forma clara en local
-9. Crea `.env.example` especifico de API si procede.
-10. Crea tests smoke:
+   - exporta `getPool()`, `query()` si procede, `pingDatabase()` y `closePool()`
+   - no conecta agresivamente al importar el modulo
+   - si MariaDB no esta disponible en local, health debe responder con API viva y DB degradada de forma clara, sin crashear el proceso
+
+9. Crea health endpoint:
+   - `GET /api/v1/health`
+   - response JSON estable:
+     - `status`: `ok` o `degraded`
+     - `service`: `crudo-api`
+     - `version`
+     - `environment`
+     - `uptime`
+     - `timestamp`
+     - `checks.database.status`: `ok`, `skipped` o `error`
+   - en `NODE_ENV=test`, la comprobacion DB puede estar mockeada/skipped para no exigir MariaDB real
+   - si DB falla en development, HTTP puede ser 200 con `status=degraded`; si decides 503, justificalo y ajusta tests
+
+10. Actualiza `.env.example` solo si faltan variables necesarias de Fase 1. No metas secretos reales.
+
+11. Crea tests smoke con Vitest + Supertest:
    - app levanta con Supertest
    - health responde
+   - 404 devuelve RFC 7807
+   - error handler devuelve RFC 7807
+   - no requiere MariaDB real para pasar en CI/local basico
+
+12. Configura ESLint:
+   - reglas pragmaticas para JavaScript CommonJS
+   - no bloquear por estilo cosmetico excesivo
+   - detectar variables/imports sin usar
+   - scripts y tests deben poder ejecutarse en Windows/PowerShell
+
+13. Actualiza documentacion minima:
+   - `README.md`: comandos reales instalados, como arrancar backend, como ejecutar tests/lint, notas de DB local
+   - `docs/runbook.md`: comandos reales de Fase 1 y comportamiento del health check
+   - `infra/plesk/README.md`: si cambia el startup file o comandos reales
+
+Prohibido en esta fase:
+- No crear migraciones SQL reales de tablas V1; eso es Fase 2.
+- No implementar endpoints de productos, categorias, campanas, eventos, pickup, newsletter, consent ni admin.
+- No implementar React visual ni design system; eso empieza en Fase 7.
+- No activar pagos online, Stripe, Redsys ni webhooks.
+- No permitir venta online de alcohol.
+- No crear autenticacion JWT funcional todavia salvo variables/env placeholder.
+- No introducir TypeScript, ORM, Prisma, Sequelize, Next.js, Docker obligatorio ni arquitectura distinta sin justificacion explicita.
+- No hardcodear secretos, telefonos privados, emails reales o credenciales.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 1
+- `current_phase_name`: "Scaffold monolito Node.js Express"
+- `current_focus`: resumen real de lo creado
+- `overall_status`: `REVIEW_READY` si tests/lint pasan; `IN_PROGRESS` si queda algo tecnico menor; `BLOCKED` si faltan permisos, red o decision critica
+- tabla de Fase 1 con implementado/falta/notas reales
+- tabla de Fase 2 debe quedar como siguiente fase si Fase 1 esta lista
+- funcionalidades implementadas: anade solo scaffold tecnico, health endpoint y helpers base; no anadas funcionalidades comerciales
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 2 - Modelo de datos MariaDB y seed local" si Fase 1 queda lista
+
+Si cambias comandos, estructura o estado que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
+- `package.json` existe, usa npm y CommonJS, y contiene scripts reales o placeholders honestos.
+- `server.js` arranca Express sin crash.
+- API vive bajo `/api/v1`.
+- `GET /api/v1/health` responde en local/test sin exigir MariaDB real.
+- El pool MariaDB esta preparado, pero no conecta al importar.
+- Los errores usan RFC 7807 `application/problem+json`.
+- La validacion de requests queda centralizada como helper/middleware base.
 - `npm test` pasa.
 - `npm run lint` pasa si ESLint esta configurado.
-- No hay secretos hardcodeados.
-- La configuracion local funciona sin OAuth ni dependencias externas.
-- No se implementa todavia logica de negocio fuera del scaffold.
+- `npm start` arranca o se valida con smoke equivalente si no se puede dejar proceso corriendo.
+- `.env.example` no contiene secretos reales y cubre variables de Fase 1.
+- `README.md` y `docs/runbook.md` reflejan comandos reales.
+- `docs/AGENTS_Javi.md` no se modifica.
+- No hay endpoints de negocio ni logica V1 adelantada.
 
-Verificacion:
+Verificacion obligatoria:
 - Ejecuta `npm test`.
-- Reporta archivos cambiados y riesgos.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta `npm start` o una verificacion equivalente de arranque sin dejar procesos vivos.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Comprueba que `.env.example` no contiene secretos reales.
+- Si `npm install` o cualquier verificacion falla por red/sandbox, reportalo con comando exacto pendiente y no marques la fase como `DONE`.
+
+Respuesta final:
+- Resumen de Fase 1.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 11. Fase 2 - Modelo de datos MariaDB y seed local
@@ -879,68 +1045,274 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 2: modelo de datos V1 de CRUDO con MariaDB.
 
-Tareas:
-1. Crea migraciones SQL en `db/migrations/` para las tablas V1:
-   - product
-   - product_image
-   - category
-   - product_category
-   - campaign
-   - campaign_product
-   - event
-   - event_reservation
-   - inquiry
-   - pickup_order
-   - pickup_order_item
-   - newsletter_subscriber
-   - admin_user
-   - consent_log
-   - audit_log
-2. Usa constraints e indices:
-   - slugs unicos
-   - FK con nombres claros
-   - CHECK para enums cuando sea razonable
-   - `price_cents`, `total_cents`, `unit_price_cents` enteros no negativos
-   - `qty > 0`
-   - timestamps `created_at`, `updated_at`
-3. Modela enums con `ENUM` MariaDB o `VARCHAR` con CHECK si la version lo soporta:
-   - ProductType
-   - StockStatus
-   - ReservationStatus
-   - InquiryType
-   - WorkStatus/OrderStatus segun nombre elegido
-   - AdminRole
-4. Crea repositories/services JavaScript por modulo, usando el pool MariaDB encapsulado:
-   - catalog repository/service
-   - event repository/service
-   - pickup repository/service
-   - auth repository/service
-5. Crea seed local con:
-   - categorias de quesos y vinos
-   - minimo 8 productos, incluyendo al menos 2 vinos con `is_alcohol=true`
-   - minimo 4 productos `is_seasonal=true`
-   - 1 campana activa
-   - 2 eventos futuros
-   - 1 admin user local con password documentada solo como hash de dev
-6. Configura seed solo para local/dev. Produccion en Plesk no debe ejecutar seed automaticamente.
-7. Anade tests repository/service con MariaDB de test:
-   - unique slug
-   - product categories
-   - seed alcohol/non-alcohol visible
-   - pickup_order_item puede referenciar producto, pero la validacion de alcohol se hara en servicio en fase posterior
+Objetivo de esta fase:
+Crear el schema real V1 de CRUDO en MariaDB, los scripts de migracion/seed local y una capa repository/service minima que permita probar el modelo sin exponer todavia endpoints de negocio. El resultado debe dejar `is_alcohol` como regla estructural del sistema, con datos seed que demuestren la separacion entre vino visible y productos no alcoholicos reservables en fases posteriores.
+
+Contexto obligatorio:
+- Fase 1 debe haber dejado `package.json`, `server.js`, `server/app.js`, `db/pool.js`, tests y scripts base.
+- Stack confirmado: JavaScript, CommonJS, Node.js + Express, MariaDB con paquete `mariadb`, SQL versionado en `db/migrations/`, seeds locales en `db/seeds/`.
+- Arquitectura backend: Route -> Controller -> Service -> Repository -> MariaDB. En esta fase solo se crean repositories/services suficientes para validar datos y preparar fases 3-5.
+- V1 no tiene pago online ni venta online de alcohol.
+- El vino debe existir en catalogo y PDP en fases posteriores, pero no debe poder entrar en `Mi Tabla`; en esta fase solo se modela `is_alcohol` y se deja preparado el dato. El bloqueo 422 completo es Fase 4.
+- Produccion Plesk nunca debe ejecutar seeds de desarrollo automaticamente.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`, y confirma si Fase 1 esta realmente lista.
+2. Inspecciona:
+   - `package.json` y scripts actuales
+   - `db/pool.js`
+   - `db/migrations/`
+   - `db/seeds/`
+   - `server/repositories/`
+   - `server/services/`
+   - `tests/`
+   - `.env.example`
+   - `git status --short`
+3. Si Fase 1 no esta completa, no rehagas todo: completa solo lo imprescindible para que migraciones, seeds y tests puedan vivir en el scaffold existente, y documenta el desfase.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. No borres migraciones/seeds existentes sin leerlos y justificarlo.
+
+Decisiones tecnicas:
+- Usar migraciones SQL planas en `db/migrations/`.
+- Usar scripts JavaScript CommonJS para ejecutar migraciones y seeds desde npm.
+- Usar MariaDB directamente con el paquete `mariadb`; no introducir ORM.
+- SQL:
+  - keywords en INGLES MAYUSCULAS
+  - tablas/columnas/indices/FK en `snake_case`
+  - nombres de constraints claros
+  - precios siempre en centimos enteros
+  - timestamps `created_at`, `updated_at`
+- Para enums, preferir `VARCHAR(...)` con constraints/checks solo si la version MariaDB objetivo lo soporta de forma fiable. Si no, usar `VARCHAR` + validacion en service y documentar el motivo.
+- Todas las migraciones deben ser idempotentes de forma razonable para local/dev si se reejecuta el script, o el script debe registrar/aplicar migraciones una sola vez mediante tabla `schema_migrations`.
+
+Archivos a crear o actualizar:
+1. Migraciones:
+   - `db/migrations/001_create_core_schema.sql`
+   - `db/migrations/002_create_indexes.sql` si prefieres separar indices
+   - evitar demasiados archivos si no aportan claridad
+
+2. Scripts DB:
+   - `db/migrate.js`
+   - `db/seed.js`
+   - `db/reset.js` solo si es seguro y limitado a `NODE_ENV=development` o `test`
+   - helper compartido si hace falta, por ejemplo `db/migration-runner.js`
+
+3. Seeds:
+   - `db/seeds/dev-seed.sql` o `db/seeds/dev-seed.js`
+   - el seed debe ser local/dev/test, nunca produccion
+
+4. Repositories/services minimos:
+   - `server/repositories/product.repository.js`
+   - `server/repositories/category.repository.js`
+   - `server/repositories/event.repository.js`
+   - `server/repositories/admin-user.repository.js` solo si hace falta para verificar seed admin
+   - `server/services/catalog.service.js`
+   - `server/services/event.service.js`
+   - `server/services/pickup-model.service.js` o similar solo para validar datos de pickup sin implementar endpoint
+
+5. Tests:
+   - `tests/db/migrations.test.js`
+   - `tests/db/seed.test.js`
+   - `tests/repositories/product.repository.test.js`
+   - `tests/services/catalog.service.test.js`
+   - usa nombres ajustados al patron real del repo si ya existe otro convenio
+
+6. Documentacion:
+   - `README.md`: comandos reales `db:migrate`, `db:seed`, `db:reset` si existe
+   - `docs/runbook.md`: como preparar MariaDB local/test, ejecutar migraciones/seeds y evitar seeds en produccion
+   - `.env.example`: variables de test DB si faltan, por ejemplo `DB_TEST_NAME=crudo_test`
+
+Schema obligatorio:
+1. `product`
+   - `id`
+   - `slug` unico
+   - `name`
+   - `type` (`CHEESE`, `WINE`, `OTHER`)
+   - `is_alcohol`
+   - `price_cents`
+   - `vat_rate`
+   - `short_desc`
+   - `long_desc`
+   - `producer`
+   - `region`
+   - `is_seasonal`
+   - `is_featured`
+   - `is_active`
+   - `stock_status` (`IN_STOCK`, `LOW`, `OUT`)
+   - `created_at`, `updated_at`
+
+2. `product_image`
+   - `id`, `product_id`, `url`, `alt_text`, `sort_order`, `is_primary`, timestamps
+
+3. `category`
+   - `id`, `slug`, `name`, `type`, `sort_order`, timestamps
+
+4. `product_category`
+   - `product_id`, `category_id`
+   - PK compuesta
+
+5. `campaign`
+   - `id`, `slug`, `title`, `subtitle`, `hero_image_url`, `body_md`, `starts_at`, `ends_at`, `is_active`, timestamps
+
+6. `campaign_product`
+   - `campaign_id`, `product_id`, `sort_order`
+   - PK compuesta o unique equivalente
+
+7. `event`
+   - `id`, `slug`, `title`, `description_md`, `hero_image_url`, `starts_at`, `ends_at`, `capacity`, `price_cents`, `location`, `is_active`, timestamps
+
+8. `event_reservation`
+   - `id`, `event_id`, `name`, `email`, `phone`, `party_size`, `notes`, `status` (`NEW`, `CONFIRMED`, `CANCELLED`), timestamps
+
+9. `inquiry`
+   - `id`, `type` (`CONTACT`, `WHOLESALE`, `PICKUP`), `name`, `email`, `phone`, `message`, `payload_json`, `status`, timestamps
+
+10. `pickup_order`
+   - `id`, `name`, `email`, `phone`, `pickup_date`, `pickup_slot`, `notes`, `total_cents`, `status` (`NEW`, `CONFIRMED`, `READY`, `PICKED_UP`, `CANCELLED`), timestamps
+
+11. `pickup_order_item`
+   - `id`, `pickup_order_id`, `product_id`, `qty`, `unit_price_cents`
+
+12. `newsletter_subscriber`
+   - `id`, `email`, `source`, `consent_at`, `ip`, `status`, timestamps
+
+13. `admin_user`
+   - `id`, `email`, `password_hash`, `role` (`ADMIN`, `STAFF`), `is_active`, timestamps
+
+14. `consent_log`
+   - `id`, `consent_id`, `analytics`, `marketing`, `preferences`, `ip_hash`, `user_agent_hash`, `created_at`, `expires_at`
+
+15. `audit_log`
+   - `id`, `actor_admin_user_id`, `action`, `entity_type`, `entity_id`, `payload_json`, `created_at`
+
+Constraints e indices obligatorios:
+- `slug` unico en `product`, `category`, `campaign`, `event`.
+- FK con nombres claros, por ejemplo `fk_product_image_product`.
+- Indices para:
+  - `product(type, is_active)`
+  - `product(is_alcohol, is_active)`
+  - `product(is_seasonal, is_featured)`
+  - `event(starts_at, is_active)`
+  - `pickup_order(status, pickup_date)`
+  - `inquiry(type, status)`
+  - `newsletter_subscriber(email)`
+- `price_cents`, `total_cents`, `unit_price_cents` no negativos.
+- `qty > 0`.
+- `party_size > 0`.
+- `capacity >= 0`.
+- `is_alcohol` no nullable y default false.
+- `payload_json` debe ser `JSON` o `LONGTEXT` con validacion segun compatibilidad MariaDB; documenta la decision.
+
+Seed local obligatorio:
+- Categorias:
+  - al menos 3 categorias de queso
+  - al menos 2 categorias de vino
+  - al menos 1 categoria `OTHER`
+- Productos:
+  - minimo 10 productos
+  - minimo 4 quesos no alcoholicos
+  - minimo 2 vinos con `is_alcohol=true`
+  - minimo 1 producto `OTHER`
+  - minimo 4 productos `is_seasonal=true`
+  - minimo 3 productos `is_featured=true`
+  - imagen primaria placeholder con alt text para varios productos si el schema lo permite
+- 1 campana activa con productos asociados.
+- 2 eventos futuros activos.
+- 1 newsletter subscriber de prueba.
+- 1 admin user local activo con hash bcrypt de desarrollo.
+  - No guardes password real en claro.
+  - Puedes documentar en README/runbook una credencial local ficticia solo si queda claramente marcada como desarrollo, por ejemplo `admin.local@example.test` / `change-me-local-only`, y el hash debe corresponder solo al entorno local.
+
+Scripts npm:
+- `npm run db:migrate`: aplica migraciones pendientes a `DB_NAME`.
+- `npm run db:seed`: carga seed solo si `NODE_ENV` es `development` o `test`; en `production` debe abortar.
+- `npm run db:reset`: opcional; si existe, debe abortar fuera de `development` y `test`.
+- `npm test`: debe incluir o poder incluir tests de repositories/services.
+
+Tests obligatorios:
+1. Migraciones:
+   - se pueden aplicar desde cero en DB de test si esta disponible.
+   - crean tabla `schema_migrations` o mecanismo equivalente.
+2. Seed:
+   - carga productos alcohol y no alcohol.
+   - vinos seed tienen `is_alcohol=true`.
+   - quesos/no alcohol tienen `is_alcohol=false`.
+3. Repositories/services:
+   - listar productos activos.
+   - filtrar por `type`.
+   - filtrar por `is_alcohol`.
+   - obtener producto por slug con categorias.
+   - unique slug falla o se maneja de forma testeada.
+   - eventos futuros activos se ordenan por fecha.
+4. Pickup model:
+   - `pickup_order_item` puede referenciar `product`.
+   - No implementes todavia el rechazo 422 por alcohol; deja test pendiente/documentado para Fase 4 si aparece la tentacion.
+
+Si no hay MariaDB disponible:
+- No inventes que la fase esta completa.
+- Ejecuta los tests que no dependan de DB.
+- Deja documentado el comando exacto para preparar DB local/test.
+- Marca la fase como `IN_PROGRESS` o `BLOCKED` segun corresponda, no `DONE`.
+
+Prohibido en esta fase:
+- No crear endpoints Express publicos de catalogo/eventos/newsletter/admin; eso es Fase 3 y Fase 5.
+- No implementar `POST /api/v1/pickup-orders`; eso es Fase 4.
+- No implementar frontend.
+- No activar pagos online ni Stripe.
+- No crear tablas de V2 como cuentas de cliente, loyalty, reviews, pagos, stock realtime, location multi-sede o traducciones.
+- No usar ORM.
+- No ejecutar seeds en produccion.
+- No guardar secretos reales ni datos reales del owner.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 2
+- `current_phase_name`: "Modelo de datos MariaDB y seed local"
+- `current_focus`: resumen real de migraciones, seed, scripts y tests
+- `overall_status`: `REVIEW_READY` si migraciones/seed/tests pasan; `IN_PROGRESS` si queda DB/test pendiente; `BLOCKED` si falta MariaDB o decision critica
+- tabla de Fase 2 con implementado/falta/notas reales
+- tabla de Fase 3 como siguiente fase si Fase 2 queda lista
+- funcionalidades implementadas: anade solo modelo de datos, scripts DB, seed local y repositories/services base
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 3 - Contratos API y servicios publicos" si Fase 2 queda lista
+- checklist final: solo marca items relacionados con scripts npm/MariaDB o modelo si estan realmente verificados
+
+Si cambias estado, scripts o estructura que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- Las migraciones SQL se pueden ejecutar desde cero.
-- Seeds solo cargan en local/dev.
-- `is_alcohol` existe y esta testeado.
-- No se guardan secretos reales.
-- SQL usa nombres claros, tablas/columnas en `snake_case` y keywords en mayusculas.
+- Las migraciones SQL se pueden ejecutar desde cero en una MariaDB local/test.
+- Existe un mecanismo claro para no reaplicar migraciones ya aplicadas.
+- Seeds solo cargan en local/dev/test y abortan en production.
+- `is_alcohol` existe, es no nullable, tiene default seguro y esta testeado.
+- El seed contiene vinos con `is_alcohol=true` y productos no alcoholicos con `is_alcohol=false`.
+- Repositories/services basicos funcionan contra MariaDB.
+- No hay endpoints de negocio adelantados.
+- No hay secretos reales.
+- SQL usa nombres claros, tablas/columnas en `snake_case` y keywords en MAYUSCULAS.
+- `npm test` pasa o documenta claramente que falta MariaDB y no marca fase como completa.
+- `npm run lint` pasa si esta configurado.
+- README/runbook explican migraciones, seeds y preparacion de DB local/test.
+- `docs/AGENTS_Javi.md` no se modifica.
 
-Verificacion:
-- Ejecuta `npm run db:migrate` si hay DB disponible.
-- Ejecuta `npm run db:seed` si hay DB disponible.
+Verificacion obligatoria:
+- Ejecuta `npm run db:migrate` con DB disponible.
+- Ejecuta `npm run db:seed` con DB disponible.
 - Ejecuta `npm test`.
-- Reporta cualquier test no ejecutado.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Comprueba que los seeds no contienen secretos reales.
+- Comprueba que `NODE_ENV=production npm run db:seed` aborta o documenta por que no se pudo probar en Windows/PowerShell con comando equivalente.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 2.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 12. Fase 3 - Contratos API y servicios publicos
@@ -963,69 +1335,337 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 3: API publica de CRUDO V1.
 
-Antes de escribir rutas, define/actualiza validadores de request/response esperada para:
-- GET /api/v1/products
-- GET /api/v1/products/{slug}
-- GET /api/v1/categories
-- GET /api/v1/campaigns/active
-- GET /api/v1/campaigns/{slug}
-- GET /api/v1/events
-- GET /api/v1/events/{slug}
-- POST /api/v1/events/{slug}/reservations
-- POST /api/v1/inquiries
-- POST /api/v1/newsletter/subscribe
-- POST /api/v1/consent
-- GET /api/v1/site/config
+Objetivo de esta fase:
+Implementar la API publica V1 que alimentara el frontend: catalogo, categorias, campanas, eventos, reservas de eventos, consultas, newsletter, consentimiento y configuracion publica del sitio. Esta fase debe exponer contratos HTTP estables bajo `/api/v1`, usando validacion centralizada, RFC 7807, rate limiting y repositories/services contra MariaDB. No implementes todavia `Mi Tabla`/pickup orders, admin JWT ni frontend.
 
-Requisitos:
-1. Public GET cache headers compatibles con CDN durante 5 minutos.
-2. Paginacion `page`, `size` en productos.
-3. Filtros producto:
-   - type
-   - category
-   - seasonal
-   - featured
-   - q
-4. Solo devolver entidades `is_active=true` en publicos.
-5. Eventos publicos solo futuros y activos.
-6. Reservation form:
-   - name, email, phone, party_size 1-4, notes
-   - rechaza evento lleno
-   - si queda menos del 30%, exponer "pocas plazas" en response
-7. Inquiries:
-   - CONTACT, WHOLESALE
-   - validar email o phone segun formulario
-8. Newsletter:
-   - guardar consent_at, ip/source/status
-   - crear cliente Brevo con interfaz y adaptador local noop/mock si no hay API key
-9. Consent:
-   - no cookies no esenciales antes de consentimiento
-   - guardar consent log 24 meses
-10. Error handling:
-   - RFC 7807
-   - validaciones 400/422 segun corresponda
-11. Rate limit:
-   - 10 req/min/IP en POST publicos
-12. Notificaciones:
-   - emitir evento interno para inquiries y reservations
-   - si proveedor externo no esta configurado, usar noop logger en local
+Contexto obligatorio:
+- Fase 1 debe haber dejado Express, RFC 7807, health, middleware de validacion y tests base.
+- Fase 2 debe haber dejado MariaDB schema, seed local y repositories/services base.
+- Stack: JavaScript, CommonJS, Express, MariaDB con paquete `mariadb`.
+- Arquitectura obligatoria: Route -> Validator middleware -> Controller -> Service -> Repository -> MariaDB.
+- Public site en espanol, compatible con Google Translate, sin pago online y sin venta online de alcohol.
+- Los vinos con `is_alcohol=true` se pueden listar y ver en catalogo/PDP, pero en esta fase no se crea ningun endpoint para anadirlos a `Mi Tabla`. El bloqueo backend 422 pertenece a Fase 4.
 
-Arquitectura:
-- Route -> Validator middleware -> Controller -> Service -> Repository -> MariaDB.
-- Las reglas de validacion deben vivir en helpers/middlewares reutilizables.
-- No duplicar reglas criticas entre controlador y servicio; el servicio conserva reglas de negocio.
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`, y confirma si Fase 2 esta realmente lista.
+2. Inspecciona:
+   - `server/app.js`
+   - `server/routes/`
+   - `server/controllers/`
+   - `server/services/`
+   - `server/repositories/`
+   - `server/middleware/validate-request.js`
+   - `server/utils/problem.js`
+   - `db/migrations/`
+   - `db/seeds/`
+   - `tests/`
+   - `package.json`
+   - `git status --short`
+3. Si faltan piezas minimas de Fase 1 o Fase 2, completa solo lo necesario para que la API publica pueda apoyarse en ellas, y documenta el desfase.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. No cambies el schema sin crear migracion nueva o sin justificar que es correccion de Fase 2 aun no consolidada.
 
-Tests:
-- Service tests para filtros, eventos llenos, newsletter y consent.
-- Route tests para happy/unhappy paths usando Supertest.
-- Rate limit test si es razonable.
+Endpoints publicos obligatorios:
+- `GET /api/v1/products`
+- `GET /api/v1/products/:slug`
+- `GET /api/v1/categories`
+- `GET /api/v1/campaigns/active`
+- `GET /api/v1/campaigns/:slug`
+- `GET /api/v1/events`
+- `GET /api/v1/events/:slug`
+- `POST /api/v1/events/:slug/reservations`
+- `POST /api/v1/inquiries`
+- `POST /api/v1/newsletter/subscribe`
+- `POST /api/v1/consent`
+- `GET /api/v1/site/config`
+
+Archivos a crear o actualizar:
+1. Rutas:
+   - `server/routes/products.routes.js`
+   - `server/routes/categories.routes.js`
+   - `server/routes/campaigns.routes.js`
+   - `server/routes/events.routes.js`
+   - `server/routes/inquiries.routes.js`
+   - `server/routes/newsletter.routes.js`
+   - `server/routes/consent.routes.js`
+   - `server/routes/site-config.routes.js`
+   - actualiza el router principal bajo `/api/v1`
+
+2. Controladores:
+   - `server/controllers/products.controller.js`
+   - `server/controllers/categories.controller.js`
+   - `server/controllers/campaigns.controller.js`
+   - `server/controllers/events.controller.js`
+   - `server/controllers/inquiries.controller.js`
+   - `server/controllers/newsletter.controller.js`
+   - `server/controllers/consent.controller.js`
+   - `server/controllers/site-config.controller.js`
+
+3. Servicios:
+   - `server/services/catalog.service.js`
+   - `server/services/campaign.service.js`
+   - `server/services/event.service.js`
+   - `server/services/inquiry.service.js`
+   - `server/services/newsletter.service.js`
+   - `server/services/consent.service.js`
+   - `server/services/site-config.service.js`
+   - `server/services/notification.service.js` con adaptador noop/local
+
+4. Repositories:
+   - completa o crea repositories necesarios para product/category/campaign/event/inquiry/newsletter/consent/site-config.
+   - No mezcles SQL en controladores.
+
+5. Validadores:
+   - `server/validators/products.validator.js`
+   - `server/validators/events.validator.js`
+   - `server/validators/inquiries.validator.js`
+   - `server/validators/newsletter.validator.js`
+   - `server/validators/consent.validator.js`
+   - `server/validators/common.validator.js` si hace falta
+   - si el proyecto ya usa otra ubicacion para validadores, respeta ese patron.
+
+6. Tests:
+   - `tests/routes/products.routes.test.js`
+   - `tests/routes/events.routes.test.js`
+   - `tests/routes/inquiries.routes.test.js`
+   - `tests/routes/newsletter.routes.test.js`
+   - `tests/routes/consent.routes.test.js`
+   - `tests/services/catalog.service.test.js`
+   - `tests/services/event.service.test.js`
+   - ajusta nombres al patron real si ya existe.
+
+Contratos y comportamiento:
+1. `GET /products`
+   - Devuelve solo productos `is_active=true`.
+   - Incluye productos alcoholicos y no alcoholicos.
+   - Los vinos deben exponer `is_alcohol=true` para que el frontend sepa que el CTA sera WhatsApp.
+   - Soporta paginacion:
+     - `page`, default 1
+     - `size`, default 20, max 50
+   - Soporta filtros:
+     - `type`: `CHEESE`, `WINE`, `OTHER`
+     - `category`: slug de categoria
+     - `seasonal`: boolean
+     - `featured`: boolean
+     - `q`: busqueda simple por nombre/productor/region
+   - Orden default: featured primero, seasonal despues, nombre ascendente o criterio claro documentado.
+   - Response incluye `items` y `pagination`.
+
+2. `GET /products/:slug`
+   - Devuelve producto activo por slug.
+   - Incluye categorias e imagenes ordenadas.
+   - Si no existe o no esta activo: 404 RFC 7807.
+   - No crea logica de `Mi Tabla`; solo expone datos suficientes para que fases frontend decidan CTA.
+
+3. `GET /categories`
+   - Devuelve categorias ordenadas por `sort_order`, `name`.
+   - Permite query opcional `type`.
+
+4. `GET /campaigns/active`
+   - Devuelve campana activa en ventana de fechas o `null`/404 segun contrato que elijas, pero documentalo y testea.
+   - Incluye productos asociados activos.
+
+5. `GET /campaigns/:slug`
+   - Devuelve campana activa por slug con productos activos.
+   - 404 RFC 7807 si no existe/no activa/fuera de ventana.
+
+6. `GET /events`
+   - Devuelve eventos futuros `is_active=true`.
+   - Orden por `starts_at` ascendente.
+   - Incluye capacidad restante si hay reservas.
+   - Incluye indicador `few_seats_left=true` si quedan menos del 30% de plazas.
+
+7. `GET /events/:slug`
+   - Devuelve evento futuro activo.
+   - Incluye capacidad restante y `few_seats_left`.
+   - Si esta lleno, response debe permitir al frontend sustituir form por mensaje/waitlist futuro, sin implementar waitlist real salvo que ya exista.
+
+8. `POST /events/:slug/reservations`
+   - Request:
+     - `name` requerido
+     - `email` requerido y valido
+     - `phone` requerido o opcional segun decision documentada; preferible requerido para owner
+     - `party_size` entero 1-4
+     - `notes` opcional con limite razonable
+   - Rechaza evento inexistente, inactivo, pasado o lleno.
+   - Crea reserva con status `NEW`.
+   - Debe ser idempotente si llega `Idempotency-Key`; si no implementas persistencia completa aun, documenta deuda para Fase 4/5 y evita doble insercion en tests donde sea razonable.
+   - Emite notificacion interna/noop para owner.
+
+9. `POST /inquiries`
+   - Tipos permitidos: `CONTACT`, `WHOLESALE`.
+   - `PICKUP` queda reservado para Fase 4 si se usa internamente.
+   - Request:
+     - `type`
+     - `name`
+     - `email`
+     - `phone` opcional salvo que falte email
+     - `message`
+     - `payload` opcional para datos especificos de formulario
+   - Guarda `payload_json`.
+   - Status inicial `NEW`.
+   - Emite notificacion interna/noop.
+
+10. `POST /newsletter/subscribe`
+   - Request:
+     - `email`
+     - `source`
+     - consentimiento explicito o campo equivalente si el frontend lo envia.
+   - Guarda `consent_at`, `ip`, `source`, `status`.
+   - Implementa interfaz `NewsletterProvider` o adaptador equivalente.
+   - Si no hay `BREVO_API_KEY`, usar noop/mock local sin fallar el request.
+   - Preparar double opt-in via Brevo, pero sin depender de credenciales reales en tests.
+
+11. `POST /consent`
+   - Request:
+     - `consent_id`
+     - `analytics`
+     - `marketing`
+     - `preferences`
+   - Guarda log con hashes de IP/user agent si ya hay helper; si no, implementa hashing simple con `crypto` y salt/env si existe.
+   - `expires_at` recomendado a 24 meses.
+   - No carga cookies por si mismo; solo registra decision.
+
+12. `GET /site/config`
+   - Devuelve configuracion publica necesaria para frontend:
+     - nombre CRUDO
+     - direccion placeholder si no hay real
+     - horarios placeholder/documentados
+     - WhatsApp publico desde env o placeholder seguro
+     - Instagram
+     - Google Maps URL
+     - pickup SLA: confirmacion por WhatsApp en menos de 24h
+     - flags publicos como `pickup_enabled`
+   - No expone secretos ni emails privados no publicos.
+
+Cross-cutting:
+- Public GET cacheable 5 minutos:
+  - `Cache-Control: public, max-age=300, stale-while-revalidate=60` o variante razonable.
+- POST publicos:
+  - rate limit 10 req/min/IP.
+  - body limit razonable.
+- Validacion:
+  - centralizada antes de controladores.
+  - 400 para request mal formado.
+  - 422 para request sintacticamente valido pero no procesable por regla de negocio.
+- Errores:
+  - RFC 7807 `application/problem+json`.
+  - 404 para recursos no encontrados.
+  - 409 para conflicto/idempotencia si aplica.
+  - no filtrar errores SQL al cliente.
+- Seguridad:
+  - no secretos hardcodeados.
+  - CORS sigue limitado por env.
+  - no logs con PII completa.
+- Responses:
+  - JSON estable.
+  - nombres en `snake_case` o `camelCase` segun patron ya elegido; si no existe patron, usa `snake_case` para alinearlo con DB y documentalo.
+
+Notificaciones:
+- Crea `NotificationService` con metodos para:
+  - nueva inquiry
+  - nueva event reservation
+  - newsletter subscribe si aporta valor
+- En local/test debe ser noop o in-memory spy.
+- No integrar proveedor WhatsApp real todavia salvo adaptador pasivo. No bloquear requests por fallo de proveedor externo.
+
+Tests obligatorios:
+1. Routes con Supertest:
+   - products list happy path.
+   - product detail 200 y 404.
+   - categories list.
+   - active campaign.
+   - events list y detail.
+   - reservation happy path.
+   - reservation invalid payload.
+   - reservation full event.
+   - inquiry CONTACT/WHOLESALE happy path.
+   - newsletter subscribe sin Brevo API key.
+   - consent log.
+   - rate limit en un POST publico si el test no queda fragil.
+
+2. Service tests:
+   - filtros de catalogo.
+   - solo entidades activas publicas.
+   - eventos pasados no aparecen.
+   - calculo de capacidad restante y `few_seats_left`.
+   - newsletter provider noop.
+   - consent expiry 24 meses.
+
+3. Error tests:
+   - validacion devuelve problem detail.
+   - 404 devuelve problem detail.
+   - error interno no filtra detalles SQL.
+
+Si no hay MariaDB disponible:
+- Ejecuta tests unitarios/noop que no dependan de DB.
+- No marques Fase 3 como completa.
+- Documenta comandos pendientes: migrar, seed, test con DB.
+- Actualiza estado vivo como `IN_PROGRESS` o `BLOCKED`.
+
+Prohibido en esta fase:
+- No implementar `POST /api/v1/pickup-orders`; eso es Fase 4.
+- No implementar alcohol guard 422 completo de pickup; solo asegurar que productos exponen `is_alcohol`.
+- No crear endpoints admin ni JWT; eso es Fase 5.
+- No implementar frontend.
+- No activar pagos online, Stripe ni Redsys.
+- No introducir ORM o framework nuevo.
+- No crear tablas V2 ni cambiar el alcance V1.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 3
+- `current_phase_name`: "API Express y servicios publicos"
+- `current_focus`: resumen real de endpoints, validadores, services, tests y pendientes
+- `overall_status`: `REVIEW_READY` si API/tests/lint pasan; `IN_PROGRESS` si queda DB/test pendiente; `BLOCKED` si falta MariaDB o decision critica
+- tabla de Fase 3 con implementado/falta/notas reales
+- tabla de Fase 4 como siguiente fase si Fase 3 queda lista
+- funcionalidades implementadas: anade solo API publica y servicios publicos reales
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 4 - Mi Tabla y alcohol guard" si Fase 3 queda lista
+- checklist final: marca solo rutas publicas/formularios backend si estan realmente verificados
+
+Si cambias estado, rutas o arquitectura que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- `npm run lint` pasa si esta configurado.
-- `npm test` pasa.
-- Las rutas publicas estan documentadas en README/runbook o comentario de rutas.
-- Public endpoints devuelven datos seed.
-- No se implementa todavia pickup_order completo si queda para Fase 4, salvo contratos compartidos.
+- Todos los endpoints publicos de Fase 3 existen bajo `/api/v1`.
+- Validadores centralizados antes de controladores.
+- Controllers no contienen SQL.
+- Services conservan reglas de negocio.
+- Repositories encapsulan MariaDB.
+- Public GET cache headers 5 minutos.
+- POST publicos con rate limit.
+- RFC 7807 en validacion, 404 y errores.
+- Products expone correctamente `is_alcohol`.
+- Public endpoints devuelven datos seed si DB esta migrada/seedeada.
+- Newsletter funciona con adaptador noop si no hay Brevo.
+- Consent se guarda sin cargar cookies no esenciales.
+- `npm test` pasa con DB disponible o se documenta claramente bloqueo.
+- `npm run lint` pasa si existe.
+- README/runbook documentan rutas, comandos y dependencias externas noop.
+- `docs/AGENTS_Javi.md` no se modifica.
+- No se implementa pickup completo, admin ni pagos.
+
+Verificacion obligatoria:
+- Ejecuta `npm run db:migrate` si DB esta disponible.
+- Ejecuta `npm run db:seed` si DB esta disponible.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta un smoke de API con Supertest o comando equivalente para `/api/v1/health` y al menos `/api/v1/products`.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Comprueba que no hay secretos reales ni credenciales Brevo/WhatsApp hardcodeadas.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 3.
+- Endpoints implementados.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 13. Fase 4 - Mi Tabla y alcohol guard
@@ -1048,51 +1688,285 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 4: Mi Tabla pickup inquiry flow en backend.
 
-Esta es la regla mas importante:
-- Vino/alcohol se puede ver, pero nunca reservar mediante Mi Tabla.
-- Si cualquier line item referencia un producto con `is_alcohol=true`, `POST /api/v1/pickup-orders` debe responder HTTP 422 con RFC 7807.
-- El frontend tambien lo ocultara, pero el backend es la defensa final.
+Objetivo de esta fase:
+Implementar el flujo backend de `Mi Tabla` como solicitud de pickup sin pago online, limitado estrictamente a productos no alcoholicos. Esta fase debe crear `POST /api/v1/pickup-orders`, calcular precios desde servidor, persistir pedido e items en MariaDB, aplicar idempotencia, emitir notificacion owner mediante adaptador noop/local y bloquear cualquier producto con `is_alcohol=true` con HTTP 422 RFC 7807.
 
-Tareas:
-1. Actualiza validadores para POST /api/v1/pickup-orders:
-   - request: name, email, phone, pickup_date, pickup_slot, notes, items[{product_id o product_slug, qty}]
-   - response: order_id, status NEW, total_cents, confirmation_message
-   - errores: 400 validation, 404 product, 409 idempotency conflict, 422 alcohol/stock/slot invalid
-2. Implementa PickupService:
-   - valida items no vacios
-   - valida qty > 0
-   - carga productos activos
-   - rechaza productos alcoholicos con 422
-   - rechaza OUT stock si aplica
-   - calcula total_cents desde precios actuales, no desde cliente
-   - valida fecha solo dias de apertura desde SiteConfig
-   - valida slot en incrementos de 30 minutos
-   - guarda pickup_order y pickup_order_item
-   - status inicial NEW
-3. Implementa Idempotency-Key:
-   - evita dobles envios por retry/red
-   - misma key + mismo payload devuelve misma respuesta
-   - misma key + payload distinto devuelve 409
-4. Implementa NotificationService:
-   - owner WhatsApp ping para nuevo pickup
-   - digest email end-of-day preparado como servicio invocable/scheduled
-   - noop local si faltan credenciales
-5. Implementa tests:
-   - happy path con 2 quesos
-   - total VAT-inclusive segun modelo acordado
-   - wine/alcohol item -> 422 problem detail
-   - mixed cheese + wine -> 422 y no persiste pedido
-   - inactive product -> error
-   - invalid pickup slot -> error
-   - idempotency same payload -> same response
-   - network retry scenario si aplica
+Regla critica no negociable:
+- Vino/alcohol se puede ver en catalogo/PDP, pero nunca reservar mediante `Mi Tabla`.
+- Si cualquier line item referencia un producto con `is_alcohol=true`, `POST /api/v1/pickup-orders` debe responder HTTP 422 con `application/problem+json`.
+- Si el request mezcla queso/no alcohol + vino/alcohol, se rechaza todo el pedido y no se persiste nada.
+- El frontend tambien ocultara el boton, pero el backend es la defensa final.
+- No hay pago online. El mensaje al cliente debe indicar pago en CRUDO al recoger y confirmacion por WhatsApp en menos de 24 horas.
+
+Contexto obligatorio:
+- Fase 1 debe haber dejado Express, RFC 7807, validacion centralizada y tests.
+- Fase 2 debe haber dejado tablas `product`, `pickup_order`, `pickup_order_item` e `is_alcohol`.
+- Fase 3 debe haber dejado API publica, catalogo y `NotificationService` o equivalente noop.
+- Stack: JavaScript, CommonJS, Express, MariaDB con paquete `mariadb`.
+- Arquitectura: Route -> Validator middleware -> Controller -> Service -> Repository -> MariaDB.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`, y confirma si Fase 3 esta realmente lista.
+2. Inspecciona:
+   - `server/routes/`
+   - `server/controllers/`
+   - `server/services/`
+   - `server/repositories/`
+   - `server/validators/`
+   - `server/middleware/validate-request.js`
+   - `server/utils/problem.js`
+   - `db/migrations/`
+   - `tests/`
+   - `package.json`
+   - `git status --short`
+3. Si faltan piezas minimas de fases previas, completa solo lo imprescindible para implementar pickup sin rehacer arquitectura.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. Si necesitas modificar schema para idempotencia, crea una migracion nueva y documenta el motivo.
+
+Endpoint obligatorio:
+- `POST /api/v1/pickup-orders`
+
+Contrato HTTP:
+1. Headers:
+   - `Content-Type: application/json`
+   - `Idempotency-Key`: recomendado; obligatorio si decides endurecer el contrato. Si no viene, acepta el request pero documenta el riesgo de doble envio.
+
+2. Request body:
+   - `name`: string requerido
+   - `email`: email requerido
+   - `phone`: string requerido
+   - `pickup_date`: fecha `YYYY-MM-DD` requerida
+   - `pickup_slot`: string requerido, por ejemplo `18:00`
+   - `notes`: string opcional con limite razonable
+   - `items`: array requerido, minimo 1
+     - `product_id` o `product_slug`: uno de los dos requerido
+     - `qty`: entero requerido, `>= 1`
+
+3. Response 201:
+   - `order_id`
+   - `status`: `NEW`
+   - `total_cents`
+   - `currency`: `EUR`
+   - `items`
+   - `confirmation_message`: texto en espanol indicando:
+     - pedido recibido
+     - pago en CRUDO al recoger
+     - confirmacion por WhatsApp en menos de 24 horas
+
+4. Errores:
+   - 400: JSON mal formado, campos ausentes o tipos incorrectos.
+   - 404: producto inexistente o no activo.
+   - 409: conflicto de idempotencia.
+   - 422: producto alcoholico, stock `OUT`, fecha/slot no permitido, items vacios si lo tratas como regla de negocio.
+   - 429: rate limit.
+   - Todos los errores deben ser RFC 7807 `application/problem+json`.
+
+Archivos a crear o actualizar:
+1. Rutas/controladores/validadores:
+   - `server/routes/pickup-orders.routes.js`
+   - `server/controllers/pickup-orders.controller.js`
+   - `server/validators/pickup-orders.validator.js`
+   - registrar la ruta bajo `/api/v1`
+
+2. Servicios:
+   - `server/services/pickup-order.service.js`
+   - `server/services/idempotency.service.js` o helper equivalente
+   - `server/services/notification.service.js` si no existe o hay que ampliarlo
+   - `server/services/site-config.service.js` si se usa para horarios/slots
+
+3. Repositories:
+   - `server/repositories/pickup-order.repository.js`
+   - completar `product.repository.js` para resolver productos activos por ids/slugs
+   - `server/repositories/idempotency.repository.js` si usas tabla dedicada
+
+4. DB/migraciones:
+   - Si el schema de Fase 2 no soporta idempotencia, crea migracion nueva, por ejemplo:
+     - `db/migrations/003_add_pickup_idempotency.sql`
+   - Opciones aceptables:
+     - tabla `idempotency_key` con key, request_hash, response_json, status_code, resource_type, resource_id, expires_at
+     - o columnas controladas en `pickup_order` si es mas simple y suficiente
+   - No rompas migraciones existentes.
+
+5. Tests:
+   - `tests/routes/pickup-orders.routes.test.js`
+   - `tests/services/pickup-order.service.test.js`
+   - `tests/services/idempotency.service.test.js` si existe servicio separado
+
+Validacion centralizada:
+- Usar middleware/helper existente de validacion.
+- No validar payload manualmente dentro del controlador salvo conversion superficial.
+- Limites recomendados:
+  - `name`: 2-120 chars
+  - `email`: formato email, max 160 chars
+  - `phone`: 6-30 chars
+  - `notes`: max 1000 chars
+  - `items`: 1-30 lineas
+  - `qty`: 1-99
+- Rechazar payloads con `total_cents`, `unit_price_cents` o precio enviado por cliente. El cliente nunca decide precios.
+
+Reglas de negocio de `PickupOrderService`:
+1. Cargar todos los productos activos solicitados desde MariaDB.
+2. Detectar productos inexistentes/inactivos y devolver 404 o 422 de forma consistente y testeada.
+3. Si cualquier producto tiene `is_alcohol=true`, lanzar 422:
+   - `type`: `/problems/pickup-alcohol-not-allowed`
+   - `title`: `Alcohol products cannot be reserved for pickup`
+   - `detail`: mensaje claro en espanol o ingles tecnico consistente con API
+   - incluir `invalid_items` con slug/id si no expone datos sensibles
+4. Rechazar productos `stock_status='OUT'`.
+5. Calcular `unit_price_cents` y `total_cents` desde DB.
+6. No aceptar precios desde cliente.
+7. Validar fecha:
+   - no pasada
+   - no mas alla de un limite razonable, por ejemplo 14 o 30 dias
+   - si no hay horarios reales en `site_config`, usar reglas locales documentadas como placeholder seguro
+8. Validar slot:
+   - formato `HH:mm`
+   - incrementos de 30 minutos
+   - dentro de horario pickup configurado o placeholder documentado
+9. Guardar `pickup_order` y `pickup_order_item` en una transaccion.
+10. Status inicial `NEW`.
+11. Si falla cualquier validacion, no persistir pedido ni items.
+12. Emitir notificacion owner despues de commit, no antes.
+
+Idempotencia:
+- Usar `Idempotency-Key` para evitar dobles envios por retry/red.
+- Misma key + mismo payload:
+  - devuelve la misma respuesta y mismo status code que el primer request exitoso.
+- Misma key + payload distinto:
+  - devuelve 409 RFC 7807.
+- Si el primer intento falla por validacion antes de persistir, no es obligatorio guardar la key; si la guardas, documenta el comportamiento.
+- Hash del payload normalizado con `crypto`.
+- Expiracion recomendada: 24 horas.
+- Tests deben cubrir retry exitoso y conflicto.
+
+Notificaciones:
+- Ampliar `NotificationService` con `notifyNewPickupOrder(order)`.
+- En local/test:
+  - noop o in-memory spy.
+  - no fallar el request si faltan credenciales.
+- Preparar mensaje owner con:
+  - nombre
+  - telefono
+  - fecha/slot
+  - resumen items
+  - total
+- Preparar digest email end-of-day como metodo invocable si encaja, pero no crear scheduler complejo en esta fase.
+- No integrar proveedor WhatsApp real si exige credenciales o alta externa; dejar adaptador pasivo/noop.
+
+Rate limiting y seguridad:
+- Aplicar rate limit de POST publico: 10 req/min/IP.
+- No loguear PII completa.
+- No hardcodear telefono owner real, email real ni secretos.
+- No exponer stack traces.
+- Mantener CORS por env.
+
+Tests obligatorios:
+1. Happy path:
+   - pedido con 2 productos no alcoholicos.
+   - status `NEW`.
+   - total calculado desde DB.
+   - items persistidos.
+   - response contiene mensaje de pago en tienda y WhatsApp <24h.
+
+2. Alcohol guard:
+   - producto vino `is_alcohol=true` -> 422 RFC 7807.
+   - mezcla queso + vino -> 422 y no persiste nada.
+   - test debe verificar que no se crea `pickup_order`.
+
+3. Validaciones:
+   - items vacios.
+   - qty invalida.
+   - producto inexistente/inactivo.
+   - producto `OUT`.
+   - fecha pasada.
+   - slot mal formado.
+   - slot fuera de horario.
+
+4. Idempotencia:
+   - misma key + mismo payload -> misma respuesta.
+   - misma key + payload distinto -> 409.
+   - retry no duplica filas.
+
+5. Notificaciones:
+   - se llama `notifyNewPickupOrder` tras commit.
+   - si notification noop falla simulado, el pedido no debe romperse si ya se decidio tolerancia; documenta comportamiento.
+
+6. Error handling:
+   - 400/404/409/422 devuelven `application/problem+json`.
+   - errores SQL no se filtran al cliente.
+
+Si no hay MariaDB disponible:
+- Ejecuta tests unitarios de validacion/idempotencia pura si existen.
+- No marques Fase 4 como completa.
+- Documenta comandos pendientes para DB, migracion, seed y tests.
+- Actualiza estado vivo como `IN_PROGRESS` o `BLOCKED`.
+
+Prohibido en esta fase:
+- No aceptar ni procesar pagos online.
+- No integrar Stripe/Redsys ni webhooks.
+- No permitir alcohol en pickup bajo ninguna condicion.
+- No confiar en el frontend para bloquear alcohol.
+- No implementar frontend `Mi Tabla`; eso es Fase 9.
+- No crear admin UI/backend completo; Fase 5 cubre admin backend.
+- No crear stock realtime complejo ni reservas con hold de inventario.
+- No crear cuentas de cliente.
+- No introducir ORM o arquitectura nueva.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 4
+- `current_phase_name`: "Mi Tabla y alcohol guard"
+- `current_focus`: resumen real de pickup endpoint, alcohol guard, idempotencia, notificaciones y tests
+- `overall_status`: `REVIEW_READY` si endpoint/tests/lint pasan; `IN_PROGRESS` si queda DB/test pendiente; `BLOCKED` si falta MariaDB o decision critica
+- tabla de Fase 4 con implementado/falta/notas reales
+- tabla de Fase 5 como siguiente fase si Fase 4 queda lista
+- funcionalidades implementadas: anade pickup backend, alcohol guard 422, idempotencia y notificacion noop si estan verificados
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 5 - Admin backend y seguridad JWT" si Fase 4 queda lista
+- checklist final: marca `Backend 422 alcohol guard` y `Pickup flow sin pago online` solo si tests pasan
+
+Si cambias estado, rutas o arquitectura que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- `POST /api/v1/pickup-orders` nunca acepta alcohol.
+- `POST /api/v1/pickup-orders` existe bajo `/api/v1`.
+- El endpoint nunca acepta alcohol.
 - Test explicito de alcohol guard verde.
+- Mixed cart con alcohol no persiste pedido.
+- Total se calcula desde DB.
+- Pedido e items se guardan en transaccion.
+- Idempotencia evita duplicados y detecta conflictos.
 - Mensaje de confirmacion indica pago en tienda y confirmacion por WhatsApp en menos de 24h.
-- No se envia pago ni se integra Stripe/Redsys.
-- `npm test` pasa.
+- Notificacion owner usa noop/local si faltan credenciales.
+- No hay pagos online ni Stripe/Redsys activo.
+- RFC 7807 en 400/404/409/422.
+- `npm test` pasa con DB disponible o se documenta claramente bloqueo.
+- `npm run lint` pasa si existe.
+- README/runbook documentan contrato pickup, idempotencia y limitaciones V1.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run db:migrate` si DB esta disponible.
+- Ejecuta `npm run db:seed` si DB esta disponible.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta smoke de API para:
+  - happy path no alcohol
+  - wine/alcohol -> 422
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Comprueba que no hay secretos reales ni pagos activos.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 4.
+- Endpoint y reglas implementadas.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 14. Fase 5 - Admin backend y seguridad JWT
@@ -1114,70 +1988,396 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 5: backend admin y seguridad JWT.
 
-Requisitos operativos:
-- El owner es una sola persona.
-- El admin debe soportar el ritmo diario:
-  - manana <= 90s: ver pedidos de hoy, eventos de hoy, nuevas consultas, confirmar pedidos, marcar agotados.
-  - servicio: cero admin obligatorio.
-  - cierre <= 90s: marcar pedidos como PICKED_UP y revisar consultas.
-  - semanal <= 10 min: campana, KPIs, nuevo evento.
-- Cualquier flujo admin que requiera mas de 3 taps debe marcarse como riesgo.
+Objetivo de esta fase:
+Implementar el backend admin de CRUDO V1 protegido con JWT para que una sola persona pueda gestionar catalogo, eventos, campanas, pedidos pickup, reservas e inquiries desde movil en menos de 5 minutos al dia. Esta fase es solo backend: no implementes UI admin todavia.
 
-Tareas:
-1. Actualiza validadores admin:
-   - POST /admin/auth/login
-   - POST /admin/auth/refresh
-   - GET /admin/dashboard
-   - CRUD /admin/products
-   - POST /admin/products/{id}/images
-   - CRUD /admin/events
-   - CRUD /admin/campaigns
-   - GET/PATCH /admin/inquiries
-   - GET/PATCH /admin/pickup-orders
-   - GET/PATCH /admin/event-reservations
-   - GET/PUT /admin/site/config
-   - GET /admin/kpis
-2. Implementa seguridad Express:
-   - public paths abiertos
-   - admin paths JWT
-   - passwords hasheadas con bcrypt o argon2
-   - CORS por env
-   - CSRF segun API token strategy
-3. Implementa AuthService y JwtService.
-4. Implementa AdminDashboardService:
-   - today's pickup orders
-   - today's events
-   - new inquiries
-   - low/out stock products
-   - quick KPI summary
-5. Implementa CRUD productos:
-   - incluye `is_alcohol`
-   - type, producer, region, price, short/long desc, seasonal/featured, active, stock_status
-   - audit `updated_by`
-6. Implementa CRUD eventos y campanas.
-7. Implementa status updates:
-   - pickup: NEW, CONFIRMED, READY, PICKED_UP, CANCELLED
-   - inquiries: NEW, IN_PROGRESS, DONE, SPAM si decides enum
-   - reservations: NEW, CONFIRMED, CANCELLED
-8. Implementa image upload con interfaz StorageService:
-   - adapter local filesystem compatible con Plesk para V1
-   - adapter noop/fake para tests
-   - deja object storage/S3 compatible como posible V1.1 si se justifica CDN/volumen
-   - generar alt text por defecto: "{producer} {name}, {region}"
-9. Tests:
-   - admin endpoints rechazan no autenticado
-   - login valido/invalido
-   - CRUD product con is_alcohol
-   - update stock one-tap endpoint o PATCH parcial
-   - dashboard retorna datos principales
+Restriccion operativa:
+- El owner trabaja solo.
+- El admin debe soportar este ritmo:
+  - manana <= 90s: ver pedidos de hoy, eventos de hoy, nuevas consultas, confirmar pedidos y marcar productos agotados.
+  - durante servicio: cero admin obligatorio.
+  - cierre <= 90s: marcar pedidos como `PICKED_UP` y revisar consultas.
+  - semanal <= 10 min: revisar KPIs, publicar campana y crear/editar evento.
+- Cualquier flujo backend que obligue al frontend a mas de 3 taps para una accion diaria debe marcarse como riesgo y simplificarse con endpoint de accion rapida.
+
+Contexto obligatorio:
+- Fase 1: Express, RFC 7807, validacion centralizada, env y tests.
+- Fase 2: schema MariaDB con `admin_user`, `audit_log`, `product`, `event`, `campaign`, `pickup_order`, `inquiry`, `event_reservation`.
+- Fase 3: API publica funcionando.
+- Fase 4: pickup backend y alcohol guard 422 funcionando.
+- Stack: JavaScript, CommonJS, Express, MariaDB con paquete `mariadb`.
+- Arquitectura: Route -> Auth/Validator middleware -> Controller -> Service -> Repository -> MariaDB.
+- Public endpoints deben seguir abiertos. Solo `/api/v1/admin/**` requiere JWT.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`, y confirma si Fase 4 esta realmente lista.
+2. Inspecciona:
+   - `server/app.js`
+   - `server/routes/`
+   - `server/controllers/`
+   - `server/services/`
+   - `server/repositories/`
+   - `server/middleware/`
+   - `server/validators/`
+   - `server/utils/problem.js`
+   - `db/migrations/`
+   - `uploads/`
+   - `tests/`
+   - `.env.example`
+   - `package.json`
+   - `git status --short`
+3. Si falta alguna pieza minima de fases previas, completa solo lo imprescindible y documenta el desfase.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. Si necesitas tocar schema, crea migracion nueva. No edites migraciones ya aplicadas salvo que el proyecto aun no haya ejecutado Fase 2 y lo justifiques.
+
+Dependencias permitidas si no existen:
+- `bcryptjs` para password hashing.
+- `jsonwebtoken` para JWT.
+- `multer` para uploads.
+- `sharp` solo si se implementa procesamiento real de imagenes y no complica la fase.
+- No introducir Passport, ORM, CMS ni framework admin.
+
+Endpoints admin obligatorios:
+- `POST /api/v1/admin/auth/login`
+- `POST /api/v1/admin/auth/refresh`
+- `POST /api/v1/admin/auth/logout` si usas refresh tokens persistidos o denylist
+- `GET /api/v1/admin/dashboard`
+- `GET /api/v1/admin/kpis`
+- `GET /api/v1/admin/products`
+- `POST /api/v1/admin/products`
+- `GET /api/v1/admin/products/:id`
+- `PUT /api/v1/admin/products/:id`
+- `PATCH /api/v1/admin/products/:id/stock`
+- `DELETE /api/v1/admin/products/:id` o soft delete mediante `is_active=false`
+- `POST /api/v1/admin/products/:id/images`
+- `DELETE /api/v1/admin/products/:id/images/:image_id`
+- `GET /api/v1/admin/events`
+- `POST /api/v1/admin/events`
+- `GET /api/v1/admin/events/:id`
+- `PUT /api/v1/admin/events/:id`
+- `DELETE /api/v1/admin/events/:id` o soft delete
+- `GET /api/v1/admin/campaigns`
+- `POST /api/v1/admin/campaigns`
+- `GET /api/v1/admin/campaigns/:id`
+- `PUT /api/v1/admin/campaigns/:id`
+- `DELETE /api/v1/admin/campaigns/:id` o soft delete
+- `GET /api/v1/admin/inquiries`
+- `PATCH /api/v1/admin/inquiries/:id`
+- `GET /api/v1/admin/pickup-orders`
+- `PATCH /api/v1/admin/pickup-orders/:id`
+- `GET /api/v1/admin/event-reservations`
+- `PATCH /api/v1/admin/event-reservations/:id`
+- `GET /api/v1/admin/site/config`
+- `PUT /api/v1/admin/site/config`
+
+Archivos a crear o actualizar:
+1. Rutas:
+   - `server/routes/admin-auth.routes.js`
+   - `server/routes/admin-dashboard.routes.js`
+   - `server/routes/admin-products.routes.js`
+   - `server/routes/admin-events.routes.js`
+   - `server/routes/admin-campaigns.routes.js`
+   - `server/routes/admin-inquiries.routes.js`
+   - `server/routes/admin-pickup-orders.routes.js`
+   - `server/routes/admin-event-reservations.routes.js`
+   - `server/routes/admin-site-config.routes.js`
+
+2. Controladores:
+   - `server/controllers/admin-auth.controller.js`
+   - `server/controllers/admin-dashboard.controller.js`
+   - `server/controllers/admin-products.controller.js`
+   - `server/controllers/admin-events.controller.js`
+   - `server/controllers/admin-campaigns.controller.js`
+   - `server/controllers/admin-inquiries.controller.js`
+   - `server/controllers/admin-pickup-orders.controller.js`
+   - `server/controllers/admin-event-reservations.controller.js`
+   - `server/controllers/admin-site-config.controller.js`
+
+3. Servicios:
+   - `server/services/auth.service.js`
+   - `server/services/jwt.service.js`
+   - `server/services/admin-dashboard.service.js`
+   - `server/services/admin-product.service.js`
+   - `server/services/admin-event.service.js`
+   - `server/services/admin-campaign.service.js`
+   - `server/services/admin-inquiry.service.js`
+   - `server/services/admin-pickup-order.service.js`
+   - `server/services/admin-event-reservation.service.js`
+   - `server/services/admin-site-config.service.js`
+   - `server/services/audit.service.js`
+   - `server/services/storage.service.js`
+
+4. Repositories:
+   - `server/repositories/admin-user.repository.js`
+   - `server/repositories/audit-log.repository.js`
+   - completar repositories de products/events/campaigns/inquiries/pickup/reservations/site-config.
+
+5. Middleware/validadores:
+   - `server/middleware/authenticate-admin.js`
+   - `server/middleware/require-role.js` si hay roles `ADMIN`/`STAFF`
+   - `server/validators/admin-auth.validator.js`
+   - `server/validators/admin-products.validator.js`
+   - `server/validators/admin-events.validator.js`
+   - `server/validators/admin-campaigns.validator.js`
+   - `server/validators/admin-status.validator.js`
+   - `server/validators/admin-site-config.validator.js`
+
+6. DB/migraciones:
+   - Si falta soporte para refresh tokens, site config o audit fields, crea migracion nueva:
+     - `db/migrations/004_admin_security_and_config.sql` o nombre secuencial real.
+   - No crear tablas de cliente, roles complejos o permisos granulares V2.
+
+7. Tests:
+   - `tests/routes/admin-auth.routes.test.js`
+   - `tests/routes/admin-products.routes.test.js`
+   - `tests/routes/admin-dashboard.routes.test.js`
+   - `tests/routes/admin-status.routes.test.js`
+   - `tests/services/auth.service.test.js`
+   - `tests/services/audit.service.test.js`
+   - `tests/services/storage.service.test.js`
+
+Autenticacion y seguridad:
+1. Login:
+   - Busca admin activo por email.
+   - Verifica password con bcrypt.
+   - Devuelve access token JWT corto (`JWT_EXPIRES_IN`, default 15m).
+   - Devuelve refresh token si implementas refresh real.
+   - Nunca devuelve `password_hash`.
+
+2. JWT:
+   - Claims minimos: `sub`, `email`, `role`, `iat`, `exp`.
+   - Firma con `JWT_SECRET` desde env.
+   - Rechaza tokens expirados, mal firmados o de usuario inactivo.
+   - Respuestas 401/403 RFC 7807.
+
+3. Refresh:
+   - Si hay tabla de refresh tokens: persistir hash del refresh token, expiracion y revocacion.
+   - Si decides refresh stateless por simplicidad V1, documenta riesgo y testea expiracion.
+
+4. Passwords:
+   - `admin_user.password_hash` siempre hash bcrypt.
+   - Seed local puede tener credencial ficticia documentada solo para desarrollo.
+   - No hardcodear password real.
+
+5. Rate limiting:
+   - Login con rate limit mas estricto, por ejemplo 5 intentos/min/IP.
+   - Admin API con rate limit razonable.
+
+6. CSRF:
+   - Si usas `Authorization: Bearer <token>`, documenta que CSRF no aplica como cookies de sesion.
+   - Si usas cookies httpOnly para refresh, documenta estrategia `SameSite` y proteccion.
+
+Dashboard owner:
+- `GET /admin/dashboard` debe devolver un payload compacto para mobile:
+  - pickup orders de hoy por status.
+  - proximos pickup `NEW`.
+  - eventos de hoy/proximos.
+  - reservas nuevas.
+  - inquiries nuevas.
+  - productos `LOW`/`OUT`.
+  - acciones rapidas disponibles.
+- No devolver tablas gigantes por defecto.
+- Usar limites razonables: max 10-20 items por bloque.
+
+KPIs:
+- `GET /admin/kpis` debe devolver resumen simple:
+  - pickup orders por periodo.
+  - total pickup `PICKED_UP` en centimos si existe.
+  - avg ticket.
+  - event reservations.
+  - newsletter subscribers.
+  - inquiries nuevas.
+- No implementar analytics GA4 backend todavia.
+
+CRUD productos:
+- Campos admin:
+  - `name`, `slug`, `type`, `is_alcohol`, `price_cents`, `vat_rate`, `short_desc`, `long_desc`, `producer`, `region`, `is_seasonal`, `is_featured`, `is_active`, `stock_status`, categorias.
+- Crear vino con `type='WINE'` debe forzar o validar `is_alcohol=true` salvo justificacion explicita.
+- Crear queso/no alcohol debe permitir `is_alcohol=false`.
+- `PATCH /stock` debe permitir accion rapida mobile:
+  - `IN_STOCK`, `LOW`, `OUT`
+- Soft delete preferido: `is_active=false`.
+- Auditar creates/updates/deletes.
+
+CRUD eventos:
+- Campos:
+  - title, slug, description_md, hero_image_url, starts_at, ends_at, capacity, price_cents, location, is_active.
+- Validar fechas coherentes.
+- Soft delete preferido.
+- Auditar cambios.
+
+CRUD campanas:
+- Campos:
+  - title, slug, subtitle, hero_image_url, body_md, starts_at, ends_at, is_active, productos asociados.
+- Debe permitir activar/desactivar.
+- Evitar mas de una campana activa simultanea si esa regla ya esta decidida; si no, documentar decision.
+- Auditar cambios.
+
+Status updates:
+- Pickup orders:
+  - permitidos: `NEW`, `CONFIRMED`, `READY`, `PICKED_UP`, `CANCELLED`.
+  - PATCH parcial con status y optional note/admin note si existe.
+  - endpoint debe soportar acciones rapidas mobile.
+- Inquiries:
+  - usar statuses existentes. Si hace falta ampliar enum a `NEW`, `IN_PROGRESS`, `DONE`, `SPAM`, crear migracion.
+- Event reservations:
+  - `NEW`, `CONFIRMED`, `CANCELLED`.
+- Validar transiciones basicas y documentar si se permiten saltos por simplicidad V1.
+- Auditar status changes.
+
+Image upload:
+- Usar `multer` con limites:
+  - max size segun `MAX_UPLOAD_MB`.
+  - tipos permitidos: jpeg, png, webp.
+- Storage local compatible con Plesk:
+  - raiz desde `UPLOADS_DIR`.
+  - rutas publicas controladas, por ejemplo `/uploads/products/...`.
+  - nombres saneados y unicos.
+- Si usas `sharp`:
+  - generar WebP y/o resize razonable.
+  - no bloquear fase si sharp complica instalacion; documentar pendiente.
+- Crear `product_image` con:
+  - url
+  - alt_text
+  - sort_order
+  - is_primary
+- Alt text por defecto: `{producer} {name}, {region}` con fallback limpio.
+- Tests deben usar storage fake/temp y no escribir uploads reales permanentes.
+
+Audit:
+- `audit_log` obligatorio para acciones admin importantes:
+  - login success/fail si no guarda PII excesiva.
+  - product create/update/delete/stock/image.
+  - event/campaign create/update/delete.
+  - pickup/inquiry/reservation status update.
+  - site config update.
+- Guardar:
+  - actor_admin_user_id
+  - action
+  - entity_type
+  - entity_id
+  - payload_json resumido/saneado
+  - created_at
+- No guardar passwords, tokens ni PII innecesaria en audit.
+
+Validacion y errores:
+- Validadores centralizados antes de controladores.
+- 400 para payload mal formado.
+- 401 sin token/token invalido.
+- 403 rol insuficiente.
+- 404 recurso no encontrado.
+- 409 conflicto slug/estado si aplica.
+- 422 regla de negocio.
+- Todo RFC 7807 `application/problem+json`.
+
+Prohibido en esta fase:
+- No implementar frontend admin.
+- No cambiar public site salvo para no romper rutas.
+- No activar pagos online.
+- No permitir alcohol en `Mi Tabla`; conserva tests Fase 4.
+- No crear roles/permisos complejos de empresa.
+- No crear CMS/blog.
+- No usar almacenamiento cloud obligatorio.
+- No hardcodear secretos ni credenciales reales.
+
+Tests obligatorios:
+1. Auth/security:
+   - login valido.
+   - login invalido.
+   - password hash se verifica.
+   - admin endpoints rechazan sin token.
+   - admin endpoints rechazan token invalido/expirado.
+   - public endpoints siguen abiertos.
+
+2. Products:
+   - crear producto no alcohol.
+   - crear vino con `is_alcohol=true`.
+   - crear `type=WINE` con `is_alcohol=false` debe corregirse o rechazarse segun decision testeada.
+   - update stock one-tap.
+   - soft delete/inactive.
+   - audit registrado.
+
+3. Dashboard/status:
+   - dashboard devuelve pedidos de hoy, eventos, inquiries y stock bajo.
+   - PATCH pickup status.
+   - PATCH inquiry status.
+   - PATCH reservation status.
+   - audit registrado.
+
+4. Upload:
+   - upload imagen valida.
+   - rechaza tipo no permitido.
+   - rechaza tamano excesivo si se puede simular.
+   - crea product_image.
+
+5. Regression:
+   - alcohol guard de Fase 4 sigue pasando.
+   - public products siguen exponiendo vinos como visibles.
+
+Si no hay MariaDB disponible:
+- Ejecuta tests unitarios puros de auth/jwt/validators/storage fake.
+- No marques Fase 5 como completa.
+- Documenta comandos pendientes para DB/migracion/seed/tests.
+- Actualiza estado vivo como `IN_PROGRESS` o `BLOCKED`.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 5
+- `current_phase_name`: "Admin backend y seguridad JWT"
+- `current_focus`: resumen real de auth, admin endpoints, dashboard, CRUD, uploads, audit y tests
+- `overall_status`: `REVIEW_READY` si endpoints/tests/lint pasan; `IN_PROGRESS` si queda DB/test pendiente; `BLOCKED` si falta MariaDB o decision critica
+- tabla de Fase 5 con implementado/falta/notas reales
+- tabla de Fase 6 como siguiente fase si Fase 5 queda lista
+- funcionalidades implementadas: anade solo admin backend, JWT, CRUD, audit y uploads si estan verificados
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 6 - scripts npm, build y despliegue Plesk/Contabo" si Fase 5 queda lista
+- checklist final: marca `Admin JWT`, `Image upload local/Plesk adapter` y piezas admin solo si tests pasan
+
+Si cambias estado, rutas o arquitectura que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- Admin endpoints protegidos.
+- Admin endpoints existen bajo `/api/v1/admin`.
+- Admin endpoints estan protegidos por JWT.
 - Public endpoints siguen abiertos.
-- No hay secretos.
-- El CRUD de producto permite crear vino visible con `is_alcohol=true`.
-- Audit field queda registrado.
-- `npm test` pasa.
+- Passwords usan bcrypt.
+- No se devuelven password hashes ni secretos.
+- CRUD producto permite vino visible con `is_alcohol=true`.
+- Crear `type=WINE` no puede acabar como reservable por accidente.
+- Dashboard mobile-first devuelve bloques accionables y compactos.
+- Status updates soportan rutina diaria del owner.
+- Upload local/Plesk funciona o queda fake/test documentado si falta dependencia.
+- Audit registra acciones importantes sin PII excesiva.
+- Alcohol guard Fase 4 sigue verde.
+- `npm test` pasa con DB disponible o se documenta claramente bloqueo.
+- `npm run lint` pasa si existe.
+- README/runbook documentan auth admin, credenciales dev ficticias, uploads y variables env.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run db:migrate` si DB esta disponible.
+- Ejecuta `npm run db:seed` si DB esta disponible.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta smoke API para:
+  - login admin.
+  - endpoint admin protegido sin token -> 401.
+  - dashboard con token -> 200.
+  - public health/products siguen abiertos.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Comprueba que no hay secretos reales, tokens hardcodeados ni password en claro fuera de credencial dev ficticia documentada.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 5.
+- Endpoints admin implementados.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 15. Fase 6 - scripts npm/MariaDB e infraestructura Plesk/Contabo
@@ -1200,57 +2400,282 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 6: scripts npm/MariaDB e infraestructura Plesk/Contabo.
 
-Tareas:
-1. Configura scripts de desarrollo local:
-   - `npm run dev`: Express + Vite con concurrently
-   - `npm run dev:server`
-   - `npm run dev:client`
-   - `npm run build`: `vite build`
-   - `npm start`: `node server.js`
-2. Configura puertos:
-   - Express 3000 o el puerto que indique Plesk/env
-   - Vite 5173 en dev
-   - MariaDB segun Plesk/local env
-3. Usa variables desde .env y documentalas en .env.example.
-4. Asegura que `server.js`:
-   - monta API bajo `/api/v1`
-   - sirve assets estaticos de `dist/`
-   - devuelve `index.html` para rutas React
-   - no sirve `dist/` en modo dev si no existe
-5. Documenta build Vite y arranque con `node server.js`.
-6. Crea `infra/plesk/README.md` con:
-   - servidor Contabo como destino
-   - Plesk como panel de dominio, SSL, Node.js app, MariaDB y backups
-   - dominio principal y subdominio staging
-   - como configurar Node.js app en Plesk: document root, application root, startup file, variables de entorno
-   - como ejecutar `npm install`, `npm run build` y reiniciar la app Node
-   - como servir `dist/` desde `server.js`
-   - como configurar SSL Let's Encrypt desde Plesk
-   - como configurar backups programados en Plesk y snapshot/backup Contabo si aplica
-7. Crea `infra/scripts/backup-notes.md` o README documentando:
-   - backup DB MariaDB desde Plesk
-   - backup archivos subidos
-   - restore test manual
-   - retencion recomendada 30 dias
-8. Crea GitHub Actions:
-   - pr.yml: lint, tests y `npm run build`
-   - staging.yml skeleton para deploy manual/SSH a Plesk si se decide automatizar
-   - production.yml manual trigger skeleton o documentar deploy manual por Plesk
-9. Actualiza README con comandos:
-   - npm run dev
-   - npm test
-   - npm run build
-   - npm start
+Objetivo de esta fase:
+Consolidar la operativa tecnica del monolito para desarrollo local, CI y despliegue en Contabo/Plesk: scripts npm coherentes, `server.js` preparado para servir API y `dist/`, variables de entorno documentadas, guia Plesk accionable, backups MariaDB/uploads y workflows iniciales. Esta fase no debe construir frontend real si Fase 7 aun no existe; debe dejar el camino preparado sin fingir builds inexistentes.
+
+Contexto obligatorio:
+- Fases 1-5 pueden existir completas o parcialmente. La Fase 6 puede avanzar tras el scaffold, pero debe detectar el estado real antes de exigir frontend.
+- Stack confirmado: JavaScript, CommonJS, Express, MariaDB con paquete `mariadb`, React 19 + Vite en `src/` cuando exista, `server.js` sirviendo `dist/` en produccion.
+- Produccion objetivo: servidor Contabo gestionado con Plesk.
+- Plesk gestionara dominio, SSL, Node.js app, variables de entorno, MariaDB y backups.
+- No introducir Docker obligatorio, PM2 obligatorio, CDN obligatorio ni object storage obligatorio en V1.
+- No activar pagos online ni secretos reales.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Inspecciona:
+   - `package.json`
+   - `package-lock.json`
+   - `server.js`
+   - `server/app.js`
+   - `src/`, `index.html`, `vite.config.js`, `tailwind.config.js` si existen
+   - `.env.example`
+   - `README.md`
+   - `docs/runbook.md`
+   - `infra/plesk/README.md`
+   - `infra/scripts/`
+   - `.github/workflows/`
+   - `db/migrate.js`, `db/seed.js` si existen
+   - `git status --short`
+3. Si no existe frontend/Vite todavia, no crees UI real. Puedes preparar scripts/placeholders honestos y documentar que Fase 7 activara el build Vite real.
+4. Si ya existe frontend/Vite, configura `npm run build` como `vite build` y verifica.
+5. No modifiques `docs/AGENTS_Javi.md`.
+6. No borres workflows/docs existentes sin leerlos.
+
+Scripts npm objetivo:
+1. Desarrollo:
+   - `npm run dev`: Express + Vite con `concurrently` si Vite existe; si no existe, debe arrancar backend y mostrar mensaje claro de que Fase 7 activara cliente.
+   - `npm run dev:server`: backend Express.
+   - `npm run dev:client`: Vite si existe; placeholder honesto si no existe.
+
+2. Produccion/build:
+   - `npm run build`: `vite build` si Vite existe; si no, placeholder honesto que no cree `dist/` falso y documente Fase 7.
+   - `npm start`: `node server.js`.
+
+3. Calidad:
+   - `npm test`
+   - `npm run lint`
+   - `npm run check` opcional para agrupar lint/test/build si encaja.
+
+4. DB:
+   - `npm run db:migrate`
+   - `npm run db:seed`
+   - `npm run db:reset` solo si ya existe y aborta fuera de `development`/`test`.
+
+5. Infra:
+   - `npm run deploy:plesk:notes`: muestra o referencia comandos/docs de Plesk sin ejecutar deploy real.
+
+`server.js`:
+- Debe montar API bajo `/api/v1`.
+- Debe servir `dist/` solo si existe.
+- En produccion:
+  - si `dist/index.html` existe, servir assets estaticos y fallback a `index.html` para rutas React no API.
+  - si `dist/` no existe, API debe seguir arrancando y loguear aviso claro.
+- En development:
+  - no debe depender de `dist/`.
+  - no debe romper si Vite corre separado.
+- Debe no interceptar `/api/v1/*`.
+- Debe servir uploads locales de forma controlada si ya existe StorageService:
+  - `/uploads/...` desde `UPLOADS_DIR`
+  - sin listar directorios.
+- Debe manejar cierre limpio del pool MariaDB.
+
+Variables de entorno:
+Actualiza `.env.example` si faltan variables de infra:
+- `NODE_ENV`
+- `PORT`
+- `CLIENT_DEV_URL`
+- `CORS_ALLOWED_ORIGINS`
+- `DB_HOST`
+- `DB_PORT`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_TEST_NAME`
+- `JWT_SECRET`
+- `JWT_EXPIRES_IN`
+- `JWT_REFRESH_EXPIRES_IN`
+- `COOKIE_SECRET`
+- `UPLOADS_DIR`
+- `MAX_UPLOAD_MB`
+- `PUBLIC_BASE_URL`
+- `STAGING_BASE_URL`
+- `VITE_API_BASE`
+- `VITE_PUBLIC_WHATSAPP`
+- `VITE_GOOGLE_MAPS_URL`
+- `VITE_GA_ID`
+- `VITE_META_PIXEL`
+- `BREVO_API_KEY`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_PASS`
+- `OWNER_WHATSAPP`
+- `OWNER_EMAIL`
+- Stripe placeholders solo V2 disabled si ya estaban.
+
+Documentacion obligatoria:
+1. `README.md`:
+   - comandos reales disponibles.
+   - requisitos locales: Node LTS, MariaDB, npm.
+   - como arrancar backend.
+   - como correr migraciones/seeds.
+   - como correr tests/lint/build.
+   - nota clara si build frontend queda pendiente de Fase 7.
+
+2. `docs/runbook.md`:
+   - local dev.
+   - variables de entorno.
+   - migraciones y seeds.
+   - health checks.
+   - smoke tests.
+   - deploy manual high-level.
+   - rollback manual.
+   - backups y restore test.
+   - staging noindex/basic-auth plan.
+
+3. `infra/plesk/README.md`:
+   - Contabo como servidor.
+   - Plesk como panel para dominio, SSL, Node.js app, MariaDB y backups.
+   - dominios previstos:
+     - produccion: dominio canonico pendiente.
+     - staging: `staging.<domain>` pendiente.
+   - configuracion Plesk:
+     - Application root.
+     - Document root recomendado.
+     - Startup file: `server.js`.
+     - Node.js version LTS.
+     - variables de entorno en panel Plesk.
+     - comandos: `npm install`, `npm run build`, `npm start` o restart desde Plesk.
+   - SSL Let's Encrypt.
+   - MariaDB desde Plesk.
+   - `uploads/` persistente y backup.
+   - staging protegido/noindex.
+   - checklist smoke post-deploy.
+
+4. `infra/scripts/backup-notes.md`:
+   - backup MariaDB desde Plesk.
+   - backup uploads.
+   - backup de `.env` gestionado fuera de git.
+   - retencion recomendada 30 dias.
+   - restore test manual.
+   - snapshot/backup Contabo si aplica.
+   - advertencia: no ejecutar seeds en produccion.
+
+5. `.github/workflows/`:
+   - `pr.yml` para lint/test/build o lint/test si build frontend aun no existe.
+   - `staging.yml` skeleton manual si tiene sentido, sin secretos reales.
+   - `production.yml` skeleton manual o README explicando deploy manual Plesk.
+   - Workflows deben usar placeholders/secrets de GitHub, nunca valores reales.
+
+CI:
+- `pr.yml` debe:
+  - checkout.
+  - setup Node LTS.
+  - `npm ci`.
+  - `npm run lint` si existe.
+  - `npm test`.
+  - `npm run build` solo si el script es real y estable; si build es placeholder pre-Fase 7, documenta la limitacion y no generes falso verde confuso.
+- Si tests requieren MariaDB, una de estas:
+  - configurar service MariaDB en GitHub Actions.
+  - o separar tests DB y documentar pendiente.
+- No meter credenciales reales.
+
+Plesk/deploy:
+- No ejecutar deploy real.
+- No pedir credenciales.
+- No asumir dominio definitivo.
+- Dejar comandos y checklist:
+  - instalar deps.
+  - ejecutar migraciones.
+  - cargar seed solo staging/dev si corresponde.
+  - build frontend si existe.
+  - restart Node app.
+  - verificar `/api/v1/health`.
+  - verificar ruta publica.
+  - verificar uploads.
+  - verificar robots/noindex staging.
+
+Backups:
+- Documentar backup programado Plesk para:
+  - DB MariaDB.
+  - archivos de app relevantes.
+  - `uploads/`.
+- Documentar snapshot/backup Contabo como segunda capa si disponible.
+- Retencion recomendada: 30 dias.
+- Restore test:
+  - restaurar DB en entorno test/staging.
+  - restaurar uploads.
+  - smoke `/api/v1/health`.
+
+Prohibido en esta fase:
+- No implementar pantallas React reales si Fase 7 no existe.
+- No crear contenido visual real.
+- No activar pagos online.
+- No meter secretos, IPs privadas, claves SSH, passwords Plesk ni tokens GitHub.
+- No hacer deploy real a Plesk/Contabo.
+- No introducir Docker obligatorio, Kubernetes, PM2 obligatorio, Nginx manual obligatorio o CDN obligatorio.
+- No cambiar stack confirmado.
+- No romper endpoints publicos/admin existentes.
+
+Tests/verificacion esperada:
+- `npm run lint` si existe.
+- `npm test`.
+- `npm run build` si es real; si es placeholder, verificar que el mensaje es honesto.
+- `npm start` o smoke equivalente sin dejar proceso vivo.
+- `npm run db:migrate` y `npm run db:seed` si DB disponible.
+- Verificar `server.js` con y sin `dist/` si es razonable.
+- Verificar `git status --short`.
+
+Si no hay MariaDB o frontend:
+- MariaDB ausente:
+  - documenta comandos pendientes.
+  - no marques DB/integracion como DONE.
+- Frontend ausente:
+  - deja build/frontend como preparado para Fase 7.
+  - no marques `build Vite en dist/` como completo.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 6
+- `current_phase_name`: "Scripts npm, build y despliegue Plesk/Contabo"
+- `current_focus`: resumen real de scripts, server static, Plesk docs, backups y CI
+- `overall_status`: `REVIEW_READY` si scripts/docs/verificaciones pasan; `IN_PROGRESS` si frontend/DB pendiente impide cerrar algo; `BLOCKED` si falta decision critica
+- tabla de Fase 6 con implementado/falta/notas reales
+- tabla de Fase 7 como siguiente fase si corresponde
+- funcionalidades implementadas: anade solo scripts, infra docs, CI y servir `dist/` si verificado
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 7 - Frontend React/Vite y design system" si backend/infra queda listo
+- checklist final: marca scripts npm/MariaDB, Plesk, Contabo, backups o CI solo si realmente quedan verificados/documentados
+
+Si cambias estado, scripts o infraestructura que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- Un desarrollador puede arrancar local con `npm run dev`.
+- Scripts npm existen y son honestos respecto al estado real del frontend.
+- `npm run dev` permite arrancar backend y, si existe Vite, cliente tambien.
+- `npm start` arranca `server.js`.
+- `server.js` sirve API y esta preparado para `dist/` sin romper si `dist/` no existe.
+- `.env.example` cubre variables necesarias sin secretos.
+- README/runbook documentan comandos reales.
+- Plesk/Contabo queda documentado de forma accionable.
+- Backups y restore test quedan documentados.
+- CI inicial existe o queda documentado con limitaciones claras.
+- Staging queda planificado como noindex/basic-auth.
 - No hay secretos.
-- Staging debe poder ser `noindex` y basic-auth gated en fases posteriores.
-- Plesk/Contabo y backups estan documentados aunque algunas credenciales sean placeholders.
+- No se ejecuta deploy real.
+- `docs/AGENTS_Javi.md` no se modifica.
 
-Verificacion:
-- Ejecuta los comandos disponibles.
-- Si MariaDB local no esta disponible, indica exactamente que parte no se pudo verificar.
+Verificacion obligatoria:
+- Ejecuta `npm run lint` si existe.
+- Ejecuta `npm test`.
+- Ejecuta `npm run build` si es real; si no, ejecuta el placeholder y confirma que no finge build.
+- Ejecuta `npm start` o smoke equivalente sin dejar proceso vivo.
+- Ejecuta `npm run db:migrate` y `npm run db:seed` si DB esta disponible.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Comprueba que workflows/docs/env no contienen secretos reales.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 6.
+- Scripts/infra/CI documentados o implementados.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 16. Fase 7 - Scaffold frontend y design system
@@ -1274,107 +2699,384 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 7: scaffold frontend React/Vite y design system editorial de CRUDO.
 
-Stack:
-- React 19
-- Vite
-- JavaScript
-- Tailwind CSS
-- React Router
-- axios
-- clsx
-- class-variance-authority
-- tailwind-merge
-- Lucide icons
-- canvas-confetti si se usa con moderacion
-- Vitest + Testing Library
-- Playwright preparado para fases posteriores
+Objetivo de esta fase:
+Crear el scaffold frontend real con React 19 + Vite + Tailwind, rutas V1, design tokens CRUDO, layout base, componentes UI accesibles, API client, analytics consent-aware y cookie banner AEPD base. Esta fase prepara la experiencia visual y tecnica, pero no debe construir todavia Home/Catalogo/PDP completos ni el flujo real de Mi Tabla; eso empieza en Fases 8 y 9.
 
-Tareas:
-1. Crea la app React/Vite en `src/`.
-2. Configura Vite, Tailwind, PostCSS y Autoprefixer.
-3. Crea estructura:
-   - src/main.jsx
-   - src/App.jsx
-   - src/routes.jsx
-   - src/components/ui/Button.jsx
-   - src/components/ui/Input.jsx
-   - src/components/ui/Select.jsx
-   - src/components/ui/Modal.jsx
-   - src/components/ui/Tag.jsx
-   - src/components/ui/Badge.jsx
-   - src/components/layout/Header.jsx
-   - src/components/layout/Footer.jsx
-   - src/components/layout/StickyCTA.jsx
-   - src/components/layout/CookieBanner.jsx
-   - src/lib/api.js
-   - src/lib/analytics.js
-   - src/lib/schemaOrg.js
-   - src/styles/global.css
-4. Implementa design tokens exactos de V1.
-5. Mapea los tokens en `tailwind.config.js`:
-   - colores CRUDO
-   - fuentes
-   - spacing
-   - radius maximo 8px
-   - sombras
-6. Usa HTML semantico y componentes accesibles propios; anade librerias extra solo si reducen complejidad real.
-7. Carga fuentes:
-   - Cormorant Garamond
-   - Inter
-   - JetBrains Mono
-   con fallback correcto.
-8. Implementa rutas placeholder:
-   - /
-   - /catalogo
-   - /catalogo/quesos
-   - /catalogo/vinos
-   - /catalogo/temporada
-   - /producto/:slug
-   - /eventos
-   - /eventos/:slug
-   - /sobre-crudo
-   - /contacto
-   - /mayoristas
-   - /mi-tabla
-   - /mi-tabla/confirmacion
-   - /aviso-legal
-   - /privacidad
-   - /cookies
-   - /admin
-9. Implementa Header:
-   - logo CRUDO
-   - nav minimo
-   - iconos Instagram, WhatsApp, Maps con lucide si aplica
-10. Implementa Footer:
-   - direccion/hours placeholder desde site config
-   - legal links
-   - newsletter form placeholder
-   - copy +18 y beber con moderacion
-11. Implementa CookieBanner:
-   - Aceptar/Rechazar/Configurar
-   - peso visual equivalente
-   - no dispara analytics antes de consentimiento
-   - persiste consentimiento local y prepara POST /consent
-12. Implementa analytics.ts:
-   - funciones typed para `select_item`, `pickup_request`, `wine_whatsapp_click`, `generate_lead`
-   - no-op si no hay consentimiento
-13. Implementa componentes base con accesibilidad:
-   - tap targets 44x44
-   - focus ring visible
-   - errores no solo color
-14. Tests:
-   - render App
-   - CookieBanner consent behavior
-   - Button/Input accessibility smoke
+Contexto obligatorio:
+- Fase 6 debe haber dejado scripts npm y `server.js` preparado para `dist/`.
+- Stack confirmado: React 19, Vite, JavaScript, Tailwind CSS, PostCSS, Autoprefixer, React Router, axios, lucide-react.
+- Idioma visible: espanol.
+- HTML semantico compatible con Google Translate.
+- Visual: dark editorial gastronomy, no SaaS generico.
+- No pago online, no venta online de alcohol.
+- Vinos seran WhatsApp-only en fases posteriores; en esta fase deja helpers/labels preparados sin implementar PDP real.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Inspecciona:
+   - `package.json`
+   - `vite.config.js`
+   - `tailwind.config.js`
+   - `postcss.config.js`
+   - `index.html`
+   - `src/`
+   - `server.js`
+   - `.env.example`
+   - `README.md`
+   - `docs/runbook.md`
+   - tests existentes
+   - `git status --short`
+3. Si ya existe frontend, respeta patrones y actualiza sin reescribir a ciegas.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. Usa JavaScript. No introducir TypeScript ni archivos `.ts/.tsx`.
+
+Dependencias frontend permitidas:
+- `@vitejs/plugin-react`
+- `vite`
+- `react`
+- `react-dom`
+- `react-router-dom`
+- `tailwindcss`
+- `postcss`
+- `autoprefixer`
+- `axios`
+- `lucide-react`
+- `clsx`
+- `class-variance-authority`
+- `tailwind-merge`
+- `@testing-library/react`
+- `@testing-library/jest-dom`
+- `@testing-library/user-event`
+- `jsdom`
+- `vitest`
+- `axe-core` o `jest-axe` si encaja sin friccion.
+- `canvas-confetti` solo si se deja preparado para confirmacion posterior; no usarlo todavia si no aporta.
+
+Archivos a crear o actualizar:
+1. Configuracion:
+   - `index.html`
+   - `vite.config.js`
+   - `tailwind.config.js`
+   - `postcss.config.js`
+   - actualizar `package.json` scripts:
+     - `dev`
+     - `dev:client`
+     - `build`
+     - `preview`
+     - `test`
+     - `test:ui` opcional
+     - `lint`
+
+2. Entrypoints:
+   - `src/main.jsx`
+   - `src/App.jsx`
+   - `src/routes.jsx`
+
+3. Estilos:
+   - `src/styles/global.css`
+   - `src/styles/tokens.css` si prefieres separar tokens
+
+4. Layout:
+   - `src/components/layout/AppShell.jsx`
+   - `src/components/layout/Header.jsx`
+   - `src/components/layout/Footer.jsx`
+   - `src/components/layout/StickyCTA.jsx`
+   - `src/components/layout/CookieBanner.jsx`
+
+5. UI base:
+   - `src/components/ui/Button.jsx`
+   - `src/components/ui/IconButton.jsx`
+   - `src/components/ui/Input.jsx`
+   - `src/components/ui/Textarea.jsx`
+   - `src/components/ui/Select.jsx`
+   - `src/components/ui/Modal.jsx`
+   - `src/components/ui/Tag.jsx`
+   - `src/components/ui/Badge.jsx`
+   - `src/components/ui/FieldError.jsx`
+   - `src/components/ui/Spinner.jsx`
+   - `src/components/ui/Toast.jsx` solo si hay patron simple
+
+6. Lib/hooks:
+   - `src/lib/api.js`
+   - `src/lib/analytics.js`
+   - `src/lib/consent.js`
+   - `src/lib/schemaOrg.js`
+   - `src/lib/siteConfig.js`
+   - `src/hooks/useConsent.js`
+   - `src/hooks/useSiteConfig.js`
+
+7. Pages placeholder:
+   - `src/pages/HomePage.jsx`
+   - `src/pages/CatalogPage.jsx`
+   - `src/pages/ProductPage.jsx`
+   - `src/pages/EventsPage.jsx`
+   - `src/pages/EventDetailPage.jsx`
+   - `src/pages/AboutPage.jsx`
+   - `src/pages/ContactPage.jsx`
+   - `src/pages/WholesalePage.jsx`
+   - `src/pages/MyTablaPage.jsx`
+   - `src/pages/MyTablaConfirmationPage.jsx`
+   - `src/pages/LegalPage.jsx`
+   - `src/pages/PrivacyPage.jsx`
+   - `src/pages/CookiesPage.jsx`
+   - `src/pages/AdminEntryPage.jsx`
+   - `src/pages/NotFoundPage.jsx`
+
+8. Tests:
+   - `src/App.test.jsx`
+   - `src/components/layout/CookieBanner.test.jsx`
+   - `src/components/ui/Button.test.jsx`
+   - `src/components/ui/Input.test.jsx`
+   - `src/lib/analytics.test.js`
+   - ajusta nombres si el repo ya tiene otro patron.
+
+Rutas obligatorias:
+- `/`
+- `/catalogo`
+- `/catalogo/quesos`
+- `/catalogo/vinos`
+- `/catalogo/temporada`
+- `/producto/:slug`
+- `/eventos`
+- `/eventos/:slug`
+- `/sobre-crudo`
+- `/contacto`
+- `/mayoristas`
+- `/mi-tabla`
+- `/mi-tabla/confirmacion`
+- `/aviso-legal`
+- `/privacidad`
+- `/cookies`
+- `/admin`
+- `*` NotFound
+
+Alcance de placeholders:
+- Cada ruta debe renderizar una pantalla semantica minima, en espanol, con titulo real y una estructura visual coherente.
+- No crear contenido final de Home/Catalogo/PDP; Fase 8 lo hara.
+- No crear formularios finales complejos; Fases 9-10 los haran.
+- No crear UI admin real; Fase 11 lo hara.
+- Evitar texto visible tipo "Lorem ipsum", "TODO", "Coming soon" o ingles publico.
+
+Design tokens obligatorios:
+Crear una fuente unica en `src/styles/tokens.css` o `global.css` con estos tokens exactos:
+
+```css
+:root {
+  --color-bg-primary: #1A1F14;
+  --color-bg-secondary: #1E1C18;
+  --color-bg-elevated: #252420;
+  --color-bg-light: #F2EAD8;
+  --color-bg-light-soft: #EAE0CB;
+  --color-text-primary: #F2EAD8;
+  --color-text-secondary: #C7BFAD;
+  --color-text-muted: #8A8473;
+  --color-text-inverse: #1A1F14;
+  --color-accent: #B5713A;
+  --color-accent-hover: #C8804A;
+  --color-accent-soft: #3A2A1E;
+  --color-gold: #B89668;
+  --color-success: #6B8E5A;
+  --color-warning: #C8893E;
+  --color-error: #A8443A;
+  --color-border: rgba(242,234,216,0.12);
+  --color-border-strong: rgba(242,234,216,0.24);
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+```
+
+Tailwind:
+- Mapear colores, fuentes, spacing, radius y sombras a tokens CRUDO.
+- Radius maximo 8px salvo `pill` para casos concretos.
+- No usar paleta Tailwind default como lenguaje visual principal.
+- No usar blanco puro `#FFFFFF`, negro puro `#000000`, azul, neon ni gradientes purple/blue.
+- Letter spacing normal por defecto; no usar tracking negativo.
+
+Tipografia:
+- H1/H2/H3: Cormorant Garamond.
+- Body/UI: Inter.
+- Precios/codigos: JetBrains Mono.
+- Cargar fuentes en `index.html` o CSS con preconnect si se usa Google Fonts.
+- Fallback correcto si fonts no cargan.
+
+Layout:
+- `Header`:
+  - logo CRUDO.
+  - nav minimo.
+  - links a catalogo, eventos, contacto.
+  - iconos lucide para menu/mobile, WhatsApp/Maps si aplica.
+  - mobile-first.
+- `Footer`:
+  - direccion/horarios desde `siteConfig` con placeholders seguros.
+  - legal links.
+  - newsletter placeholder no funcional o preparado para Fase 10.
+  - aviso +18 y consumo responsable.
+- `StickyCTA`:
+  - preparado para mobile sin tapar footer/legal.
+  - no activar compra/pago.
+- No cards dentro de cards.
+- No orbs/blobs/decoraciones genericas.
+
+Componentes UI:
+- Botones:
+  - variantes `primary`, `secondary`, `ghost`, `danger`.
+  - estados disabled/loading/focus.
+  - tap target minimo 44x44.
+- Inputs/select/textarea:
+  - label accesible.
+  - error visible con texto, no solo color.
+  - `aria-describedby` cuando haya error.
+- Modal:
+  - focus trap basico o comportamiento accesible razonable.
+  - cierre con Escape.
+  - `aria-modal`.
+- IconButton:
+  - requiere `aria-label`.
+- Todos los componentes deben evitar layout shift por cambios de texto/loading.
+
+API client:
+- `src/lib/api.js`:
+  - axios instance.
+  - base URL desde `VITE_API_BASE`, default `/api/v1`.
+  - timeout razonable.
+  - normalizar errores RFC 7807 para frontend.
+  - no hardcodear dominios.
+- `useSiteConfig` debe consumir `/site/config` si API esta disponible y tener fallback local seguro si falla.
+
+Cookie banner y consent:
+- `CookieBanner` debe tener:
+  - Aceptar.
+  - Rechazar.
+  - Configurar.
+  - peso visual equivalente.
+- No cargar ni disparar GA4/Pixel antes de consentimiento.
+- Persistir consentimiento local con version/fecha.
+- Preparar `POST /consent` contra API si existe; si falla, no romper UX.
+- Categorias:
+  - necesarias.
+  - analiticas.
+  - marketing.
+- Tests deben verificar que analytics no dispara antes de aceptar.
+
+Analytics:
+- `src/lib/analytics.js`, no TypeScript.
+- Exponer funciones:
+  - `trackSelectItem`
+  - `trackPickupRequest`
+  - `trackWineWhatsAppClick`
+  - `trackGenerateLead`
+  - `trackWhatsAppClick`
+  - `trackMapsClick`
+- Todas son noop sin consentimiento adecuado.
+- No inyectar scripts GA4/Pixel reales todavia si no hay consentimiento.
+- No hardcodear IDs reales.
+
+Schema/SEO base:
+- `src/lib/schemaOrg.js` con helpers pasivos para:
+  - Restaurant.
+  - Product.
+  - Event.
+- No implementar prerender ni SEO completo; Fase 12.
+- `index.html` debe tener `lang="es"` y meta basicos.
+
+Accesibilidad:
+- HTML semantico.
+- Un solo `main`.
+- Focus ring visible.
+- Tap targets >= 44x44.
+- Contraste suficiente con tokens.
+- Estados de error con texto.
+- Nav mobile usable con teclado.
+- No esconder texto importante en imagenes.
+
+Tests obligatorios:
+- App renderiza y rutas placeholder principales existen.
+- Header nav renderiza.
+- Footer legal links renderizan.
+- CookieBanner:
+  - aceptar persiste consentimiento.
+  - rechazar persiste rechazo.
+  - configurar permite categorias.
+  - analytics no dispara antes de consentimiento.
+- Button:
+  - variantes renderizan.
+  - disabled/loading.
+  - accesible por rol.
+- Input:
+  - label/error/aria.
+- API client:
+  - base URL por env/default.
+  - problem detail se normaliza si hay helper.
+- Axe smoke en App o layout si se incorpora axe.
+
+Prohibido en esta fase:
+- No construir Home/Catalogo/PDP finales.
+- No implementar carrito/Mi Tabla real.
+- No permitir vino en Mi Tabla.
+- No implementar admin frontend real.
+- No activar GA4/Pixel antes de consentimiento.
+- No meter pago online.
+- No introducir TypeScript.
+- No usar UI kit pesado.
+- No usar blanco puro, negro puro, azul, neon o estetica SaaS generica.
+- No dejar textos publicos en ingles.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 7
+- `current_phase_name`: "Frontend React/Vite y design system"
+- `current_focus`: resumen real de scaffold frontend, rutas, tokens, layout, cookie banner, analytics y tests
+- `overall_status`: `REVIEW_READY` si build/tests/lint pasan; `IN_PROGRESS` si queda algun punto menor; `BLOCKED` si falta dependencia o decision critica
+- tabla de Fase 7 con implementado/falta/notas reales
+- tabla de Fase 8 como siguiente fase si Fase 7 queda lista
+- funcionalidades implementadas: anade solo scaffold frontend, design system base, rutas placeholder y consent base si estan verificados
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 8 - Public frontend: Home, Catalogo y PDP" si Fase 7 queda lista
+- checklist final: marca solo React/Vite, tokens, rutas base o cookie banner base si estan realmente verificados
+
+Si cambias estado, rutas o visual system que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- `npm run build` pasa.
-- `npm test` o equivalente pasa.
-- Visualmente respeta dark editorial gastronomy.
-- No usa blanco puro, negro puro, azul, neon o UI SaaS generica.
-- Tailwind no debe convertir la UI en generica: los tokens CRUDO mandan.
-- Los componentes propios deben mantener comportamiento accesible, foco visible y estados de error.
-- No hay texto ingles visible salvo placeholders tecnicos no publicos.
+- React/Vite funciona en `src/`.
+- `npm run build` genera `dist/`.
+- `server.js` puede servir `dist/` tras build si Fase 6 lo preparo.
+- Todas las rutas placeholder V1 existen.
+- Tokens CRUDO exactos existen como fuente unica.
+- Tailwind usa tokens CRUDO.
+- Layout base mobile-first.
+- Header/Footer/CookieBanner renderizan.
+- Cookie banner no dispara analytics antes de consentimiento.
+- Componentes UI base son accesibles.
+- No hay UI SaaS generica ni colores prohibidos.
+- No hay texto publico en ingles.
+- `npm test` pasa.
+- `npm run lint` pasa si existe.
+- README/runbook actualizados si cambian comandos frontend.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm install` si faltan dependencias y esta permitido por entorno.
+- Ejecuta `npm run build`.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta smoke local:
+  - `npm run dev` o `npm run dev:client` si se puede sin dejar procesos vivos.
+- Revisa CSS/config para confirmar que no hay blanco puro, negro puro, azul/neon como base visual.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 7.
+- Rutas/componentes base creados.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 17. Fase 8 - Public frontend: Home, Catalogo y PDP
@@ -1397,87 +3099,327 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 8: frontend publico para Home, Catalogo y PDP.
 
-Pantallas:
-- Home /
-- Catalogo /catalogo
-- Quesos /catalogo/quesos
-- Vinos /catalogo/vinos
-- Temporada /catalogo/temporada
-- Producto /producto/:slug
+Objetivo de esta fase:
+Construir las primeras pantallas publicas reales de CRUDO V1: Home, catalogo filtrable y PDP de producto. Estas pantallas deben convertir trafico en exploracion, WhatsApp para vinos y preparacion de `Mi Tabla` para productos no alcoholicos, sin implementar todavia el checkout/formulario pickup completo de Fase 9.
 
-Componentes:
-- home/Hero
-- home/SeasonalShowcase
-- home/CategoryStrips
-- home/EventsTeaser
-- home/InstagramStrip
-- home/VisitBlock
-- catalog/CatalogToolbar
-- catalog/ProductCard
-- catalog/ProductGrid
-- catalog/EmptyState
-- product/ProductGallery
-- product/ProductMeta
-- product/ProductLongRead
-- product/AddToTablaButton
-- product/WineWhatsAppButton
-- product/RelatedProducts
+Contexto obligatorio:
+- Fase 7 debe haber dejado React/Vite, rutas, tokens CRUDO, layout, API client, analytics consent-aware y cookie banner.
+- Fase 3 debe exponer API publica de productos/categorias/campanas/eventos/site config.
+- Fase 4 debe existir en backend para alcohol guard, pero esta fase solo implementa UI de catalogo/PDP.
+- Stack frontend: React 19, Vite, JavaScript, Tailwind, React Router, axios.
+- Idioma visible: espanol.
+- Visual: dark editorial gastronomy, mobile-first, nada SaaS generico.
+- No pago online.
+- Vino visible, pero WhatsApp-only. Nunca `Anadir a mi tabla` para `is_alcohol=true`.
 
-Reglas visuales:
-1. Hero full-bleed:
-   - 90vh mobile, 80vh desktop
-   - foto real/placeholder local claramente sustituible
-   - overlay `rgba(26,31,20,0.55)`
-   - eyebrow `VINOS Y QUESOS · MADRID`
-   - H1 Cormorant italic, max 6 palabras
-   - CTAs: `Reservar mi tabla` y `Como llegar`
-   - metadata: horas + abierto/cerrado
-2. ProductCard:
-   - imagen cuadrada
-   - tag Temporada/Nuevo
-   - producer + region como eyebrow
-   - title Cormorant
-   - tasting note
-   - price en JetBrains Mono
-   - hover sutil desktop
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Inspecciona:
+   - `src/routes.jsx`
+   - `src/pages/`
+   - `src/components/layout/`
+   - `src/components/ui/`
+   - `src/lib/api.js`
+   - `src/lib/analytics.js`
+   - `src/lib/schemaOrg.js`
+   - `src/styles/`
+   - `package.json`
+   - tests existentes
+   - `git status --short`
+3. Si falta parte de Fase 7, completa solo lo imprescindible para estas pantallas sin redisenar todo.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. Usa JavaScript. No introducir TypeScript ni archivos `.ts/.tsx`.
+
+Pantallas obligatorias:
+- Home: `/`
+- Catalogo general: `/catalogo`
+- Quesos: `/catalogo/quesos`
+- Vinos: `/catalogo/vinos`
+- Temporada: `/catalogo/temporada`
+- Producto: `/producto/:slug`
+
+Componentes a crear o completar:
+1. Home:
+   - `src/components/home/Hero.jsx`
+   - `src/components/home/SeasonalShowcase.jsx`
+   - `src/components/home/CategoryStrips.jsx`
+   - `src/components/home/EventsTeaser.jsx`
+   - `src/components/home/InstagramStrip.jsx`
+   - `src/components/home/VisitBlock.jsx`
+
+2. Catalogo:
+   - `src/components/catalog/CatalogToolbar.jsx`
+   - `src/components/catalog/ProductCard.jsx`
+   - `src/components/catalog/ProductGrid.jsx`
+   - `src/components/catalog/EmptyState.jsx`
+   - `src/components/catalog/StockBadge.jsx`
+
+3. Producto:
+   - `src/components/product/ProductGallery.jsx`
+   - `src/components/product/ProductMeta.jsx`
+   - `src/components/product/ProductLongRead.jsx`
+   - `src/components/product/AddToTablaButton.jsx`
+   - `src/components/product/WineWhatsAppButton.jsx`
+   - `src/components/product/RelatedProducts.jsx`
+
+4. Data/hooks:
+   - `src/hooks/useProducts.js`
+   - `src/hooks/useProduct.js`
+   - `src/hooks/useCategories.js`
+   - `src/hooks/useCampaign.js`
+   - `src/hooks/useEvents.js` si Home muestra teaser.
+   - `src/lib/mockData.js` solo si API no esta disponible; debe estar aislado y documentado como temporal.
+   - `src/lib/whatsapp.js`
+   - `src/lib/tablaDraft.js` o helper minimo para add no alcohol, dejando el store completo para Fase 9.
+
+Datos/API:
+- Usar `src/lib/api.js` y axios contra API real:
+  - `GET /products`
+  - `GET /products/:slug`
+  - `GET /categories`
+  - `GET /campaigns/active`
+  - `GET /events`
+  - `GET /site/config`
+- Si API no esta disponible en dev:
+  - usar mocks temporales en `src/lib/mockData.js`.
+  - no mezclar mocks con componentes.
+  - dejar comentario claro y deuda en docs/runbook o estado vivo.
+- Los productos deben manejar:
+  - `is_alcohol`
+  - `stock_status`
+  - `is_seasonal`
+  - `is_featured`
+  - imagenes y alt text
+  - categorias
+
+Home:
+- Hero full-bleed, no dentro de card:
+  - 90vh mobile, 80vh desktop.
+  - imagen real si existe; si no, placeholder local claramente sustituible.
+  - overlay `rgba(26,31,20,0.55)`.
+  - eyebrow: `VINOS Y QUESOS · MADRID`.
+  - H1 Cormorant italic, max 6 palabras.
+  - CTAs:
+    - `Reservar mi tabla` -> `/catalogo` o `/mi-tabla` segun estado del store.
+    - `Como llegar` -> Maps URL de site config.
+  - metadata de horarios/abierto-cerrado si site config lo permite.
+- SeasonalShowcase:
+  - productos `is_seasonal=true`.
+  - cards con aspect-ratio estable.
+- CategoryStrips:
+  - Quesos, Vinos, Temporada.
+- EventsTeaser:
+  - max 2-3 eventos futuros.
+  - link a `/eventos`.
+- InstagramStrip:
+  - placeholder editorial, no integrar API Instagram real.
+- VisitBlock:
+  - direccion, horarios, Maps, WhatsApp.
+
+Catalogo:
+- `/catalogo` lista todos los productos activos.
+- `/catalogo/quesos` aplica `type=CHEESE`.
+- `/catalogo/vinos` aplica `type=WINE`.
+- `/catalogo/temporada` aplica `seasonal=true`.
+- Toolbar:
+  - filtro categoria.
+  - filtro temporada/destacados si encaja.
+  - busqueda `q`.
+  - limpiar filtros.
+- EmptyState en espanol.
+- Loading y error states cuidados.
+- No layout shift: grid con dimensiones estables.
+
+ProductCard:
+- Imagen cuadrada con `aspect-ratio: 1 / 1`.
+- Tag `Temporada`, `Destacado`, `Agotado` segun datos.
+- Producer + region como eyebrow.
+- Nombre con Cormorant.
+- Descripcion corta/tasting note.
+- Precio en JetBrains Mono.
+- CTA:
+  - vino/alcohol: `WhatsApp`.
+  - no alcohol: `Anadir`.
+- Hover sutil en desktop.
+- Tap target >= 44px.
+- No mostrar boton disabled que parezca comprable si producto es vino.
+
+PDP:
+- Desktop: 2 columnas.
+- Mobile: stacked.
+- Gallery con aspect-ratio reservado.
+- Meta/CTA visible sin tapar contenido.
+- Historia/productor/region/descripcion larga.
+- Categorias y related products si hay datos.
+- Estado stock claro:
+  - `OUT` no permite add/WhatsApp principal debe indicar disponibilidad segun tipo.
+- Schema Product via `schemaOrg`.
+- Meta title/description basicos.
+
+Regla vino/alcohol:
+- Si `product.is_alcohol === true`:
+  - Nunca renderizar `AddToTablaButton`.
+  - Renderizar `WineWhatsAppButton`.
+  - Link `wa.me` con texto prellenado:
+    - `Hola, me interesa {nombre}. ¿Lo tenéis disponible en CRUDO?`
+  - Texto visible:
+    - `Los vinos se reservan y se pagan en CRUDO.`
+  - Track `wine_whatsapp_click` solo si consentimiento lo permite.
+- Tests deben cubrir que el boton de Mi Tabla no aparece para vino.
+
+Regla no alcohol:
+- Si `product.is_alcohol === false`:
+  - Renderizar `AddToTablaButton`.
+  - El boton puede usar un helper/store minimo para guardar draft local de `Mi Tabla`.
+  - No implementar formulario pickup completo; Fase 9.
+  - Track `select_item` y, si creas evento adicional, documenta nombre.
+- El helper debe rechazar productos con `is_alcohol=true` aunque el componente no lo muestre.
+
+Mi Tabla en esta fase:
+- Permitido:
+  - helper minimo `tablaDraft` o `useTablaDraft`.
+  - add/remove basico para no alcohol.
+  - contador en header/sticky CTA si ya existe.
+- Prohibido:
+  - formulario pickup real.
+  - submit a `/pickup-orders`.
+  - confirmacion final.
+  - logica compleja de slots/fechas.
+
+SEO base:
+- Cada pantalla debe actualizar title/meta de forma basica con helper existente o componente simple.
+- Home prepara schema.org Restaurant si ya existe helper.
+- PDP genera schema.org Product.
+- No implementar prerender completo; Fase 12.
+- No meter copy en imagenes.
+
+Analytics:
+- Usar `src/lib/analytics.js`.
+- Eventos:
+  - `select_item` al abrir/ver producto o seleccionar card si ya existe patron.
+  - `wine_whatsapp_click`.
+  - `whatsapp_click`.
+  - `maps_click`.
+- Todas las llamadas deben ser noop sin consentimiento.
+- No cargar GA4/Pixel directamente.
+
+Visual:
+- Mantener tokens CRUDO.
+- No blanco puro, negro puro, azul, neon.
+- No paleta beige/crema dominante sin contraste dark CRUDO.
+- No UI SaaS generica.
+- Cards con radius <= 8px.
+- No cards dentro de cards.
+- No carrusel auto-rotatorio.
+- No parallax/scroll-jacking.
+- Imagenes con `loading="lazy"` salvo hero principal.
+- Hero debe insinuar siguiente seccion en mobile/desktop.
+
+Accesibilidad:
+- H1 unico por pagina.
+- Imagenes con alt text.
+- Links/botones con nombre accesible.
+- Focus visible.
+- Tap targets >= 44x44.
+- Filtros usables con teclado.
+- Estados loading/error anunciables razonablemente.
+- No usar solo color para stock/error.
+
+Tests obligatorios:
+1. Home:
+   - renderiza hero, CTAs y secciones principales.
+   - no muestra texto ingles publico.
+
+2. Catalogo:
+   - ProductCard renderiza seasonal/stock/price.
+   - filtros queso/vino/temporada llaman API o filtran correctamente segun implementacion.
+   - EmptyState aparece sin productos.
+
 3. PDP:
-   - desktop 2 columnas; mobile stacked
-   - gallery izquierda; meta sticky derecha
-   - story productor
-   - pairings
-4. Vino:
-   - nunca mostrar `Anadir a mi tabla`
-   - mostrar `Preguntanos por WhatsApp`
-   - link `wa.me/+34...?text=Hola, me interesa el {nombre}. Lo teneis disponible?`
-   - texto: `Los vinos se reservan y se pagan en CRUDO.`
-   - track `wine_whatsapp_click`
-5. No alcohol:
-   - mostrar `Anadir a mi tabla`
-   - actualizar estado local/helper de Mi Tabla
-   - track select_item y add_to_tabla si decides nombre adicional
+   - `is_alcohol=true` muestra solo WhatsApp CTA.
+   - `is_alcohol=true` no muestra `Anadir a mi tabla`.
+   - `is_alcohol=false` muestra `Anadir a mi tabla`.
+   - wine WhatsApp link incluye nombre del producto.
+   - product schema existe.
 
-Datos:
-- Usar axios contra API real.
-- Si API no esta disponible en dev, usar mocks temporales claramente aislados en `src/lib/mockData.ts`, con TODO para retirar.
+4. Mi Tabla draft:
+   - add no alcohol funciona.
+   - reject alcohol en helper.
 
-SEO:
-- Cada pagina debe tener title/meta basicos.
-- ProductPage debe generar schema.org Product.
-- Home debe preparar schema.org Restaurant/FAQ.
+5. Visual/layout smoke:
+   - imagenes reservan aspect ratio.
+   - no hay CLS evidente por ausencia de dimensiones.
 
-Tests:
-- ProductCard renderiza estado season/stock.
-- ProductPage con `is_alcohol=true` muestra solo WhatsApp CTA.
-- ProductPage con `is_alcohol=false` muestra AddToTabla.
-- wine WhatsApp link incluye producto.
-- No CLS evidente por imagenes: reservar dimensiones/aspect-ratio.
+Si API no esta disponible:
+- Tests deben mockear API en capa `api.js`/hooks, no en componentes profundos.
+- Documentar que mocks son temporales.
+- No marcar integracion API real como DONE si no se verifico.
+
+Prohibido en esta fase:
+- No implementar pickup form ni POST `/pickup-orders`.
+- No permitir vino en Mi Tabla.
+- No implementar eventos/contacto/newsletter completos; Fase 10.
+- No implementar admin frontend; Fase 11.
+- No activar pagos online.
+- No activar GA4/Pixel antes de consentimiento.
+- No usar TypeScript.
+- No introducir librerias de UI pesadas.
+- No crear contenido real definitivo si faltan assets owner; usar placeholders marcados.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 8
+- `current_phase_name`: "Public frontend: Home, Catalogo y PDP"
+- `current_focus`: resumen real de Home, Catalogo, PDP, vino WhatsApp-only, Mi Tabla draft, SEO base y tests
+- `overall_status`: `REVIEW_READY` si build/tests/lint pasan; `IN_PROGRESS` si queda integracion API/assets pendiente; `BLOCKED` si falta dependencia o decision critica
+- tabla de Fase 8 con implementado/falta/notas reales
+- tabla de Fase 9 como siguiente fase si Fase 8 queda lista
+- funcionalidades implementadas: anade solo Home/Catalogo/PDP y reglas de CTA si estan verificadas
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 9 - Mi Tabla frontend y pickup flow" si Fase 8 queda lista
+- checklist final: marca Home, Catalogo, PDP, Vinos WhatsApp-only y no alcohol con Mi Tabla draft solo si tests pasan
+
+Si cambias estado, rutas o visual system que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- `npm run build` pasa.
-- Tests pasan.
-- Vino no entra en Mi Tabla desde UI.
-- Catalogo filtra por queso/vino/temporada.
+- Home real existe y no parece plantilla generica.
+- Catalogo filtra por general/quesos/vinos/temporada.
+- PDP producto existe.
+- Vino nunca muestra `Anadir a mi tabla`.
+- Vino muestra WhatsApp CTA con texto prellenado.
+- No alcohol muestra `Anadir a mi tabla`.
+- Helper/store draft rechaza alcohol.
 - Mobile-first y accesible.
+- Imagenes tienen aspect-ratio estable.
+- SEO base y Product schema existen.
+- Analytics respeta consentimiento.
+- `npm run build` pasa.
+- `npm test` pasa.
+- `npm run lint` pasa si existe.
+- No hay texto publico en ingles.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run build`.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta smoke local con `npm run dev` o equivalente si se puede sin dejar procesos vivos.
+- Si Playwright ya esta configurado, captura mobile/desktop de Home, Catalogo y PDP vino/no alcohol.
+- Revisa CSS/config para confirmar que no hay blanco puro, negro puro, azul/neon como base visual.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 8.
+- Pantallas y reglas vino/no alcohol implementadas.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 18. Fase 9 - Mi Tabla frontend y pickup flow
@@ -1501,67 +3443,321 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 9: Mi Tabla frontend y pickup inquiry flow.
 
-Reglas:
-- Mi Tabla solo admite productos no alcoholicos.
-- Si por cualquier razon llega un producto `is_alcohol=true` al estado local, el sistema debe eliminarlo o bloquear submission con error claro.
-- No hay pago online.
-- Texto obligatorio: `Reserva tu tabla. El pago se realiza en CRUDO al recoger. Te confirmaremos por WhatsApp en menos de 24 horas.`
+Objetivo de esta fase:
+Implementar la experiencia frontend completa de `Mi Tabla`: store local, drawer/resumen, pagina `/mi-tabla`, formulario pickup, integracion con `POST /api/v1/pickup-orders`, idempotencia, confirmacion y manejo seguro de errores. Todo debe dejar claro que no hay pago online y que CRUDO confirma por WhatsApp en menos de 24 horas.
 
-Tareas:
-1. Implementa store/helper `useTabla`:
-   - addItem(product)
-   - removeItem(productId)
-   - updateQty(productId, qty)
-   - clear()
-   - total_cents calculado desde items
-   - rechazar `is_alcohol=true`
-   - persistir en localStorage de forma robusta
-2. Implementa TablaDrawer:
-   - desktop drawer derecha
-   - mobile full-screen sheet
-   - line items thumbnail/name/qty/price
-   - `Quitar`
-   - total
-   - CTA `Reservar para recoger`
-   - nota: `Para reservar vinos, escribenos por WhatsApp.`
-3. Implementa `/mi-tabla`:
-   - resumen
-   - formulario
-4. Implementa PickupForm:
-   - name
-   - email
-   - phone
-   - pickup_date
-   - pickup_slot 30-min
-   - notes
-   - validation helpers
-   - date restricted to opening days desde site config
-   - retries una vez en error de red
-   - usa Idempotency-Key
-5. Implementa submission a POST /api/v1/pickup-orders.
-6. Implementa `/mi-tabla/confirmacion`:
-   - order ID
-   - total
-   - expectativa de confirmacion por WhatsApp en 24h
-   - CTA a WhatsApp y Como llegar
-   - newsletter opt-in block
-7. Analytics:
-   - `pickup_request` con contents y total
-8. Tests:
-   - add non-alcohol item
-   - reject alcohol item
-   - total updates
-   - validation errors
-   - successful submit
-   - 422 alcohol from API displays safe error and does not claim success
-   - network retry once
+Reglas no negociables:
+- `Mi Tabla` solo admite productos no alcoholicos.
+- Si por cualquier razon llega un producto `is_alcohol=true` al estado local, el store debe rechazarlo/eliminarlo y bloquear submission.
+- Si backend responde 422 por alcohol, la UI debe mostrar error seguro y no mostrar confirmacion.
+- No hay checkout ni pago online.
+- Texto obligatorio visible en formulario y/o resumen:
+  - `Reserva tu tabla. El pago se realiza en CRUDO al recoger. Te confirmaremos por WhatsApp en menos de 24 horas.`
+- Para vinos, la UI debe dirigir a WhatsApp, no a `Mi Tabla`.
+
+Contexto obligatorio:
+- Fase 8 debe haber dejado ProductCard/PDP con `AddToTablaButton` solo para no alcohol y `WineWhatsAppButton` para vino.
+- Fase 4 debe haber dejado backend `POST /api/v1/pickup-orders` con alcohol guard 422 e idempotencia.
+- Fase 7 debe haber dejado API client, analytics consent-aware, layout y componentes UI.
+- Stack frontend: React 19, Vite, JavaScript, Tailwind, React Router, axios.
+- Idioma visible: espanol.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Inspecciona:
+   - `src/routes.jsx`
+   - `src/pages/MyTablaPage.jsx`
+   - `src/pages/MyTablaConfirmationPage.jsx`
+   - `src/components/product/AddToTablaButton.jsx`
+   - `src/components/layout/Header.jsx`
+   - `src/components/layout/StickyCTA.jsx`
+   - `src/lib/api.js`
+   - `src/lib/analytics.js`
+   - `src/lib/tablaDraft.js` si existe
+   - `src/hooks/`
+   - tests existentes
+   - `package.json`
+   - `git status --short`
+3. Si Fase 8 dejo un helper draft, evolucionarlo a store real sin romper tests existentes.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. Usa JavaScript. No introducir TypeScript ni archivos `.ts/.tsx`.
+
+Archivos a crear o actualizar:
+1. Store/hooks:
+   - `src/store/tablaStore.js` o `src/hooks/useTabla.js` segun patron existente.
+   - `src/lib/idempotency.js`
+   - `src/lib/pickupApi.js`
+   - `src/lib/pickupValidation.js`
+
+2. Componentes Mi Tabla:
+   - `src/components/tabla/TablaDrawer.jsx`
+   - `src/components/tabla/TablaSummary.jsx`
+   - `src/components/tabla/TablaLineItem.jsx`
+   - `src/components/tabla/PickupForm.jsx`
+   - `src/components/tabla/PickupSuccess.jsx`
+   - `src/components/tabla/TablaEmptyState.jsx`
+   - `src/components/tabla/AlcoholBlockedNotice.jsx`
+
+3. Paginas:
+   - `src/pages/MyTablaPage.jsx`
+   - `src/pages/MyTablaConfirmationPage.jsx`
+
+4. Integraciones:
+   - actualizar `AddToTablaButton`.
+   - actualizar Header/StickyCTA con contador si existe.
+   - actualizar routes si hace falta.
+
+5. Tests:
+   - `src/store/tablaStore.test.js` o `src/hooks/useTabla.test.jsx`
+   - `src/components/tabla/TablaDrawer.test.jsx`
+   - `src/components/tabla/PickupForm.test.jsx`
+   - `src/pages/MyTablaPage.test.jsx`
+   - `src/pages/MyTablaConfirmationPage.test.jsx`
+
+Store `Mi Tabla`:
+- API minima:
+  - `addItem(product)`
+  - `removeItem(productIdOrSlug)`
+  - `updateQty(productIdOrSlug, qty)`
+  - `clear()`
+  - `hydrate()`
+  - `getTotalCents()`
+  - `getItemCount()`
+  - `getPayloadItems()`
+- Debe persistir en `localStorage`.
+- Debe tolerar localStorage corrupto:
+  - limpiar estado invalido.
+  - no romper render.
+- Debe guardar solo datos necesarios:
+  - id/slug
+  - name
+  - qty
+  - unit price snapshot para UI
+  - image/thumb
+  - is_alcohol
+- Debe recalcular total UI desde items guardados.
+- Backend recalcula precio real; la UI nunca envia precios como autoridad.
+- Debe rechazar `is_alcohol=true` en `addItem`.
+- Debe eliminar cualquier item alcoholico al hidratar estado antiguo/corrupto.
+- Qty:
+  - minimo 1.
+  - maximo razonable, por ejemplo 99.
+  - si llega 0, eliminar item.
+
+TablaDrawer:
+- Desktop: drawer derecho.
+- Mobile: full-screen sheet o panel grande usable.
+- Debe mostrar:
+  - line items con thumbnail, nombre, qty stepper/input, precio, quitar.
+  - total.
+  - CTA `Reservar para recoger`.
+  - nota: `Para reservar vinos, escríbenos por WhatsApp.`
+  - texto obligatorio de pago en tienda/confirmacion WhatsApp.
+- Debe tener:
+  - focus management razonable.
+  - cierre con Escape.
+  - tap targets >= 44px.
+  - no tapar legal/footer de forma permanente.
+
+Pagina `/mi-tabla`:
+- Si tabla vacia:
+  - EmptyState con CTA a `/catalogo`.
+- Si hay items:
+  - resumen.
+  - PickupForm.
+  - texto obligatorio visible.
+- Debe volver a validar que no hay alcohol antes de renderizar formulario.
+
+PickupForm:
+- Campos:
+  - `name`
+  - `email`
+  - `phone`
+  - `pickup_date`
+  - `pickup_slot`
+  - `notes`
+- Validacion cliente:
+  - name requerido.
+  - email requerido y formato valido.
+  - phone requerido.
+  - pickup_date requerido, no pasado.
+  - pickup_slot requerido, formato `HH:mm`.
+  - notes max 1000.
+  - tabla no vacia.
+  - sin alcohol.
+- Slots:
+  - incrementos de 30 min.
+  - usar site config si existe.
+  - si no hay horarios reales, usar placeholder documentado y no presentarlo como definitivo.
+- UX:
+  - errores en texto, no solo color.
+  - loading state.
+  - submit disabled mientras envia.
+  - si error red, permitir reintento.
+  - retry automatico maximo una vez solo para error de red seguro.
+
+API submission:
+- Endpoint: `POST /api/v1/pickup-orders`.
+- Usar `src/lib/api.js`.
+- Crear `Idempotency-Key` por submission:
+  - persistirla durante retry.
+  - generar nueva si usuario cambia payload tras error.
+- Payload:
+  - name, email, phone, pickup_date, pickup_slot, notes.
+  - items con `product_id` o `product_slug` y `qty`.
+- No enviar precios como autoridad.
+- Manejar responses:
+  - 201: guardar datos de confirmacion, limpiar tabla, navegar a `/mi-tabla/confirmacion`.
+  - 400/422: mostrar errores claros.
+  - 422 alcohol: mostrar mensaje seguro, eliminar/bloquear items alcoholicos si existen, no confirmar.
+  - 409 idempotency conflict: pedir revisar y reenviar, generar nueva key si el usuario confirma.
+  - 429: mensaje de espera.
+  - 500/red: mensaje de error sin perder tabla.
+
+Confirmacion `/mi-tabla/confirmacion`:
+- Debe mostrar:
+  - order ID si existe.
+  - total.
+  - items resumidos si vienen en response o estado de navegacion.
+  - mensaje:
+    - pago en CRUDO al recoger.
+    - confirmacion por WhatsApp en menos de 24h.
+  - CTA WhatsApp.
+  - CTA Como llegar.
+  - link volver a catalogo.
+  - bloque newsletter opt-in preparado o componente simple si ya existe.
+- Si el usuario entra sin estado/order:
+  - mostrar estado seguro con CTA a catalogo o Mi Tabla.
+- No mostrar "pedido pagado" ni lenguaje de compra online.
+
+Analytics:
+- Usar `trackPickupRequest` solo tras response exitoso 201.
+- Payload analytics:
+  - total_cents.
+  - item_count.
+  - contents sin PII.
+- No trackear PII.
+- No disparar si no hay consentimiento.
+- No duplicar evento en retry idempotente si ya se marco exito.
+
+Accesibilidad/visual:
+- Mobile-first.
+- Tap targets >= 44px.
+- Focus visible.
+- Drawer/form usable con teclado.
+- Mensajes de error asociados a campos.
+- No cards dentro de cards.
+- No UI SaaS generica.
+- Mantener tokens CRUDO.
+- No blanco puro, negro puro, azul/neon.
+
+Tests obligatorios:
+1. Store:
+   - add non-alcohol item.
+   - reject alcohol item.
+   - hydrate elimina alcohol de localStorage.
+   - total updates.
+   - qty 0 elimina item.
+   - localStorage corrupto no rompe.
+
+2. Drawer:
+   - render items.
+   - update qty.
+   - remove item.
+   - CTA visible.
+   - nota de vinos por WhatsApp visible.
+
+3. PickupForm:
+   - validacion campos requeridos.
+   - invalid email.
+   - invalid/past date.
+   - invalid slot.
+   - submit disabled mientras loading.
+   - successful submit navega a confirmacion y limpia tabla.
+
+4. API errors:
+   - 422 alcohol muestra error seguro y no confirma.
+   - 409 idempotency conflict muestra error.
+   - network error retry once.
+   - 500 no pierde tabla.
+
+5. Confirmacion:
+   - muestra pago en tienda.
+   - muestra WhatsApp <24h.
+   - no muestra pago online.
+
+6. Regression:
+   - ProductPage vino sigue sin `Anadir a mi tabla`.
+   - ProductPage no alcohol puede anadir.
+
+Si API no esta disponible:
+- Mockear `pickupApi` en tests.
+- No marcar integracion real como DONE.
+- Documentar comando pendiente para probar con backend.
+
+Prohibido en esta fase:
+- No integrar Stripe/Redsys.
+- No crear checkout.
+- No mostrar pago online.
+- No permitir alcohol.
+- No ocultar el alcohol guard solo en UI; store y submission tambien deben proteger.
+- No implementar admin frontend.
+- No implementar paginas eventos/contacto completas.
+- No trackear PII.
+- No usar TypeScript.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 9
+- `current_phase_name`: "Mi Tabla frontend y pickup flow"
+- `current_focus`: resumen real de store, drawer, formulario, API, confirmacion, alcohol UI guard y tests
+- `overall_status`: `REVIEW_READY` si build/tests/lint pasan; `IN_PROGRESS` si queda integracion API pendiente; `BLOCKED` si falta dependencia o decision critica
+- tabla de Fase 9 con implementado/falta/notas reales
+- tabla de Fase 10 como siguiente fase si Fase 9 queda lista
+- funcionalidades implementadas: anade solo Mi Tabla frontend y pickup flow si estan verificados
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 10 - Eventos, contacto, newsletter, sobre y mayoristas" si Fase 9 queda lista
+- checklist final: marca Mi Tabla, no alcohol con Mi Tabla y pickup flow sin pago online solo si tests pasan
+
+Si cambias estado, rutas o UX que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
+- Store de Mi Tabla persiste y recupera estado.
+- Store rechaza/elimina alcohol.
+- Drawer/resumen funciona en mobile y desktop.
+- `/mi-tabla` muestra resumen y formulario.
+- Submission usa `Idempotency-Key`.
+- Submission no envia precios como autoridad.
+- Backend 422 alcohol se maneja correctamente.
+- Confirmacion deja claro pago en tienda y WhatsApp <24h.
 - No hay checkout ni pago.
-- El usuario entiende que paga en tienda.
-- UI y store impiden alcohol.
-- Backend 422 se maneja correctamente.
-- `npm run build` y tests pasan.
+- Analytics respeta consentimiento y no trackea PII.
+- `npm run build` pasa.
+- `npm test` pasa.
+- `npm run lint` pasa si existe.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run build`.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta smoke local de flujo add item -> Mi Tabla -> submit mock/real si se puede sin dejar procesos vivos.
+- Si Playwright ya esta configurado, captura mobile de drawer/form/confirmacion.
+- Revisa que no hay texto de pago online ni Stripe/Redsys activo.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 9.
+- Flujo Mi Tabla implementado.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 19. Fase 10 - Eventos, contacto, newsletter, sobre y mayoristas
@@ -1585,66 +3781,370 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 10: Eventos, Contacto, Newsletter, Sobre CRUDO y Mayoristas.
 
-Pantallas:
-- /eventos
-- /eventos/:slug
-- /contacto
-- /sobre-crudo
-- /mayoristas
+Objetivo de esta fase:
+Completar las rutas publicas secundarias de CRUDO V1 que generan visitas, reservas de eventos, consultas, leads mayoristas y newsletter: `/eventos`, `/eventos/:slug`, `/contacto`, `/sobre-crudo` y `/mayoristas`. Esta fase debe integrar formularios con la API publica, mantener copy en espanol, CTAs mobile-first y analytics consent-aware, sin crear sistema nativo de reserva de mesas ni ecommerce B2B.
 
-Componentes:
-- events/EventCard
-- events/EventDetail
-- events/ReservationForm
-- forms/ContactForm
-- forms/WholesaleForm
-- forms/NewsletterForm
-- home/VisitBlock si no esta completo
+Contexto obligatorio:
+- Fase 7 debe haber dejado layout, rutas base, componentes UI, API client, cookie banner y analytics consent-aware.
+- Fase 8 debe haber dejado Home/Catalogo/PDP y posiblemente `VisitBlock`.
+- Fase 3 debe exponer endpoints publicos:
+  - `GET /events`
+  - `GET /events/:slug`
+  - `POST /events/:slug/reservations`
+  - `POST /inquiries`
+  - `POST /newsletter/subscribe`
+  - `GET /site/config`
+- Stack frontend: React 19, Vite, JavaScript, Tailwind, React Router, axios.
+- Idioma visible: espanol.
+- No pago online.
+- No venta online de alcohol.
+- No crear reservas de mesa. Eventos/tastings si; mesas normales no.
 
-Requisitos eventos:
-1. /eventos lista eventos futuros activos ordenados por fecha.
-2. /eventos/:slug muestra:
-   - fecha, hora, precio, ubicacion
-   - capacidad restante o `quedan pocas plazas` si <30%
-   - formulario name/email/phone/party_size 1-4/notes
-3. Si evento lleno, sustituye form por waitlist o mensaje segun API disponible.
-4. On submit:
-   - confirmation UI
-   - email/notification via backend
-   - admin lo ve como reservation NEW
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Inspecciona:
+   - `src/routes.jsx`
+   - `src/pages/EventsPage.jsx`
+   - `src/pages/EventDetailPage.jsx`
+   - `src/pages/ContactPage.jsx`
+   - `src/pages/AboutPage.jsx`
+   - `src/pages/WholesalePage.jsx`
+   - `src/components/home/VisitBlock.jsx`
+   - `src/components/layout/Footer.jsx`
+   - `src/components/ui/`
+   - `src/lib/api.js`
+   - `src/lib/analytics.js`
+   - `src/hooks/`
+   - tests existentes
+   - `package.json`
+   - `git status --short`
+3. Si falta parte de fases previas, completa solo lo imprescindible para estas rutas sin redisenar todo.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. Usa JavaScript. No introducir TypeScript ni archivos `.ts/.tsx`.
 
-Requisitos contacto:
-- Form CONTACT: name, email, phone optional, message.
-- CTAs visibles: WhatsApp, Como llegar, Instagram.
-- Google Maps embed o link accesible.
+Pantallas obligatorias:
+- `/eventos`
+- `/eventos/:slug`
+- `/contacto`
+- `/sobre-crudo`
+- `/mayoristas`
 
-Requisitos mayoristas:
-- B2B/distribucion queso.
-- Form WHOLESALE: business name, contact name, email, phone, message.
-- Mantenerlo como lead, no ecommerce B2B.
+Componentes a crear o completar:
+1. Eventos:
+   - `src/components/events/EventCard.jsx`
+   - `src/components/events/EventList.jsx`
+   - `src/components/events/EventDetail.jsx`
+   - `src/components/events/ReservationForm.jsx`
+   - `src/components/events/EventCapacityBadge.jsx`
+
+2. Formularios/leads:
+   - `src/components/forms/ContactForm.jsx`
+   - `src/components/forms/WholesaleForm.jsx`
+   - `src/components/forms/NewsletterForm.jsx`
+   - `src/components/forms/FormSuccess.jsx`
+   - `src/components/forms/FormError.jsx`
+
+3. Contacto/visita:
+   - `src/components/contact/ContactCtas.jsx`
+   - `src/components/contact/MapBlock.jsx`
+   - completar `src/components/home/VisitBlock.jsx` si falta.
+
+4. Sobre:
+   - `src/components/about/AboutIntro.jsx`
+   - `src/components/about/ManifestoBlock.jsx`
+   - `src/components/about/OwnerSpaceBlock.jsx`
+
+5. Hooks/lib:
+   - `src/hooks/useEvents.js`
+   - `src/hooks/useEvent.js`
+   - `src/lib/eventsApi.js`
+   - `src/lib/inquiriesApi.js`
+   - `src/lib/newsletterApi.js`
+   - `src/lib/formValidation.js`
+   - `src/lib/contactLinks.js`
+
+6. Tests:
+   - `src/components/events/ReservationForm.test.jsx`
+   - `src/pages/EventsPage.test.jsx`
+   - `src/pages/EventDetailPage.test.jsx`
+   - `src/components/forms/ContactForm.test.jsx`
+   - `src/components/forms/WholesaleForm.test.jsx`
+   - `src/components/forms/NewsletterForm.test.jsx`
+   - `src/pages/ContactPage.test.jsx`
+
+Eventos `/eventos`:
+- Cargar `GET /events`.
+- Mostrar solo eventos futuros activos si API no lo filtra ya.
+- Ordenar por fecha ascendente si API no lo garantiza.
+- Cada `EventCard` debe mostrar:
+  - titulo.
+  - fecha.
+  - hora.
+  - ubicacion.
+  - precio si existe.
+  - capacidad restante o estado `quedan pocas plazas` si menos del 30%.
+  - CTA `Ver evento`.
+- Loading, empty y error states en espanol.
+- Empty state debe invitar a newsletter/contacto, no inventar eventos.
+
+Detalle evento `/eventos/:slug`:
+- Cargar `GET /events/:slug`.
+- Mostrar:
+  - titulo.
+  - fecha/hora.
+  - precio.
+  - ubicacion.
+  - hero image/placeholder con alt.
+  - descripcion.
+  - capacidad restante o `quedan pocas plazas`.
+- Si evento esta lleno:
+  - sustituir formulario por mensaje claro.
+  - si API no soporta waitlist, no crear waitlist falsa.
+  - CTA alternativo: WhatsApp/contacto.
+- Si evento es pasado/inactivo/no existe:
+  - 404/estado seguro con CTA a `/eventos`.
+
+ReservationForm:
+- Integra `POST /events/:slug/reservations`.
+- Campos:
+  - `name`
+  - `email`
+  - `phone`
+  - `party_size` 1-4
+  - `notes`
+- Validacion cliente:
+  - name requerido.
+  - email requerido y valido.
+  - phone requerido.
+  - party_size entero 1-4.
+  - notes max 1000.
+- On submit:
+  - loading state.
+  - errores por campo y general.
+  - success state en la pagina.
+  - texto claro: solicitud recibida, CRUDO confirmara.
+  - admin lo vera como reservation `NEW` via backend.
+- Usar `Idempotency-Key` si backend lo soporta.
+- No cobrar ni pedir datos de pago.
+
+Contacto `/contacto`:
+- Mostrar:
+  - ContactForm.
+  - WhatsApp CTA.
+  - Como llegar/Maps.
+  - Instagram.
+  - horarios/direccion desde site config.
+  - MapBlock con embed accesible o link si embed no esta configurado.
+- ContactForm:
+  - `type=CONTACT`.
+  - campos: name, email, phone opcional si email presente, message.
+  - validar email o phone segun datos.
+  - `POST /inquiries`.
+  - success state claro.
+  - track `generate_lead` tras exito, sin PII.
+
+Mayoristas `/mayoristas`:
+- Enfoque B2B/distribucion queso.
+- No ecommerce B2B.
+- No lista privada de precios.
+- Copy claro en espanol:
+  - quesos artesanos.
+  - restaurantes/tiendas/horeca.
+  - contacto para disponibilidad y condiciones.
+- WholesaleForm:
+  - `type=WHOLESALE`.
+  - campos:
+    - business_name.
+    - contact_name/name.
+    - email.
+    - phone.
+    - message.
+  - guardar campos extra en `payload`.
+  - `POST /inquiries`.
+  - success state.
+  - track `generate_lead` tras exito, sin PII.
 
 Newsletter:
-- Form en footer y paginas clave.
-- Double opt-in via Brevo en backend.
-- Consent timestamp + IP ya soportado.
-- Track `generate_lead`.
+- Completar `NewsletterForm` en footer y paginas clave si ya esta presente.
+- Integrar `POST /newsletter/subscribe`.
+- Campos:
+  - email.
+  - source.
+  - consentimiento explicito si el formulario lo requiere.
+- Mostrar:
+  - double opt-in via Brevo si backend lo prepara.
+  - mensaje de revisar email.
+- Si Brevo/API no disponible:
+  - manejar error/noop de forma clara sin romper pagina.
+- Track `generate_lead` tras exito, sin PII.
+- No suscribir sin consentimiento.
 
-Sobre CRUDO:
-- Manifesto placeholder editable.
-- Owner/space photos placeholder.
-- Link a catalogo, eventos, contacto.
+Sobre CRUDO `/sobre-crudo`:
+- Crear pagina editorial no generica:
+  - intro de CRUDO.
+  - manifesto placeholder editable.
+  - owner/space photos placeholder claramente sustituible.
+  - links a catalogo, eventos, contacto.
+- Copy:
+  - espanol simple.
+  - compatible con Google Translate.
+  - sin textos en imagenes.
+- No fingir historia real si no existe contenido owner; usar placeholder honesto y documentar pendiente.
 
-Tests:
-- reservation form valid/invalid.
-- contact form valid/invalid.
-- newsletter consent flow.
-- maps/whatsapp links correctos.
+VisitBlock/CTAs:
+- CTAs visibles y mobile-friendly:
+  - WhatsApp.
+  - Como llegar.
+  - Instagram.
+- Usar `siteConfig`.
+- Links:
+  - WhatsApp `wa.me` con texto prellenado general.
+  - Maps URL desde env/site config.
+  - Instagram `@crudomov` si confirmado en docs.
+- Track:
+  - `whatsapp_click`.
+  - `maps_click`.
+  - `generate_lead`.
+- No trackear PII.
+- No disparar analytics sin consentimiento.
+
+Visual:
+- Mantener tokens CRUDO.
+- Mobile-first.
+- No UI SaaS.
+- No cards dentro de cards.
+- Cards radius <= 8px.
+- Imagenes con aspect-ratio estable.
+- No blanco puro, negro puro, azul/neon.
+- Formularios sobrios, legibles y tactiles.
+- Botones/tap targets >= 44px.
+- No carruseles auto-rotatorios ni parallax.
+
+Accesibilidad:
+- Un H1 por pagina.
+- Labels reales en todos los inputs.
+- Errores asociados con `aria-describedby`.
+- Success/error no dependen solo de color.
+- Focus visible.
+- Forms navegables con teclado.
+- Map embed con title o fallback link.
+- Links externos con texto accesible.
+
+SEO base:
+- Title/meta basicos por pagina.
+- Event detail genera schema.org Event si helper existe.
+- ContactPage puede preparar Organization/LocalBusiness si helper existe.
+- No implementar prerender completo; Fase 12.
+
+Tests obligatorios:
+1. Eventos:
+   - `/eventos` renderiza eventos futuros.
+   - empty state sin eventos.
+   - EventCard muestra pocas plazas si aplica.
+   - `/eventos/:slug` renderiza detalle.
+   - evento lleno no muestra form.
+
+2. ReservationForm:
+   - validacion required/invalid.
+   - submit happy path.
+   - error API.
+   - success state.
+
+3. ContactForm:
+   - validacion.
+   - submit CONTACT.
+   - success state.
+   - track `generate_lead` sin PII.
+
+4. WholesaleForm:
+   - validacion.
+   - submit WHOLESALE con payload.
+   - no comportamiento ecommerce.
+
+5. NewsletterForm:
+   - email invalido.
+   - consentimiento si aplica.
+   - submit success.
+   - error API.
+
+6. CTAs:
+   - WhatsApp link correcto.
+   - Maps link correcto.
+   - Instagram link correcto.
+
+7. Regression:
+   - Mi Tabla sigue sin aceptar alcohol.
+   - Vino PDP sigue WhatsApp-only.
+
+Si API no esta disponible:
+- Mockear API en capa `eventsApi`, `inquiriesApi`, `newsletterApi`.
+- No marcar integracion API real como DONE.
+- Documentar comandos pendientes para probar con backend.
+
+Prohibido en esta fase:
+- No implementar reserva de mesas nativa.
+- No implementar checkout ni pagos.
+- No crear ecommerce B2B.
+- No permitir alcohol en Mi Tabla.
+- No activar GA4/Pixel antes de consentimiento.
+- No implementar admin frontend.
+- No introducir TypeScript.
+- No usar UI kit pesado.
+- No inventar contenido real del owner si no existe.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 10
+- `current_phase_name`: "Eventos, contacto, newsletter, sobre y mayoristas"
+- `current_focus`: resumen real de eventos, formularios, CTAs, newsletter, sobre y tests
+- `overall_status`: `REVIEW_READY` si build/tests/lint pasan; `IN_PROGRESS` si queda integracion API/contenido pendiente; `BLOCKED` si falta dependencia o decision critica
+- tabla de Fase 10 con implementado/falta/notas reales
+- tabla de Fase 11 como siguiente fase si Fase 10 queda lista
+- funcionalidades implementadas: anade solo rutas publicas secundarias y formularios si estan verificados
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 11 - Admin frontend movil" si Fase 10 queda lista
+- checklist final: marca Eventos, Contacto, Mayoristas, Newsletter y Sobre CRUDO solo si tests pasan
+
+Si cambias estado, rutas o UX que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- Todas las rutas publicas V1 existen.
-- Formularios tienen validacion cliente y servidor.
-- CTAs funcionan en mobile.
+- `/eventos`, `/eventos/:slug`, `/contacto`, `/sobre-crudo` y `/mayoristas` existen.
+- Eventos futuros se muestran ordenados.
+- Reservation form funciona y no cobra.
+- ContactForm y WholesaleForm envian inquiries correctas.
+- NewsletterForm integra API y consentimiento.
+- CTAs WhatsApp/Maps/Instagram funcionan en mobile.
 - No se anade sistema nativo de reserva de mesas.
+- No se anade ecommerce B2B.
+- Formularios tienen validacion cliente y servidor via API.
+- Analytics respeta consentimiento y no trackea PII.
+- Mobile-first y accesible.
+- `npm run build` pasa.
+- `npm test` pasa.
+- `npm run lint` pasa si existe.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run build`.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta smoke local de eventos/contacto/mayoristas/newsletter si se puede sin dejar procesos vivos.
+- Si Playwright ya esta configurado, captura mobile de `/eventos`, `/contacto` y `/mayoristas`.
+- Revisa que no hay textos de pago online, reserva de mesas o ecommerce B2B.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 10.
+- Rutas/formularios implementados.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 20. Fase 11 - Admin frontend movil
@@ -1668,81 +4168,412 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 11: frontend admin movil para owner de CRUDO.
 
-Regla de diseno:
+Objetivo de esta fase:
+Construir el frontend admin mobile-first de CRUDO V1 para que el owner gestione pedidos, stock, productos, eventos, campanas, consultas y configuracion desde el telefono en menos de 5 minutos al dia. Esta fase consume el backend admin de Fase 5 y no debe modificar el funcionamiento del public site.
+
+Regla de diseno no negociable:
 - No es un dashboard SaaS decorativo.
 - Es una herramienta de servicio para una persona entre clientes.
-- Cada accion diaria debe ser 1 tap o 1 form submission.
-- Si un flujo supera 3 taps, simplificalo o documenta el riesgo.
+- Cada accion diaria debe ser 1 tap o 1 form submission cuando sea razonable.
+- Si un flujo diario supera 3 taps, simplificalo o documenta el riesgo.
+- Prioriza lectura rapida, botones grandes y estados claros sobre densidad de datos.
+- No usar tablas densas en mobile.
 
-Rutas:
-- /admin
-- /admin/productos
-- /admin/productos/nuevo
-- /admin/productos/:id
-- /admin/eventos
-- /admin/campanas
-- /admin/pedidos
-- /admin/consultas
-- /admin/configuracion
+Contexto obligatorio:
+- Fase 5 debe exponer `/api/v1/admin/**` con JWT.
+- Fase 7 debe haber dejado React/Vite, layout, componentes UI, API client y rutas base.
+- Fase 8-10 deben haber dejado public site funcional. No romperlo.
+- Stack frontend: React 19, Vite, JavaScript, Tailwind, React Router, axios.
+- Idioma visible admin: espanol.
+- Codigo y tests en ingles.
+- No pago online.
+- Crear/editar vino debe mantener `is_alcohol=true` para que public PDP siga WhatsApp-only.
 
-Tareas:
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Inspecciona:
+   - `src/routes.jsx`
+   - `src/pages/AdminEntryPage.jsx`
+   - `src/components/ui/`
+   - `src/lib/api.js`
+   - `src/lib/analytics.js`
+   - `src/hooks/`
+   - public pages ya implementadas
+   - tests existentes
+   - `package.json`
+   - `git status --short`
+3. Si falta parte de Fase 7 o Fase 5, completa solo lo imprescindible para admin frontend y documenta el desfase.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. Usa JavaScript. No introducir TypeScript ni archivos `.ts/.tsx`.
+
+Rutas admin obligatorias:
+- `/admin`
+- `/admin/productos`
+- `/admin/productos/nuevo`
+- `/admin/productos/:id`
+- `/admin/eventos`
+- `/admin/eventos/nuevo`
+- `/admin/eventos/:id`
+- `/admin/campanas`
+- `/admin/campanas/nuevo`
+- `/admin/campanas/:id`
+- `/admin/pedidos`
+- `/admin/consultas`
+- `/admin/configuracion`
+
+Archivos a crear o actualizar:
+1. API/admin:
+   - `src/lib/adminApi.js`
+   - `src/lib/adminAuth.js`
+   - `src/lib/adminStorage.js`
+   - `src/hooks/useAdminAuth.js`
+   - `src/hooks/useAdminResource.js` si ayuda.
+
+2. Layout/admin shell:
+   - `src/components/admin/AdminShell.jsx`
+   - `src/components/admin/AdminBottomNav.jsx`
+   - `src/components/admin/AdminTopBar.jsx`
+   - `src/components/admin/AdminProtectedRoute.jsx`
+   - `src/components/admin/AdminEmptyState.jsx`
+   - `src/components/admin/AdminErrorState.jsx`
+   - `src/components/admin/AdminActionButton.jsx`
+
+3. Pages:
+   - `src/pages/admin/AdminLoginPage.jsx`
+   - `src/pages/admin/AdminDashboardPage.jsx`
+   - `src/pages/admin/AdminProductsPage.jsx`
+   - `src/pages/admin/AdminProductEditPage.jsx`
+   - `src/pages/admin/AdminEventsPage.jsx`
+   - `src/pages/admin/AdminEventEditPage.jsx`
+   - `src/pages/admin/AdminCampaignsPage.jsx`
+   - `src/pages/admin/AdminCampaignEditPage.jsx`
+   - `src/pages/admin/AdminOrdersPage.jsx`
+   - `src/pages/admin/AdminInquiriesPage.jsx`
+   - `src/pages/admin/AdminConfigPage.jsx`
+
+4. Components:
+   - `src/components/admin/LoginForm.jsx`
+   - `src/components/admin/DashboardCard.jsx`
+   - `src/components/admin/QuickActions.jsx`
+   - `src/components/admin/ProductEditor.jsx`
+   - `src/components/admin/ProductListItem.jsx`
+   - `src/components/admin/ImageUploader.jsx`
+   - `src/components/admin/EventEditor.jsx`
+   - `src/components/admin/CampaignEditor.jsx`
+   - `src/components/admin/OrderCard.jsx`
+   - `src/components/admin/InquiryCard.jsx`
+   - `src/components/admin/StatusPill.jsx`
+   - `src/components/admin/ConfigForm.jsx`
+
+5. Tests:
+   - `src/pages/admin/AdminLoginPage.test.jsx`
+   - `src/pages/admin/AdminDashboardPage.test.jsx`
+   - `src/pages/admin/AdminProductsPage.test.jsx`
+   - `src/components/admin/ProductEditor.test.jsx`
+   - `src/components/admin/OrderCard.test.jsx`
+   - `src/components/admin/AdminProtectedRoute.test.jsx`
+
+Admin API client:
+- Usar `src/lib/api.js` o extenderlo.
+- Base URL: `/api/v1/admin`.
+- Adjuntar `Authorization: Bearer <token>` en endpoints admin.
+- Manejar:
+  - 401 -> limpiar sesion y redirigir a `/admin`.
+  - 403 -> mostrar acceso denegado.
+  - RFC 7807 -> mensaje claro en UI.
+- No loguear tokens.
+- No guardar secrets en localStorage.
+
+Auth:
+- Login email/password.
+- Guardar access token de forma razonable:
+  - memoria + localStorage/sessionStorage si el proyecto ya usa ese patron.
+  - documentar tradeoff en runbook si se guarda en storage.
+- Refresh:
+  - implementar si backend lo soporta.
+  - si no, logout al expirar y documentar.
+- Logout:
+  - limpiar token.
+  - llamar endpoint logout si existe.
+- Protected routes:
+  - usuario no autenticado -> `/admin`.
+  - conservar redirect target si es sencillo.
+- UI:
+  - formulario mobile.
+  - errores claros.
+  - no revelar si email existe.
+
+AdminShell:
+- Mobile-first.
+- Bottom nav o compact nav con:
+  - Inicio.
+  - Productos.
+  - Pedidos.
+  - Consultas.
+  - Mas/Config.
+- Botones >= 44px.
+- Estados loading/error vacios.
+- Public header/footer no deben aparecer dentro del admin si distraen.
+- Admin debe ser visualmente sobrio, con tokens CRUDO, sin look SaaS generico.
+
+Dashboard:
+- Consumir `GET /admin/dashboard`.
+- Mostrar bloques compactos:
+  - pedidos pickup de hoy.
+  - pedidos `NEW`.
+  - eventos de hoy/proximos.
+  - consultas nuevas.
+  - productos `LOW`/`OUT`.
+  - reservas nuevas.
+- Acciones rapidas:
+  - confirmar pedido.
+  - marcar `READY`.
+  - marcar `PICKED_UP`.
+  - marcar producto agotado.
+  - abrir WhatsApp con respuesta prellenada.
+- Cada accion debe mostrar:
+  - pending/loading.
+  - success.
+  - error recuperable.
+- No usar tablas densas.
+
+Productos:
+- Lista searchable.
+- Filtros rapidos:
+  - stock.
+  - tipo.
+  - activo/inactivo.
+- Product editor:
+  - `name`
+  - `slug`
+  - `type`
+  - `is_alcohol`
+  - `producer`
+  - `region`
+  - `price_cents` o euros UI convertido a cents
+  - `vat_rate`
+  - `short_desc`
+  - `long_desc`
+  - `is_seasonal`
+  - `is_featured`
+  - `is_active`
+  - `stock_status`
+  - categorias si API lo soporta
+- Regla vino:
+  - si `type=WINE`, forzar o advertir `is_alcohol=true`.
+  - no permitir guardar vino como reservable por accidente.
+  - test obligatorio.
+- Image upload:
+  - usar endpoint admin upload.
+  - preview local.
+  - loading/error.
+  - alt text editable o default.
+- Acciones rapidas:
+  - marcar `OUT`.
+  - marcar `LOW`.
+  - marcar `IN_STOCK`.
+
+Eventos:
+- Lista de eventos.
+- Editor:
+  - title.
+  - slug.
+  - starts_at / ends_at.
+  - capacity.
+  - price.
+  - location.
+  - description_md.
+  - image/hero URL si backend lo soporta.
+  - is_active.
+- Validar fechas coherentes.
+- No crear reserva de mesas.
+
+Campanas:
+- Lista.
+- Editor:
+  - title.
+  - subtitle.
+  - body_md.
+  - hero_image_url.
+  - starts_at / ends_at.
+  - is_active.
+  - productos asociados si backend lo soporta.
+- Evitar flujo largo; si asociar productos es complejo, hacerlo searchable/simple o documentar pendiente.
+
+Pedidos pickup:
+- Lista por status/date.
+- Cards mobile con:
+  - nombre.
+  - telefono.
+  - pickup date/slot.
+  - status.
+  - total.
+  - items resumidos.
+- PATCH status:
+  - `NEW`
+  - `CONFIRMED`
+  - `READY`
+  - `PICKED_UP`
+  - `CANCELLED`
+- Quick WhatsApp:
+  - link prellenado segun status.
+  - no enviar automaticamente si no hay integracion real.
+- Acciones diarias deben ser rapidas.
+
+Consultas:
+- Lista contact/wholesale.
+- Filtros:
+  - type.
+  - status.
+- Card con:
+  - nombre.
+  - email/phone.
+  - mensaje.
+  - fecha.
+  - status.
+- PATCH status.
+- Reply links:
+  - email mailto.
+  - WhatsApp si phone.
+- No mostrar PII innecesaria en logs/tests.
+
+Configuracion:
+- Form para site config publico si backend existe:
+  - direccion.
+  - horarios.
+  - WhatsApp publico.
+  - Instagram.
+  - Google Maps URL.
+  - pickup_enabled si existe.
+- Si kill switch pickup no existe:
+  - no inventar backend.
+  - documentar pendiente V1.1 o mostrarlo disabled con nota interna si aporta.
+
+UX mobile:
+- No tablas horizontales obligatorias.
+- Cards/list items escaneables.
+- Primary action visible.
+- Confirmacion ligera para acciones destructivas/cancelaciones.
+- Optimistic update solo si se puede revertir bien; si no, esperar respuesta.
+- Pull-to-refresh no obligatorio.
+- Offline: mostrar error claro, no perder formulario en edicion.
+
+Accesibilidad:
+- Labels en formularios.
+- Errores con texto.
+- Focus visible.
+- Botones con nombre accesible.
+- Tap targets >= 44px.
+- No usar solo color para status.
+- Formularios largos segmentados.
+
+Tests obligatorios:
 1. Auth:
-   - login email/password
-   - guardar token de forma razonable
-   - refresh si backend lo soporta
-   - logout
-   - protected routes
-2. AdminShell:
-   - mobile bottom nav o compact nav
-   - botones grandes
-   - estados de carga claros
-3. Dashboard:
-   - pedidos pickup de hoy
-   - eventos de hoy
-   - consultas nuevas
-   - productos low/out stock
-   - botones rapidos:
-     - Confirmar pedido
-     - Marcar READY
-     - Marcar PICKED_UP
-     - Marcar agotado
-4. Productos:
-   - list searchable
-   - product editor
-   - fields: name, type, is_alcohol, producer, region, price, descriptions, seasonal, featured, active, stock_status
-   - image upload
-   - save/publish state
-   - creating wine sets `is_alcohol=true` and public PDP must use WhatsApp path
-5. Eventos:
-   - editor date/time, capacity, price, markdown desc, image, publish toggle
-6. Campanas:
-   - editor title/subtitle/body/active/products
-7. Pedidos:
-   - list by status/date
-   - patch status
-   - quick WhatsApp action with prefilled response
-8. Consultas:
-   - list contact/wholesale
-   - status update
-   - reply via email/WhatsApp link
-9. Configuracion:
-   - hours
-   - address
-   - public WhatsApp
-   - kill switch placeholder si backend existe; si no, preparar issue V1.1
+   - login flow.
+   - login error.
+   - unauthenticated redirect.
+   - token expirado/401 limpia sesion.
+   - logout.
 
-Tests:
-- login flow.
-- unauthenticated redirect.
-- product editor creates wine with is_alcohol.
-- dashboard actions call PATCH.
-- mobile viewport smoke with Testing Library/Playwright if already configured.
+2. Dashboard:
+   - renderiza bloques principales.
+   - quick action PATCH status.
+   - error de accion se muestra.
+
+3. Productos:
+   - lista productos.
+   - product editor crea no alcohol.
+   - product editor crea vino con `is_alcohol=true`.
+   - `type=WINE` con `is_alcohol=false` se corrige o bloquea segun implementacion.
+   - stock quick action llama PATCH.
+   - image upload muestra preview/success/error.
+
+4. Pedidos/consultas:
+   - orders list render.
+   - patch pickup status.
+   - WhatsApp prefill correcto.
+   - inquiries list render.
+   - patch inquiry status.
+
+5. Config:
+   - config form carga y guarda.
+
+6. Regression:
+   - public site routes siguen renderizando.
+   - wine PDP sigue WhatsApp-only.
+   - Mi Tabla sigue rechazando alcohol.
+
+7. Mobile smoke:
+   - Testing Library con viewport simulado si disponible.
+   - Playwright mobile si ya esta configurado.
+
+Si backend admin no esta disponible:
+- Mockear admin API en tests.
+- No marcar integracion real como DONE.
+- Documentar comandos pendientes para probar con backend.
+
+Prohibido en esta fase:
+- No implementar backend admin nuevo salvo pequenos ajustes imprescindibles.
+- No romper public site.
+- No crear dashboards densos de escritorio.
+- No crear charts/KPIs decorativos si no ayudan al owner.
+- No permitir vino reservable.
+- No activar pagos online.
+- No introducir TypeScript.
+- No usar UI kit pesado.
+- No guardar tokens en logs.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 11
+- `current_phase_name`: "Admin frontend movil"
+- `current_focus`: resumen real de login, shell, dashboard, CRUD, pedidos, consultas, config, uploads y tests
+- `overall_status`: `REVIEW_READY` si build/tests/lint pasan; `IN_PROGRESS` si queda integracion API pendiente; `BLOCKED` si falta dependencia o decision critica
+- tabla de Fase 11 con implementado/falta/notas reales
+- tabla de Fase 12 como siguiente fase si Fase 11 queda lista
+- funcionalidades implementadas: anade solo admin frontend si esta verificado
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 12 - Legal, cookies, SEO, analytics y prerender" si Fase 11 queda lista
+- checklist final: marca Admin movil, admin <=5 min/dia e image upload UI solo si tests pasan
+
+Si cambias estado, rutas o UX que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- Owner puede hacer manana/cierre desde movil.
-- No hay tablas densas inutilizables en mobile.
-- Admin no rompe public site.
-- `npm run build` y tests pasan.
+- Login admin funciona.
+- Rutas admin protegidas.
+- Owner puede hacer rutina manana/cierre desde movil.
+- Dashboard no usa tablas densas inutilizables.
+- Product editor protege `is_alcohol=true` para vinos.
+- Pedidos e inquiries permiten acciones rapidas.
+- Upload UI funciona o queda documentado si depende de backend.
+- Public site no se rompe.
+- Mi Tabla sigue rechazando alcohol.
+- `npm run build` pasa.
+- `npm test` pasa.
+- `npm run lint` pasa si existe.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run build`.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta smoke local de login/dashboard/productos/pedidos si se puede sin dejar procesos vivos.
+- Si Playwright esta configurado, captura mobile de login, dashboard y pedidos.
+- Revisa que no hay logs/tokens hardcodeados.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 11.
+- Rutas/admin flows implementados.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 21. Fase 12 - Legal, cookies, SEO, analytics y prerender
@@ -1766,79 +4597,354 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 12: legal, cookies, SEO, analytics y prerender.
 
-Legal:
-1. Crea paginas:
-   - /aviso-legal
-   - /privacidad
-   - /cookies
-2. Usa copy placeholder claro en espanol con bloques que el abogado debe revisar.
-3. Incluye aviso +18:
-   - consumo responsable
-   - prohibida venta a menores
-   - recuerda que no hay venta online de alcohol
+Objetivo de esta fase:
+Dejar CRUDO V1 legalmente preparado, medible y rastreable: paginas legales placeholder revisables por abogado, cookie banner AEPD completo, consentimiento persistido y enviado al backend, GA4/Meta Pixel estrictamente gated por consentimiento, metadata SEO, Open Graph, schema.org, sitemap, robots y prerender de rutas publicas clave. Esta fase no sustituye revision legal profesional.
 
-Cookies:
-1. Cookie banner AEPD:
-   - Aceptar
-   - Rechazar
-   - Configurar
-   - peso visual equivalente
-2. No cargues GA4/Pixel antes de consentimiento.
-3. Implementa categorias:
-   - necesarias
-   - analiticas
-   - marketing
-4. POST /consent para log backend.
-5. Pagina cookies lista proveedor, finalidad, duracion.
+Contexto obligatorio:
+- Fase 7 debe haber creado CookieBanner base, `src/lib/analytics.js`, `src/lib/consent.js`, `src/lib/schemaOrg.js` y rutas legales placeholder.
+- Fases 8-10 deben haber creado Home, Catalogo, PDP, Eventos y formularios.
+- Backend Fase 3 debe exponer `POST /api/v1/consent` y datos publicos para productos/eventos.
+- Idioma visible: espanol claro y compatible con Google Translate.
+- V1 sin pago online y sin venta online de alcohol.
+- No cargar GA4, Meta Pixel ni cookies no esenciales antes de consentimiento.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Inspecciona:
+   - `index.html`
+   - `vite.config.js`
+   - `src/routes.jsx`
+   - `src/pages/LegalPage.jsx`
+   - `src/pages/PrivacyPage.jsx`
+   - `src/pages/CookiesPage.jsx`
+   - `src/components/layout/CookieBanner.jsx`
+   - `src/lib/analytics.js`
+   - `src/lib/consent.js`
+   - `src/lib/schemaOrg.js`
+   - `src/lib/api.js`
+   - `src/pages/HomePage.jsx`
+   - `src/pages/ProductPage.jsx`
+   - `src/pages/EventDetailPage.jsx`
+   - `public/` si existe
+   - `package.json`
+   - tests existentes
+   - `git status --short`
+3. Si falta parte de fases previas, completa solo lo imprescindible y documenta el desfase.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. Usa JavaScript. No introducir TypeScript ni archivos `.ts/.tsx`.
+
+Archivos a crear o actualizar:
+1. Legal:
+   - `src/pages/LegalPage.jsx`
+   - `src/pages/PrivacyPage.jsx`
+   - `src/pages/CookiesPage.jsx`
+   - `src/content/legal.js` si ayuda a separar copy.
+
+2. Cookies/consent:
+   - `src/components/layout/CookieBanner.jsx`
+   - `src/components/layout/CookieSettingsModal.jsx`
+   - `src/lib/consent.js`
+   - `src/lib/analytics.js`
+   - `src/lib/metaPixel.js` si separas proveedor.
+   - `src/lib/ga4.js` si separas proveedor.
+
+3. SEO/schema:
+   - `src/components/seo/Seo.jsx`
+   - `src/components/seo/JsonLd.jsx`
+   - `src/lib/schemaOrg.js`
+   - `src/lib/seo.js`
+   - `scripts/generate-sitemap.js`
+   - `scripts/prerender.js` si no usas plugin.
+   - `public/robots.txt` o generacion en build.
+   - `public/sitemap.xml` generado o documentado.
+
+4. Tests:
+   - `src/components/layout/CookieBanner.test.jsx`
+   - `src/lib/consent.test.js`
+   - `src/lib/analytics.test.js`
+   - `src/lib/schemaOrg.test.js`
+   - `src/pages/LegalPage.test.jsx`
+   - `src/pages/CookiesPage.test.jsx`
+   - `tests/seo/sitemap.test.js` o ubicacion equivalente.
+
+Legal:
+- Crear o completar rutas:
+  - `/aviso-legal`
+  - `/privacidad`
+  - `/cookies`
+- Copy placeholder en espanol, claro y revisable.
+- Cada pagina debe incluir aviso visible:
+  - `Contenido pendiente de revision legal profesional.`
+- Incluir placeholders para:
+  - razon social.
+  - NIF/CIF.
+  - domicilio fiscal.
+  - email legal/contacto.
+  - dominio definitivo.
+  - responsable del tratamiento.
+- Privacidad:
+  - formularios contacto/mayoristas/eventos/newsletter.
+  - finalidad.
+  - base legal.
+  - conservacion.
+  - derechos RGPD.
+  - encargados/proveedores placeholder.
+- Cookies:
+  - categorias.
+  - proveedor.
+  - finalidad.
+  - duracion.
+  - como cambiar consentimiento.
+- Alcohol:
+  - +18.
+  - consumo responsable.
+  - prohibida venta a menores.
+  - recordar que V1 no vende alcohol online.
+- No inventar datos legales reales si no estan confirmados.
+
+Cookie banner AEPD:
+- Botones visibles con peso visual equivalente:
+  - `Aceptar`
+  - `Rechazar`
+  - `Configurar`
+- Categorias:
+  - necesarias: siempre activas.
+  - analiticas.
+  - marketing.
+- Configurar:
+  - modal/panel accesible.
+  - toggles claros.
+  - guardar seleccion.
+  - boton guardar.
+- Persistencia:
+  - consentimiento versionado.
+  - timestamp.
+  - expiracion recomendada.
+  - localStorage/cookie propia necesaria.
+- Backend:
+  - enviar `POST /api/v1/consent`.
+  - si falla, no romper UX; reintentar o documentar pendiente.
+- Debe existir forma de reabrir configuracion desde `/cookies`.
+- No cargar cookies/scripts no esenciales antes del consentimiento.
 
 Analytics:
-1. GA4 events:
-   - select_item
-   - pickup_request
-   - wine_whatsapp_click
-   - generate_lead
-   - maps_click
-   - whatsapp_click
-2. Meta Pixel:
-   - pageview tras consentimiento marketing
-   - custom events tras consentimiento marketing
-3. Consent Mode v2 si se implementa GA.
+- GA4:
+  - cargar script solo tras consentimiento analitico.
+  - `VITE_GA_ID` desde env.
+  - no hardcodear ID real.
+  - eventos:
+    - `select_item`
+    - `pickup_request`
+    - `wine_whatsapp_click`
+    - `generate_lead`
+    - `maps_click`
+    - `whatsapp_click`
+- Meta Pixel:
+  - cargar script solo tras consentimiento marketing.
+  - `VITE_META_PIXEL` desde env.
+  - pageview solo tras consentimiento marketing.
+  - custom events solo tras consentimiento marketing.
+- Consent Mode v2:
+  - si se implementa GA consent mode, default denied antes de consentimiento.
+  - actualizar consent tras aceptar/configurar.
+- Todas las funciones analytics deben ser noop sin consentimiento.
+- No trackear PII:
+  - nombres.
+  - emails.
+  - telefonos.
+  - notas de formularios.
+- Tests deben demostrar que antes de consentimiento no se inyectan scripts ni eventos.
 
-SEO:
-1. HTML `lang="es"`.
-2. Meta title/description por pagina.
-3. Open Graph/Twitter cards por pagina.
-4. Schema.org:
-   - Restaurant en Home
-   - Product en PDP
-   - Event en event detail
-   - FAQ en Home si hay FAQs
-5. Sitemap.xml:
-   - public routes
-   - products active
-   - events active
-6. robots.txt:
-   - production allow
-   - staging noindex/bloqueo documentado
-7. Prerender:
-   - catalog pages
-   - active PDPs
-   - event pages
-   - usa `vite-plugin-ssg` o step pequeno de prerender si encaja
+SEO basico:
+- `index.html`:
+  - `lang="es"`.
+  - title base.
+  - description base.
+  - theme-color con token CRUDO.
+- Por pagina:
+  - title.
+  - meta description.
+  - canonical si `PUBLIC_BASE_URL` existe.
+  - Open Graph title/description/image.
+  - Twitter card.
+- Pages:
+  - Home.
+  - Catalogo.
+  - Catalogo quesos/vinos/temporada.
+  - PDP.
+  - Eventos.
+  - Detalle evento.
+  - Sobre.
+  - Contacto.
+  - Mayoristas.
+  - Legal.
+- No meter copy en imagenes.
+- Espanol claro y traducible.
 
-Tests:
-- analytics no dispara antes de consentimiento.
-- aceptar dispara analytics.
-- rechazar no dispara no esenciales.
-- legal routes render.
-- schema JSON-LD existe.
-- sitemap incluye producto seed.
+Schema.org:
+- Home:
+  - Restaurant o LocalBusiness/Restaurant.
+  - address placeholder si falta dato real.
+  - telephone/URL solo si publicos.
+- Product PDP:
+  - Product.
+  - name, description, image, offers si precio existe.
+  - Para vino, no indicar online sale. Si se usa Offer, dejar claro disponibilidad/in-store segun schema permitido o evitar Offer si crea confusion.
+- Event detail:
+  - Event.
+  - name, startDate, location, image, description.
+- FAQ:
+  - solo si hay FAQs visibles reales en pagina.
+- JSON-LD debe renderizarse como `application/ld+json`.
+
+Sitemap:
+- Generar `sitemap.xml` con:
+  - rutas publicas estaticas.
+  - catalogo.
+  - productos activos.
+  - eventos activos/futuros.
+  - paginas legales.
+- Excluir:
+  - `/admin`.
+  - rutas de confirmacion privadas/efimeras si no aportan SEO.
+  - staging si base URL indica staging.
+- Si API/DB no disponible en build:
+  - fallback a rutas estaticas y documentar que productos/eventos se incluiran cuando haya datos.
+- Script npm recomendado:
+  - `npm run seo:sitemap`.
+
+Robots:
+- Production:
+  - allow public.
+  - include sitemap URL si `PUBLIC_BASE_URL` existe.
+- Staging:
+  - noindex/bloqueo documentado.
+  - si se genera robots por env, usar `NODE_ENV`/`PUBLIC_BASE_URL`/`STAGING_BASE_URL`.
+- No bloquear assets necesarios.
+
+Prerender:
+- Objetivo:
+  - mejorar SEO de catalogo/PDP/eventos sin migrar stack.
+- Rutas:
+  - `/`
+  - `/catalogo`
+  - `/catalogo/quesos`
+  - `/catalogo/vinos`
+  - `/catalogo/temporada`
+  - PDP activos si datos disponibles.
+  - eventos activos/futuros si datos disponibles.
+- Implementacion:
+  - usar plugin pequeno o script propio si encaja.
+  - no introducir Next.js.
+  - no romper Vite build.
+  - si no hay API/DB disponible, dejar prerender estatico minimo y documentar pendiente.
+- Script recomendado:
+  - `npm run prerender`.
+- `npm run build` debe integrar o documentar paso.
+
+Tests obligatorios:
+1. Legal:
+   - rutas legales renderizan.
+   - aviso de revision legal existe.
+   - +18/no venta online alcohol aparece.
+
+2. Cookies:
+   - banner muestra Aceptar/Rechazar/Configurar.
+   - botones tienen peso visual equivalente razonable.
+   - aceptar guarda analiticas/marketing.
+   - rechazar bloquea analiticas/marketing.
+   - configurar guarda seleccion.
+   - `/cookies` permite reabrir configuracion.
+
+3. Analytics:
+   - no inyecta GA4/Pixel antes de consentimiento.
+   - `select_item` noop antes de consentimiento.
+   - aceptar analiticas permite GA4.
+   - aceptar marketing permite Pixel.
+   - rechazar no dispara no esenciales.
+   - no se envia PII en eventos probados.
+
+4. SEO/schema:
+   - Home JSON-LD existe.
+   - PDP Product JSON-LD existe.
+   - Event JSON-LD existe.
+   - meta title/description existe.
+   - Open Graph tags existen.
+
+5. Sitemap/robots:
+   - sitemap incluye rutas estaticas.
+   - sitemap incluye producto/evento seed si datos disponibles.
+   - sitemap excluye `/admin`.
+   - robots production incluye sitemap.
+   - staging noindex/bloqueo documentado o generado.
+
+Prohibido en esta fase:
+- No cargar GA4/Pixel antes de consentimiento.
+- No hardcodear IDs reales de GA/Meta.
+- No afirmar cumplimiento legal definitivo.
+- No inventar datos legales reales.
+- No activar venta online de alcohol.
+- No activar pagos.
+- No migrar a Next.js.
+- No introducir un CMP externo pesado sin justificacion.
+- No romper cookie banner existente ni public site.
+- No usar TypeScript.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 12
+- `current_phase_name`: "Legal, cookies, SEO, analytics y prerender"
+- `current_focus`: resumen real de legal, consent, analytics, SEO, sitemap, robots, prerender y tests
+- `overall_status`: `REVIEW_READY` si build/tests/lint pasan; `IN_PROGRESS` si queda API/prerender/legal pendiente; `BLOCKED` si falta decision critica
+- tabla de Fase 12 con implementado/falta/notas reales
+- tabla de Fase 13 como siguiente fase si Fase 12 queda lista
+- funcionalidades implementadas: anade solo legal/cookies/SEO/analytics/prerender si estan verificados
+- quita de pendientes criticos solo lo realmente implementado y probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 13 - Testing E2E, accesibilidad, performance y QA" si Fase 12 queda lista
+- checklist final: marca legal, cookies, analytics gated, schema, sitemap/robots y prerender solo si tests pasan
+
+Si cambias estado, rutas, SEO o consent que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- Lighthouse SEO apunta a 100.
-- No se cargan cookies no esenciales antes de consentimiento.
+- Legal pages existen y avisan de revision legal pendiente.
+- Cookie banner cumple estructura AEPD: Aceptar/Rechazar/Configurar con peso equivalente.
+- No se cargan cookies/scripts no esenciales antes de consentimiento.
+- GA4 y Meta Pixel estan gated por consentimiento correcto.
+- Consent se persiste y se envia a backend si endpoint disponible.
+- `/cookies` permite revisar/cambiar configuracion.
+- Meta tags, OG/Twitter y schema existen en paginas clave.
+- Sitemap y robots existen o se generan por script.
 - Staging puede bloquearse/noindex.
+- Prerender de rutas clave existe o queda documentado como pendiente si faltan datos/API.
 - Espanol claro y traducible.
+- `npm run build` pasa.
+- `npm test` pasa.
+- `npm run lint` pasa si existe.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run build`.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta `npm run seo:sitemap` si existe.
+- Ejecuta `npm run prerender` si existe.
+- Ejecuta smoke local de legal/cookies/Home/PDP/Event si se puede sin dejar procesos vivos.
+- Revisa que no se inyectan GA4/Pixel antes de consentimiento.
+- Revisa que no hay IDs reales hardcodeados ni datos legales inventados como definitivos.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 12.
+- Legal/cookies/SEO/analytics/prerender implementados.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 22. Fase 13 - Testing E2E, accesibilidad, performance y QA
@@ -1859,63 +4965,325 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 13: test suite E2E, accesibilidad, performance y QA.
 
+Objetivo de esta fase:
+Crear y ejecutar la suite de QA de CRUDO V1 antes de contenido real y launch: tests backend/frontend consolidados, Playwright E2E, accesibilidad con axe, Lighthouse/performance scripts, fixtures de test, mocks seguros para proveedores externos y checklist manual de dispositivos. Esta fase debe corregir fallos criticos que aparezcan; no limitarse a documentarlos si son bloqueantes.
+
+Contexto obligatorio:
+- Fases 1-12 deberian estar implementadas o en estado verificable.
+- Stack: Node/Express/MariaDB + React/Vite.
+- Reglas criticas:
+  - No pago online.
+  - No venta online de alcohol.
+  - Vino visible pero WhatsApp-only.
+  - `POST /api/v1/pickup-orders` rechaza alcohol con 422.
+  - Cookie consent bloquea GA4/Pixel hasta consentimiento.
+  - Admin mobile <= 5 min/dia.
+- No depender de servicios externos reales para E2E: Brevo/WhatsApp/GA4/Meta deben ser mock/noop.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Inspecciona:
+   - `package.json`
+   - `vitest.config.*` si existe
+   - `playwright.config.*` si existe
+   - `tests/`
+   - `src/**/*.test.*`
+   - `server/**/*.test.*`
+   - `db/`
+   - `docs/runbook.md`
+   - `.github/workflows/`
+   - `git status --short`
+3. Ejecuta primero las pruebas existentes para tener baseline si el entorno lo permite.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. No usar TypeScript si el repo esta en JavaScript.
+
+Archivos a crear o actualizar:
+1. Config:
+   - `playwright.config.js`
+   - `vitest.config.js` si falta o necesita jsdom/node split.
+   - `tests/setup/` para setup comun.
+
+2. E2E:
+   - `tests/e2e/public-pickup.spec.js`
+   - `tests/e2e/wine-whatsapp.spec.js`
+   - `tests/e2e/events.spec.js`
+   - `tests/e2e/contact-newsletter.spec.js`
+   - `tests/e2e/admin-mobile.spec.js`
+   - `tests/e2e/cookies.spec.js`
+
+3. Fixtures/helpers:
+   - `tests/fixtures/products.js`
+   - `tests/fixtures/events.js`
+   - `tests/fixtures/admin.js`
+   - `tests/helpers/e2e-db.js`
+   - `tests/helpers/mock-providers.js`
+   - `tests/helpers/test-server.js` si hace falta.
+
+4. A11y/performance:
+   - `tests/a11y/a11y.spec.js` o tests axe integrados.
+   - `scripts/lighthouse.js` o `docs/lighthouse.md` si no se automatiza.
+   - `docs/qa-checklist.md` o seccion en `docs/runbook.md`.
+
+5. Docs/scripts:
+   - actualizar `package.json`.
+   - actualizar `docs/runbook.md`.
+   - actualizar CI si procede.
+
+Scripts npm objetivo:
+- `npm test`: unit/integration estable.
+- `npm run test:backend` si separa backend.
+- `npm run test:frontend` si separa frontend.
+- `npm run test:e2e`: Playwright.
+- `npm run test:a11y`: axe si separado.
+- `npm run test:all`: lint + tests + build + e2e si razonable.
+- `npm run lighthouse`: si se automatiza.
+- `npm run build`.
+- `npm run lint`.
+
 Backend tests minimos:
-- Unit tests services:
-  - price calc
-  - slug generation
-  - pickup validation
-  - alcohol guard
-- Repository/service tests con MariaDB de test.
-- Route tests con happy/unhappy paths para POST endpoints.
-- Security tests: admin endpoints reject unauthenticated.
+1. Unit/service:
+   - price calc.
+   - slug generation si existe.
+   - pickup validation.
+   - alcohol guard.
+   - idempotency.
+   - consent expiry/hash.
+   - auth/JWT.
+
+2. Repository/service con MariaDB test:
+   - products/categories.
+   - events/reservations.
+   - pickup orders/items.
+   - admin user/audit.
+
+3. Route tests:
+   - public GET happy paths.
+   - POST reservation happy/error.
+   - POST inquiry/newsletter/consent.
+   - POST pickup happy.
+   - POST pickup alcohol -> 422.
+   - admin endpoints reject unauthenticated.
+   - admin login happy/error.
+
+4. Security/regression:
+   - no secrets in responses.
+   - admin protected.
+   - public endpoints remain public.
+   - Stripe/payment endpoints not active.
 
 Frontend tests minimos:
-- ProductCard
-- PickupForm
-- ReservationForm
-- CookieBanner
-- Form validation
-- axe en Home, PDP y forms.
+- ProductCard.
+- ProductPage wine WhatsApp-only.
+- ProductPage no alcohol AddToTabla.
+- Tabla store rejects alcohol.
+- PickupForm validation/submission/errors.
+- ReservationForm validation/submission.
+- ContactForm/WholesaleForm.
+- NewsletterForm.
+- CookieBanner/Consent.
+- Admin login/protected route/dashboard actions.
+- Legal routes render.
+- Schema JSON-LD.
+- axe smoke en Home, PDP, Mi Tabla, Contacto y Admin dashboard si posible.
 
 Playwright journeys obligatorios:
-1. Home -> Catalogo -> cheese PDP -> add to tabla -> submit pickup -> confirmation.
-2. Wine PDP -> Preguntanos por WhatsApp -> assert `wa.me/...` with prefilled text.
-3. Event detail -> reserve seat -> confirmation.
-4. Contact form submit.
-5. Newsletter subscribe with double opt-in mocked.
-6. Admin mobile: login -> create product with `is_alcohol=true` -> assert public catalog/PDP shows WhatsApp CTA and no Mi Tabla button.
+1. Pickup no alcohol:
+   - Home -> Catalogo -> cheese/no alcohol PDP -> add to tabla -> submit pickup -> confirmation.
+   - Assert no payment language.
+   - Assert WhatsApp <24h message.
+
+2. Wine WhatsApp-only:
+   - Catalogo/PDP vino -> no `Anadir a mi tabla`.
+   - `Preguntanos por WhatsApp` visible.
+   - Assert `wa.me/...` with product name prefilled.
+
+3. Alcohol guard full stack:
+   - Si se puede manipular localStorage/API para meter wine en tabla, submit debe terminar en safe error/422 and no success.
+   - Backend route 422 probado aunque UI bloquee.
+
+4. Event reservation:
+   - Event detail -> reserve seat -> confirmation.
+   - Full event state if fixture exists.
+
+5. Contact/wholesale/newsletter:
+   - Contact form submit.
+   - Wholesale form submit.
+   - Newsletter subscribe with double opt-in mocked/noop.
+
+6. Cookie consent:
+   - Before consent, no GA4/Pixel scripts.
+   - Accept analytics -> GA allowed.
+   - Reject -> non-essential remains blocked.
+   - Configure -> partial consent works.
+
+7. Admin mobile:
+   - Login.
+   - Dashboard loads.
+   - Create/edit product with `type=WINE` and `is_alcohol=true`.
+   - Public catalog/PDP shows WhatsApp CTA and no Mi Tabla.
+   - Quick stock action.
+
+8. Legal/SEO smoke:
+   - legal pages render.
+   - sitemap/robots accessible if served.
+
+Fixtures and DB:
+- Tests should use test DB, not development/production DB.
+- Required fixtures:
+  - at least 1 cheese/no alcohol active.
+  - at least 1 wine active with `is_alcohol=true`.
+  - at least 1 seasonal product.
+  - at least 1 future event.
+  - admin user test.
+- Seed must be deterministic.
+- Do not run dev seeds in production.
+- If MariaDB is unavailable:
+  - run non-DB tests.
+  - mark DB/E2E blocked, not DONE.
+
+External providers:
+- WhatsApp:
+  - never send real messages in tests.
+  - assert link href/prefill.
+- Brevo:
+  - noop/mock.
+- GA4/Meta:
+  - mock script injection/events.
+  - no real network.
+- Maps:
+  - assert link URL, no need to load Google Maps iframe in E2E.
+
+Accessibility:
+- Configure axe where practical.
+- Test:
+  - Home.
+  - Catalog/PDP.
+  - Mi Tabla form.
+  - Event reservation form.
+  - Contact form.
+  - Cookie settings.
+  - Admin dashboard.
+- Fail on serious/critical violations unless justified.
+- Manual checks:
+  - keyboard nav.
+  - focus visible.
+  - labels/errors.
+  - tap target >= 44px.
+
+Lighthouse/performance:
+- Provide script or documented command for:
+  - Home.
+  - Catalogo.
+  - PDP.
+  - Event detail.
+- Targets:
+  - Performance mobile >= 90 where realistic with local assets.
+  - Accessibility >= 95.
+  - SEO >= 95/100.
+  - Best Practices >= 90.
+- If local environment or placeholders prevent target, document exact reason and remediation.
 
 Manual QA checklist:
 - iPhone Safari.
 - Instagram in-app browser.
 - Android Chrome.
-- iPad.
-- Desktop Chrome/Safari/Firefox.
-- Slow 3G.
+- iPad/tablet.
+- Desktop Chrome.
+- Desktop Safari.
+- Desktop Firefox.
+- Slow 3G / throttled network.
 - Broken network in all forms.
 - Cookie consent flows.
-- Lighthouse Home/Catalog/PDP >= 90.
+- Wine WhatsApp path.
+- Mi Tabla no alcohol path.
+- Admin mobile morning routine.
+- Legal pages.
+- Lighthouse Home/Catalog/PDP.
 
-Tareas:
-1. Configura Playwright en la raiz del proyecto.
-2. Crea seed/test fixtures para E2E.
-3. Crea tests E2E anteriores.
-4. Configura axe si no existe.
-5. Anade scripts:
-   - npm run test
-   - npm run test:e2e
-   - npm run test:a11y si separado
-   - npm run build
-6. Anade script/doc para Lighthouse.
-7. Actualiza docs/runbook.md con QA commands.
-8. Corrige fallos que aparezcan.
+CI:
+- Update PR workflow if safe:
+  - npm ci.
+  - lint.
+  - unit/integration tests.
+  - build.
+  - optional Playwright with browser install/cache.
+- If E2E requires MariaDB service, configure it or document why manual for now.
+- Do not add secrets.
+
+Prohibido en esta fase:
+- No relajar alcohol guard tests.
+- No saltarse failing tests sin documentar causa real.
+- No hacer tests que dependan de servicios externos reales.
+- No meter credenciales reales.
+- No activar pagos.
+- No introducir TypeScript.
+- No cambiar arquitectura para facilitar tests si rompe fases previas.
+- No marcar DONE con E2E criticos rojos.
+
+Correccion de fallos:
+- Si los tests descubren bugs criticos de V1, corrige en el codigo.
+- Prioridad de fixes:
+  1. alcohol guard backend/frontend.
+  2. pagos online accidentales.
+  3. cookie consent/GA4/Pixel.
+  4. admin auth.
+  5. forms que pierden datos o confirman falsamente.
+  6. a11y critical.
+  7. build/lint failures.
+- Mantener fixes acotados y documentar cualquier deuda.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 13
+- `current_phase_name`: "Testing E2E, accesibilidad, performance y QA"
+- `current_focus`: resumen real de tests, E2E, a11y, Lighthouse, QA checklist y bugs corregidos
+- `overall_status`: `REVIEW_READY` si suite critica pasa; `IN_PROGRESS` si quedan tests no criticos; `BLOCKED` si falta DB/browser/decision critica
+- tabla de Fase 13 con implementado/falta/notas reales
+- tabla de Fase 14 como siguiente fase si Fase 13 queda lista
+- funcionalidades implementadas: anade solo test/QA infra y fixes reales
+- quita de pendientes criticos solo lo realmente probado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 14 - Contenido real, imagenes y carga inicial" si Fase 13 queda lista
+- checklist final: marca tests/E2E/a11y/Lighthouse/iPhone-IG solo si realmente verificado
+
+Si cambias estado, tests o QA que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- E2E criticos verdes o documentados si requieren servicios externos mockeados.
+- `npm run build` pasa.
+- `npm run lint` pasa si existe.
+- `npm test` pasa.
+- Playwright instalado/configurado.
+- E2E criticos pasan o estan bloqueados por causa externa documentada.
 - Alcohol guard probado backend + frontend + E2E.
 - Cookie consent probado.
 - Admin mobile probado.
-- Lighthouse objetivo documentado y comandos disponibles.
+- a11y critical/serious sin fallos sin justificar.
+- Lighthouse commands disponibles y resultado documentado.
+- QA checklist manual creado/actualizado.
+- No hay dependencia de servicios externos reales.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run build`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta `npm test`.
+- Ejecuta `npm run test:e2e` si Playwright y entorno estan disponibles.
+- Ejecuta `npm run test:a11y` si existe.
+- Ejecuta `npm run lighthouse` si existe o documenta comando manual.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 13.
+- Tests/QA implementados.
+- Bugs corregidos si hubo.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 23. Fase 14 - Contenido real, imagenes y carga inicial
@@ -1937,47 +5305,245 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 14: carga de contenido real y preparacion visual.
 
-Antes de editar:
-- Revisa docs/content-checklist.md.
-- Identifica que assets reales existen en el repo.
-- Si faltan assets, usa placeholders claramente marcados y documenta lo pendiente.
+Objetivo de esta fase:
+Cargar y preparar el contenido real de CRUDO V1 para launch: productos, imagenes, eventos, campana activa, copy publico y checklist de contenido. Esta fase debe reemplazar placeholders solo cuando existan datos/assets reales confirmados, documentar lo pendiente y verificar que las reglas criticas siguen intactas: vino visible pero WhatsApp-only, no alcohol en Mi Tabla, sin pago online.
 
-Tareas:
-1. Carga productos reales si hay CSV/JSON/docs:
-   - name
-   - slug
-   - type
-   - is_alcohol
-   - price_cents
-   - vat_rate
-   - short_desc
-   - long_desc
-   - producer
-   - region
-   - seasonal/featured/active
-   - stock_status
-2. Si no hay CSV, crea plantilla `docs/product-import-template.csv`.
-3. Optimiza imagenes:
-   - product 1:1
-   - hero 16:9 y 9:16
-   - WebP/AVIF si el pipeline existe
-   - alt text
-4. Carga 3 eventos iniciales si datos disponibles; si no, crea placeholders no publicados.
-5. Crea campana activa de temporada.
-6. Ajusta Home con copy real:
-   - H1 max 6 palabras
-   - subtitle 1 frase
-   - section eyebrows
-7. Revisa que el copy sea espanol simple y Google-Translate-friendly.
-8. Verifica que vino aparece en catalogo/PDP pero solo con WhatsApp.
-9. Actualiza docs/content-checklist.md marcando completado/pendiente.
+Contexto obligatorio:
+- Fases 8-12 deben haber dejado frontend publico, SEO/legal/cookies y rutas principales.
+- Fase 2/3/5 deben permitir cargar productos/eventos/campanas via seeds/scripts/admin/API.
+- Fuente visual y producto:
+  - `docs/V1/CRUDO_V1_Visual_Master_Plan.html`
+  - `docs/content-checklist.md`
+  - assets reales disponibles en repo o carpeta indicada por el owner.
+- Idioma visible: espanol simple, compatible con Google Translate.
+- No inventar datos reales del owner.
+- No publicar placeholders como si fueran contenido real.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Lee `docs/content-checklist.md`.
+3. Inspecciona:
+   - assets reales disponibles (`assets/`, `public/`, `uploads/`, `images/` u otra carpeta existente).
+   - `db/seeds/`
+   - scripts de importacion si existen.
+   - `src/pages/HomePage.jsx`
+   - `src/components/home/`
+   - `src/lib/mockData.js` si existe.
+   - admin/product data existing fixtures.
+   - `docs/runbook.md`
+   - `package.json`
+   - `git status --short`
+4. Clasifica contenido como:
+   - real confirmado.
+   - placeholder visible.
+   - placeholder no publicado.
+   - pendiente owner.
+5. No modifiques `docs/AGENTS_Javi.md`.
+6. No borres assets no usados sin confirmacion.
+
+Fuentes de contenido aceptadas:
+- CSV/JSON/Markdown proporcionado por owner.
+- Imagenes reales del repo.
+- Datos ya cargados en DB local/admin.
+- Copy aprobado en docs.
+- Si no hay datos reales suficientes, crear plantillas y placeholders claramente marcados, no contenido falso.
+
+Productos:
+- Objetivo: 20-40 productos si hay contenido real.
+- Campos obligatorios:
+  - `name`
+  - `slug`
+  - `type`: `CHEESE`, `WINE`, `OTHER`
+  - `is_alcohol`
+  - `price_cents`
+  - `vat_rate`
+  - `short_desc`
+  - `long_desc`
+  - `producer`
+  - `region`
+  - `is_seasonal`
+  - `is_featured`
+  - `is_active`
+  - `stock_status`
+  - categorias
+  - imagen primaria con alt text
+- Reglas:
+  - Todo `type=WINE` debe tener `is_alcohol=true` salvo excepcion documentada.
+  - Quesos/no alcohol deben tener `is_alcohol=false`.
+  - Slugs estables y sin acentos.
+  - Precios en centimos.
+  - No cargar productos con precio/descripciones inventadas como reales.
+- Si no hay CSV/JSON:
+  - crear `docs/product-import-template.csv`.
+  - documentar columnas y ejemplo ficticio claramente marcado.
+
+Imagenes:
+- Clasificar:
+  - producto 1:1.
+  - hero desktop 16:9.
+  - hero mobile 9:16.
+  - lifestyle.
+  - owner/interior.
+  - eventos.
+- Optimizar solo copias generadas, no destruir originales.
+- Formatos:
+  - WebP si pipeline existe.
+  - AVIF opcional si ya existe soporte.
+  - conservar fallback jpg/png si hace falta.
+- Requisitos:
+  - product minimo recomendado 1600x1600 origen si existe.
+  - hero desktop 16:9.
+  - hero mobile 9:16.
+  - alt text descriptivo en espanol.
+  - no texto incrustado en imagen.
+  - no imagenes gigantes sin compresion.
+- Si falta pipeline:
+  - documentar comandos/herramienta pendiente.
+  - no bloquear todo si assets ya son razonables.
+
+Eventos:
+- Cargar 3 eventos iniciales si hay datos reales:
+  - title.
+  - slug.
+  - description_md.
+  - hero_image_url.
+  - starts_at.
+  - ends_at.
+  - capacity.
+  - price_cents.
+  - location.
+  - is_active.
+- Si no hay eventos reales:
+  - crear placeholders no publicados (`is_active=false`) o plantilla `docs/event-import-template.csv`.
+  - no mostrar eventos inventados como activos.
+
+Campana activa:
+- Crear una campana de temporada solo si hay productos/copy reales suficientes.
+- Si no hay copy real:
+  - crear placeholder no activo.
+  - documentar pendiente.
+- Debe asociar productos activos y coherentes.
+
+Home/copy:
+- Ajustar Home con copy real si existe:
+  - H1 max 6 palabras.
+  - subtitle 1 frase.
+  - section eyebrows claros.
+  - CTAs reales.
+- Copy en espanol:
+  - simple.
+  - traducible.
+  - sin expresiones opacas.
+  - sin ingles visible.
+- No prometer ecommerce, delivery, pagos online ni venta online de alcohol.
+- Mantener tono editorial CRUDO, no plantilla generica.
+
+Legal:
+- Si hay datos legales reales, rellenar placeholders con cuidado.
+- Si no hay revision de abogado:
+  - mantener aviso de revision legal pendiente.
+  - no marcar legal como DONE.
+
+Mock data:
+- Si existen mocks temporales:
+  - reemplazarlos por API/seed real si es posible.
+  - si siguen siendo necesarios, dejarlos aislados y documentados.
+- No dejar mocks mezclados con datos reales sin etiqueta.
+
+Scripts/import:
+- Si existe pipeline DB:
+  - crear o actualizar `db/seeds/content-seed.js` o script equivalente para contenido real/staging.
+  - asegurar que no se ejecuta automaticamente en production sin confirmacion.
+- Si se importa CSV:
+  - validar columnas.
+  - validar `is_alcohol`.
+  - validar precios.
+  - dry-run si es posible.
+- Documentar comandos en runbook.
+
+Tests/verificaciones obligatorias:
+- Productos:
+  - hay suficientes productos activos si se cargaron reales.
+  - vinos tienen `is_alcohol=true`.
+  - no alcohol tiene `is_alcohol=false`.
+  - slugs unicos.
+  - imagen primaria/alt text si existe.
+- Frontend:
+  - Home no parece plantilla generica.
+  - Catalogo muestra productos.
+  - PDP vino muestra WhatsApp-only.
+  - PDP queso/no alcohol muestra Mi Tabla.
+  - no hay texto publico en ingles.
+- Performance:
+  - imagenes no son desproporcionadamente grandes.
+  - aspect ratios estables.
+- Legal/content:
+  - placeholders pendientes documentados.
+  - legal pendiente de abogado si aplica.
+
+Prohibido en esta fase:
+- No inventar contenido real.
+- No publicar placeholders como reales.
+- No cambiar reglas de alcohol.
+- No activar pagos online.
+- No permitir vino en Mi Tabla.
+- No borrar assets originales sin confirmacion.
+- No ejecutar seeds de contenido real en production.
+- No usar imagenes con texto incrustado como fuente principal de copy.
+- No meter datos personales privados del owner sin confirmacion.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 14
+- `current_phase_name`: "Contenido real, imagenes y carga inicial"
+- `current_focus`: resumen real de productos, imagenes, eventos, campana, copy, legal y pendientes owner
+- `overall_status`: `REVIEW_READY` si contenido real suficiente y build/tests pasan; `IN_PROGRESS` si faltan assets/copy; `BLOCKED` si falta contenido owner critico
+- tabla de Fase 14 con implementado/falta/notas reales
+- tabla de Fase 15 como siguiente fase si Fase 14 queda lista
+- funcionalidades implementadas: anade solo contenido/carga/assets reales verificados
+- quita de pendientes criticos solo lo realmente completado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 15 - Launch, staging y production" si Fase 14 queda lista
+- checklist final: marca contenido real, imagenes, productos, eventos y copy solo si estan verificados
+
+Si cambias estado, contenido o visual que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
 - Home no parece plantilla generica.
-- Catalogo tiene productos suficientes.
-- Imagenes no rompen performance.
+- Catalogo tiene productos reales suficientes o placeholders no publicados documentados.
+- Imagenes estan optimizadas o pendientes documentadas.
+- Vinos aparecen en catalogo/PDP pero solo con WhatsApp.
+- Productos no alcoholicos mantienen Mi Tabla.
 - No hay texto ingles visible en public.
 - Los placeholders pendientes estan documentados y no se confunden con contenido real.
+- `docs/content-checklist.md` queda actualizado.
+- `npm run build` pasa.
+- `npm test` pasa.
+- `npm run lint` pasa si existe.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta import/seed de contenido en local/staging si existe y es seguro.
+- Ejecuta `npm run build`.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta smoke local de Home/Catalogo/PDP vino/PDP no alcohol si se puede sin dejar procesos vivos.
+- Revisa tamanos/formato de imagenes incorporadas.
+- Revisa que no hay texto ingles visible en public.
+- Revisa que no hay vino en Mi Tabla.
+- Ejecuta `git status --short`.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 14.
+- Contenido/assets cargados o pendientes.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Riesgos o pendientes reales.
+- Siguiente prompt recomendado.
 ```
 
 ## 24. Fase 15 - Launch, staging y production
@@ -2000,73 +5566,342 @@ Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 15: staging, production y launch readiness.
 
-Tareas:
-1. Revisa infra/ y docs/runbook.md.
-2. Prepara staging:
-   - staging.<domain>
-   - subdominio en Plesk
-   - basic-auth o acceso protegido desde Plesk
-   - noindex
-   - robots bloqueado
-   - env staging
-3. Prepara production:
-   - <canonical-domain>
-   - dominio configurado en Plesk
-   - SSL Let's Encrypt desde Plesk
-   - Node.js app configurada en Plesk para API
-   - build Vite servido desde hosting Plesk
-   - env production
-4. Backups:
-   - backup programado Plesk para DB y archivos
-   - backup/snapshot Contabo si esta disponible
-   - retencion 30 dias
-   - restore test documentado
-5. Monitoring:
-   - UptimeRobot o equivalente
-   - Sentry si se incorpora
-   - error notification channel
-6. CI/CD:
-   - PR: lint/test/build
-   - staging: deploy main
-   - production: manual trigger o deploy manual documentado en Plesk
-7. Launch checklist pre T-7:
-   - content loaded
-   - legal reviewed
-   - cookies validated
-   - GA4/Search Console/Pixel
-   - schema rich results
-   - OG/Twitter
-   - favicon
-   - 404
-   - robots
-   - Lighthouse
-   - real device iPhone/IG browser
-   - WhatsApp
-   - Maps
-   - backups restore
-   - uptime
-   - DNS TTL 300s
-8. Launch day:
-   - DNS cutover
-   - HTTPS green
-   - smoke tests
-   - Search Console inspect URL
-   - Google Business Profile website link
-   - Instagram bio @crudomov
-   - launch email/story
-   - owner trained
-9. Post-launch T+7:
-   - GA4 funnels
-   - GSC crawl errors
-   - owner retro
-   - first fix-list
+Objetivo de esta fase:
+Preparar CRUDO V1 para lanzamiento controlado: staging protegido, production en Contabo/Plesk, HTTPS, variables de entorno, backups, restore test, monitoring, smoke tests, checklist T-7/T-0/T+7, rollback y handoff al owner. Esta fase puede documentar pasos manuales y generar runbooks/scripts, pero no debe ejecutar deploy real ni pedir credenciales.
+
+Contexto obligatorio:
+- Fases 1-14 deben estar `REVIEW_READY` o `DONE` antes de production.
+- Infra objetivo: servidor Contabo gestionado con Plesk.
+- App objetivo: monolito CommonJS con `server.js`, API `/api/v1`, Vite build en `dist/`.
+- MariaDB gestionada desde Plesk/Contabo.
+- Uploads locales/Plesk para V1.
+- Dominio final puede seguir pendiente; si falta, usar placeholders y marcar bloqueo.
+- No exponer secretos ni copiarlos a docs.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md`, especialmente `0.1 Estado vivo del proyecto`.
+2. Revisa:
+   - `README.md`
+   - `docs/runbook.md`
+   - `infra/plesk/README.md`
+   - `infra/scripts/backup-notes.md`
+   - `.env.example`
+   - `.github/workflows/`
+   - `package.json`
+   - `server.js`
+   - `robots.txt`/sitemap/prerender si existen
+   - `docs/content-checklist.md`
+   - `git status --short`
+3. Verifica si existen decisiones owner:
+   - dominio final.
+   - telefono WhatsApp publico.
+   - email owner/publico.
+   - horarios.
+   - legal revisado.
+   - Plesk/Contabo acceso disponible.
+4. No modifiques `docs/AGENTS_Javi.md`.
+5. No ejecutes deploy real ni comandos remotos sin instruccion explicita del owner.
+
+Archivos a crear o actualizar:
+- `docs/runbook.md`
+- `infra/plesk/README.md`
+- `infra/scripts/backup-notes.md`
+- `infra/launch-checklist.md`
+- `infra/rollback.md`
+- `infra/smoke-tests.md`
+- `.github/workflows/pr.yml`
+- `.github/workflows/staging.yml` skeleton/manual si procede
+- `.github/workflows/production.yml` manual skeleton si procede
+- `.env.example` solo placeholders
+- `docs/owner-admin-guide.md` si cambia handoff owner
+
+Preflight tecnico:
+- Ejecutar o documentar:
+  - `npm ci` o `npm install`
+  - `npm run lint`
+  - `npm test`
+  - `npm run build`
+  - `npm run test:e2e` si existe
+  - `npm run test:a11y` si existe
+  - `npm run lighthouse` si existe
+- No avanzar a production si:
+  - alcohol guard falla.
+  - cookie consent falla.
+  - admin auth falla.
+  - build falla.
+  - legal/cookies no estan al menos preparados.
+  - no hay backup/rollback documentado.
+
+Staging:
+- Preparar documentacion para:
+  - subdominio `staging.<domain>`.
+  - Plesk domain/subdomain.
+  - SSL Let's Encrypt.
+  - Node.js app con startup `server.js`.
+  - env staging.
+  - DB staging o DB local separada de production.
+  - uploads staging.
+  - basic-auth desde Plesk o proteccion equivalente.
+  - `robots.txt` bloqueado/noindex.
+  - meta noindex si procede.
+- Staging debe permitir:
+  - smoke test completo.
+  - contenido real validable.
+  - owner review.
+  - legal/cookie validation.
+- Nunca usar production DB como staging sin backup/decision explicita.
+
+Production:
+- Preparar documentacion para:
+  - dominio canonico final.
+  - redirects www/non-www.
+  - SSL Let's Encrypt.
+  - Node.js app en Plesk:
+    - application root.
+    - document root si aplica.
+    - startup file `server.js`.
+    - Node LTS.
+    - variables de entorno.
+  - `npm ci`/`npm install`.
+  - `npm run build`.
+  - `npm run db:migrate`.
+  - restart app desde Plesk.
+  - `dist/` servido por `server.js`.
+  - uploads persistentes.
+- Production no debe:
+  - ejecutar seed dev.
+  - exponer `.env`.
+  - exponer stack traces.
+  - indexar staging.
+
+Variables de entorno:
+- Documentar checklist Plesk para:
+  - `NODE_ENV=production`
+  - `PORT`
+  - `PUBLIC_BASE_URL`
+  - `CORS_ALLOWED_ORIGINS`
+  - `DB_HOST`
+  - `DB_PORT`
+  - `DB_NAME`
+  - `DB_USER`
+  - `DB_PASSWORD`
+  - `JWT_SECRET`
+  - `COOKIE_SECRET`
+  - `UPLOADS_DIR`
+  - `BREVO_API_KEY`
+  - `SMTP_*`
+  - `OWNER_WHATSAPP`
+  - `OWNER_EMAIL`
+  - `VITE_*`
+- No incluir valores reales.
+- Indicar longitud/rotacion recomendada de secrets.
+
+Backups:
+- Plesk:
+  - backup programado DB MariaDB.
+  - backup archivos de app.
+  - backup `uploads/`.
+  - retencion recomendada 30 dias.
+- Contabo:
+  - snapshot/backup servidor si disponible.
+- Restore test:
+  - restaurar DB en staging/test.
+  - restaurar uploads.
+  - smoke `/api/v1/health`.
+  - validar catalogo/PDP.
+- Documentar responsable y frecuencia.
+- No marcar backups como DONE sin restore test documentado o bloqueo claro.
+
+Monitoring:
+- Uptime:
+  - UptimeRobot o equivalente.
+  - endpoints:
+    - `/api/v1/health`
+    - Home.
+- Error tracking:
+  - Sentry opcional si se incorpora.
+  - si no, documentar logs Plesk y revision manual inicial.
+- Alertas:
+  - email/Telegram/Slack si existe canal.
+  - owner o maintainer.
+- Logs:
+  - no PII innecesaria.
+  - no secrets.
+
+Analytics/search:
+- GA4:
+  - verificar ID desde env.
+  - eventos consent-aware.
+  - no dispara antes de consentimiento.
+- Search Console:
+  - dominio canonical.
+  - sitemap submit.
+  - inspect URL launch day.
+- Meta Pixel:
+  - gated by marketing consent.
+- Rich results:
+  - validar schema Restaurant/Product/Event.
+- Google Business Profile:
+  - actualizar website link.
+- Instagram:
+  - actualizar bio @crudomov con dominio canonical.
+
+CI/CD:
+- PR workflow:
+  - npm ci.
+  - lint.
+  - tests.
+  - build.
+- Staging:
+  - manual deploy skeleton o documentar deploy manual Plesk.
+  - no secrets reales.
+- Production:
+  - manual trigger skeleton o deploy manual documentado.
+  - no auto-deploy a production sin aprobacion.
+- Si SSH/deploy automatizado no esta decidido:
+  - dejar placeholders y runbook manual.
+
+Smoke tests:
+- Crear checklist ejecutable:
+  - `/api/v1/health`.
+  - Home.
+  - Catalogo.
+  - PDP queso/no alcohol -> add Mi Tabla.
+  - PDP vino -> WhatsApp only.
+  - pickup submit no alcohol.
+  - pickup alcohol 422 backend.
+  - event reservation.
+  - contact form.
+  - newsletter.
+  - cookie accept/reject/config.
+  - legal pages.
+  - admin login.
+  - admin dashboard.
+  - upload image if available.
+  - sitemap.
+  - robots.
+  - 404.
+
+Launch checklist T-7:
+- Content real loaded or pending documented.
+- Legal reviewed by lawyer or clearly pending/blocking.
+- Cookie banner validated.
+- GA4/Search Console/Meta Pixel configured.
+- Schema validated.
+- OG/Twitter preview.
+- Favicon.
+- 404.
+- Robots/sitemap.
+- Lighthouse.
+- iPhone Safari.
+- Instagram in-app browser.
+- Android Chrome.
+- WhatsApp links.
+- Maps links.
+- Backup restore test.
+- Uptime monitor.
+- DNS TTL 300s.
+- Owner admin training.
+
+Launch day T-0:
+- Confirm backup before change.
+- DNS cutover.
+- HTTPS green.
+- Smoke tests.
+- Search Console inspect URL.
+- Submit sitemap.
+- Google Business Profile website link.
+- Instagram bio @crudomov.
+- Launch story/email if owner approves.
+- Monitor logs/errors.
+- Rollback ready.
+
+Rollback:
+- Documentar:
+  - revert DNS if needed.
+  - restore previous app build.
+  - restore DB backup if migration issue.
+  - disable pickup via config if critical order issue.
+  - maintenance message if needed.
+- Rollback decision triggers:
+  - site down.
+  - checkout/pickup broken.
+  - alcohol guard broken.
+  - admin inaccessible.
+  - cookies/analytics illegal behavior.
+
+Post-launch T+7:
+- Review GA4 funnels.
+- Search Console crawl/errors.
+- Uptime/errors.
+- owner retro.
+- top 5 fixes.
+- content gaps.
+- first KPI snapshot:
+  - pickup requests.
+  - wine WhatsApp clicks.
+  - event reservations.
+  - newsletter subs.
+  - maps clicks.
+
+Prohibido en esta fase:
+- No poner secretos en docs.
+- No ejecutar deploy real sin aprobacion explicita.
+- No usar production DB para pruebas destructivas.
+- No ejecutar seeds dev en production.
+- No marcar production ready si alcohol guard/cookies/admin auth fallan.
+- No activar pagos online.
+- No indexar staging.
+- No automatizar production deploy sin decision owner.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 15
+- `current_phase_name`: "Launch, staging y production"
+- `current_focus`: resumen real de staging, production, backups, monitoring, smoke tests, launch checklist y bloqueos
+- `overall_status`: `REVIEW_READY` si runbooks/checklists/verificaciones estan listos; `IN_PROGRESS` si faltan decisiones; `BLOCKED` si faltan dominio/accesos/contenido/legal critico
+- tabla de Fase 15 con implementado/falta/notas reales
+- funcionalidades implementadas: anade solo launch readiness/staging/production docs reales
+- quita pendientes criticos solo lo realmente completado
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Revision final de launch" o "Sincronizacion de estado vivo" segun estado
+- checklist final: marca Plesk, Contabo, backups, CI, launch checklist, production solo si realmente verificado/documentado
+
+Si cambias estado, infraestructura o launch checklist que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
 
 Criterios de aceptacion:
-- Runbook permite desplegar y restaurar.
-- Production no expone secrets.
-- Staging no indexa.
+- Runbook permite desplegar, verificar y restaurar.
+- Staging queda definido y no indexa.
+- Production queda definido sin exponer secrets.
+- Plesk/Contabo documentados con pasos accionables.
+- Backups y restore test documentados.
 - Smoke tests definidos.
-- Launch checklist lista para ejecutar.
+- Monitoring definido.
+- Launch checklist T-7/T-0/T+7 lista.
+- Rollback documentado.
+- No hay secretos reales en docs/workflows.
+- `npm run build`, `npm test` y checks disponibles pasan o bloqueos estan documentados.
+- `docs/AGENTS_Javi.md` no se modifica.
+
+Verificacion obligatoria:
+- Ejecuta `npm run build`.
+- Ejecuta `npm test`.
+- Ejecuta `npm run lint` si existe.
+- Ejecuta `npm run test:e2e` si existe y entorno disponible.
+- Ejecuta `git status --short`.
+- Revisa docs/workflows/env para confirmar que no hay secretos reales.
+- Lista archivos creados/modificados.
+- Reporta cualquier verificacion no ejecutada y el motivo real.
+
+Respuesta final:
+- Resumen de Fase 15.
+- Staging/production/launch readiness preparado.
+- Archivos creados/modificados.
+- Verificacion ejecutada y resultado.
+- Estado vivo actualizado o motivo si no se pudo.
+- Bloqueos reales para launch.
+- Siguiente prompt recomendado.
 ```
 
 ## 25. Prompts de revision por corte
