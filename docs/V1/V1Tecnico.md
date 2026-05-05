@@ -11,7 +11,7 @@ Este documento no sustituye a esas fuentes. Es una guia de ejecucion por fases c
 ## 0. Como usar este documento
 
 1. Abre una sesion nueva de Opus por fase o subfase.
-2. Pega siempre primero el **Prompt base obligatorio**.
+2. Pega siempre primero el **Prompt base minimo y fijo**.
 3. Despues pega el prompt de la fase que toque.
 4. No avances a la fase siguiente hasta que la fase actual tenga build, tests y criterios de aceptacion verdes.
 5. Si Opus propone cambios de alcance, dependencias nuevas o arquitectura distinta, debe justificarlo contra `docs/V1/CRUDO_V1_Visual_Master_Plan.html` y `docs/AGENTS_Javi.md`. Si no hay justificacion clara, se rechaza.
@@ -457,48 +457,70 @@ Prohibido visualmente:
 - Botones demasiado redondeados.
 - Carruseles auto-rotatorios, parallax o scroll-jacking.
 
-## 8. Prompt base obligatorio
+## 8. Prompt base minimo y fijo
 
-Pega esto al inicio de cada sesion de Opus.
+Pega este bloque al inicio de **cada nueva sesion de Opus**, antes de cualquier prompt de fase, continuacion, revision o correccion. Este prompt no implementa una fase por si solo: solo carga contexto, fija reglas y obliga a Opus a sincronizarse con el estado real del proyecto.
 
 ```text
-Actua como agente senior full-stack para construir la V1 de CRUDO.
+Actua como agente senior full-stack para construir CRUDO V1.
 
-Antes de tocar codigo, lee y respeta estos archivos:
+Antes de proponer, editar o ejecutar nada, lee en este orden:
 - docs/AGENTS_Javi.md
 - docs/V1/CRUDO_V1_Visual_Master_Plan.html
 - docs/V1/V1Tecnico.md
 - README.md, docs/, ARCHITECTURE.md o contexto existente si existen
 
-Reglas obligatorias:
+Despues de leer, localiza en `docs/V1/V1Tecnico.md` la seccion `0.1 Estado vivo del proyecto` y usala como fuente de contexto operativo:
+- fase actual
+- que esta implementado
+- que falta
+- bloqueos
+- decisiones confirmadas
+- siguiente prompt recomendado
+
+Antes de tocar codigo:
+1. Inspecciona el estado real del repositorio: estructura, archivos clave, package.json, scripts, env examples, migraciones, tests y git status.
+2. Compara el estado real contra `0.1 Estado vivo del proyecto`.
+3. Si hay contradiccion, no asumas. Di cual es la diferencia y actualiza el estado vivo si es seguro, o pide decision si afecta a alcance/arquitectura.
+4. Resume en 5-8 bullets: fase real, objetivo inmediato, archivos que vas a tocar, pruebas que esperas ejecutar y riesgos.
+
+Reglas duras de proyecto:
 - No modifiques docs/AGENTS_Javi.md.
 - No inventes alcance fuera del V1.
-- Documentacion en espanol; codigo, variables, clases, comentarios tecnicos y tests en ingles.
+- Documentacion, README y guias en espanol.
+- Codigo, variables, funciones, comentarios tecnicos inline y tests en ingles.
 - Backend Node.js + Express + MariaDB usando el paquete `mariadb`.
 - Frontend React 19 + Vite + Tailwind CSS, mobile-first, espanol, semantic HTML, compatible con Google Translate.
 - Arquitectura monolito CommonJS: `server.js` sirve API `/api/v1` y el build `dist/`; frontend en `src/`, backend en `server/`, SQL en `db/`.
 - Validacion de requests centralizada antes de controladores. No dupliques reglas de negocio entre UI y backend.
-- No pagos online.
-- No venta online de alcohol.
-- Wine/products with is_alcohol=true are visible in catalog/PDP but cannot be added to Mi Tabla.
-- POST /api/v1/pickup-orders must reject alcohol items with HTTP 422 and RFC 7807 problem detail.
+- No pago online activo en V1.
+- No venta online de alcohol en V1.
+- Wine/products with `is_alcohol=true` are visible in catalog/PDP but cannot be added to Mi Tabla.
+- `POST /api/v1/pickup-orders` must reject alcohol items with HTTP 422 and RFC 7807 problem detail.
 - Admin must be phone-friendly and usable in <= 5 min/day by one owner.
-- Secrets only via env vars and .env.example.
-- Usa `npm run dev` para desarrollo y `vite build` + `server.js` para produccion. Production target: Contabo server managed with Plesk.
-- Add focused tests and run verification before DONE.
+- Secrets only via env vars and `.env.example`; never hardcode real secrets.
+- Local dev: `npm run dev`. Production: `vite build` + `server.js` on Contabo/Plesk.
+- Stripe may exist only as V2 preparation; do not activate payment flow or real webhooks in V1.
 
-Workflow:
-1. Read section `0.1 Estado vivo del proyecto` inside `docs/V1/V1Tecnico.md`.
-2. Inspect current repo state and existing files.
-3. Compare the real repo state against the estado vivo. If they differ, update the estado vivo or report the mismatch before implementing.
-4. Summarize what already exists, what phase we are in, and what you will change.
-5. Implement only the requested/current phase.
-6. Add/update tests for the changed behavior.
-7. Run relevant commands: format/lint/tests/build.
-8. Update section `0.1 Estado vivo del proyecto` with phase status, implemented work, missing work, blockers, session log, next recommended prompt, and checklist items that are truly verified.
-9. Report files changed, verification result, remaining risks, and next recommended phase.
+Modo de trabajo:
+- Si recibes un prompt de fase, implementa solo esa fase.
+- Si recibes un prompt de continuacion, detecta lo ya hecho y continua sin rehacer desde cero.
+- Si recibes un prompt de revision, prioriza bugs, riesgos, desviaciones del V1 y tests faltantes.
+- No termines con solo un plan si la tarea pide implementar y no estas bloqueado.
+- Mantén cambios pequenos, coherentes con el stack confirmado y sin refactors ajenos.
 
-Do not finish with only a plan unless blocked. Implement.
+Antes de marcar algo como DONE:
+- Ejecuta las verificaciones relevantes disponibles: lint, tests, build y/o arranque local.
+- Si no puedes ejecutar algo, explica exactamente por que y que comando queda pendiente.
+- Actualiza `docs/V1/V1Tecnico.md` en `0.1 Estado vivo del proyecto`: fase, implementado, falta, bloqueos, registro de sesion, siguiente prompt recomendado y checklist si aplica.
+- Si afecta al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html`.
+
+Respuesta final obligatoria:
+- Que se hizo.
+- Archivos cambiados.
+- Verificacion ejecutada y resultado.
+- Riesgos o pendientes reales.
+- Siguiente prompt/fase recomendada.
 ```
 
 ## 9. Fase 0 - Preparacion, repo y contexto
@@ -519,93 +541,232 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
-Implementa la Fase 0 de CRUDO V1: preparacion del repositorio y contexto operativo.
+Implementa exclusivamente la Fase 0 de CRUDO V1: preparacion del repositorio y contexto operativo.
 
-Tareas:
-1. Audita el directorio actual y detecta si ya existe codigo, docs o configuracion.
-2. Crea la estructura monolito:
-   - src/
-   - server/
-   - db/
-   - uploads/
-   - infra/
-   - infra/plesk/
-   - infra/scripts/
-   - docs/
-   - .github/workflows/
-3. Crea o actualiza README.md con:
-   - objetivo de CRUDO V1
-   - stack
-   - comandos locales previstos
-   - estructura del repo
-   - reglas criticas: no pago online, no venta online de alcohol, vino solo WhatsApp, Mi Tabla solo no alcohol
-4. Crea .gitignore segun `docs/AGENTS_Javi.md`:
-   - IDEs
-   - node_modules, dist, build
-   - target
-   - .env
-   - logs/cache
-5. Crea .env.example con todas las variables previstas:
-   - DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
-   - JWT_SECRET
-   - CORS_ALLOWED_ORIGINS
-   - UPLOADS_DIR
-   - BREVO_API_KEY
-   - SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
-   - OWNER_WHATSAPP
-   - OWNER_EMAIL
-   - STRIPE_SECRET_KEY, VITE_STRIPE_PUBLIC_KEY como placeholders V2 desactivados
-   - VITE_API_BASE
-   - VITE_GA_ID
-   - VITE_META_PIXEL
-   - VITE_PUBLIC_WHATSAPP
-   - VITE_GOOGLE_MAPS_URL
-6. Crea docs/discovery.md con las preguntas pendientes del V1:
-   - baseline financiero
-   - horario
-   - capacidad pickup diaria
-   - SLA realista
-   - telefono owner
-   - kill switch
-   - lista final de 20-40 productos
-   - categorias
-   - logo
-   - dominio
-   - DNS
-   - Google Business Profile
-   - Meta Business Manager
+Objetivo de esta fase:
+Dejar el repositorio preparado para que la Fase 1 pueda crear el monolito JavaScript sin ambiguedades. En esta fase NO se implementa todavia la app, ni Express real, ni React real, ni base de datos real. Solo se crean estructura, documentacion operativa, placeholders seguros y archivos de contexto.
+
+Contexto tecnico confirmado:
+- Stack V1: JavaScript, CommonJS, Node.js + Express, MariaDB con paquete `mariadb`, React 19 + Vite, Tailwind CSS, PostCSS, Autoprefixer.
+- Arquitectura objetivo: monolito con `server.js`, frontend en `src/`, backend en `server/`, SQL en `db/`, uploads locales en `uploads/`.
+- Produccion: servidor Contabo gestionado con Plesk.
+- V1 sin pago online activo y sin venta online de alcohol.
+- Stripe puede aparecer solo como placeholder desactivado para V2; no crear flujo de pago ni webhook real.
+
+Antes de editar:
+1. Ejecuta inspeccion del repo:
+   - lista carpetas y archivos principales
+   - revisa si existen `package.json`, `README.md`, `.env.example`, `.gitignore`, `src/`, `server/`, `db/`, `infra/`, `docs/`
+   - revisa `git status --short`
+2. Identifica archivos existentes que no debes sobrescribir sin leerlos antes.
+3. Si ya existe algun archivo objetivo, actualizalo preservando contenido util y evitando borrar cambios ajenos.
+4. No modifiques `docs/AGENTS_Javi.md`.
+
+Archivos y carpetas que debes crear o actualizar:
+1. Carpetas base:
+   - `src/`
+   - `server/`
+   - `server/routes/`
+   - `server/controllers/`
+   - `server/services/`
+   - `server/repositories/`
+   - `server/middleware/`
+   - `server/config/`
+   - `server/utils/`
+   - `db/`
+   - `db/migrations/`
+   - `db/seeds/`
+   - `uploads/`
+   - `infra/`
+   - `infra/plesk/`
+   - `infra/scripts/`
+   - `docs/`
+   - `.github/workflows/`
+
+2. Placeholders seguros:
+   - crea `.gitkeep` en carpetas vacias que deban versionarse: `uploads/`, `db/migrations/`, `db/seeds/`, `infra/scripts/` si procede.
+   - no crees codigo funcional innecesario todavia.
+
+3. `README.md`:
+   Debe estar en espanol y contener:
+   - que es CRUDO V1 y objetivo de negocio
+   - stack confirmado
+   - arquitectura de carpetas
+   - comandos previstos aunque aun no existan: `npm run dev`, `npm run build`, `npm start`, `npm test`, `npm run lint`, `npm run db:migrate`, `npm run db:seed`
+   - reglas criticas:
+     - no pago online activo en V1
+     - no venta online de alcohol
+     - vino visible pero solo WhatsApp
+     - Mi Tabla solo no alcohol
+     - backend debe rechazar alcohol con HTTP 422
+   - despliegue previsto: Contabo + Plesk
+   - nota de que Fase 1 creara el scaffold tecnico real
+
+4. `.gitignore`:
+   Debe cubrir como minimo:
+   - `node_modules/`
+   - `dist/`
+   - `build/`
+   - `.env`
+   - `.env.*` excepto `.env.example`
+   - logs
+   - cache
+   - archivos temporales de sistema
+   - carpetas IDE comunes sin eliminar configuracion util si ya existe
+   - uploads reales, pero manteniendo `uploads/.gitkeep`
+
+5. `.env.example`:
+   Debe contener placeholders, nunca secretos reales:
+   - `NODE_ENV=development`
+   - `PORT=3000`
+   - `CLIENT_DEV_URL=http://localhost:5173`
+   - `CORS_ALLOWED_ORIGINS=http://localhost:5173`
+   - `DB_HOST=localhost`
+   - `DB_PORT=3306`
+   - `DB_NAME=crudo`
+   - `DB_USER=crudo`
+   - `DB_PASSWORD=change_me`
+   - `JWT_SECRET=change_me_min_32_chars`
+   - `JWT_EXPIRES_IN=15m`
+   - `JWT_REFRESH_EXPIRES_IN=7d`
+   - `COOKIE_SECRET=change_me_min_32_chars`
+   - `UPLOADS_DIR=uploads`
+   - `MAX_UPLOAD_MB=8`
+   - `BREVO_API_KEY=`
+   - `SMTP_HOST=`
+   - `SMTP_PORT=587`
+   - `SMTP_USER=`
+   - `SMTP_PASS=`
+   - `OWNER_WHATSAPP=`
+   - `OWNER_EMAIL=`
+   - `VITE_API_BASE=/api/v1`
+   - `VITE_GA_ID=`
+   - `VITE_META_PIXEL=`
+   - `VITE_PUBLIC_WHATSAPP=`
+   - `VITE_GOOGLE_MAPS_URL=`
+   - `STRIPE_SECRET_KEY=` con comentario "V2 only, disabled in V1"
+   - `VITE_STRIPE_PUBLIC_KEY=` con comentario "V2 only, disabled in V1"
+
+6. `docs/discovery.md`:
+   Debe ser una checklist accionable en espanol, agrupada por:
+   - negocio y objetivos financieros
+   - horarios y operativa
+   - capacidad pickup
+   - productos y precios
+   - alcohol y WhatsApp
+   - eventos
+   - contenido visual
+   - dominio, Contabo y Plesk
    - legal/cookies
-   - Brevo
-   - 3 primeros eventos
-7. Crea docs/content-checklist.md con fotos y copy necesarios:
-   - hero 16:9 y 9:16
-   - 20-40 producto 1:1 minimo 1600x1600
-   - lifestyle 6-10
-   - owner/interior 3-5
-   - eventos 16:9
+   - analytics y marketing
+   - owner/admin
+   Incluye preguntas concretas, columna/checkbox de estado y notas.
+
+7. `docs/content-checklist.md`:
+   Debe listar contenido necesario con estado pendiente:
+   - hero desktop 16:9
+   - hero mobile 9:16
+   - 20-40 productos con foto 1:1 minimo 1600x1600
+   - nombre, slug, precio, tipo, `is_alcohol`, productor, region, descripcion corta y larga
+   - 6-10 fotos lifestyle
+   - 3-5 fotos owner/interior
+   - 3 eventos iniciales
+   - textos legales pendientes
    - manifesto 200-300 palabras
-   - descripciones cortas y largas por producto
-8. Crea docs/runbook.md inicial:
-   - local dev
-   - staging
-   - production
-   - backups
-   - restore
-   - deploy manual
-9. Crea docs/owner-admin-guide.md inicial orientado a movil y <= 5 min/dia.
+   - copy Google-Translate-friendly
+
+8. `docs/runbook.md`:
+   Debe ser inicial, aunque todavia no haya codigo:
+   - local dev previsto
+   - variables de entorno
+   - MariaDB local/Plesk
+   - migraciones y seeds previstos
+   - build Vite previsto
+   - arranque `server.js`
+   - staging en Plesk
+   - production en Plesk
+   - backups Plesk/Contabo
+   - restore test manual
+   - rollback manual
+   - checklist de smoke test
+
+9. `docs/owner-admin-guide.md`:
+   Debe explicar el futuro admin desde el punto de vista del owner:
+   - objetivo: usarlo en movil en menos de 5 minutos al dia
+   - rutina manana <= 90s
+   - rutina cierre <= 90s
+   - rutina semanal <= 10 min
+   - pedidos pickup
+   - marcar producto agotado
+   - crear/editar evento
+   - revisar consultas
+   - kill switch de pickup si se implementa en fases posteriores
+   - no incluir instrucciones tecnicas complejas
+
+10. `infra/plesk/README.md`:
+   Debe documentar el destino de despliegue:
+   - Contabo como servidor
+   - Plesk para dominio, SSL, Node.js app, MariaDB y backups
+   - dominio principal y staging
+   - document root/application root/startup file previstos
+   - `npm install`, `npm run build`, `npm start`
+   - variables de entorno en Plesk
+   - backups de DB y uploads
+   - notas de seguridad basicas
+
+11. `.github/workflows/README.md` o placeholder:
+   Si no vas a crear workflows reales aun, deja un README indicando que CI se creara en fases posteriores.
+
+Prohibido en esta fase:
+- No instalar dependencias.
+- No crear `package.json` funcional salvo que ya exista y solo haya que documentarlo; el scaffold real es Fase 1.
+- No crear Express real.
+- No crear React real.
+- No crear migraciones SQL reales todavia.
+- No crear Stripe/webhooks/pagos.
+- No meter datos reales sensibles.
+- No borrar documentos V1 existentes.
+- No modificar `docs/AGENTS_Javi.md`.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza solo la seccion `0.1 Estado vivo del proyecto` de `docs/V1/V1Tecnico.md`:
+- `last_updated`
+- `current_phase`: 0
+- `current_phase_name`: "Preparacion, repo y contexto"
+- `current_focus`: resumen real de lo creado
+- `overall_status`: `REVIEW_READY` si todo esta creado y verificado; `IN_PROGRESS` si falta algo; `BLOCKED` si hay bloqueo
+- tabla de Fase 0 con implementado/falta/notas reales
+- funcionalidades implementadas: no anadas funcionalidad de producto, solo preparacion repo/docs
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 1 - Scaffold monolito Node.js Express" si Fase 0 queda lista
+
+Si creas o cambias informacion que afecte al roadmap visual, actualiza tambien `docs/V1/v1TecnicoVisual.html` para reflejar el estado de Fase 0.
 
 Criterios de aceptacion:
-- No hay secretos reales.
-- Los docs estan en espanol.
+- La estructura monolito existe.
+- Los docs iniciales existen y estan en espanol.
+- `.env.example` no contiene secretos reales.
+- `.gitignore` protege secretos, dependencias, build output y uploads reales.
 - El alcance V1/V1.1/V2 queda claro.
+- Plesk/Contabo queda documentado.
 - `docs/AGENTS_Javi.md` no se modifica.
-- El repo queda listo para scaffold tecnico.
+- No se implementa codigo funcional de fases posteriores.
 
-Verificacion:
-- Lista archivos creados.
-- Ejecuta git status.
+Verificacion obligatoria:
+- Ejecuta `git status --short`.
+- Lista archivos/carpetas creados o modificados.
+- Comprueba que no hay secretos reales en `.env.example`.
+- Si existe `rg`, ejecuta una busqueda razonable de terminos prohibidos en archivos creados: secretos reales, passwords reales, Stripe activo, pago online activo.
+- No ejecutes `npm install` en esta fase.
+
+Respuesta final:
+- Resumen de Fase 0.
+- Archivos creados/modificados.
+- Verificacion ejecutada.
+- Estado vivo actualizado o motivo si no se pudo.
+- Siguiente prompt recomendado.
 ```
 
 ## 10. Fase 1 - Scaffold monolito Node.js Express
@@ -623,7 +784,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 1: scaffold monolito Node.js Express de CRUDO V1.
 
@@ -714,7 +875,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 2: modelo de datos V1 de CRUDO con MariaDB.
 
@@ -798,7 +959,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 3: API publica de CRUDO V1.
 
@@ -883,7 +1044,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 4: Mi Tabla pickup inquiry flow en backend.
 
@@ -949,7 +1110,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 5: backend admin y seguridad JWT.
 
@@ -1035,7 +1196,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 6: scripts npm/MariaDB e infraestructura Plesk/Contabo.
 
@@ -1109,7 +1270,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 7: scaffold frontend React/Vite y design system editorial de CRUDO.
 
@@ -1232,7 +1393,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 8: frontend publico para Home, Catalogo y PDP.
 
@@ -1336,7 +1497,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 9: Mi Tabla frontend y pickup inquiry flow.
 
@@ -1420,7 +1581,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 10: Eventos, Contacto, Newsletter, Sobre CRUDO y Mayoristas.
 
@@ -1503,7 +1664,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 11: frontend admin movil para owner de CRUDO.
 
@@ -1601,7 +1762,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 12: legal, cookies, SEO, analytics y prerender.
 
@@ -1694,7 +1855,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 13: test suite E2E, accesibilidad, performance y QA.
 
@@ -1772,7 +1933,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 14: carga de contenido real y preparacion visual.
 
@@ -1835,7 +1996,7 @@ Entregables:
 Prompt para Opus:
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Implementa la Fase 15: staging, production y launch readiness.
 
@@ -1917,7 +2078,7 @@ Usar despues de cada 2-3 fases o antes de merge importante.
 Usar cuando no este claro por donde va el proyecto, despues de trabajar fuera de Opus, o antes de retomar una sesion tras varios dias.
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Sin implementar funcionalidades nuevas, sincroniza el estado vivo de `docs/V1/V1Tecnico.md` con el estado real del repositorio.
 
@@ -1959,7 +2120,7 @@ Entrega:
 ### Revision de arquitectura
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Haz una revision critica de arquitectura del estado actual de CRUDO V1.
 
@@ -1988,7 +2149,7 @@ Si encuentras problemas criticos, implementa las correcciones.
 ### Revision visual frontend
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Haz una revision visual y UX del frontend CRUDO V1.
 
@@ -2016,7 +2177,7 @@ Ejecuta capturas si Playwright esta configurado y corrige solapes, layout shifts
 ### Revision seguridad/legal
 
 ```text
-Usa el Prompt base obligatorio.
+Usa el Prompt base minimo y fijo.
 
 Haz una revision de seguridad, privacidad y cumplimiento para CRUDO V1.
 
@@ -2127,5 +2288,6 @@ Si solo hay un desarrollador, mantener backend hasta Fase 6 antes de construir f
 - [ ] Lighthouse mobile >= 90.
 - [ ] iPhone/Instagram browser tested.
 - [ ] Launch checklist executed.
+
 
 
