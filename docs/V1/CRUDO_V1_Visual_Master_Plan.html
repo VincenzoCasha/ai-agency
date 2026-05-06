@@ -397,14 +397,33 @@ hr {
       <div class="eyebrow">Strategic + Technical Foundation</div>
       <h1>CRUDO — V1 Website Visual Master Plan</h1>
       <div class="meta">
-        <strong>Prepared for:</strong> CRUDO (Wine Bar &amp; Cheese Distributor — Madrid)<br>
-        <strong>Reference style:</strong> <a href="https://piscolabismadriz.com/">piscolabismadriz.com</a> · <a href="https://www.instagram.com/crudomov/">@crudomov</a><br>
-        <strong>Date:</strong> May 2026 · <strong>Version:</strong> 1.1 (owner-confirmed)
+        <strong>Prepared for:</strong> CRUDO QUESOS S.L.U — Cheese Shop &amp; Cheese Bar (Madrid). Razón social CRUDO QUESOS S.L.U · CIF B-19953694 · Calle Jose Ortega y Gasset 81, 28006 Madrid.<br>
+        <strong>Reference style:</strong> <a href="https://www.instagram.com/crudomov/">@crudomov</a> · <strong>Anti-reference (do NOT resemble):</strong> <a href="https://formaje.com/">formaje.com</a><br>
+        <strong>Date:</strong> May 2026 · <strong>Version:</strong> 1.2 (owner answers integrated 2026-05-06)
       </div>
     </div>
 
     <blockquote>
       <p><strong>Technical override - May 4, 2026:</strong> the V1 implementation stack has been simplified after this master plan was written. The current source of truth is <code>docs/V1/V1Tecnico.md</code>: JavaScript, React 19 + Vite, Tailwind CSS, PostCSS, Autoprefixer, Node.js + Express, MariaDB via the <code>mariadb</code> package, CommonJS monolith, <code>server.js</code> serving <code>dist/</code>, and production deployment on a Contabo server managed with Plesk. Any older infrastructure or backend-stack recommendation in this document is superseded unless explicitly re-approved.</p>
+    </blockquote>
+
+    <blockquote style="border-left:6px solid var(--wine,#7c2635);background:#fbeaec;padding:18px 20px;">
+      <p><strong>Owner answers — May 6, 2026 (authoritative override):</strong> the owner has reviewed this master plan and locked the following decisions, which override anything below them when in conflict. The complete record lives in <code>docs/V1/V1Tecnico.md §0.2</code>.</p>
+      <ul>
+        <li><strong>Positioning:</strong> CRUDO is a <strong>CHEESE SHOP first</strong>, cheese bar second, wine shop third, wine bar fourth. Public copy must NEVER describe CRUDO as a wine bar. Anti-reference: do not resemble formaje.com.</li>
+        <li><strong>Catalog:</strong> no public wine catalog. Public catalog is reduced to <em>Quesos de temporada</em> (rotates monthly) and <em>Tablas / Cajas para llevar</em> (3, 6, 8 cheeses) with optional white-wine or red-wine pairing variants. Tabla variants with wine are routed to WhatsApp; only the no-pairing variant can enter Mi Tabla. Routes <code>/catalogo/quesos</code> and <code>/catalogo/vinos</code> are removed; replaced by <code>/catalogo/temporada</code> and <code>/tablas</code>.</li>
+        <li><strong>Catalog filters:</strong> Nombre, Tipo de leche (vaca, oveja, cabra, mixta), Tratamiento (cruda, pasteurizada, termizada), Region, Intensidad, Maridaje. Show <code>pocas unidades</code> and <code>agotado</code> states.</li>
+        <li><strong>New page:</strong> <em>Celebra tu evento con nosotros</em> (private events / privatizations) is required in V1.</li>
+        <li><strong>Operations:</strong> hours Mon–Fri 17:30–22:30/23:00, Sat 12:30–22:00, Sun 12:30–20:00; closed last 2 weeks of August. Pickup capacity 15/day. Admin kill switch for pausing pickups. Owner WhatsApp is separate from public WhatsApp.</li>
+        <li><strong>Legal entity:</strong> CRUDO QUESOS S.L.U · CIF B-19953694 · Calle Jose Ortega y Gasset 81, 28006 Madrid (footer + legal pages).</li>
+        <li><strong>Content:</strong> NO brand manifesto, NO owner portrait on the website (Instagram only). Logo, palette and typography are owner-supplied via Drive. The 20–40 generic product list is replaced by the monthly seasonal cheese list + the 3 tabla definitions.</li>
+        <li><strong>First 3 events (confirmed):</strong> 2026-05-29 Spritz and Cheese with Mikks (€17, 15 terrace + 10 inside) · 2026-05-30 Spritz, Lemonade and Grilled Cheese with Mikks (€10/€11/€5, 15 terrace + 10 inside) · 2026-06-06 Bodegas Telperion at CRUDO (€25 with 6 cheeses + 3 wines + surprises, 15 terrace).</li>
+        <li><strong>Commercial baseline:</strong> ~€900–1100 weekly revenue today; first-hire target ~€2000/month gross + charges; revenue mix 60% bar / 35% to-go cheese (main V1 promotion target) / 5% events; peak months March, May, June, October, December.</li>
+        <li><strong>Accounts &amp; legal:</strong> Google Business Profile YES, Meta Business Manager NO (Pixel only if opened before launch), no lawyer (use AEPD-compliant templates with owner validation), no cookie banner provider (custom AEPD banner in V1).</li>
+        <li><strong>Payments:</strong> no online payment in V1. PayGold (owner's terminal SMS link) is documented as an offline option for remote gifts but NOT integrated in the website.</li>
+        <li><strong>V2 ecommerce caveat:</strong> the owner notes that the legal/RGPD burden of online sales as a S.L.U (5-year personal-data retention, controller obligations) is non-trivial. V1 must NOT implement infrastructure that assumes V2 online ecommerce as decided.</li>
+        <li><strong>Launch:</strong> ASAP. Day-60 success = increased sales + increased Instagram reach; for events = full house with a waiting list that justifies opening a second date.</li>
+      </ul>
     </blockquote>
 
     
@@ -725,12 +744,12 @@ hr {
 <div class="mermaid-wrap"><pre class="mermaid">graph TD
     Home[Home /]
     Catalog[Catálogo /catalogo]
-    Cheese[Quesos /catalogo/quesos]
-    Wine[Vinos /catalogo/vinos]
-    Seasonal[Temporada /catalogo/temporada]
+    Seasonal[Quesos de temporada /catalogo/temporada]
+    Boards[Tablas y cajas /tablas]
     PDP[Producto /producto/:slug]
-    Events[Eventos y catas /eventos]
+    Events[Eventos /eventos]
     EventDetail[Evento /eventos/:slug]
+    Celebrate[Celebra tu evento con nosotros /celebra-con-nosotros]
     About[Sobre CRUDO /sobre-crudo]
     Contact[Contacto /contacto]
     Pickup[Mi tabla /mi-tabla]
@@ -743,15 +762,14 @@ hr {
 
     Home --> Catalog
     Home --> Events
+    Home --> Celebrate
     Home --> About
     Home --> Contact
     Home --> Pickup
-    Catalog --> Cheese
-    Catalog --> Wine
     Catalog --> Seasonal
-    Cheese --> PDP
-    Wine --> PDP
+    Catalog --> Boards
     Seasonal --> PDP
+    Boards --> PDP
     PDP --> Pickup
     Pickup --> PickupConfirm
     Events --> EventDetail
@@ -1705,7 +1723,7 @@ db/
 <p>Rounded corners are <strong>subtle</strong> — this is editorial, not consumer SaaS. Avoid <code>--radius-lg</code> on buttons/cards.</p>
 <h3 id="175-brand-feeling-in-5-words">17.5 Brand Feeling (in 5 words)</h3>
 <p><strong>Curated. Warm. Artisan. Confident. Local.</strong></p>
-<p>It should feel like the printed menu of a wine bar that knows exactly what it's pouring tonight — not the website of a startup.</p>
+<p>It should feel like the chalkboard of a neighborhood cheese shop that knows exactly which wheel was cut this morning — never the website of a wine bar, never the website of a startup. Owner override (2026-05-06): CRUDO is a tienda de quesos first; wine is secondary and never the brand voice. Logo, palette and typography are owner-supplied via Drive and override the recommended tokens above when received.</p>
 <h3 id="176-experience-references">17.6 Experience References</h3>
 <table>
 <thead>
@@ -1849,9 +1867,16 @@ db/
 <td>6–10</td>
 <td>Owner</td>
 </tr>
+<tr style="text-decoration:line-through;opacity:0.55;">
+<td>Photos</td>
+<td>About — owner portrait + space <strong>(REMOVED 2026-05-06: owner does not want personal photos on the website; Instagram only)</strong></td>
+<td>Mixed, included in the 20–40 budget</td>
+<td>3–5</td>
+<td>Owner</td>
+</tr>
 <tr>
 <td>Photos</td>
-<td>About — owner portrait + space</td>
+<td>Interior / atmosphere only (no owner portrait)</td>
 <td>Mixed, included in the 20–40 budget</td>
 <td>3–5</td>
 <td>Owner</td>
@@ -1877,12 +1902,26 @@ db/
 <td>1</td>
 <td>Owner</td>
 </tr>
-<tr>
+<tr style="text-decoration:line-through;opacity:0.55;">
 <td>Copy</td>
-<td>Brand manifesto (About)</td>
+<td>Brand manifesto (About) <strong>(REMOVED 2026-05-06: no manifesto. Replace with 2–3 short descriptive paragraphs in tienda-de-quesos voice.)</strong></td>
 <td>200–300 words</td>
 <td>1</td>
 <td>Owner</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Sobre CRUDO — short descriptive copy (no manifesto, no first-person owner narrative)</td>
+<td>2–3 paragraphs</td>
+<td>1</td>
+<td>Owner + copywriter</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>Celebra tu evento con nosotros — landing copy (privatizations, birthdays, private tastings)</td>
+<td>~250 words + bullet list</td>
+<td>1</td>
+<td>Owner + copywriter</td>
 </tr>
 <tr>
 <td>Copy</td>
@@ -2008,65 +2047,66 @@ db/
 <hr />
 <h2 id="19-discovery-checklist-remaining-questions-for-crudo-s-owner">19. Discovery Checklist (remaining questions for CRUDO's owner)</h2>
 <p>The high-level assumptions are now answered (see Section 0). The remaining questions are the <strong>operational</strong> and <strong>financial</strong> ones the team must close before week 2.</p>
-<h3 id="already-answered-from-your-responses">Already answered (from your responses)</h3>
+<h3 id="already-answered-from-your-responses">Already answered (from your responses, updated 2026-05-06)</h3>
 <ul>
-<li>✅ Single owner-operator; primary V1 goal = generate revenue to fund first hire.</li>
+<li>✅ Single owner-operator; primary V1 goal = generate revenue to fund first hire (~€2000/month).</li>
 <li>✅ Single Madrid location for 12 months; second location goal in 2–3 years.</li>
-<li>✅ No online payment in V1 — pay &amp; pick up at store.</li>
-<li>✅ Wine: visibility-only catalog, WhatsApp inquiries (no online sale of alcohol).</li>
+<li>✅ No online payment in V1 — pay &amp; pick up at store. PayGold (terminal SMS link) stays offline; not integrated in V1.</li>
+<li>✅ <strong>Positioning shift:</strong> CRUDO is a CHEESE SHOP first, cheese bar second, wine shop third, wine bar fourth. Public copy never describes CRUDO as a wine bar. Anti-reference: must not resemble formaje.com.</li>
+<li>✅ <strong>Wine no longer in public catalog.</strong> Wine appears only as optional pairing variant in tablas (3, 6, 8 cheeses). Variants with wine route to WhatsApp; only no-pairing variant enters Mi Tabla.</li>
 <li>✅ Spanish primary, English via Google Translate.</li>
-<li>✅ ~20–40 product photos to be supplied by owner.</li>
-<li>✅ Domain not yet acquired (see Appendix C for recommendation).</li>
-<li>✅ Legal entity exists.</li>
+<li>✅ Product photos: replaced "20–40 generic products" with the monthly seasonal cheese list + 3 tabla definitions. Owner supplies via Drive.</li>
+<li>✅ Domain not yet acquired.</li>
+<li>✅ Legal entity confirmed: <strong>CRUDO QUESOS S.L.U · CIF B-19953694 · Calle Jose Ortega y Gasset 81, 28006 Madrid</strong>.</li>
 </ul>
-<h3 id="financial-baseline-critical-needed-by-w1">Financial baseline (critical — needed by W1)</h3>
+<h3 id="financial-baseline-critical-needed-by-w1">Financial baseline — answered 2026-05-06</h3>
 <ol>
-<li>Today's average weekly net revenue (€) — even a rough number anchors the "first hire" target.</li>
-<li>Estimated cost of the first hire (gross monthly + employer charges in Madrid hospitality).</li>
-<li>What part of revenue comes from in-bar consumption vs. to-go cheese vs. events today?</li>
-<li>Are there months where revenue is much higher (e.g., December)? Plan campaigns around them.</li>
-<li>Budget envelope for V1 build + first year of hosting &amp; tools.</li>
+<li>✅ Today's average weekly net revenue: <strong>€900–1100</strong>.</li>
+<li>✅ First hire cost: <strong>~€2000/month gross + employer charges</strong>.</li>
+<li>✅ Revenue mix today (confirmed 2026-05-06): <strong>60% in-bar consumption · 35% to-go cheese (main V1 promotion target) · 5% events (secondary promotion target)</strong>. Total 100%.</li>
+<li>✅ Peak months for campaigns: <strong>March, May, June, October, December</strong>.</li>
+<li>⏳ Budget envelope for V1 build + first year of hosting &amp; tools — <em>still pending</em>.</li>
 </ol>
-<h3 id="operations">Operations</h3>
+<h3 id="operations">Operations — answered 2026-05-06</h3>
 <ol start="6">
-<li>Exact opening hours, weekly day-off, holiday closures next 12 months.</li>
-<li>Pickup capacity per day (how many "tablas" can you prepare without disrupting the bar)?</li>
-<li>What's the realistic SLA on confirming a pickup inquiry — "within 2 hours during opening hours" or "by end of day"?</li>
-<li>Stock visibility: show "pocas unidades" / "agotado" or hide?</li>
-<li>Owner WhatsApp number that should receive notifications (will be different from the public WhatsApp if any).</li>
-<li>Do you want a "kill switch" in admin to pause new pickup orders on overloaded days?</li>
+<li>✅ Hours: <strong>Mon–Fri 17:30–22:30/23:00 · Sat 12:30–22:00 · Sun 12:30–20:00</strong>. Closed last 2 weeks of August.</li>
+<li>✅ Pickup capacity: <strong>15 orders/day</strong>.</li>
+<li>✅ Pickup confirmation SLA (confirmed 2026-05-06): <strong>WhatsApp confirmation within 24h during opening hours</strong>.</li>
+<li>✅ Stock visibility: <strong>show "pocas unidades" and "agotado"</strong>.</li>
+<li>✅ Owner WhatsApp for notifications: <strong>YES, different from the public WhatsApp</strong> (exact numbers still pending).</li>
+<li>✅ Admin kill switch to pause new pickups: <strong>YES</strong>.</li>
 </ol>
-<h3 id="catalog">Catalog</h3>
+<h3 id="catalog">Catalog — answered 2026-05-06</h3>
 <ol start="12">
-<li>Final list of 20–40 products to launch with — names, producers, regions, prices, alcohol/non-alcohol.</li>
-<li>Categorization preference: by type (queso/vino), by region, by intensity, by pairing?</li>
-<li>How often will the catalog change (weekly, monthly, seasonally)?</li>
+<li>✅ Replaced "20–40 generic products" with: <strong>monthly seasonal cheese list</strong> (owner uploads to Drive) + <strong>3 tablas/cajas (3, 6, 8 cheeses)</strong> with optional white-wine or red-wine pairing variants.</li>
+<li>✅ Categorization filters: <strong>Nombre · Tipo de leche (vaca, oveja, cabra, mixta) · Tratamiento (cruda, pasteurizada, termizada) · Region · Intensidad · Maridaje</strong>.</li>
+<li>✅ Catalog rotation cadence: <strong>monthly</strong>.</li>
 </ol>
-<h3 id="brand">Brand</h3>
+<h3 id="brand">Brand — answered 2026-05-06</h3>
 <ol start="15">
-<li>Existing logo file (vector preferred)?</li>
-<li>Tone: literary/poetic vs. plainspoken/expert? 1–2 reference voices you love.</li>
-<li>Owner portrait + interior shots quality — do we need a 1-day photo shoot?</li>
+<li>✅ Logo: <strong>YES, owner supplies vector via Drive</strong>.</li>
+<li>⏳ Tone reference voices — <em>still pending</em>.</li>
+<li>✅ <strong>No owner portrait on the website</strong> (Instagram only). No 1-day photo shoot of the owner.</li>
 </ol>
-<h3 id="tech-legal">Tech / Legal</h3>
+<h3 id="tech-legal">Tech / Legal — answered 2026-05-06</h3>
 <ol start="18">
-<li>Domain choice confirmed (see Appendix C)?</li>
-<li>DNS access through Plesk or the domain registrar? External DNS/CDN only if explicitly chosen later.</li>
-<li>Existing Google Business Profile, Meta Business Manager?</li>
-<li>Do you have a lawyer for the privacy / legal docs, or do we coordinate one?</li>
-<li>Cookie consent provider preference (Cookiebot, Iubenda, custom)?</li>
-<li>Newsletter tool — confirm Brevo (recommended for Spain, free up to 9k contacts).</li>
+<li>⏳ Domain choice — <em>still pending</em>.</li>
+<li>⏳ DNS access (Cloudflare or registrar) — <em>still pending</em>.</li>
+<li>✅ Google Business Profile: <strong>YES</strong>. Meta Business Manager: <strong>NO</strong> (Pixel only if owner opens an account before launch).</li>
+<li>✅ Lawyer: <strong>NO</strong> — V1 uses AEPD-compliant templates, owner validates final.</li>
+<li>✅ Cookie consent provider: <strong>NO provider contracted</strong> — V1 ships a custom AEPD-compliant banner. Cookiebot/Iubenda only if owner upgrades later.</li>
+<li>⏳ Newsletter tool (Brevo) — <em>still pending confirmation</em>.</li>
 </ol>
-<h3 id="events-content">Events &amp; content</h3>
+<h3 id="events-content">Events &amp; content — answered 2026-05-06</h3>
 <ol start="24">
-<li>First 3 events to publish at launch (dates, prices, capacity)?</li>
-<li>Posting cadence on @crudomov — can we plan a launch story/reel?</li>
-<li>Press coverage to surface as social proof?</li>
+<li>✅ First 3 events: <strong>2026-05-29 Spritz and Cheese with Mikks</strong> (€17 spritz + quesito; 15 terrace + 10 inside) · <strong>2026-05-30 Spritz, Lemonade and Grilled Cheese with Mikks</strong> (€10 spritz · €11 grilled cheese · €5 lemonade; 15 terrace + 10 inside) · <strong>2026-06-06 Bodegas Telperion at CRUDO</strong> (€25 with 6 cheeses + 3 wines + surprises; 15 terrace).</li>
+<li>✅ Instagram cadence: <strong>just the event posters on @crudomov</strong>. No reels planned for launch.</li>
+<li>✅ Press coverage: <strong>none to surface</strong>.</li>
 </ol>
-<h3 id="success-definition">Success definition</h3>
+<h3 id="success-definition">Success definition — answered 2026-05-06</h3>
 <ol start="27">
-<li>Hard launch date or window?</li>
-<li>Beyond Tier 0 KPIs in Section 25, what would make YOU personally feel V1 is a success at day 60?</li>
+<li>✅ Launch window: <strong>ASAP</strong>.</li>
+<li>✅ Day-60 personal success: <strong>noticeable increase in sales and Instagram reach</strong>. For events: full house with a waiting list that justifies opening a second date.</li>
 </ol>
 <hr />
 <h2 id="20-prioritized-backlog">20. Prioritized Backlog</h2>

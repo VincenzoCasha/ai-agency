@@ -551,6 +551,24 @@ h3 {
     </div>
   </section>
 
+  <section class="section panel" style="border-left:6px solid #7c2635;background:#fbeaec;" aria-labelledby="owner-override">
+    <div class="eyebrow">Override autoritativo · 2026-05-06</div>
+    <h2 id="owner-override">Respuestas del owner integradas</h2>
+    <p>Decisiones bloqueadas por el owner que prevalecen sobre el resto del roadmap. Fuente completa: <code>docs/V1/V1Tecnico.md §0.2</code>.</p>
+    <ul>
+      <li><strong>Posicionamiento:</strong> TIENDA de quesos primero, cheese bar segundo, tienda de vinos tercero, wine bar cuarto. Nunca wine bar en copy publico. Anti-referencia: formaje.com.</li>
+      <li><strong>Catalogo publico V1:</strong> solo <code>/catalogo/temporada</code> y <code>/tablas</code> (3, 6, 8 con maridaje opcional blanco/tinto). Sin <code>/catalogo/quesos</code> ni <code>/catalogo/vinos</code>. Tabla con maridaje de vino redirige a WhatsApp.</li>
+      <li><strong>Modelo de datos:</strong> anadir campos <code>milk_type</code>, <code>milk_treatment</code>, <code>intensity</code>, <code>pairing_notes</code> a <code>product</code>; tipo <code>TABLA</code> con <code>product_variant</code> y flag <code>pickup_paused</code> en <code>site_config</code>.</li>
+      <li><strong>Nueva ruta:</strong> <code>/celebra-con-nosotros</code> (privatizaciones).</li>
+      <li><strong>Operativa:</strong> L-V 17:30-22:30/23:00 · Sab 12:30-22:00 · Dom 12:30-20:00. Pickup 15/dia. Kill switch admin. WhatsApp owner separado del publico. Mostrar stock bajo/agotado.</li>
+      <li><strong>Datos fiscales:</strong> CRUDO QUESOS S.L.U · B-19953694 · Calle Jose Ortega y Gasset 81, 28006 Madrid (footer + legales).</li>
+      <li><strong>Contenido:</strong> sin manifesto, sin foto del owner. Logo/paleta/tipografia via Drive. Schema.org <code>Store</code>/<code>FoodEstablishment</code>, no <code>Restaurant</code>.</li>
+      <li><strong>Eventos iniciales:</strong> 29/05, 30/05 (Spritz and Cheese / Spritz Lemonade Grilled Cheese with Mikks) y 06/06 (Bodegas Telperion at CRUDO).</li>
+      <li><strong>PayGold:</strong> no integrado en web V1 (offline manual).</li>
+      <li><strong>Cookie banner:</strong> custom AEPD V1 (sin proveedor contratado).</li>
+    </ul>
+  </section>
+
   <section class="grid summary-grid" aria-label="Resumen de progreso" id="summary"></section>
 
   <section class="section" aria-labelledby="roadmap-title">

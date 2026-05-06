@@ -31,10 +31,10 @@ Regla de oro:
 ```yaml
 project: CRUDO V1
 state_version: 1
-last_updated: 2026-05-04
+last_updated: 2026-05-06
 current_phase: 0
 current_phase_name: "Preparacion, repo y contexto"
-current_focus: "Documentacion tecnica V1 actualizada a monolito JavaScript: React 19/Vite + Node.js/Express + MariaDB + Tailwind; despliegue previsto en servidor Contabo gestionado con Plesk"
+current_focus: "Documentacion V1 reposicionada a TIENDA de quesos (cheese bar primero, wine bar segundo). Catalogo limita a quesos de temporada + tablas (3/6/8) con maridaje opcional. Sin catalogo de vinos publico. Datos fiscales CRUDO QUESOS S.L.U cargados. Eventos iniciales y horarios confirmados."
 next_recommended_prompt: "Fase 0 - Preparacion, repo y contexto"
 overall_status: "NOT_STARTED"
 ```
@@ -94,8 +94,26 @@ Actualizar esta lista al terminar cada sesion con codigo. Mantener bullets concr
 - Stack V1: JavaScript, Node.js + Express, MariaDB con paquete `mariadb`, React 19 + Vite, Tailwind CSS, PostCSS, Autoprefixer, monolito CommonJS, `server.js` sirviendo `dist/`, despliegue en Contabo con Plesk.
 - V1 sin pago online.
 - V1 sin venta online de alcohol.
-- Vino visible en catalogo/PDP, pero solo WhatsApp.
+- Posicionamiento: **TIENDA de quesos primero, cheese bar segundo, tienda de vinos tercero, wine bar cuarto**. CRUDO no se comunica como wine bar.
+- Anti-referencia explicita: la web no debe parecerse a https://formaje.com.
+- Catalogo publico V1 solo expone **Quesos de temporada** y **Tablas/Cajas para llevar (3, 6, 8)**. Sin catalogo de vinos publico.
+- Tablas con maridaje de vino blanco/tinto: la variante con vino **se gestiona siempre via WhatsApp en V1**; solo la variante sin maridaje entra en `Mi Tabla`. No hay vino por defecto sugerido: el owner concreta maridaje, productor y precio por WhatsApp con cada cliente.
+- Mix de ingresos confirmado: 60% barra, 35% queso to-go (objetivo V1 principal), 5% eventos.
+- SLA pickup confirmado: 24 horas dentro del horario de apertura.
+- Filtros de catalogo de queso: Nombre, Tipo de leche (vaca/oveja/cabra/mixta), Tratamiento (cruda/pasteurizada/termizada), Region, Intensidad, Maridaje.
+- Stock visibility: mostrar `pocas unidades` y `agotado`.
 - `Mi Tabla` solo para no alcohol.
+- Razon social: CRUDO QUESOS S.L.U · CIF B-19953694 · Calle Jose Ortega y Gasset 81, 28006 Madrid.
+- Horario: Lun-Vie 17:30-22:30/23:00 · Sab 12:30-22:00 · Dom 12:30-20:00. Cierre las ultimas 2 semanas de agosto.
+- Capacidad pickup: 15 pedidos/dia. Kill switch admin para pausar pickups.
+- WhatsApp owner (notificaciones) distinto del WhatsApp publico.
+- Sin manifesto. Sin foto del owner en la web.
+- Eventos iniciales V1 confirmados: Spritz and Cheese with Mikks (29/05), Spritz/Lemonade/Grilled Cheese with Mikks (30/05), Bodegas Telperion at CRUDO (06/06).
+- Nueva pagina obligatoria: `Celebra tu evento con nosotros` (privatizaciones).
+- Owner sin abogado: legales V1 desde plantillas auditadas AEPD.
+- Cookie provider: custom AEPD-compliant en V1.
+- Google Business Profile: existe. Meta Business Manager: no existe.
+- PayGold: no integrado en web V1; queda como flujo offline manual del owner.
 - Espanol como idioma primario; ingles via Google Translate.
 - Admin disenado para owner single-operator, menos de 5 minutos al dia.
 - `docs/AGENTS_Javi.md` no se modifica.
@@ -103,20 +121,21 @@ Actualizar esta lista al terminar cada sesion con codigo. Mantener bullets concr
 ### Bloqueos actuales
 
 - No hay codigo inicial todavia.
-- Falta contenido real del owner: productos, precios, fotos, horarios, telefono, dominio, legal y eventos.
+- Logo, paleta y tipografia del owner pendientes de recibir via Drive (placeholder con tokens del §7 hasta entonces).
+- Lista mensual de quesos de temporada pendiente de carga via Drive (owner subira ejemplo).
+- Definiciones definitivas de las 3 tablas (3/6/8 quesos): contenido por defecto, precios, maridajes blancos y tintos sugeridos.
 
 ### Pendientes de decision del owner
 
-- Dominio final (`crudo.es`, `crudo.world` u otro).
-- Horarios exactos y cierres.
-- Capacidad pickup diaria.
-- SLA real de confirmacion.
-- Telefono WhatsApp publico y telefono owner para notificaciones.
-- Brevo confirmado o alternativa.
-- Cookie provider: custom, Cookiebot, Iubenda u otro.
-- Primeros 20-40 productos con precios y `is_alcohol`.
-- Primeros 3 eventos.
-- Plan Plesk definitivo: dominio principal, subdominio staging, estrategia Node app, backups y variables de entorno.
+- Dominio final (`crudo.es` u otro) y registrador.
+- Acceso DNS (Cloudflare o registrador) y plan Plesk definitivo.
+- WhatsApp publico exacto y WhatsApp owner para notificaciones.
+- Brevo confirmado o alternativa para newsletter y emails transaccionales.
+- Apertura o no de Meta Business Manager antes de launch (afecta Pixel V1).
+- Recomendacion de proveedor cookie banner si quiere upgrade (Cookiebot/Iubenda) sobre el custom AEPD.
+- Validacion final de Aviso Legal, Privacidad y Cookies generados desde plantillas.
+- Precios de tablas 3/6/8 con y sin maridaje.
+- Campanas para meses pico (marzo, mayo, junio, octubre, diciembre).
 
 ### Registro de sesiones
 
@@ -131,6 +150,8 @@ Registro:
 - 2026-05-04 | Fase docs | Creado V1Tecnico.md con fases y prompts para Opus | Verificacion: estructura revisada | Siguiente: Fase 0
 - 2026-05-04 | Fase docs | Organizados documentos en `docs/` y V1 en `docs/V1/`; creado roadmap visual V1 | Verificacion: rutas revisadas | Siguiente: Fase 0
 - 2026-05-04 | Fase docs | Stack actualizado a monolito JavaScript: React 19/Vite + Node.js/Express + MariaDB + Tailwind; despliegue objetivo Contabo + Plesk | Verificacion: documentos en revision | Siguiente: Fase 0
+- 2026-05-06 | Fase docs | Integradas respuestas del owner (seccion 0.2): reposicionamiento TIENDA de quesos, eliminacion de catalogo de vinos publico, tablas (3/6/8) con maridaje opcional, datos fiscales CRUDO QUESOS S.L.U, horarios, capacidad pickup 15/dia, kill switch, eventos iniciales, nueva pagina "Celebra tu evento", eliminacion de manifesto y foto owner | Verificacion: estructura revisada, sin codigo aun | Siguiente: Fase 0
+- 2026-05-06 | Fase docs | Resueltas 4 preguntas abiertas del owner: tabla con maridaje siempre via WhatsApp en V1, mix de ingresos 60/35/5, sin vino por defecto sugerido (owner acuerda por WhatsApp), SLA pickup 24h dentro del horario de apertura | Verificacion: §0.2, decisiones, pendientes y master plan §19 actualizados | Siguiente: Fase 0
 
 ### Instrucciones para actualizar este estado
 
@@ -149,28 +170,156 @@ Al final de cada sesion, Opus debe:
 
 No marcar una fase como `DONE` si no pasan sus criterios de aceptacion y verificacion.
 
+## 0.2 Respuestas del owner (2026-05-06) — fuente autoritativa
+
+Este bloque recoge las respuestas formales del owner sobre el V1 Master Plan y **prevalece sobre cualquier otra seccion** de este documento o de los HTML de docs/V1/. Cuando el resto del documento contradiga esta seccion, gana esta seccion: Opus debe actualizar el contenido afectado en cuanto toque la fase correspondiente.
+
+### Posicionamiento de marca (cambio fundamental)
+
+- CRUDO es **TIENDA DE QUESOS** primero, **cheese bar** segundo, **tienda de vinos** tercero, **wine bar** cuarto. El queso siempre va primero, el vino siempre va segundo.
+- Concepto principal: TIENDA. NO es un wine bar.
+- Eyebrow/headline copy y meta descriptions deben reflejar `TIENDA DE QUESOS · MADRID` (no `VINOS Y QUESOS · MADRID`).
+- Brand feeling V1: `Curated. Warm. Artisan. Confident. Local.` Nunca describir CRUDO como wine bar en copy publico.
+- **Prohibido**: la web no puede parecerse en estructura, copy, paleta, tipografia o tono a https://formaje.com — tratarlo como anti-referencia explicita.
+
+### Datos fiscales y legales
+
+- Razon social: **CRUDO QUESOS S.L.U**
+- C.I.F.: **B-19953694**
+- Direccion fiscal: **Calle de Jose Ortega y Gasset 81, 28006 Madrid, Madrid**
+- Estos datos se usan en `Aviso Legal`, `Politica de Privacidad`, `Politica de Cookies`, footer publico y firma de emails transaccionales.
+- Owner NO tiene abogado: Aviso Legal / Privacidad / Cookies se redactan a partir de plantillas auditadas (AEPD/RGPD) y se entregan al owner para validacion final.
+- Owner NO tiene proveedor de cookie banner: V1 implementa banner custom AEPD-compliant; recomendar Cookiebot o Iubenda solo si el owner pide upgrade.
+
+### Catalogo: cambio estructural
+
+- **Eliminar el catalogo de vinos como entidad publica**. El vino no aparece en navegacion, no tiene rutas propias y no tiene PDP independiente.
+- El catalogo publico se reduce a **dos secciones**:
+  1. `Quesos de temporada` — los quesos del mes/temporada, rotan **mensualmente** segun decida el owner.
+  2. `Tablas y cajas para llevar` — producto principal de la tienda. Formatos fijos: **3 quesos**, **6 quesos**, **8 quesos**. Cada formato tiene variantes opcionales de maridaje: sin maridaje, con maridaje de **vino blanco**, con maridaje de **vino tinto**.
+- La variante con maridaje de vino se considera item con alcohol y se gestiona **siempre via WhatsApp en V1** (confirmado por owner 2026-05-06). Solo la variante **sin maridaje** entra en `Mi Tabla`; las variantes con vino blanco o tinto disparan el flujo `WineWhatsAppButton` con mensaje prellenado. No se selecciona vino por defecto: el owner acuerda el maridaje concreto (productor/region/precio) por WhatsApp con cada cliente.
+- Filtros de catalogo de quesos (todos opcionales y combinables): **Nombre**, **Tipo de leche** (vaca, oveja, cabra, mixta), **Tratamiento de leche** (cruda, pasteurizada, termizada), **Region**, **Intensidad** (suave, media, intensa), **Maridaje**.
+- Visibilidad de stock: **mostrar** `pocas unidades` y `agotado`. No ocultar.
+
+### Sitemap publico V1
+
+- Home
+- Catalogo (landing del catalogo)
+  - Quesos de temporada
+  - Tablas y cajas para llevar
+- Detalle de producto (queso o tabla)
+- Eventos
+- Detalle de evento
+- **Celebra tu evento con nosotros** (nueva seccion: privatizaciones, cumpleanos, reuniones, catas privadas)
+- Sobre CRUDO
+- Contacto
+- Mayoristas
+- Mi Tabla
+- Confirmacion
+- Aviso Legal / Privacidad / Cookies
+- Admin (oculto)
+
+Las rutas `/catalogo/quesos` y `/catalogo/vinos` quedan **eliminadas** y se sustituyen por `/catalogo/temporada` y `/tablas`.
+
+### Operativa y horarios
+
+- Horario:
+  - Lunes a viernes: **17:30 – 22:30/23:00**
+  - Sabado: **12:30 – 22:00**
+  - Domingo: **12:30 – 20:00**
+- Cierre anual: **ultimas dos semanas de agosto**.
+- Capacidad pickup diaria: **15 pedidos/dia maximo**.
+- WhatsApp del owner para notificaciones: **distinto** del WhatsApp publico (campos separados en `site_config`: `OWNER_WHATSAPP` interno, `PUBLIC_WHATSAPP` publico).
+- **Kill switch** en admin: el owner puede pausar nuevas reservas de pickup en dias saturados. Estado expuesto a frontend para mostrar mensaje "Hoy no admitimos mas pickups, vuelve manana" sin romper la UX.
+- SLA de confirmacion pickup: **24 horas dentro del horario de apertura** (confirmado por owner 2026-05-06). Copy publico debe usar literalmente: "Te confirmamos por WhatsApp en menos de 24 horas dentro de nuestro horario de apertura."
+
+### PayGold (pago remoto fuera de tienda)
+
+- El owner usa **PayGold** (link de pago via SMS/email desde el datafono) para clientes que no estan fisicamente en la tienda y quieren regalar producto.
+- V1: **no se integra PayGold en la web**. Se documenta como opcion offline que el owner activa manualmente cuando la inquiry pickup viene de fuera de Madrid.
+- En la confirmacion de pickup, anadir copy opcional: "Si no puedes recoger en persona, escribenos por WhatsApp y te enviamos un link de pago seguro." (sin promesa de fulfillment online).
+
+### Datos comerciales y marketing
+
+- Revenue semanal medio actual: **900–1100 €**.
+- Coste primer hire (Madrid hosteleria, bruto + cargas): **~2000 €/mes** (objetivo financiero del V1).
+- Mix de ingresos hoy (confirmado por owner 2026-05-06): **60% consumo en barra**, **35% queso to-go** (objetivo principal de promocion en V1), **5% eventos** (segundo objetivo de promocion). Total 100%.
+- Meses pico para campanas: **marzo, mayo, junio, octubre, diciembre**.
+- Definicion de exito a 60 dias: incremento de ventas y de impacto en Instagram. Para eventos: lleno completo + lista de espera que justifique abrir segunda fecha.
+
+### Contenido obligatorio antes de construir — actualizado
+
+Cambios sobre la lista del Master Plan §18:
+
+- **Eliminar**: `Brand manifesto (About)` 200–300 palabras. No se redacta manifesto.
+- **Eliminar**: `Owner portrait` y fotos del owner en la web. El owner NO quiere su foto en la web. Las fotos personales pueden ir solo en Instagram.
+- **Eliminar**: lista de 20–40 productos genericos. Se sustituye por la **lista mensual de quesos de temporada** que el owner subira al drive como ejemplo, mas las definiciones de las **3 tablas/cajas** (3, 6, 8 quesos) con sus variantes de maridaje.
+- **Mantener**: hero, fotos de producto en formato cuadrado fondo madera oscura, fotos de ambiente/lifestyle, fotos de eventos, copy de productos, descripciones cortas/largas, copy de newsletter, copy de confirmacion pickup.
+- **Anadir**: copy de la nueva seccion `Celebra tu evento con nosotros`.
+- **Logo, paleta de color y tipografia**: provistos por el owner via Drive (placeholder hasta recepcion). Sustituyen los design tokens visuales del V1 Master Plan §17 cuando lleguen; los tokens del §7 de este doc se mantienen como fallback hasta recibir la marca real.
+
+### Eventos iniciales V1 (datos confirmados)
+
+| Fecha | Titulo | Precio | Capacidad |
+|-------|--------|--------|-----------|
+| 2026-05-29 | Spritz and Cheese with Mikks | 17 € (spritz + quesito) | 15 terraza, 10 dentro |
+| 2026-05-30 | Spritz, Lemonade and Grilled Cheese with Mikks | Spritz 10 € · Grilled cheese 11 € · Lemonade 5 € | 15 terraza, 10 dentro |
+| 2026-06-06 | Bodegas Telperion at CRUDO | 25 € (6 quesos + 3 vinos + sorpresas) | 15 terraza |
+
+### Decisiones tecnicas y de cuentas
+
+- Dominio: aun **no adquirido** (recomendacion `crudo.es` o equivalente, queda pendiente).
+- Acceso DNS: pendiente (Cloudflare o registrador segun decida el owner).
+- Google Business Profile: **YES**, ya existe.
+- Meta Business Manager: **NO** existe — V1 implementa Meta Pixel solo si el owner abre cuenta antes de launch; si no, se aplaza a V1.1.
+- Plataforma email: pendiente de confirmacion (Brevo recomendado).
+- Lanzamiento: **ASAP**.
+
+### V2 — nota de scope
+
+- El owner advierte que la idea de "data scaffolding para ecommerce V2" tiene implicaciones legales serias: una S.L.U debe almacenar y proteger datos personales hasta 5 anos, con responsabilidad de tratamiento y obligaciones AEPD/RGPD. **V1 no debe implementar nada que asuma ecommerce V2 como decidido**. Se documenta la idea como hipotesis, no como roadmap aprobado.
+
+### Acciones derivadas para Opus
+
+Cuando una fase posterior toque cualquiera de los temas de arriba, debe alinearse con esta seccion antes de implementar. En particular:
+
+- Fase 2 (modelo de datos): anadir campos `milk_type`, `milk_treatment`, `intensity`, `pairing` a `product`; anadir entidad `tabla` (o subtipo de `product` con `type='TABLA'`) con tamanos y variantes de maridaje; anadir flag `pickup_paused` en `site_config` para el kill switch.
+- Fase 3 (API publica): exponer filtros de catalogo de quesos por los nuevos campos; exponer estado `pickup_paused`; eliminar endpoints especificos de wine si los hubiera planificado.
+- Fase 4 (Mi Tabla y alcohol guard): la regla 422 sigue vigente para tablas con maridaje de vino; el frontend debe redirigir esas variantes a WhatsApp.
+- Fase 8 (frontend publico): rutas `/catalogo/temporada` y `/tablas`; eliminar `/catalogo/quesos` y `/catalogo/vinos`; copy reposicionado a TIENDA DE QUESOS.
+- Fase 10 (eventos, contacto, etc.): anadir pagina `Celebra tu evento con nosotros`; cargar los 3 eventos iniciales tal cual.
+- Fase 12 (legal/cookies/SEO): incluir razon social, CIF y direccion fiscal en footer y legales; banner cookies custom AEPD; schema.org `Store` (no `Restaurant` como tipo principal — opcionalmente combinar con `FoodEstablishment`).
+- Fase 14 (contenido): cargar los quesos de temporada y las 3 tablas como contenido inicial real; sin manifesto, sin foto del owner.
+
 ## 1. Reglas no negociables de V1
 
 Estas reglas deben aparecer en todos los prompts importantes.
 
-- La V1 no es una landing. Es un sistema comercial para aumentar visitas, reservas de pickup, eventos y lista de email.
-- Objetivo de negocio: generar ingresos recurrentes suficientes para contratar a una segunda persona en el bar.
+- La V1 no es una landing. Es un sistema comercial para aumentar visitas, reservas de pickup de queso, eventos y lista de email.
+- Objetivo de negocio: generar ingresos recurrentes suficientes para contratar a una segunda persona (~2000 €/mes brutos + cargas en hosteleria Madrid).
+- Posicionamiento: CRUDO es **TIENDA de quesos primero, cheese bar segundo, tienda de vinos tercero, wine bar cuarto**. La comunicacion publica nunca describe CRUDO como wine bar. Anti-referencia: la web no puede parecerse a https://formaje.com.
 - Operativa: CRUDO lo gestiona una sola persona. El admin debe poder usarse en movil en menos de 5 minutos al dia.
 - Idioma visible del producto: espanol. Debe ser compatible con Google Translate: HTML semantico, `lang="es"`, texto no incrustado en imagenes, copy claro y sin expresiones dificiles de traducir.
-- No hay pago online en V1.
+- No hay pago online en V1. PayGold del owner queda como flujo offline manual, no integrado en la web V1.
 - No hay venta online de alcohol en V1.
-- El vino se muestra en catalogo y PDP, pero nunca se puede anadir a `Mi Tabla`.
-- Todo producto con `is_alcohol=true` debe tener CTA principal de WhatsApp: `Preguntanos por WhatsApp`.
-- El backend debe rechazar `POST /api/v1/pickup-orders` con HTTP 422 si algun item referencia un producto con `is_alcohol=true`.
-- `Mi Tabla` solo admite productos no alcoholicos.
-- El pago se realiza en CRUDO al recoger.
-- El mensaje al usuario debe indicar confirmacion por WhatsApp en menos de 24 horas.
+- **No existe catalogo publico de vinos**. El vino solo aparece como variante de maridaje opcional dentro de las tablas para llevar (3, 6, 8 quesos). Las variantes con maridaje de vino redirigen a WhatsApp.
+- Todo producto o variante con `is_alcohol=true` debe tener CTA principal de WhatsApp: `Preguntanos por WhatsApp`.
+- El backend debe rechazar `POST /api/v1/pickup-orders` con HTTP 422 si algun item referencia un producto o variante con `is_alcohol=true`.
+- `Mi Tabla` solo admite productos no alcoholicos (queso de temporada y tablas en variante sin maridaje).
+- El pago se realiza en CRUDO al recoger; el owner puede ofrecer link de pago remoto via PayGold offline solo para clientes fuera de Madrid (no integrado en la web).
+- El mensaje al usuario debe indicar confirmacion por WhatsApp en menos de 24 horas durante horario de apertura.
 - Admin con JWT.
-- Public site: Home, Catalogo, PDP, Eventos, Detalle de evento, Sobre CRUDO, Contacto, Mayoristas, Mi Tabla, Confirmacion, Aviso Legal, Privacidad, Cookies, Admin.
+- Public site V1: Home, Catalogo (landing), Quesos de temporada, Tablas y cajas, Detalle de producto, Eventos, Detalle de evento, **Celebra tu evento con nosotros**, Sobre CRUDO, Contacto, Mayoristas, Mi Tabla, Confirmacion, Aviso Legal, Privacidad, Cookies, Admin.
 - Mobile-first real, probado en viewport tipo iPhone e Instagram in-app browser.
-- Cookie banner AEPD: Aceptar, Rechazar, Configurar con peso visual equivalente; GA4 y Pixel solo tras consentimiento.
-- Analytics: GA4, Search Console, Meta Pixel y eventos `select_item`, `pickup_request`, `wine_whatsapp_click`, `generate_lead`.
-- SEO: prerender de catalogo y PDP, sitemap.xml, robots.txt, Open Graph, schema.org Restaurant/Product/Event/FAQ.
+- Cookie banner AEPD custom: Aceptar, Rechazar, Configurar con peso visual equivalente; GA4 y Pixel solo tras consentimiento. Owner no tiene Cookiebot/Iubenda contratado.
+- Analytics: GA4, Search Console, Meta Pixel (solo si owner abre Meta Business Manager antes de launch) y eventos `select_item`, `pickup_request`, `wine_pairing_whatsapp_click`, `event_inquiry`, `generate_lead`.
+- SEO: prerender de catalogo y PDP, sitemap.xml, robots.txt, Open Graph, schema.org `Store`/`FoodEstablishment`/`Product`/`Event`/`FAQ` (no `Restaurant` como tipo principal — CRUDO es tienda).
+- Datos fiscales obligatorios en footer y legales: CRUDO QUESOS S.L.U, CIF B-19953694, Calle Jose Ortega y Gasset 81, 28006 Madrid.
+- Horario publico: Lun-Vie 17:30-22:30/23:00, Sab 12:30-22:00, Dom 12:30-20:00. Cierre las ultimas 2 semanas de agosto.
+- Capacidad pickup maxima: 15 pedidos/dia. Admin con kill switch para pausar nuevos pickups.
+- Stock visibility: mostrar `pocas unidades` y `agotado`, no ocultar.
+- Filtros obligatorios de catalogo de queso: Nombre, Tipo de leche, Tratamiento, Region, Intensidad, Maridaje.
+- Catalogo rota mensualmente segun decida el owner.
 - Stack V1: JavaScript, Node.js + Express, MariaDB con paquete `mariadb`, React 19 + Vite, Tailwind CSS, PostCSS, Autoprefixer, monolito CommonJS, `server.js` sirviendo `dist/`, Contabo + Plesk para despliegue, almacenamiento local/Plesk para V1, Brevo/nodemailer para emails.
 - Stripe queda instalado/documentado solo como preparacion tecnica si se decide V2; en V1 no se activa pago online ni webhooks reales.
 - No Redsys, cuentas de usuario cliente, loyalty, reviews, app movil, stock realtime ni i18n completo en V1.
@@ -302,7 +451,8 @@ Infra:
 
 Tablas obligatorias:
 
-- `product`: `id`, `slug`, `name`, `type` (`CHEESE`, `WINE`, `OTHER`), `is_alcohol`, `price_cents`, `vat_rate`, `short_desc`, `long_desc`, `producer`, `region`, `is_seasonal`, `is_featured`, `is_active`, `stock_status` (`IN_STOCK`, `LOW`, `OUT`), `created_at`, `updated_at`.
+- `product`: `id`, `slug`, `name`, `type` (`CHEESE`, `WINE`, `TABLA`, `OTHER`), `is_alcohol`, `price_cents`, `vat_rate`, `short_desc`, `long_desc`, `producer`, `region`, `milk_type` (`COW`, `SHEEP`, `GOAT`, `MIXED`, NULL para no quesos), `milk_treatment` (`RAW`, `PASTEURIZED`, `THERMIZED`, NULL para no quesos), `intensity` (`MILD`, `MEDIUM`, `STRONG`, NULL para no quesos), `pairing_notes`, `is_seasonal`, `is_featured`, `is_active`, `stock_status` (`IN_STOCK`, `LOW`, `OUT`), `created_at`, `updated_at`. Nota: `type='WINE'` queda como tipo interno para representar maridajes incluidos en variantes de tabla; no se expone en endpoints publicos del catalogo.
+- `product_variant`: `id`, `product_id`, `slug`, `name`, `size` (`3`, `6`, `8` para tablas), `pairing_type` (`NONE`, `WHITE_WINE`, `RED_WINE`), `is_alcohol`, `price_cents`, `is_active`, timestamps. Las tablas se modelan como `product` con `type='TABLA'` y al menos una variante por combinacion de tamano y maridaje. Variantes con `pairing_type` distinto de `NONE` heredan `is_alcohol=true`.
 - `product_image`: `id`, `product_id`, `url`, `alt_text`, `sort_order`, `is_primary`, timestamps.
 - `category`: `id`, `slug`, `name`, `type`, `sort_order`, timestamps.
 - `product_category`: `product_id`, `category_id`.
@@ -322,7 +472,10 @@ Reglas del modelo:
 - Los precios siempre en centimos como enteros.
 - `slug` unico e indexado.
 - Todas las entidades publicas tienen `is_active`.
-- `is_alcohol` es el campo critico de V1.
+- `is_alcohol` es el campo critico de V1, tanto a nivel `product` como `product_variant`.
+- Los filtros publicos del catalogo de queso operan sobre `milk_type`, `milk_treatment`, `region`, `intensity`, `pairing_notes` y `name`.
+- El catalogo publico V1 expone unicamente `type='CHEESE'` (con `is_seasonal=true` para la vista de temporada) y `type='TABLA'`. `type='WINE'` no aparece en endpoints publicos del catalogo.
+- `site_config` debe incluir al menos: `legal_business_name` (CRUDO QUESOS S.L.U), `legal_cif` (B-19953694), `legal_address` (Calle Jose Ortega y Gasset 81, 28006 Madrid), `public_whatsapp`, `owner_whatsapp`, `pickup_paused` (boolean kill switch), `pickup_daily_capacity` (default 15), `opening_hours_json`, `holiday_closures_json`, `pickup_sla_text`.
 - No anadir `location_id` en V1.
 - No anadir tablas de traduccion en V1.
 
@@ -375,12 +528,12 @@ Cross-cutting:
 
 - `/`
 - `/catalogo`
-- `/catalogo/quesos`
-- `/catalogo/vinos`
 - `/catalogo/temporada`
+- `/tablas`
 - `/producto/:slug`
 - `/eventos`
 - `/eventos/:slug`
+- `/celebra-con-nosotros`
 - `/sobre-crudo`
 - `/contacto`
 - `/mayoristas`
@@ -664,17 +817,51 @@ Archivos y carpetas que debes crear o actualizar:
    - owner/admin
    Incluye preguntas concretas, columna/checkbox de estado y notas.
 
+   Pre-rellenar como `RESUELTO` con los datos confirmados por el owner el 2026-05-06 (ver §0.2):
+   - posicionamiento TIENDA de quesos
+   - razon social CRUDO QUESOS S.L.U, CIF B-19953694, direccion Ortega y Gasset 81, 28006 Madrid
+   - horario semanal y cierre ultimas 2 semanas de agosto
+   - capacidad pickup 15/dia y kill switch
+   - mostrar stock bajo/agotado
+   - filtros de catalogo de queso (nombre, leche, tratamiento, region, intensidad, maridaje)
+   - WhatsApp owner separado del WhatsApp publico
+   - revenue medio semanal 900-1100€ y target hire 2000€/mes
+   - meses pico marzo, mayo, junio, octubre, diciembre
+   - mix actual 60% barra · 45% to-go · 5% eventos
+   - sin foto del owner en la web, sin manifesto
+   - 3 eventos iniciales con fechas, precios y capacidad
+   - Google Business Profile existe; Meta Business Manager no
+   - sin abogado y sin proveedor de cookie banner
+   - PayGold offline, no integrado en V1
+   - lanzamiento ASAP
+
+   Mantener como `PENDIENTE`:
+   - dominio final y registrador
+   - acceso DNS y plan Plesk
+   - WhatsApp publico exacto y WhatsApp owner exactos
+   - SLA de confirmacion pickup
+   - Brevo confirmado o alternativa
+   - apertura o no de Meta Business Manager antes de launch
+   - lista mensual real de quesos de temporada (subira el owner via Drive)
+   - precios y maridajes por defecto de las 3 tablas (3/6/8)
+   - logo, paleta y tipografia (subira el owner via Drive)
+   - validacion final de Aviso Legal, Privacidad y Cookies generados desde plantilla
+   - decision sobre la variante de tabla con maridaje de vino: WhatsApp puro vs pickup con flag
+
 7. `docs/content-checklist.md`:
-   Debe listar contenido necesario con estado pendiente:
+   Debe listar contenido necesario con estado pendiente. Aplicar overrides de la seccion 0.2 (sin manifesto, sin foto del owner):
    - hero desktop 16:9
    - hero mobile 9:16
-   - 20-40 productos con foto 1:1 minimo 1600x1600
-   - nombre, slug, precio, tipo, `is_alcohol`, productor, region, descripcion corta y larga
-   - 6-10 fotos lifestyle
-   - 3-5 fotos owner/interior
-   - 3 eventos iniciales
-   - textos legales pendientes
-   - manifesto 200-300 palabras
+   - lista mensual de quesos de temporada (foto 1:1 min 1600x1600 fondo madera oscura, nombre, slug, precio, tipo de leche, tratamiento, region, intensidad, productor, descripcion corta y larga, `is_alcohol=false`)
+   - definicion de las 3 tablas (3, 6, 8 quesos) con foto, descripcion y precios para variantes sin maridaje, con maridaje blanco y con maridaje tinto
+   - 6-10 fotos lifestyle / ambiente / interior (sin retrato del owner)
+   - 3 eventos iniciales confirmados (29/05 Spritz and Cheese with Mikks · 30/05 Spritz, Lemonade and Grilled Cheese with Mikks · 06/06 Bodegas Telperion at CRUDO)
+   - copy de la pagina `Celebra tu evento con nosotros`
+   - copy de about/Sobre CRUDO sin manifesto: maximo 2-3 parrafos descriptivos en tono TIENDA de quesos
+   - datos fiscales obligatorios para footer y legales: CRUDO QUESOS S.L.U · CIF B-19953694 · Calle Jose Ortega y Gasset 81, 28006 Madrid
+   - logo, paleta y tipografia del owner (pendiente Drive)
+   - copy de confirmacion pickup con mencion opcional a link de pago remoto via PayGold (offline, manual)
+   - textos legales (Aviso Legal, Privacidad, Cookies) generados desde plantillas AEPD y validados por owner
    - copy Google-Translate-friendly
 
 8. `docs/runbook.md`:
