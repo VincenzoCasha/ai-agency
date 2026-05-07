@@ -32,11 +32,11 @@ Regla de oro:
 project: CRUDO V1
 state_version: 1
 last_updated: 2026-05-07
-current_phase: 0
-current_phase_name: "Preparacion, repo y contexto"
-current_focus: "Estructura monolito creada. README, .gitignore, .env.example, discovery.md, content-checklist.md, runbook.md, owner-admin-guide.md, infra/plesk/README.md y placeholder CI creados. Listos para Fase 1."
-next_recommended_prompt: "Fase 1 - Scaffold monolito Node.js Express"
-overall_status: "REVIEW_READY"
+current_phase: 1
+current_phase_name: "Scaffold monolito Node.js Express"
+current_focus: "package.json, server.js, server/app.js, db/pool.js, health endpoint, middleware RFC 7807, tests smoke y ESLint creados. Pendiente: npm install && npm test (node no disponible en shell de agente)."
+next_recommended_prompt: "Fase 1 - verificacion: npm install && npm test && npm run lint"
+overall_status: "IN_PROGRESS"
 ```
 
 ### Leyenda de estados
@@ -53,7 +53,7 @@ overall_status: "REVIEW_READY"
 | Fase | Nombre | Estado | Implementado | Falta | Bloqueos / notas |
 |------|--------|--------|--------------|-------|------------------|
 | 0 | Preparacion, repo y contexto | REVIEW_READY | Estructura monolito (`src/`, `server/`, `db/`, `uploads/`, `infra/`, `.github/`), `README.md`, `.gitignore`, `.env.example`, `docs/discovery.md`, `docs/content-checklist.md`, `docs/runbook.md`, `docs/owner-admin-guide.md`, `infra/plesk/README.md`, `.github/workflows/README.md`, `.gitkeep` en carpetas vacias | Sin codigo funcional — pendiente Fase 1 | Sin bloqueos |
-| 1 | Scaffold monolito Node.js Express | NOT_STARTED | Nada | `package.json`, `server.js`, `src/`, `config/`, `routes/`, `controllers/`, `services/`, `db/`, health, tests smoke | Pendiente Fase 0 |
+| 1 | Scaffold monolito Node.js Express | IN_PROGRESS | `package.json`, `server.js`, `server/app.js`, `server/config/env.js`, `server/routes/health.routes.js`, `server/controllers/health.controller.js`, `server/services/health.service.js`, `server/middleware/` (error-handler, not-found, validate-request, async-handler), `server/utils/problem.js`, `db/pool.js`, `tests/health.test.js`, `vitest.config.mjs`, `eslint.config.js` | Pendiente: `npm install && npm test && npm run lint` (node no disponible en shell de agente) | Sin bloqueos de diseno; bloqueo operativo: shell sin node |
 | 2 | Modelo de datos MariaDB y seed local | NOT_STARTED | Nada | SQL schema, migraciones SQL, pool MariaDB, seed local, tests repository/service | Pendiente Fase 1 |
 | 3 | API Express y servicios publicos | NOT_STARTED | Nada | Catalogo, campanas, eventos, inquiries, newsletter, consent, site config con validacion de requests | Pendiente Fase 2 |
 | 4 | Mi Tabla y alcohol guard | NOT_STARTED | Nada | Pickup backend, 422 alcohol, idempotency, notificaciones | Pendiente Fase 3 |
@@ -73,8 +73,8 @@ overall_status: "REVIEW_READY"
 
 Actualizar esta lista al terminar cada sesion con codigo. Mantener bullets concretos y verificables.
 
-- Ninguna funcionalidad de codigo implementada todavia.
 - Fase 0 completada: estructura monolito, documentacion operativa, placeholders seguros.
+- Fase 1 (en progreso): scaffold Express, health endpoint, RFC 7807 error handler, pool MariaDB, tests smoke, ESLint. Pendiente verificacion npm.
 
 ### Funcionalidades pendientes criticas de V1
 
@@ -154,6 +154,7 @@ Registro:
 - 2026-05-06 | Fase docs | Integradas respuestas del owner (seccion 0.2): reposicionamiento TIENDA de quesos, eliminacion de catalogo de vinos publico, tablas (3/6/8) con maridaje opcional, datos fiscales CRUDO QUESOS S.L.U, horarios, capacidad pickup 15/dia, kill switch, eventos iniciales, nueva pagina "Celebra tu evento", eliminacion de manifesto y foto owner | Verificacion: estructura revisada, sin codigo aun | Siguiente: Fase 0
 - 2026-05-06 | Fase docs | Resueltas 4 preguntas abiertas del owner: tabla con maridaje siempre via WhatsApp en V1, mix de ingresos 60/35/5, sin vino por defecto sugerido (owner acuerda por WhatsApp), SLA pickup 24h dentro del horario de apertura | Verificacion: §0.2, decisiones, pendientes y master plan §19 actualizados | Siguiente: Fase 0
 - 2026-05-07 | Fase 0 | Estructura monolito creada: src/, server/, db/, uploads/, infra/, .github/. Archivos: README.md, .gitignore, .env.example, docs/discovery.md, docs/content-checklist.md, docs/runbook.md, docs/owner-admin-guide.md, infra/plesk/README.md, .github/workflows/README.md, .gitkeep en carpetas vacias | Verificacion: git status OK, sin secretos reales en .env.example | Siguiente: Fase 1
+- 2026-05-07 | Fase 1 | Scaffold monolito: package.json, server.js, server/app.js, server/config/env.js, health endpoint (route+controller+service), middleware RFC 7807 (error-handler, not-found, validate-request, async-handler), server/utils/problem.js, db/pool.js, tests/health.test.js, vitest.config.mjs, eslint.config.js | Verificacion: node no disponible en shell de agente; pendiente npm install && npm test && npm run lint en terminal del usuario | Siguiente: verificar tests, luego Fase 2
 
 ### Instrucciones para actualizar este estado
 
