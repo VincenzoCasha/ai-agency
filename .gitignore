@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment — never commit real secrets
+.env
+.env.*
+!.env.example
+
+# Uploads — keep .gitkeep, ignore real files
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Cache
+.cache/
+.parcel-cache/
+.vite/
+.eslintcache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs (config files OK, generated files not)
+.idea/
+*.iml
+.vscode/settings.json
+.vscode/launch.json
+
+# Test coverage
+coverage/
+
+# Temporary
+tmp/
+temp/
