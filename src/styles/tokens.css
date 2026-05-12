@@ -1,0 +1,25 @@
+/* CRUDO V1 — Design tokens
+   Fuente unica de verdad. Tailwind los expone via tailwind.config.js. */
+:root {
+  --color-bg-primary: #1A1F14;
+  --color-bg-secondary: #1E1C18;
+  --color-bg-elevated: #252420;
+  --color-bg-light: #F2EAD8;
+  --color-bg-light-soft: #EAE0CB;
+  --color-text-primary: #F2EAD8;
+  --color-text-secondary: #C7BFAD;
+  --color-text-muted: #8A8473;
+  --color-text-inverse: #1A1F14;
+  --color-accent: #B5713A;
+  --color-accent-hover: #C8804A;
+  --color-accent-soft: #3A2A1E;
+  --color-gold: #B89668;
+  --color-success: #6B8E5A;
+  --color-warning: #C8893E;
+  --color-error: #A8443A;
+  --color-border: rgba(242,234,216,0.12);
+  --color-border-strong: rgba(242,234,216,0.24);
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}

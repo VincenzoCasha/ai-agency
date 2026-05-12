@@ -1,0 +1,73 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    background:
+      linear-gradient(180deg, rgba(26,31,20,0.96), rgba(26,31,20,1) 460px),
+      radial-gradient(circle at 18% 0%, rgba(181,113,58,0.10), transparent 32%);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.12;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  a { color: var(--color-gold); text-decoration: none; }
+  a:hover { color: var(--color-accent-hover); }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Tap targets minimo 44x44 */
+  button, [role="button"], a[role="button"] {
+    min-height: 44px;
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-text-primary);
+  }
+}
+
+@layer components {
+  .container-page {
+    width: min(1220px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    color: var(--color-gold);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .price {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
