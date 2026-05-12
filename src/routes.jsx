@@ -3,6 +3,8 @@ import { Route, Routes } from 'react-router-dom';
 
 import HomePage from './pages/HomePage';
 import CatalogPage from './pages/CatalogPage';
+import CatalogQuesoPage from './pages/CatalogQuesoPage';
+import CatalogVinosPage from './pages/CatalogVinosPage';
 import SeasonalPage from './pages/SeasonalPage';
 import TablasPage from './pages/TablasPage';
 import ProductPage from './pages/ProductPage';
@@ -21,16 +23,17 @@ import AdminEntryPage from './pages/AdminEntryPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 /**
- * Rutas V1 alineadas con docs/V1/V1Tecnico.md §0.2 (override autoritativo):
- *  - SIN /catalogo/vinos publico (los vinos solo viajan via WhatsApp).
- *  - Quesos de temporada y Tablas son los dos sub-listados publicos del catalogo.
- *  - /celebra-con-nosotros es la pagina nueva obligatoria.
+ * Rutas V1. Los vinos se muestran en catálogo (Fase 8) pero el CTA siempre es
+ * WhatsApp — no "Añadir a Mi Tabla". El alcohol guard del backend (Fase 4)
+ * sigue siendo la red de seguridad final.
  */
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/catalogo" element={<CatalogPage />} />
+      <Route path="/catalogo/quesos" element={<CatalogQuesoPage />} />
+      <Route path="/catalogo/vinos" element={<CatalogVinosPage />} />
       <Route path="/catalogo/temporada" element={<SeasonalPage />} />
       <Route path="/tablas" element={<TablasPage />} />
       <Route path="/producto/:slug" element={<ProductPage />} />

@@ -1,20 +1,42 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '../components/ui/Button';
-import { PageScaffold } from '../components/PageScaffold';
+import React, { useEffect } from 'react';
+import { Hero } from '../components/home/Hero';
+import { SeasonalShowcase } from '../components/home/SeasonalShowcase';
+import { CategoryStrips } from '../components/home/CategoryStrips';
+import { EventsTeaser } from '../components/home/EventsTeaser';
+import { InstagramStrip } from '../components/home/InstagramStrip';
+import { VisitBlock } from '../components/home/VisitBlock';
+import { useSiteConfig } from '../hooks/useSiteConfig';
+import { useTablaDraft } from '../hooks/useTablaDraft';
 
 export default function HomePage() {
+  const { config } = useSiteConfig();
+  const { count } = useTablaDraft();
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = 'CRUDO — Tienda de quesos y cheese bar en Madrid';
+    }
+    const desc = 'Quesos artesanos, tablas para llevar y eventos en pleno centro de Madrid.';
+    if (typeof document !== 'undefined') {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute('content', desc);
+    }
+  }, []);
+
+  const primaryHref = count > 0 ? '/mi-tabla' : '/catalogo';
+  const primaryLabel = count > 0 ? `Ir a Mi Tabla (${count})` : 'Reservar mi tabla';
+
   return (
-    <PageScaffold
-      eyebrow="Tienda de quesos en Madrid"
-      title="Quesos curados, frescos y de temporada para llevar."
-      intro="Seleccion artesanal y rotativa cada mes. Reserva tu tabla, pasa por la tienda o pregunta por un maridaje. La estructura visual real llega en la siguiente fase."
-    >
-      <div className="flex flex-wrap gap-3">
-        <Button as={Link} to="/catalogo" variant="primary">Ver catalogo</Button>
-        <Button as={Link} to="/mi-tabla" variant="secondary">Monta tu tabla</Button>
-        <Button as={Link} to="/eventos" variant="ghost">Proximos eventos</Button>
-      </div>
-    </PageScaffold>
+    <>
+      <Hero
+        siteConfig={config}
+        cta={{ primaryHref, primaryLabel }}
+      />
+      <SeasonalShowcase whatsappNumber={config?.contact?.whatsapp_public} />
+      <CategoryStrips />
+      <EventsTeaser />
+      <InstagramStrip instagramUrl={config?.contact?.instagram} />
+      <VisitBlock siteConfig={config} />
+    </>
   );
 }
