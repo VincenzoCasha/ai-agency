@@ -18,6 +18,16 @@ function formatPrice(cents) {
   }).format(n);
 }
 
+const FALLBACK_BY_TYPE = {
+  CHEESE: { src: '/img/lifestyle/tabla-quesos-vino.jpg', alt: 'Tabla de quesos artesanos en CRUDO' },
+  WINE: { src: '/img/lifestyle/cata-vinos-naturales.jpg', alt: 'Botellas de vino natural en CRUDO' },
+};
+
+function getFallback(product) {
+  const type = (product.type || '').toUpperCase();
+  return FALLBACK_BY_TYPE[type] || null;
+}
+
 export function ProductCard({ product, whatsappNumber }) {
   const { addItem } = useTablaDraft();
   if (!product) return null;
@@ -26,6 +36,7 @@ export function ProductCard({ product, whatsappNumber }) {
   const isOut = product.stock_status === 'OUT';
   const price = formatPrice(product.price_cents);
   const image = product.images?.[0];
+  const fallback = !image?.url ? getFallback(product) : null;
   const detailHref = `/producto/${product.slug}`;
   const eyebrow = [product.producer, product.region].filter(Boolean).join(' · ');
 
@@ -71,6 +82,23 @@ export function ProductCard({ product, whatsappNumber }) {
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-95"
             />
+          ) : fallback ? (
+            <>
+              <img
+                src={fallback.src}
+                alt={fallback.alt}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover opacity-70"
+              />
+              <div
+                className="absolute inset-0 flex items-center justify-center"
+                style={{ background: 'linear-gradient(180deg, rgba(26,31,20,0.3) 0%, rgba(26,31,20,0.7) 100%)' }}
+              >
+                <span className="font-display italic text-2xl text-crudo-bone/90 px-3 text-center">
+                  {product.name}
+                </span>
+              </div>
+            </>
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-bg-elevated text-text-muted">
               <span className="font-display italic text-3xl opacity-50">CRUDO</span>

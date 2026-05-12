@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { ProductGrid, ProductGridSkeleton } from '../catalog/ProductGrid';
+import { RetroSign } from '../brand/RetroSign';
 import { useProducts } from '../../hooks/useProducts';
 
 export function SeasonalShowcase({ whatsappNumber }) {
@@ -16,12 +17,12 @@ export function SeasonalShowcase({ whatsappNumber }) {
     >
       <header className="flex items-end justify-between flex-wrap gap-3 mb-6">
         <div>
-          <p className="eyebrow text-gold mb-2">Esta semana</p>
+          <RetroSign text="De temporada" size="sm" className="mb-3" />
           <h2
             id="seasonal-heading"
             className="font-display italic text-3xl md:text-4xl text-text-primary"
           >
-            De temporada
+            Esta semana en CRUDO
           </h2>
         </div>
         <Link
