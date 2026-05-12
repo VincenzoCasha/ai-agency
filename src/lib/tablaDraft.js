@@ -113,4 +113,39 @@ export function clearDraft() {
   return persist({ items: [] });
 }
 
+/**
+ * Sanitiza estado leído de localStorage:
+ *  - quita items con `is_alcohol=true` (alcohol guard tambien al hidratar).
+ *  - quita items sin id o sin name.
+ *  - clampa qty a [1, MAX_QTY].
+ *  - persiste si hubo cambio.
+ */
+export function hydrate() {
+  const draft = load();
+  const before = JSON.stringify(draft.items || []);
+  const safe = (draft.items || [])
+    .filter((i) => i && i.is_alcohol !== true && i.id != null && typeof i.name === 'string' && i.name.length > 0)
+    .map((i) => ({
+      ...i,
+      quantity: Math.max(1, Math.min(MAX_QTY, Number(i.quantity) || 1)),
+    }));
+  if (JSON.stringify(safe) !== before) {
+    return persist({ items: safe });
+  }
+  return { items: safe };
+}
+
+/**
+ * Items minimos para enviar a POST /pickup-orders. La UI nunca envia precio:
+ * el backend recalcula el precio autoritativo desde DB.
+ */
+export function getPayloadItems() {
+  return load().items.map((i) => ({
+    product_id: i.id,
+    product_slug: i.slug,
+    quantity: i.quantity,
+  }));
+}
+
 export const TABLA_DRAFT_STORAGE_KEY = STORAGE_KEY;
+export const TABLA_MAX_QTY = MAX_QTY;

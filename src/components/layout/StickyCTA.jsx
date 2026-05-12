@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useTablaDraft } from '../../hooks/useTablaDraft';
@@ -17,14 +17,14 @@ const HIDDEN_PATHS = [
   '/admin',
 ];
 
-export function StickyCTA() {
+export function StickyCTA({ onOpenTabla }) {
   const { pathname } = useLocation();
   const { count } = useTablaDraft();
   if (HIDDEN_PATHS.some((p) => pathname.startsWith(p))) return null;
 
   const label = count > 0 ? `Mi Tabla (${count})` : 'Monta tu tabla';
   const aria = count > 0
-    ? `Ir a Mi Tabla con ${count} ${count === 1 ? 'producto' : 'productos'}`
+    ? `Abrir Mi Tabla con ${count} ${count === 1 ? 'producto' : 'productos'}`
     : 'Montar tu tabla';
 
   return (
@@ -32,7 +32,7 @@ export function StickyCTA() {
       className="md:hidden fixed inset-x-0 bottom-0 z-20 px-4 pb-3 pt-2 bg-bg-primary/95 backdrop-blur border-t border-border"
       style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0) + 0.75rem)' }}
     >
-      <Button as={Link} to="/mi-tabla" block size="lg" aria-label={aria}>
+      <Button type="button" onClick={onOpenTabla} block size="lg" aria-label={aria}>
         <ShoppingBag size={18} aria-hidden="true" />
         {label}
       </Button>

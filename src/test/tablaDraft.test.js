@@ -7,6 +7,8 @@ import {
   getItemCount,
   getTotalCents,
   setQuantity,
+  hydrate,
+  getPayloadItems,
   AlcoholInTablaError,
   TABLA_DRAFT_STORAGE_KEY,
 } from '../lib/tablaDraft';
@@ -91,5 +93,53 @@ describe('tablaDraft', () => {
     expect(raw).toBeTruthy();
     const parsed = JSON.parse(raw);
     expect(parsed.items[0].id).toBe(CHEESE.id);
+  });
+
+  it('hydrate strips alcohol items left over from older states', () => {
+    window.localStorage.setItem(
+      TABLA_DRAFT_STORAGE_KEY,
+      JSON.stringify({
+        items: [
+          { id: 1, slug: 'manchego', name: 'Manchego', price_cents: 1450, quantity: 2, is_alcohol: false },
+          { id: 99, slug: 'rioja', name: 'Rioja', price_cents: 2400, quantity: 1, is_alcohol: true },
+        ],
+      }),
+    );
+    const result = hydrate();
+    expect(result.items).toHaveLength(1);
+    expect(result.items[0].id).toBe(1);
+  });
+
+  it('hydrate clamps quantity to [1, 99] and drops invalid items', () => {
+    window.localStorage.setItem(
+      TABLA_DRAFT_STORAGE_KEY,
+      JSON.stringify({
+        items: [
+          { id: 1, name: 'Ok', price_cents: 100, quantity: 500, is_alcohol: false },
+          { id: 2, name: 'Zero', price_cents: 100, quantity: 0, is_alcohol: false },
+          { name: 'Sin id', price_cents: 100, quantity: 1, is_alcohol: false },
+        ],
+      }),
+    );
+    const result = hydrate();
+    expect(result.items).toHaveLength(2);
+    expect(result.items[0].quantity).toBe(99);
+    expect(result.items[1].quantity).toBe(1);
+  });
+
+  it('hydrate survives corrupted JSON without throwing', () => {
+    window.localStorage.setItem(TABLA_DRAFT_STORAGE_KEY, '{not json');
+    expect(() => hydrate()).not.toThrow();
+    expect(getDraft().items).toEqual([]);
+  });
+
+  it('getPayloadItems returns minimal shape (no price as authority)', () => {
+    addItem(CHEESE, 3);
+    const payload = getPayloadItems();
+    expect(payload).toEqual([
+      { product_id: CHEESE.id, product_slug: CHEESE.slug, quantity: 3 },
+    ]);
+    expect(payload[0]).not.toHaveProperty('price_cents');
+    expect(payload[0]).not.toHaveProperty('unit_price_cents');
   });
 });
