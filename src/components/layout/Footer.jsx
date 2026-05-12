@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { BrandSticker } from '../brand/BrandSticker';
 
 const HOURS_LABELS = {
   mon: 'Lunes',
@@ -15,7 +16,14 @@ export function Footer({ siteConfig }) {
   const cfg = siteConfig || {};
   const hours = cfg.hours || {};
   return (
-    <footer className="border-t border-border bg-bg-secondary mt-16">
+    <footer className="relative border-t border-border bg-bg-secondary mt-16">
+      <div
+        aria-hidden="true"
+        className="hidden md:block absolute right-8 -top-10 pointer-events-none"
+        title="Hecho con queso en Madrid"
+      >
+        <BrandSticker rotation={-12} size={84} />
+      </div>
       <div className="container-page py-10 grid gap-8 md:grid-cols-4">
         <div>
           <h3 className="font-display italic text-2xl">CRUDO</h3>

@@ -12,6 +12,7 @@ const CHEESE = {
   id: 1,
   slug: 'manchego-curado',
   name: 'Manchego curado',
+  type: 'CHEESE',
   short_desc: 'Curado de oveja, 12 meses.',
   price_cents: 1450,
   stock_status: 'IN',
@@ -28,6 +29,7 @@ const WINE = {
   id: 2,
   slug: 'rioja-reserva',
   name: 'Rioja Reserva',
+  type: 'WINE',
   is_alcohol: true,
   is_seasonal: false,
 };
@@ -90,5 +92,21 @@ describe('ProductCard', () => {
     const detailLinks = screen.getAllByRole('link');
     const detail = detailLinks.find((l) => l.getAttribute('href') === '/producto/manchego-curado');
     expect(detail).toBeTruthy();
+  });
+
+  it('uses editorial fallback by type when product has no images (CHEESE)', () => {
+    const noImage = { ...CHEESE, images: [] };
+    renderCard(noImage);
+    const img = screen.getByAltText(/Tabla de quesos artesanos en CRUDO/i);
+    expect(img).toBeInTheDocument();
+    expect(img.getAttribute('src')).toMatch(/tabla-quesos-vino/);
+  });
+
+  it('uses editorial fallback by type when product has no images (WINE)', () => {
+    const noImageWine = { ...WINE, images: [] };
+    renderCard(noImageWine);
+    const img = screen.getByAltText(/Botellas de vino natural en CRUDO/i);
+    expect(img).toBeInTheDocument();
+    expect(img.getAttribute('src')).toMatch(/cata-vinos-naturales/);
   });
 });

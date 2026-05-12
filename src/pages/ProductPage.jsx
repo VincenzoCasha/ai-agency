@@ -83,7 +83,11 @@ export default function ProductPage() {
         </Link>
       </nav>
       <div className="grid gap-8 md:gap-12 md:grid-cols-2 items-start">
-        <ProductGallery images={product.images} productName={product.name} />
+        <ProductGallery
+          images={product.images}
+          productName={product.name}
+          productType={product.type}
+        />
         <ProductMeta
           product={product}
           whatsappNumber={config?.contact?.whatsapp_public}

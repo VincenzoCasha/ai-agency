@@ -2,6 +2,8 @@ import React from 'react';
 import { MapPin, Clock, MessageCircle } from 'lucide-react';
 import { trackMapsClick, trackWhatsAppClick } from '../../lib/analytics';
 import { buildGenericUrl } from '../../lib/whatsapp';
+import { RetroSign } from '../brand/RetroSign';
+import { LifestylePhoto } from '../brand/LifestylePhoto';
 
 const DAY_LABELS = {
   mon: 'Lunes',
@@ -27,7 +29,7 @@ export function VisitBlock({ siteConfig }) {
     >
       <div className="grid gap-8 md:grid-cols-2 md:gap-12 items-start">
         <div>
-          <p className="eyebrow text-gold mb-3">Visítanos</p>
+          <RetroSign text="Visítanos" size="sm" className="mb-3" />
           <h2
             id="visit-heading"
             className="font-display italic text-3xl md:text-4xl text-text-primary"
@@ -39,6 +41,12 @@ export function VisitBlock({ siteConfig }) {
             te montamos la tabla al momento. Si reservas online, la recoges en
             tienda y pagas allí.
           </p>
+          <LifestylePhoto
+            src="/img/lifestyle/bodegon-cartel-crudo.jpg"
+            alt="Botellas, copas y cartel retroiluminado de CRUDO en el local"
+            aspectRatio="aspect-[4/3]"
+            className="mt-6 rounded-md border border-border"
+          />
           <div className="mt-7 flex flex-wrap gap-3">
             {maps ? (
               <a

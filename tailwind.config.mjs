@@ -30,6 +30,13 @@ export default {
           DEFAULT: 'var(--color-border)',
           strong: 'var(--color-border-strong)',
         },
+        crudo: {
+          saffron: 'var(--color-crudo-saffron)',
+          'saffron-grout': 'var(--color-crudo-saffron-grout)',
+          terracota: 'var(--color-crudo-terracota)',
+          'terracota-deep': 'var(--color-crudo-terracota-deep)',
+          bone: 'var(--color-crudo-bone)',
+        },
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', '"Times New Roman"', 'serif'],

@@ -1,12 +1,41 @@
 import React, { useState } from 'react';
 import { cn } from '../../lib/cn';
 
-export function ProductGallery({ images = [], productName }) {
+const FALLBACK_BY_TYPE = {
+  CHEESE: { src: '/img/lifestyle/tabla-quesos-vino.jpg', alt: 'Tabla de quesos artesanos en CRUDO' },
+  WINE: { src: '/img/lifestyle/cata-vinos-naturales.jpg', alt: 'Botellas de vino natural en CRUDO' },
+};
+
+export function ProductGallery({ images = [], productName, productType }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const valid = images.filter((img) => img && img.url);
   const active = valid[activeIndex] || valid[0];
 
   if (valid.length === 0) {
+    const fallback = FALLBACK_BY_TYPE[(productType || '').toUpperCase()];
+    if (fallback) {
+      return (
+        <div
+          className="relative bg-bg-secondary border border-border rounded-md overflow-hidden"
+          style={{ aspectRatio: '1 / 1' }}
+        >
+          <img
+            src={fallback.src}
+            alt={fallback.alt}
+            className="absolute inset-0 w-full h-full object-cover opacity-75"
+            loading="eager"
+          />
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ background: 'linear-gradient(180deg, rgba(26,31,20,0.25) 0%, rgba(26,31,20,0.7) 100%)' }}
+          >
+            <span className="font-display italic text-3xl md:text-5xl text-crudo-bone/95 px-4 text-center">
+              {productName}
+            </span>
+          </div>
+        </div>
+      );
+    }
     return (
       <div
         className="bg-bg-secondary border border-border rounded-md flex items-center justify-center"

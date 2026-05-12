@@ -19,6 +19,12 @@
   --color-error: #A8443A;
   --color-border: rgba(242,234,216,0.12);
   --color-border-strong: rgba(242,234,216,0.24);
+  /* CRUDO brand-signature tokens (Fase 8.5) */
+  --color-crudo-saffron: #E8B547;
+  --color-crudo-saffron-grout: #C99A36;
+  --color-crudo-terracota: #FF8A47;
+  --color-crudo-terracota-deep: #E0703A;
+  --color-crudo-bone: #F5EFE6;
   --font-display: "Cormorant Garamond", "Times New Roman", serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
