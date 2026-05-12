@@ -28,6 +28,11 @@ const env = {
 
   OWNER_WHATSAPP: process.env.OWNER_WHATSAPP || '',
   OWNER_EMAIL: process.env.OWNER_EMAIL || '',
+
+  BREVO_API_KEY: process.env.BREVO_API_KEY || '',
+  PUBLIC_WHATSAPP: process.env.PUBLIC_WHATSAPP || process.env.VITE_PUBLIC_WHATSAPP || '',
+  PUBLIC_INSTAGRAM: process.env.PUBLIC_INSTAGRAM || 'https://www.instagram.com/crudoquesos',
+  PUBLIC_GOOGLE_MAPS_URL: process.env.PUBLIC_GOOGLE_MAPS_URL || process.env.VITE_GOOGLE_MAPS_URL || '',
 };
 
 if (env.NODE_ENV === 'production') {
