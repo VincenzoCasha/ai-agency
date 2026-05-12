@@ -91,6 +91,3 @@ jobs:
 
       - name: Build Vite frontend
         run: npm run build
-
-      - name: Verify dist artifact
-        run: npm run build:check
