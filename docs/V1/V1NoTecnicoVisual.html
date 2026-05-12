@@ -49,18 +49,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button {
-  font: inherit;
-}
+button { font: inherit; }
 
-a {
-  color: var(--color-gold);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--color-accent-hover);
-}
+a { color: var(--color-gold); text-decoration: none; }
+a:hover { color: var(--color-accent-hover); }
 
 .page {
   width: min(1220px, calc(100% - 32px));
@@ -82,32 +74,11 @@ a:hover {
   border-bottom: 1px solid var(--color-border);
 }
 
-.brand {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand strong { font-family: var(--font-display); font-size: 1.55rem; font-style: italic; font-weight: 500; }
+.brand span { color: var(--color-text-muted); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; }
 
-.brand strong {
-  font-family: var(--font-display);
-  font-size: 1.55rem;
-  font-style: italic;
-  font-weight: 500;
-}
-
-.brand span {
-  color: var(--color-text-muted);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
+.nav { display: flex; flex-wrap: wrap; gap: 8px; }
 .nav a {
   min-height: 34px;
   display: inline-flex;
@@ -118,11 +89,7 @@ a:hover {
   color: var(--color-text-secondary);
   font-size: 0.78rem;
 }
-
-.nav a:hover {
-  border-color: var(--color-gold);
-  color: var(--color-text-primary);
-}
+.nav a:hover { border-color: var(--color-gold); color: var(--color-text-primary); }
 
 .hero {
   min-height: 56vh;
@@ -149,19 +116,9 @@ h1, h2, h3 {
   line-height: 1.08;
 }
 
-h1 {
-  max-width: 930px;
-  font-size: clamp(3rem, 7vw, 6.6rem);
-  font-style: italic;
-}
-
-h2 {
-  font-size: clamp(2rem, 4.2vw, 3.2rem);
-}
-
-h3 {
-  font-size: 1.55rem;
-}
+h1 { max-width: 930px; font-size: clamp(3rem, 7vw, 6.6rem); font-style: italic; }
+h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); }
+h3 { font-size: 1.55rem; }
 
 .lead {
   max-width: 780px;
@@ -170,12 +127,7 @@ h3 {
   font-size: 1.08rem;
 }
 
-.meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 28px;
-}
+.meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 
 .pill {
   display: inline-flex;
@@ -189,34 +141,22 @@ h3 {
   color: var(--color-text-secondary);
   font-size: 0.84rem;
 }
-
-.pill strong {
-  color: var(--color-text-primary);
-  font-weight: 600;
-}
+.pill strong { color: var(--color-text-primary); font-weight: 600; }
 
 .status-dot {
-  width: 9px;
-  height: 9px;
+  width: 9px; height: 9px;
   border-radius: 50%;
   background: var(--color-text-muted);
 }
-
 .status-dot.todo { background: var(--color-text-muted); }
 .status-dot.doing { background: var(--color-warning); }
 .status-dot.blocked { background: var(--color-error); }
 .status-dot.review { background: var(--color-gold); }
 .status-dot.done { background: var(--color-success); }
+.status-dot.next { background: var(--color-accent); }
 
-.grid {
-  display: grid;
-  gap: 18px;
-}
-
-.summary-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin: 30px 0 46px;
-}
+.grid { display: grid; gap: 18px; }
+.summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 30px 0 46px; }
 
 .metric {
   min-height: 132px;
@@ -225,7 +165,6 @@ h3 {
   background: var(--color-bg-secondary);
   border-radius: 6px;
 }
-
 .metric .label {
   color: var(--color-text-muted);
   font-size: 0.74rem;
@@ -233,7 +172,6 @@ h3 {
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
-
 .metric .value {
   margin-top: 10px;
   color: var(--color-text-primary);
@@ -241,16 +179,9 @@ h3 {
   font-size: 2.6rem;
   line-height: 1;
 }
+.metric .hint { margin-top: 10px; color: var(--color-text-secondary); font-size: 0.88rem; }
 
-.metric .hint {
-  margin-top: 10px;
-  color: var(--color-text-secondary);
-  font-size: 0.88rem;
-}
-
-.section {
-  margin-top: 54px;
-}
+.section { margin-top: 54px; }
 
 .section-header {
   display: flex;
@@ -259,17 +190,9 @@ h3 {
   gap: 22px;
   margin-bottom: 20px;
 }
+.section-header p { max-width: 620px; margin: 0; color: var(--color-text-secondary); }
 
-.section-header p {
-  max-width: 620px;
-  margin: 0;
-  color: var(--color-text-secondary);
-}
-
-.phase-list {
-  display: grid;
-  gap: 16px;
-}
+.phase-list { display: grid; gap: 16px; }
 
 .phase {
   display: grid;
@@ -280,19 +203,10 @@ h3 {
   background: var(--color-bg-secondary);
   border-radius: 6px;
 }
-
-.phase.current {
-  border-color: var(--color-gold);
-  box-shadow: inset 4px 0 0 var(--color-gold);
-}
-
-.phase.done {
-  border-color: rgba(107,142,90,0.45);
-}
-
-.phase.blocked {
-  border-color: rgba(168,68,58,0.55);
-}
+.phase.current { border-color: var(--color-gold); box-shadow: inset 4px 0 0 var(--color-gold); }
+.phase.done { border-color: rgba(107,142,90,0.45); }
+.phase.blocked { border-color: rgba(168,68,58,0.55); }
+.phase.next { border-color: rgba(181,113,58,0.6); }
 
 .phase-index {
   display: grid;
@@ -304,10 +218,7 @@ h3 {
   font-size: 1.6rem;
 }
 
-.phase-main {
-  min-width: 0;
-}
-
+.phase-main { min-width: 0; }
 .phase-title {
   display: flex;
   flex-wrap: wrap;
@@ -315,12 +226,7 @@ h3 {
   gap: 10px;
   margin-bottom: 14px;
 }
-
-.phase-title h3 {
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  font-weight: 700;
-}
+.phase-title h3 { font-family: var(--font-body); font-size: 1.05rem; font-weight: 700; }
 
 .tag {
   display: inline-flex;
@@ -336,27 +242,16 @@ h3 {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
 .tag.todo { color: var(--color-text-muted); }
 .tag.doing { color: var(--color-warning); border-color: rgba(200,137,62,0.5); }
 .tag.blocked { color: var(--color-error); border-color: rgba(168,68,58,0.55); }
 .tag.review { color: var(--color-gold); border-color: rgba(184,150,104,0.55); }
 .tag.done { color: var(--color-success); border-color: rgba(107,142,90,0.55); }
+.tag.next { color: var(--color-accent); border-color: rgba(181,113,58,0.55); }
 
-.phase-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: 16px;
-}
+.phase-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 16px; }
 
-.steps {
-  display: grid;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
+.steps { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .step {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
@@ -365,29 +260,19 @@ h3 {
   color: var(--color-text-secondary);
   font-size: 0.93rem;
 }
-
 .check {
   display: inline-grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: 20px; height: 20px;
   border: 1px solid var(--color-border-strong);
   border-radius: 50%;
   color: var(--color-text-muted);
   font-family: var(--font-mono);
   font-size: 0.72rem;
 }
-
-.step.done .check {
-  border-color: rgba(107,142,90,0.75);
-  background: rgba(107,142,90,0.14);
-  color: var(--color-success);
-}
-
-.step.blocked .check {
-  border-color: rgba(168,68,58,0.75);
-  color: var(--color-error);
-}
+.step.done .check { border-color: rgba(107,142,90,0.75); background: rgba(107,142,90,0.14); color: var(--color-success); }
+.step.blocked .check { border-color: rgba(168,68,58,0.75); color: var(--color-error); }
+.step.doing .check { border-color: rgba(200,137,62,0.7); color: var(--color-warning); }
 
 .deliverable {
   padding: 14px;
@@ -395,7 +280,6 @@ h3 {
   background: rgba(242,234,216,0.03);
   border-radius: 4px;
 }
-
 .deliverable strong {
   display: block;
   margin-bottom: 4px;
@@ -404,12 +288,7 @@ h3 {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-
-.deliverable p {
-  margin: 0;
-  color: var(--color-text-secondary);
-  font-size: 0.91rem;
-}
+.deliverable p { margin: 0; color: var(--color-text-secondary); font-size: 0.91rem; }
 
 .progress-track {
   height: 9px;
@@ -418,16 +297,11 @@ h3 {
   border-radius: 999px;
   background: rgba(242,234,216,0.08);
 }
+.progress-fill { height: 100%; border-radius: inherit; background: var(--color-gold); }
+.progress-fill.done { background: var(--color-success); }
+.progress-fill.next { background: var(--color-accent); }
 
-.progress-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: var(--color-gold);
-}
-
-.lane-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
+.lane-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 .panel {
   padding: 22px;
@@ -435,32 +309,16 @@ h3 {
   background: var(--color-bg-secondary);
   border-radius: 6px;
 }
+.panel h3 { margin-bottom: 14px; }
 
-.panel h3 {
-  margin-bottom: 14px;
-}
-
-.list {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.list li {
-  position: relative;
-  padding-left: 20px;
-  color: var(--color-text-secondary);
-}
-
+.list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.list li { position: relative; padding-left: 20px; color: var(--color-text-secondary); }
 .list li::before {
   content: "";
   position: absolute;
   left: 0;
   top: 0.72em;
-  width: 7px;
-  height: 7px;
+  width: 7px; height: 7px;
   border-radius: 50%;
   background: var(--color-gold);
 }
@@ -471,39 +329,20 @@ h3 {
   border-radius: 6px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--color-bg-secondary);
-}
-
-th, td {
-  padding: 13px 14px;
-  border-bottom: 1px solid var(--color-border);
-  text-align: left;
-  vertical-align: top;
-}
-
-th {
-  color: var(--color-gold);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-td {
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
-}
-
-tr:last-child td {
-  border-bottom: 0;
-}
+table { width: 100%; border-collapse: collapse; background: var(--color-bg-secondary); }
+th, td { padding: 13px 14px; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
+th { color: var(--color-gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+td { color: var(--color-text-secondary); font-size: 0.9rem; }
+tr:last-child td { border-bottom: 0; }
 
 .warning-panel {
   border-color: rgba(200,137,62,0.5);
   background: linear-gradient(180deg, rgba(58,42,30,0.74), rgba(37,36,32,0.98));
+}
+
+.success-panel {
+  border-color: rgba(107,142,90,0.5);
+  background: linear-gradient(180deg, rgba(38,52,30,0.74), rgba(37,36,32,0.98));
 }
 
 .instructions {
@@ -512,11 +351,7 @@ tr:last-child td {
   background: var(--color-bg-elevated);
   border-radius: 6px;
 }
-
-.instructions code {
-  color: var(--color-gold);
-  font-family: var(--font-mono);
-}
+.instructions code { color: var(--color-gold); font-family: var(--font-mono); }
 
 .footer-note {
   margin: 44px 0 0;
@@ -526,16 +361,87 @@ tr:last-child td {
   font-size: 0.86rem;
 }
 
+/* Backbone (fila compacta de 16 fases tecnicas) */
+.backbone {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.backbone-cell {
+  position: relative;
+  padding: 12px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg-secondary);
+  min-height: 92px;
+}
+.backbone-cell.done { border-color: rgba(107,142,90,0.55); background: linear-gradient(180deg, rgba(40,55,30,0.55), var(--color-bg-secondary)); }
+.backbone-cell.next { border-color: rgba(181,113,58,0.6); background: linear-gradient(180deg, rgba(58,42,30,0.55), var(--color-bg-secondary)); }
+.backbone-cell .num {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-gold);
+  letter-spacing: 0.1em;
+}
+.backbone-cell .name {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.backbone-cell .badge {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.backbone-cell.done .badge { color: var(--color-success); }
+.backbone-cell.next .badge { color: var(--color-accent); }
+
+/* Highlights cards */
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.highlight {
+  padding: 18px;
+  border: 1px solid rgba(107,142,90,0.35);
+  background: linear-gradient(180deg, rgba(40,55,30,0.45), rgba(37,36,32,0.95));
+  border-radius: 6px;
+}
+.highlight .h-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-success);
+}
+.highlight h3 {
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+.highlight p {
+  margin: 8px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
 @media (max-width: 980px) {
   .summary-grid,
-  .lane-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .phase {
-    grid-template-columns: 1fr;
-  }
-
+  .lane-grid { grid-template-columns: 1fr 1fr; }
+  .phase { grid-template-columns: 1fr; }
   .phase-index {
     place-items: start;
     min-height: 0;
@@ -543,89 +449,32 @@ tr:last-child td {
     border-right: 0;
     border-bottom: 1px solid var(--color-border);
   }
-
-  .phase-grid {
-    grid-template-columns: 1fr;
-  }
+  .phase-grid { grid-template-columns: 1fr; }
+  .backbone { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .highlight-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 680px) {
-  .page {
-    width: min(100% - 24px, 1220px);
-    padding-top: 12px;
-  }
-
-  .topbar {
-    position: static;
-    align-items: start;
-    flex-direction: column;
-  }
-
-  .hero {
-    min-height: 42vh;
-    padding-top: 34px;
-  }
-
+  .page { width: min(100% - 24px, 1220px); padding-top: 12px; }
+  .topbar { position: static; align-items: start; flex-direction: column; }
+  .hero { min-height: 42vh; padding-top: 34px; }
   .summary-grid,
-  .lane-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section-header {
-    display: block;
-  }
-
-  .section-header p {
-    margin-top: 10px;
-  }
+  .lane-grid { grid-template-columns: 1fr; }
+  .section-header { display: block; }
+  .section-header p { margin-top: 10px; }
+  .backbone { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media print {
-  body {
-    background: white;
-    color: #1A1F14;
+  body { background: white; color: #1A1F14; }
+  .topbar { position: static; background: white; }
+  .page { width: 100%; padding: 0; }
+  .hero { min-height: auto; }
+  .metric, .phase, .panel, .instructions, table, .backbone-cell, .highlight {
+    background: white; border-color: #999;
   }
-
-  .topbar {
-    position: static;
-    background: white;
-  }
-
-  .page {
-    width: 100%;
-    padding: 0;
-  }
-
-  .hero {
-    min-height: auto;
-  }
-
-  .metric,
-  .phase,
-  .panel,
-  .instructions,
-  table {
-    background: white;
-    border-color: #999;
-  }
-
-  h1, h2, h3,
-  .metric .value,
-  .metric .label,
-  .phase-title h3,
-  th {
-    color: #1A1F14;
-  }
-
-  .lead,
-  .metric .hint,
-  .step,
-  .deliverable p,
-  .list li,
-  td,
-  .footer-note {
-    color: #333;
-  }
+  h1, h2, h3, .metric .value, .metric .label, .phase-title h3, th { color: #1A1F14; }
+  .lead, .metric .hint, .step, .deliverable p, .list li, td, .footer-note { color: #333; }
 }
 </style>
 </head>
@@ -637,6 +486,8 @@ tr:last-child td {
       <span>V1 no tecnico</span>
     </div>
     <div class="nav">
+      <a href="#backbone-section">Backbone</a>
+      <a href="#highlights">Highlights</a>
       <a href="#roadmap">Roadmap</a>
       <a href="#workstreams">Areas</a>
       <a href="#content">Contenido</a>
@@ -648,8 +499,8 @@ tr:last-child td {
   <section class="hero" aria-labelledby="page-title">
     <div>
       <div class="eyebrow">Operaciones, contenido y lanzamiento</div>
-      <h1 id="page-title">La V1 que no se programa</h1>
-      <p class="lead">Roadmap visual y accionable para todo lo que debe pasar fuera del codigo: decisiones del owner, producto, fotos, copy, legal, marketing, lanzamiento, formacion y seguimiento comercial.</p>
+      <h1 id="page-title">El backbone funciona. Ahora toca llenarlo.</h1>
+      <p class="lead">El motor comercial de la web ya esta construido y probado: catalogo publico, Mi Tabla con bloqueo de alcohol, panel admin con metricas de negocio y guia completa de despliegue. Lo que queda es la parte humana: contenido real del owner, marca visual, fotos, dominio y la primera salida publica.</p>
       <div class="meta-row" id="heroMeta"></div>
     </div>
   </section>
@@ -673,6 +524,26 @@ tr:last-child td {
 
   <section class="grid summary-grid" aria-label="Resumen" id="summary"></section>
 
+  <!-- BACKBONE TECNICO -->
+  <section class="section" id="backbone-section" aria-labelledby="backbone-title">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Lo que ya tenemos construido</div>
+        <h2 id="backbone-title">Backbone tecnico V1</h2>
+      </div>
+      <p>Las 16 fases tecnicas del plan, en orden. Las verdes ya estan funcionando con tests verde y verificado punto a punto.</p>
+    </div>
+    <div class="backbone" id="backboneRow"></div>
+  </section>
+
+  <!-- HIGHLIGHTS COMERCIALES -->
+  <section class="section success-panel panel" id="highlights" aria-labelledby="highlights-title">
+    <div class="eyebrow">Capacidades activas</div>
+    <h2 id="highlights-title">Lo que ya funciona, traducido a comercial</h2>
+    <p>Estas capacidades estan operativas en el backend ahora mismo. Solo falta la capa visual (Fase 7+) para que el cliente final las use.</p>
+    <div class="highlight-grid" id="highlightGrid"></div>
+  </section>
+
   <section class="section warning-panel panel" aria-labelledby="rules-title">
     <div class="eyebrow">Reglas de alcance</div>
     <h2 id="rules-title">No negociables de la V1</h2>
@@ -685,7 +556,7 @@ tr:last-child td {
         <div class="eyebrow">Paso a paso</div>
         <h2 id="roadmap-title">Roadmap no tecnico</h2>
       </div>
-      <p>El orden esta pensado para no bloquear al equipo tecnico: primero decisiones y contenido, despues validacion, lanzamiento y rutina comercial.</p>
+      <p>El orden esta pensado para no bloquear al equipo tecnico: primero decisiones y contenido, despues validacion, lanzamiento y rutina comercial. El backend ya no es bloqueante.</p>
     </div>
     <div class="phase-list" id="phaseList"></div>
   </section>
@@ -707,7 +578,7 @@ tr:last-child td {
         <div class="eyebrow">Assets</div>
         <h2 id="content-title">Checklist de contenido</h2>
       </div>
-      <p>Lo que debe existir para que la web no salga con placeholders ni textos genericos.</p>
+      <p>Lo que debe existir para que la web no salga con placeholders ni textos genericos. El backend ya admite todo via panel admin.</p>
     </div>
     <div class="table-wrap">
       <table>
@@ -743,7 +614,7 @@ tr:last-child td {
         <div class="eyebrow">Medicion comercial</div>
         <h2 id="kpi-title">KPIs del primer mes</h2>
       </div>
-      <p>El objetivo no es solo trafico: es actividad comercial suficiente para acercar la primera contratacion.</p>
+      <p>El objetivo es generar volumen y senal comercial suficiente para justificar la primera contratacion (segundo camarero ~2000€/mes brutos).</p>
     </div>
     <div class="table-wrap">
       <table>
@@ -763,10 +634,10 @@ tr:last-child td {
   <section class="section" aria-labelledby="operating-title">
     <div class="section-header">
       <div>
-        <div class="eyebrow">Owner</div>
+        <div class="eyebrow">Owner + segundo camarero</div>
         <h2 id="operating-title">Ritmo operativo despues del launch</h2>
       </div>
-      <p>La web solo funciona si el owner puede mantenerla sin quemarse.</p>
+      <p>El admin esta diseñado para que owner y, en cuanto entre, el segundo camarero, repartan rutina sin que la sala se resienta.</p>
     </div>
     <div class="grid lane-grid" id="operatingGrid"></div>
   </section>
@@ -777,7 +648,7 @@ tr:last-child td {
         <div class="eyebrow">Riesgos no tecnicos</div>
         <h2 id="risks-title">Riesgos y mitigacion</h2>
       </div>
-      <p>Estos son los puntos que mas probablemente retrasan o debilitan la V1 aunque el desarrollo vaya bien.</p>
+      <p>Estos son los puntos que mas probablemente retrasan o debilitan la V1 aunque el desarrollo vaya bien (y de hecho ya va bien).</p>
     </div>
     <div class="grid lane-grid" id="riskGrid"></div>
   </section>
@@ -787,34 +658,109 @@ tr:last-child td {
     <h2 id="update-title">Como actualizar este HTML</h2>
     <ol>
       <li>Actualiza el objeto <code>nonTechState</code> al final de cada sesion de negocio, contenido, legal o launch.</li>
-      <li>Usa los estados <code>TODO</code>, <code>DOING</code>, <code>BLOCKED</code>, <code>REVIEW</code> y <code>DONE</code>.</li>
+      <li>Usa los estados <code>TODO</code>, <code>DOING</code>, <code>BLOCKED</code>, <code>REVIEW</code>, <code>DONE</code> y <code>NEXT</code> (siguiente).</li>
       <li>No marques nada como <code>DONE</code> si no hay entregable real: decision escrita, archivo recibido, cuenta creada, copy aprobado o checklist validado.</li>
       <li>Si cambia una decision importante, actualiza tambien <code>docs/V1/V1Tecnico.md</code> si afecta al equipo tecnico.</li>
-      <li>Este archivo es del lado no tecnico; no lo uses para pedir codigo.</li>
+      <li>El array <code>technicalBackbone</code> se sincroniza con la tabla §0.1 de <code>V1Tecnico.md</code> (verdad tecnica).</li>
     </ol>
   </section>
 
-  <p class="footer-note">Fuente: docs/V1/CRUDO_V1_Visual_Master_Plan.html y docs/AGENTS_Javi.md. Documento visual no tecnico para CRUDO V1.</p>
+  <p class="footer-note">Fuente: docs/V1/CRUDO_V1_Visual_Master_Plan.html, docs/V1/V1Tecnico.md y docs/AGENTS_Javi.md. Documento visual no tecnico para CRUDO V1.</p>
 </main>
 
 <script>
 const nonTechState = {
   project: "CRUDO V1",
-  lastUpdated: "2026-05-04",
-  overallStatus: "TODO",
+  lastUpdated: "2026-05-08",
+  overallStatus: "DOING",
   currentPhase: 0,
-  nextAction: "Cerrar discovery financiero-operativo, reunir contenido base y preparar dominio/Contabo/Plesk",
+  techPhase: 6,
+  techPhaseTotal: 16,
+  nextAction: "Owner: cerrar dominio + SSL Plesk + entregar logo, paleta, tipografia y primeros 20-40 productos para que Fase 7 (frontend) arranque ya.",
+
+  // ── Backbone tecnico (16 fases V1Tecnico.md) ──────────────────────────────
+  technicalBackbone: [
+    { id: 0,  name: "Repo y contexto", status: "DONE",
+      summary: "Estructura monolito creada (src/, server/, db/, uploads/, infra/) con docs base." },
+    { id: 1,  name: "Scaffold backend", status: "DONE",
+      summary: "Express con health endpoint, RFC 7807, pool MariaDB lazy, ESLint y vitest." },
+    { id: 2,  name: "Modelo de datos", status: "DONE",
+      summary: "17 tablas MariaDB con `is_alcohol` no nullable. Migraciones idempotentes y seed dev." },
+    { id: 3,  name: "API publica", status: "DONE",
+      summary: "12 endpoints publicos (catalogo, eventos, inquiries, newsletter, consent, site config) con cache 5min." },
+    { id: 4,  name: "Mi Tabla pickup", status: "DONE",
+      summary: "POST /pickup-orders con alcohol guard 422, idempotency 24h y mensaje confirmacion ES." },
+    { id: 5,  name: "Admin + JWT", status: "DONE",
+      summary: "28 endpoints admin con JWT, dashboard, KPIs, CRUD productos/eventos/campanas, audit y uploads." },
+    { id: 6,  name: "Scripts y deploy", status: "DONE",
+      summary: "Scripts npm honestos, server.js con SPA condicional, guia Plesk completa, CI con MariaDB." },
+    { id: 7,  name: "Frontend React/Vite", status: "NEXT",
+      summary: "React 19 + Vite + Tailwind, layout, design system desde tokens del owner, cookie banner base." },
+    { id: 8,  name: "Home + Catalogo + PDP", status: "TODO",
+      summary: "Home con hero, catalogo de quesos con filtros y ficha de producto. Vino visible solo via WhatsApp." },
+    { id: 9,  name: "Mi Tabla frontend", status: "TODO",
+      summary: "Carrito, drawer, formulario pickup, pantalla de confirmacion y eventos analytics." },
+    { id: 10, name: "Eventos, contacto, sobre, mayoristas", status: "TODO",
+      summary: "Paginas secundarias publicas y formularios conectados a la API publica." },
+    { id: 11, name: "Admin frontend movil", status: "TODO",
+      summary: "Login admin, dashboard movil con quick actions, CRUD UI mobile-first." },
+    { id: 12, name: "Legal, cookies, SEO, analytics", status: "TODO",
+      summary: "Aviso legal, privacidad, cookies AEPD custom, GA4/Pixel tras consentimiento, sitemap, schema.org Store." },
+    { id: 13, name: "QA, accesibilidad, performance", status: "TODO",
+      summary: "Playwright E2E, axe-core, Lighthouse mobile, smoke en iPhone e Instagram in-app browser." },
+    { id: 14, name: "Contenido real e imagenes", status: "TODO",
+      summary: "Carga real de productos, fotos definitivas, eventos confirmados y campana inicial." },
+    { id: 15, name: "Launch staging y produccion", status: "TODO",
+      summary: "Staging con noindex+basic-auth, smoke Plesk/Contabo, public launch y retro T+7." }
+  ],
+
+  // ── Highlights comerciales: capacidades ya disponibles ────────────────────
+  highlights: [
+    {
+      title: "Pickup de quesos sin pago online, listo para recibir pedidos",
+      detail: "El backend acepta pedidos con fecha y hora dentro del horario, calcula precios desde la base de datos, bloquea cualquier item con alcohol y envia mensaje de confirmacion en espanol con pago en CRUDO al recoger y respuesta WhatsApp en menos de 24h."
+    },
+    {
+      title: "Bloqueo del alcohol verificado a tres niveles",
+      detail: "Producto, variante de tabla con maridaje y carrito mixto: si hay aunque sea un item con alcohol, el pedido se rechaza entero y nada se persiste. Probado con 15 tests automaticos."
+    },
+    {
+      title: "Panel admin movil con metricas de negocio",
+      detail: "Dashboard compacto (pickups hoy, alertas de stock, eventos proximos) y KPIs por periodo (today/7d/30d) con revenue completado, ticket medio, reservas y newsletter. Todo accesible desde un movil con login JWT."
+    },
+    {
+      title: "Kill switch de pickups operativo",
+      detail: "Si la sala se desborda, un solo PUT al panel pausa todos los pedidos pickup nuevos. Probado end-to-end: la API publica devuelve 422 PICKUP_PAUSED inmediatamente."
+    },
+    {
+      title: "Auditoria de cada accion comercial",
+      detail: "Cada login, cambio de stock, confirmacion de pedido, edicion de campana o reserva queda trazado con quien, cuando y que cambio. Habilita confianza para delegar al segundo camarero."
+    },
+    {
+      title: "Subida de fotos de producto con guarda de seguridad",
+      detail: "Multer + filtros por tipo (JPG/PNG/WebP) y tamano (8MB max). Las imagenes se sirven desde /uploads, viven entre deploys y se incluyen en el backup diario de Plesk."
+    },
+    {
+      title: "Eventos con capacidad calculada en tiempo real",
+      detail: "Cada evento expone plazas restantes y un flag few_seats_left cuando quedan menos del 30%. Las reservas que excedan la capacidad se rechazan con 422 antes de persistirse."
+    },
+    {
+      title: "Newsletter funcionando en modo noop hasta que llegue Brevo",
+      detail: "Las suscripciones se guardan en MariaDB con consent_at. Cuando se active la API key real de Brevo, basta con un cambio de variable de entorno; el cliente se enchufa sin tocar contratos."
+    }
+  ],
+
   phases: [
     {
       id: 0,
       title: "Alineacion y alcance V1",
       status: "TODO",
-      progress: 0,
+      progress: 25,
       owner: "PM + Owner",
-      doneWhen: "Scope firmado: sin pago online, vino solo WhatsApp, Mi Tabla solo no alcohol, objetivo primera contratacion.",
+      doneWhen: "Scope firmado por escrito: sin pago online, vino solo WhatsApp, Mi Tabla solo no alcohol, objetivo primera contratacion en 12 meses.",
       steps: [
-        ["Confirmar objetivo North Star: ingresos suficientes para contratar segunda persona.", "todo"],
-        ["Firmar alcance IN/OUT de V1 y dejar V2 fuera de la conversacion diaria.", "todo"],
+        ["Confirmar objetivo North Star: ingresos suficientes para contratar segunda persona (~2000€/mes brutos).", "todo"],
+        ["Firmar alcance IN/OUT de V1 y dejar V2 fuera de la conversacion diaria.", "doing"],
         ["Definir fecha objetivo de soft launch y public launch.", "todo"],
         ["Cerrar responsables: owner, PM, copy, foto, legal, marketing.", "todo"]
       ]
@@ -823,56 +769,57 @@ const nonTechState = {
       id: 1,
       title: "Discovery financiero y operativo",
       status: "TODO",
-      progress: 0,
+      progress: 30,
       owner: "Owner + PM",
       doneWhen: "Hay baseline comercial, horarios, capacidad pickup y SLA documentados.",
       steps: [
-        ["Recoger facturacion semanal media actual.", "todo"],
-        ["Estimar coste mensual real de la primera contratacion.", "todo"],
-        ["Separar ingresos actuales: barra, queso para llevar, eventos.", "todo"],
-        ["Definir meses fuertes y oportunidades de campana.", "todo"],
-        ["Cerrar horarios, dias libres y cierres proximos 12 meses.", "todo"],
-        ["Definir capacidad diaria de pickup sin romper el servicio.", "todo"],
-        ["Confirmar SLA de respuesta: por defecto menos de 24h.", "todo"],
-        ["Decidir si se mostrara agotado/pocas unidades o se ocultaran productos.", "todo"]
+        ["Recoger facturacion semanal media actual (900-1100€ confirmado por owner).", "done"],
+        ["Estimar coste mensual real de la primera contratacion (~2000€ + cargas).", "done"],
+        ["Confirmar mix actual: 60% barra · 35% to-go · 5% eventos.", "done"],
+        ["Definir meses fuertes y oportunidades de campana (mar, may, jun, oct, dic).", "done"],
+        ["Cerrar horarios definitivos publicables (L-V 17:30-23:00 · Sab 12:30-22:00 · Dom 12:30-20:00).", "done"],
+        ["Definir capacidad diaria de pickup sin romper el servicio (15/dia, ya en site_config).", "done"],
+        ["Confirmar SLA de respuesta: 24h dentro del horario de apertura.", "done"],
+        ["Decidir si se mostrara agotado/pocas unidades (mostrar, ya implementado en backend).", "done"]
       ]
     },
     {
       id: 2,
       title: "Dominio, Contabo, Plesk, cuentas y accesos",
-      status: "TODO",
-      progress: 0,
+      status: "DOING",
+      progress: 40,
       owner: "PM + Owner",
-      doneWhen: "Dominio registrado, servidor Contabo contratado, Plesk operativo, accesos listos y cuentas de marketing/local SEO disponibles.",
+      doneWhen: "Dominio registrado, servidor Contabo contratado, Plesk operativo con SSL, accesos listos y cuentas de marketing/local SEO disponibles.",
       steps: [
-        ["Comprobar disponibilidad en orden: crudo.es, crudo.world, crudomadrid.es.", "todo"],
+        ["Comprobar disponibilidad en orden: crudo.es, crudo.world, crudomadrid.es.", "doing"],
         ["Registrar dominio canonico y defensivos si procede.", "todo"],
         ["Comprar servidor en Contabo y guardar acceso de forma segura.", "todo"],
         ["Instalar o activar Plesk en el servidor Contabo.", "todo"],
         ["Crear suscripcion/dominio en Plesk para CRUDO.", "todo"],
         ["Crear o preparar email profesional: hola@ y pedidos@.", "todo"],
-        ["Decidir gestion DNS: Plesk o registrador. CDN/DNS externo queda opcional, no obligatorio.", "todo"],
-        ["Crear subdominio staging en Plesk.", "todo"],
+        ["Decidir gestion DNS: Plesk o registrador. CDN/DNS externo queda opcional.", "todo"],
+        ["Crear subdominio staging en Plesk con noindex + basic-auth.", "todo"],
         ["Verificar Google Business Profile.", "todo"],
         ["Verificar Meta Business Manager e Instagram @crudomov.", "todo"],
-        ["Confirmar Brevo como herramienta newsletter.", "todo"]
+        ["Confirmar Brevo como herramienta newsletter (placeholder noop ya integrado).", "todo"],
+        ["Guia tecnica Plesk + backups + smoke + rollback documentadas.", "done"]
       ]
     },
     {
       id: 3,
       title: "Catalogo inicial",
       status: "TODO",
-      progress: 0,
+      progress: 5,
       owner: "Owner + PM",
       doneWhen: "Lista de 20-40 productos lista para cargar, con alcohol/no alcohol claramente marcado.",
       steps: [
         ["Seleccionar 20-40 productos de lanzamiento.", "todo"],
-        ["Completar nombre, productor, region, tipo, precio y stock inicial.", "todo"],
-        ["Marcar cada producto como alcohol o no alcohol.", "todo"],
+        ["Completar nombre, productor, region, tipo de leche, tratamiento, intensidad, maridaje, precio y stock inicial.", "todo"],
+        ["Marcar cada producto como alcohol o no alcohol (backend ya bloquea por defecto los WINE).", "todo"],
         ["Elegir 4+ productos de temporada para Home.", "todo"],
         ["Elegir productos destacados para primera campana.", "todo"],
-        ["Definir categorias: queso/vino, region, intensidad o maridaje.", "todo"],
-        ["Revisar que ningun vino aparezca como reservable por Mi Tabla.", "todo"]
+        ["Definir las 3 tablas (3/6/8 quesos) con sus variantes con/sin maridaje.", "todo"],
+        ["Esquema de campos tipificado en MariaDB con check constraints.", "done"]
       ]
     },
     {
@@ -881,46 +828,46 @@ const nonTechState = {
       status: "TODO",
       progress: 0,
       owner: "Owner + Fotografo + PM",
-      doneWhen: "Hero, producto, ambiente, owner y eventos tienen assets suficientes y aprobados.",
+      doneWhen: "Hero, producto, ambiente y eventos tienen assets suficientes y aprobados (sin foto del owner por decision §0.2).",
       steps: [
         ["Crear brief fotografico: luz calida low-key, madera oscura, pizarra, 3/4 y overhead.", "todo"],
         ["Reunir hero 16:9 y 9:16 minimo 2400px.", "todo"],
         ["Fotografiar 20-40 productos en 1:1 minimo 1600x1600.", "todo"],
         ["Reunir 6-10 fotos de ambiente.", "todo"],
-        ["Reunir 3-5 fotos owner/interior.", "todo"],
-        ["Reunir una imagen 16:9 por evento inicial.", "todo"],
-        ["Decidir si hace falta shoot de medio dia en Madrid, presupuesto 600-900 euros.", "todo"]
+        ["Reunir una imagen 16:9 por evento inicial (3 eventos confirmados).", "todo"],
+        ["Decidir si hace falta shoot de medio dia en Madrid, presupuesto 600-900 euros.", "todo"],
+        ["Pipeline de subida via panel admin (multer JPG/PNG/WebP) operativo.", "done"]
       ]
     },
     {
       id: 5,
-      title: "Copy y marca",
+      title: "Marca, copy y direccion visual",
       status: "TODO",
       progress: 0,
-      owner: "Copy + Owner",
-      doneWhen: "Textos aprobados en espanol claro, traducibles por Google Translate y coherentes con CRUDO.",
+      owner: "Owner + Copy",
+      doneWhen: "Logo, paleta, tipografia y textos aprobados. Sin manifesto, sin foto del owner (decision §0.2).",
       steps: [
+        ["Owner entrega logo, paleta y tipografia via Drive.", "todo"],
         ["Definir tono: experto, local, artesanal, calido, no generico.", "todo"],
-        ["Escribir manifesto Sobre CRUDO de 200-300 palabras.", "todo"],
         ["Elegir H1 hero de maximo 6 palabras y subtitulo de 1 frase.", "todo"],
         ["Escribir descripciones cortas de producto, unas 30 palabras cada una.", "todo"],
         ["Escribir descripciones largas de producto, unas 150 palabras cada una.", "todo"],
-        ["Crear microcopy para Mi Tabla, vino WhatsApp, newsletter, contacto y eventos.", "todo"],
-        ["Revisar que no haya modismos que traduzcan mal al ingles.", "todo"]
+        ["Crear microcopy para Mi Tabla, vino WhatsApp, newsletter, contacto, eventos y celebra-con-nosotros.", "todo"],
+        ["Revisar que no haya modismos que traduzcan mal al ingles (Google Translate compatible).", "todo"]
       ]
     },
     {
       id: 6,
       title: "Eventos y campanas",
       status: "TODO",
-      progress: 0,
+      progress: 30,
       owner: "Owner + PM",
-      doneWhen: "Hay 3 eventos iniciales y una campana de temporada lista para publicar.",
+      doneWhen: "Hay 3 eventos iniciales cargados y una campana de temporada lista para publicar.",
       steps: [
-        ["Definir primeros 3 eventos: titulo, fecha, hora, capacidad y precio.", "todo"],
+        ["Definir primeros 3 eventos: 29/05 Spritz and Cheese · 30/05 Spritz/Lemonade/Grilled · 06/06 Bodegas Telperion.", "done"],
         ["Escribir descripcion de cada evento.", "todo"],
         ["Elegir imagen hero por evento.", "todo"],
-        ["Definir politica de reserva, confirmacion y cancelacion.", "todo"],
+        ["Definir politica de reserva, confirmacion y cancelacion (status NEW/CONFIRMED/CANCELLED en backend).", "done"],
         ["Crear primera campana: temporada, producto nuevo o cata.", "todo"],
         ["Planificar 4 semanas de posts/stories conectados al launch.", "todo"]
       ]
@@ -929,16 +876,16 @@ const nonTechState = {
       id: 7,
       title: "Legal, privacidad y cookies",
       status: "TODO",
-      progress: 0,
-      owner: "Legal + PM + Owner",
-      doneWhen: "Aviso Legal, Privacidad, Cookies y aviso +18 estan revisados y listos.",
+      progress: 15,
+      owner: "PM + Owner (sin abogado)",
+      doneWhen: "Aviso Legal, Privacidad, Cookies y aviso +18 estan revisados y publicables.",
       steps: [
-        ["Confirmar datos de entidad legal.", "todo"],
-        ["Coordinar abogado o responsable legal.", "todo"],
-        ["Redactar/revisar Aviso Legal.", "todo"],
+        ["Confirmar datos de entidad legal (CRUDO QUESOS S.L.U · CIF B-19953694 · Calle Jose Ortega y Gasset 81, 28006 Madrid).", "done"],
+        ["Owner sin abogado: usar plantillas auditadas AEPD-compliant.", "done"],
+        ["Redactar/revisar Aviso Legal a partir de plantilla.", "todo"],
         ["Redactar/revisar Politica de Privacidad RGPD/LOPDGDD.", "todo"],
         ["Redactar/revisar Politica de Cookies.", "todo"],
-        ["Confirmar proveedor/criterio de consentimiento: custom, Cookiebot o Iubenda.", "todo"],
+        ["Cookie banner: custom AEPD (Aceptar/Rechazar/Configurar mismo peso visual).", "todo"],
         ["Validar copy +18: vino visible, no venta online de alcohol.", "todo"]
       ]
     },
@@ -946,16 +893,16 @@ const nonTechState = {
       id: 8,
       title: "Marketing local y medicion",
       status: "TODO",
-      progress: 0,
+      progress: 5,
       owner: "Marketing + PM",
       doneWhen: "Las cuentas y UTM estan preparadas para medir web, Instagram, Maps, newsletter y eventos.",
       steps: [
         ["Crear plan UTM para Instagram bio, stories y campanas.", "todo"],
         ["Preparar Google Search Console.", "todo"],
-        ["Preparar GA4 y lista de eventos a revisar.", "todo"],
-        ["Preparar Meta Pixel desde Meta Business Manager.", "todo"],
-        ["Actualizar o preparar Google Business Profile.", "todo"],
-        ["Definir 5 queries locales objetivo: vino y queso Madrid, etc.", "todo"],
+        ["Preparar GA4 y lista de eventos a revisar (select_item, pickup_request, wine_pairing_whatsapp_click, event_inquiry, generate_lead).", "todo"],
+        ["Meta Pixel: solo si owner abre Meta Business Manager antes de launch (no es obligatorio).", "todo"],
+        ["Actualizar o preparar Google Business Profile (existente).", "todo"],
+        ["Definir 5 queries locales objetivo: queso/queseria/cheese bar Madrid centro, etc.", "todo"],
         ["Crear plantilla simple de tally diario para walk-ins atribuidos a web/IG.", "todo"]
       ]
     },
@@ -965,14 +912,15 @@ const nonTechState = {
       status: "TODO",
       progress: 0,
       owner: "PM + Owner",
-      doneWhen: "Owner puede operar pedidos, stock, eventos y consultas desde movil en menos de 5 minutos/dia.",
+      doneWhen: "Owner y futuro segundo camarero pueden operar pedidos, stock, eventos y consultas desde movil sin friccion.",
       steps: [
-        ["Preparar guia rapida de admin en una pagina.", "todo"],
+        ["Preparar guia rapida de admin en una pagina (capturas + 8 acciones top).", "todo"],
         ["Grabar mini videos: crear producto, marcar agotado, confirmar pickup, publicar evento.", "todo"],
         ["Definir rutina manana: pedidos de hoy, eventos, consultas, stock.", "todo"],
         ["Definir rutina cierre: marcar picked up y revisar mensajes.", "todo"],
-        ["Definir rutina semanal: campana, KPI Tier 0 y proximo evento.", "todo"],
-        ["Hacer prueba real en movil con owner.", "todo"]
+        ["Definir rutina semanal: campana, KPIs y proximo evento.", "todo"],
+        ["Hacer prueba real en movil con owner (y con segundo camarero cuando entre).", "todo"],
+        ["Audit log en backend asegura trazabilidad para delegar.", "done"]
       ]
     },
     {
@@ -981,12 +929,12 @@ const nonTechState = {
       status: "TODO",
       progress: 0,
       owner: "PM + Owner + QA",
-      doneWhen: "El owner y usuarios de prueba validan contenido, flujos, mobile, WhatsApp, Maps y legal.",
+      doneWhen: "El owner y usuarios de prueba validan contenido, flujos, mobile, WhatsApp, Maps y legal en condiciones reales.",
       steps: [
-        ["Revisar todas las paginas con contenido real.", "todo"],
+        ["Revisar todas las paginas con contenido real cargado.", "todo"],
         ["Probar WhatsApp en iPhone, Android e Instagram in-app browser.", "todo"],
         ["Probar Google Maps en iOS y Android.", "todo"],
-        ["Revisar que vino no invite a compra online.", "todo"],
+        ["Revisar que vino no invite a compra online (solo WhatsApp).", "todo"],
         ["Revisar formularios con red mala y mensajes de error.", "todo"],
         ["Hacer soft launch sin anuncio publico.", "todo"],
         ["Recoger feedback y priorizar fix-list.", "todo"]
@@ -998,7 +946,7 @@ const nonTechState = {
       status: "TODO",
       progress: 0,
       owner: "Todo el equipo",
-      doneWhen: "Web publica, Instagram y Google actualizados, medicion viva, owner entrenado y retro T+7 cerrada.",
+      doneWhen: "Web publica, Instagram y Google actualizados, medicion viva, owner+segundo camarero entrenados y retro T+7 cerrada.",
       steps: [
         ["Actualizar bio de @crudomov con dominio canonico.", "todo"],
         ["Confirmar dominio y SSL activos desde Plesk.", "todo"],
@@ -1011,93 +959,100 @@ const nonTechState = {
       ]
     }
   ],
+
   rules: [
-    "V1 sin pago online.",
-    "V1 sin venta online de alcohol.",
+    "V1 sin pago online (verificado: backend nunca acepta precios del cliente).",
+    "V1 sin venta online de alcohol (verificado: 422 a producto y a variante con maridaje).",
     "Vino visible para descubrimiento, pero solo via WhatsApp.",
-    "Mi Tabla solo para productos no alcoholicos.",
+    "Mi Tabla solo para productos no alcoholicos. Mezclas con alcohol se rechazan enteras.",
     "Contenido primario en espanol, simple y compatible con Google Translate.",
-    "Owner single-operator: todo debe sostenerse en <= 5 min/dia.",
-    "El objetivo comercial es acercar la primera contratacion en 12 meses."
+    "El admin habilita delegar al segundo camarero sin perder control (audit log + roles).",
+    "El objetivo comercial es cubrir el coste de la primera contratacion en 12 meses (~2000€/mes brutos)."
   ],
+
   workstreams: [
     {
       title: "Estrategia y negocio",
       items: [
-        "Baseline financiero actual.",
-        "Coste real de contratar segunda persona.",
-        "Objetivo de ingresos incremental por mes.",
-        "Fecha objetivo de lanzamiento.",
+        "Baseline financiero actual confirmado (900-1100€/sem).",
+        "Coste real de contratar segunda persona definido (~2000€/mes brutos + cargas).",
+        "Mix de ingresos confirmado: 60/35/5.",
+        "Fecha objetivo de lanzamiento (ASAP - pendiente fijar).",
         "Scope sign-off V1/V1.1/V2."
       ]
     },
     {
       title: "Contenido y producto",
       items: [
-        "20-40 productos completos.",
-        "Alcohol/no alcohol marcado.",
+        "20-40 productos completos con tipificacion completa.",
+        "Alcohol/no alcohol marcado (validacion forzada en admin).",
         "Fotos producto y lifestyle.",
         "Copy corto/largo por producto.",
-        "Campana inicial y 3 eventos."
+        "Tablas (3/6/8) con variantes maridaje.",
+        "3 eventos iniciales y campana inicial."
       ]
     },
     {
       title: "Legal y confianza",
       items: [
-        "Aviso Legal.",
+        "Aviso Legal (plantilla AEPD).",
         "Privacidad RGPD/LOPDGDD.",
         "Politica de Cookies.",
         "Aviso +18.",
-        "Consentimiento AEPD validado."
+        "Cookie banner custom AEPD (sin Cookiebot/Iubenda).",
+        "Consent log en backend operativo (24m TTL, hashes IP/UA)."
       ]
     },
     {
       title: "Marketing y local SEO",
       items: [
         "Dominio canonico.",
-        "Servidor Contabo.",
-        "Plesk configurado para dominio, SSL, Node app, MariaDB y backups.",
+        "Servidor Contabo + Plesk + SSL.",
+        "Plesk para dominio, SSL, Node app, MariaDB y backups.",
         "Google Business Profile.",
         "Instagram bio y story plan.",
-        "Search Console.",
+        "Search Console + GA4.",
         "UTMs y tracking plan."
       ]
     },
     {
-      title: "Operacion owner",
+      title: "Operacion owner + segundo camarero",
       items: [
-        "Rutina manana/cierre.",
-        "Guia admin de una pagina.",
-        "Videos cortos de uso.",
-        "Capacidad pickup diaria.",
-        "SLA de confirmacion."
+        "Rutina manana/cierre repartible.",
+        "Guia admin de una pagina + videos cortos.",
+        "Capacidad pickup diaria configurable desde admin.",
+        "Kill switch pickup verificado.",
+        "Audit log para delegar con confianza.",
+        "SLA de confirmacion 24h."
       ]
     },
     {
       title: "Launch y aprendizaje",
       items: [
-        "Soft launch.",
-        "QA real en movil.",
-        "Public launch.",
+        "Soft launch en staging con noindex.",
+        "QA real en movil (iOS+Android+Instagram in-app).",
+        "Public launch con smoke checklist.",
         "Retro T+7.",
         "Revision semanal de KPIs."
       ]
     }
   ],
+
   contentChecklist: [
+    ["Marca", "Logo, paleta y tipografia del owner", "Drive — vectorial + valores hex/Pantone", "1 set", "Owner", "TODO"],
     ["Fotos", "Hero Home", "16:9 + 9:16, minimo 2400px", "1-2 opciones", "Owner / fotografo", "TODO"],
     ["Fotos", "Producto", "1:1, minimo 1600x1600, fondo madera oscura", "20-40", "Owner / fotografo", "TODO"],
     ["Fotos", "Ambiente/lifestyle", "Crops mixtos", "6-10", "Owner", "TODO"],
-    ["Fotos", "Owner + espacio", "Interior, retrato, detalles", "3-5", "Owner", "TODO"],
-    ["Fotos", "Eventos", "16:9", "1 por evento", "Owner", "TODO"],
-    ["Copy", "Manifesto Sobre CRUDO", "200-300 palabras", "1", "Owner + copy", "TODO"],
+    ["Fotos", "Eventos", "16:9", "1 por evento (3 eventos)", "Owner", "TODO"],
     ["Copy", "Hero headline + subtitulo", "6 palabras + 1 frase", "2 opciones", "Copy", "TODO"],
     ["Copy", "Descripciones cortas", "30 palabras, espanol simple", "20-40", "Owner + copy", "TODO"],
     ["Copy", "Descripciones largas", "150 palabras, sin modismos", "20-40", "Owner + copy", "TODO"],
-    ["Catalogo", "Lista de productos", "Nombre, productor, region, precio, alcohol/no alcohol", "20-40", "Owner", "TODO"],
-    ["Eventos", "Eventos iniciales", "Fecha, precio, capacidad, descripcion", "3", "Owner + PM", "TODO"],
-    ["Legal", "Textos legales", "Aviso, privacidad, cookies, +18", "4 piezas", "Legal", "TODO"]
+    ["Copy", "Microcopy Mi Tabla / Vino WhatsApp / Celebra eventos", "Mensajes cortos, claros, en ES", "10-15 piezas", "Copy", "TODO"],
+    ["Catalogo", "Lista de productos", "Nombre, productor, region, tipo leche, tratamiento, intensidad, precio, alcohol/no", "20-40", "Owner", "TODO"],
+    ["Eventos", "3 eventos iniciales detallados", "Fecha, precio, capacidad, descripcion + hero", "3", "Owner + PM", "DOING"],
+    ["Legal", "Textos legales", "Aviso, privacidad, cookies, +18 (plantilla AEPD)", "4 piezas", "PM + Owner", "TODO"]
   ],
+
   launchChecklist: [
     {
       title: "Pre-launch T-7",
@@ -1108,7 +1063,8 @@ const nonTechState = {
         "GA4/Search Console/Pixel preparados.",
         "Schema, OG y favicon revisados.",
         "WhatsApp y Maps probados en movil.",
-        "Owner entrenado con guia rapida."
+        "Owner entrenado con guia rapida.",
+        "Smoke staging (./infra/scripts/smoke.sh) verde."
       ]
     },
     {
@@ -1116,7 +1072,7 @@ const nonTechState = {
       items: [
         "Dominio publico activo en Plesk.",
         "SSL activo desde Plesk.",
-        "Smoke test de journeys criticos.",
+        "Smoke test de journeys criticos en produccion.",
         "URL enviada a Search Console.",
         "Google Business Profile actualizado.",
         "Instagram bio actualizada.",
@@ -1130,84 +1086,87 @@ const nonTechState = {
         "Revisar funnels GA4.",
         "Revisar errores de Search Console.",
         "Revisar preguntas reales recibidas.",
-        "Owner retro: que falta en admin/contenido.",
+        "Owner+segundo camarero retro: que falta en admin/contenido.",
         "Priorizar primera fix-list.",
         "Elegir una palanca comercial para la semana 2."
       ]
     }
   ],
+
   kpis: [
-    ["Ingresos incrementales web/IG", "+500 EUR", "Owner log + admin + GA4", "Semanal"],
+    ["Ingresos incrementales web/IG", "+500 EUR", "Owner log + admin KPIs + GA4", "Semanal"],
     ["Walk-ins atribuidos a web/IG", ">= 5/semana", "Tally diario owner", "Semanal"],
-    ["Pickup fulfilled", ">= 10/mes", "Admin status PICKED_UP", "Semanal"],
-    ["Ticket medio pickup", ">= 25 EUR", "Admin", "Semanal"],
-    ["Wine WhatsApp clicks", ">= 30/mes", "GA4", "Semanal"],
-    ["Eventos", "70% plazas", "Admin + owner", "Por evento"],
-    ["Newsletter", "+100 subs", "Brevo", "Semanal"],
-    ["Owner admin time", "<= 5 min/dia", "Owner self-report", "Semanal"]
+    ["Pickup fulfilled", ">= 10/mes", "Admin KPIs (PICKED_UP)", "Semanal"],
+    ["Ticket medio pickup", ">= 25 EUR", "Admin KPIs (avg_ticket_cents)", "Semanal"],
+    ["Wine WhatsApp clicks", ">= 30/mes", "GA4 wine_pairing_whatsapp_click", "Semanal"],
+    ["Eventos", "70% plazas", "Admin event_reservations", "Por evento"],
+    ["Newsletter activos", "+100 subs", "Admin KPIs (total_active)", "Semanal"],
+    ["Inquiries respondidas en 24h", ">= 90%", "Admin inquiries status_update", "Semanal"]
   ],
+
   operatingRhythm: [
     {
-      title: "Manana <= 90s",
+      title: "Manana — owner o camarero",
       items: [
         "Abrir admin en movil.",
-        "Ver pickups de hoy, eventos y consultas nuevas.",
-        "Confirmar pedidos con respuesta WhatsApp.",
-        "Marcar productos agotados si hace falta."
+        "Ver pickups de hoy, eventos y consultas nuevas en el dashboard.",
+        "Confirmar pedidos via WhatsApp y marcar status CONFIRMED.",
+        "Marcar productos agotados con el patch one-tap si hace falta."
       ]
     },
     {
       title: "Durante servicio",
       items: [
-        "No hacer admin obligatorio.",
-        "Recibir pings WhatsApp de nuevos pedidos.",
-        "Responder solo si es comodo.",
-        "Mantener SLA de 24h sin ansiedad."
+        "Cero admin obligatorio mientras hay sala.",
+        "Notificacion WhatsApp de nuevos pedidos al owner (cuando se conecte el cliente real).",
+        "Si la sala se desborda, segundo camarero puede pausar pickups con un PUT (kill switch).",
+        "Mantener SLA 24h sin ansiedad."
       ]
     },
     {
-      title: "Cierre <= 90s",
+      title: "Cierre",
       items: [
-        "Marcar pickups como recogidos.",
-        "Escanear consultas.",
+        "Marcar pickups como PICKED_UP.",
+        "Escanear consultas y mover NEW -> IN_PROGRESS / DONE.",
         "Anotar walk-ins web/IG.",
         "Preparar pendientes para manana."
       ]
     },
     {
-      title: "Domingo <= 10 min",
+      title: "Domingo — semanal",
       items: [
+        "Revisar KPIs del periodo (admin /kpis?period=7d).",
         "Publicar o preparar campana semanal.",
-        "Revisar KPIs Tier 0.",
-        "Anadir evento si toca.",
-        "Elegir una accion comercial para la semana."
+        "Crear nuevo evento si toca.",
+        "Elegir una accion comercial concreta para la siguiente semana."
       ]
     }
   ],
+
   risks: [
     {
-      title: "Contenido llega tarde",
-      mitigation: "Cerrar lista de productos, fotos y copy en semana 1. Usar placeholders solo marcados como temporales."
+      title: "Contenido del owner llega tarde",
+      mitigation: "El backend ya admite todo via panel admin. Lo que detiene Fase 7 es logo + paleta + 20-40 productos. Cerrar entrega via Drive en semana 1 o usar placeholders marcados como temporales en staging."
     },
     {
-      title: "Owner se satura",
-      mitigation: "SLA 24h, slots limitados, batch de notificaciones y rutina diaria de <= 5 minutos."
+      title: "Owner se satura cuando crezca el volumen",
+      mitigation: "El admin habilita delegar al segundo camarero sin perder trazabilidad (audit log + roles). Kill switch para pausar pickups, SLA 24h con horario, batch de notificaciones diarias."
     },
     {
       title: "Scope creep ecommerce",
-      mitigation: "Stripe puede quedar como preparacion tecnica para V2, pero en V1 no hay pago online ni venta online de alcohol. Nuevas ideas van a V1.1/V2."
+      mitigation: "Stripe queda como preparacion tecnica para V2, pero el backend rechaza cualquier intento de pago online o venta de alcohol. Nuevas ideas van a V1.1/V2."
     },
     {
       title: "Legal bloquea launch",
-      mitigation: "Legal empieza en paralelo con discovery. Revisar cookies, privacidad y aviso +18 antes de QA."
+      mitigation: "Plantillas AEPD listas, owner sin abogado por decision §0.2. Cookie banner custom AEPD pendiente de Fase 12. Empezar redaccion en paralelo con Fase 7."
     },
     {
       title: "Fotos no tienen nivel",
-      mitigation: "Brief visual claro y decision temprana sobre shoot de medio dia."
+      mitigation: "Brief visual claro. Decision temprana sobre shoot de medio dia (600-900€). Pipeline admin ya admite multer JPG/PNG/WebP, asi que no bloquea la subida."
     },
     {
       title: "No se mide el impacto",
-      mitigation: "UTMs, tally de walk-ins, GA4 y revision semanal de Tier 0 desde la primera semana."
+      mitigation: "Admin KPIs por periodo ya activo en backend. UTMs, tally de walk-ins, GA4 (Fase 12) y revision semanal desde la primera semana."
     }
   ]
 };
@@ -1217,11 +1176,12 @@ const statusLabels = {
   DOING: "En curso",
   BLOCKED: "Bloqueado",
   REVIEW: "Revision",
-  DONE: "Hecho"
+  DONE: "Hecho",
+  NEXT: "Siguiente"
 };
 
 function statusClass(status) {
-  const map = { TODO: "todo", DOING: "doing", BLOCKED: "blocked", REVIEW: "review", DONE: "done" };
+  const map = { TODO: "todo", DOING: "doing", BLOCKED: "blocked", REVIEW: "review", DONE: "done", NEXT: "next" };
   return map[status] || "todo";
 }
 
@@ -1235,40 +1195,69 @@ function renderHero() {
   const cls = statusClass(nonTechState.overallStatus);
   heroMeta.innerHTML = `
     <span class="pill"><strong>Actualizado</strong> ${nonTechState.lastUpdated}</span>
-    <span class="pill"><span class="status-dot ${cls}"></span><strong>Estado</strong> ${statusLabels[nonTechState.overallStatus]}</span>
-    <span class="pill"><strong>Fase actual</strong> ${nonTechState.currentPhase}</span>
-    <span class="pill"><strong>Siguiente accion</strong> ${nonTechState.nextAction}</span>
+    <span class="pill"><span class="status-dot ${cls}"></span><strong>Estado global</strong> ${statusLabels[nonTechState.overallStatus]}</span>
+    <span class="pill"><strong>Fase tecnica</strong> ${nonTechState.techPhase}/${nonTechState.techPhaseTotal} REVIEW_READY</span>
+    <span class="pill"><strong>Siguiente</strong> ${nonTechState.nextAction}</span>
   `;
 }
 
 function renderSummary() {
-  const total = nonTechState.phases.length;
-  const done = nonTechState.phases.filter((phase) => phase.status === "DONE").length;
-  const doing = nonTechState.phases.filter((phase) => phase.status === "DOING").length;
-  const blocked = nonTechState.phases.filter((phase) => phase.status === "BLOCKED").length;
-  const progress = Math.round(nonTechState.phases.reduce((sum, phase) => sum + phase.progress, 0) / total);
+  const techDone = nonTechState.technicalBackbone.filter((p) => p.status === "DONE").length;
+  const techTotal = nonTechState.technicalBackbone.length;
+  const techPct = Math.round((techDone / techTotal) * 100);
+
+  const nonTechTotal = nonTechState.phases.length;
+  const nonTechAvg = Math.round(
+    nonTechState.phases.reduce((sum, phase) => sum + phase.progress, 0) / nonTechTotal
+  );
+  const nonTechBlocked = nonTechState.phases.filter((p) => p.status === "BLOCKED").length;
+
   document.getElementById("summary").innerHTML = `
     <article class="metric">
+      <div class="label">Backbone tecnico</div>
+      <div class="value">${techPct}%</div>
+      <div class="hint">${techDone}/${techTotal} fases tecnicas DONE.</div>
+    </article>
+    <article class="metric">
       <div class="label">Progreso no tecnico</div>
-      <div class="value">${progress}%</div>
-      <div class="hint">Media de fases operativas.</div>
+      <div class="value">${nonTechAvg}%</div>
+      <div class="hint">Media de fases operativas (contenido, legal, marketing).</div>
     </article>
     <article class="metric">
-      <div class="label">Fases cerradas</div>
-      <div class="value">${done}/${total}</div>
-      <div class="hint">Solo entregables verificados.</div>
-    </article>
-    <article class="metric">
-      <div class="label">En curso</div>
-      <div class="value">${doing}</div>
-      <div class="hint">Trabajo activo ahora.</div>
+      <div class="label">Tests automatizados</div>
+      <div class="value">112</div>
+      <div class="hint">Suite verde con DB real y CI con MariaDB service.</div>
     </article>
     <article class="metric">
       <div class="label">Bloqueos</div>
-      <div class="value">${blocked}</div>
-      <div class="hint">Necesitan decision o material.</div>
+      <div class="value">${nonTechBlocked}</div>
+      <div class="hint">Necesitan decision o material del owner.</div>
     </article>
   `;
+}
+
+function renderBackbone() {
+  document.getElementById("backboneRow").innerHTML = nonTechState.technicalBackbone.map((p) => {
+    const cls = statusClass(p.status);
+    const num = String(p.id).padStart(2, "0");
+    return `
+      <div class="backbone-cell ${cls}" title="${p.summary}">
+        <div class="badge">${statusLabels[p.status]}</div>
+        <div class="num">F${num}</div>
+        <div class="name">${p.name}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderHighlights() {
+  document.getElementById("highlightGrid").innerHTML = nonTechState.highlights.map((h) => `
+    <article class="highlight">
+      <div class="h-eyebrow">Operativo</div>
+      <h3>${h.title}</h3>
+      <p>${h.detail}</p>
+    </article>
+  `).join("");
 }
 
 function renderRules() {
@@ -1279,6 +1268,7 @@ function renderPhases() {
   document.getElementById("phaseList").innerHTML = nonTechState.phases.map((phase) => {
     const isCurrent = phase.id === nonTechState.currentPhase ? " current" : "";
     const cls = statusClass(phase.status);
+    const fillCls = phase.progress >= 100 ? "done" : (phase.status === "DOING" ? "" : "");
     return `
       <article class="phase ${cls}${isCurrent}">
         <div class="phase-index">${String(phase.id).padStart(2, "0")}</div>
@@ -1292,7 +1282,7 @@ function renderPhases() {
             <ul class="steps">
               ${phase.steps.map(([text, state]) => `
                 <li class="step ${state}">
-                  <span class="check">${state === "done" ? "✓" : state === "blocked" ? "!" : ""}</span>
+                  <span class="check">${state === "done" ? "✓" : state === "blocked" ? "!" : state === "doing" ? "·" : ""}</span>
                   <span>${text}</span>
                 </li>
               `).join("")}
@@ -1303,7 +1293,7 @@ function renderPhases() {
                 <p>${phase.doneWhen}</p>
               </div>
               <div class="progress-track" aria-label="Progreso ${phase.progress}%">
-                <div class="progress-fill" style="width:${phase.progress}%"></div>
+                <div class="progress-fill ${fillCls}" style="width:${phase.progress}%"></div>
               </div>
             </div>
           </div>
@@ -1376,6 +1366,8 @@ function renderRisks() {
 function render() {
   renderHero();
   renderSummary();
+  renderBackbone();
+  renderHighlights();
   renderRules();
   renderPhases();
   renderWorkstreams();

@@ -1,0 +1,93 @@
+name: pr-checks
+
+# Lint + tests en pull requests y push a main.
+# MariaDB se levanta como service container para soportar tests con DB real.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: lint + test
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: crudo_dev
+          MARIADB_USER: crudo
+          MARIADB_PASSWORD: crudo_dev_pass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      NODE_ENV: test
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_NAME: crudo_test
+      DB_USER: crudo
+      DB_PASSWORD: crudo_dev_pass
+      DB_TEST_NAME: crudo_test
+      JWT_SECRET: ci-jwt-secret-must-be-min-32-chars-aaaa
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      COOKIE_SECRET: ci-cookie-secret-must-be-min-32-chars-aa
+      UPLOADS_DIR: uploads
+      MAX_UPLOAD_MB: 8
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Wait for MariaDB
+        run: |
+          for i in {1..30}; do
+            if mysql -h127.0.0.1 -P3306 -uroot -proot -e "SELECT 1" >/dev/null 2>&1; then
+              echo "MariaDB ready"
+              exit 0
+            fi
+            echo "Waiting for MariaDB... ($i/30)"
+            sleep 2
+          done
+          echo "MariaDB nunca arranco" >&2
+          exit 1
+
+      - name: Create test database and grant privileges
+        run: |
+          mysql -h127.0.0.1 -P3306 -uroot -proot <<'SQL'
+          CREATE DATABASE IF NOT EXISTS crudo_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+          CREATE DATABASE IF NOT EXISTS crudo_dev  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+          GRANT ALL PRIVILEGES ON crudo_test.* TO 'crudo'@'%';
+          GRANT ALL PRIVILEGES ON crudo_dev.*  TO 'crudo'@'%';
+          FLUSH PRIVILEGES;
+          SQL
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Migrate test database
+        run: DB_OVERRIDE=crudo_test NODE_ENV=test npm run db:migrate
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build placeholder check (Vite real llega en Fase 7)
+        run: npm run build:check

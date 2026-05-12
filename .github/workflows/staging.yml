@@ -1,0 +1,55 @@
+name: staging-deploy-skeleton
+
+# Skeleton manual para deploy a staging. NO ejecuta nada real hasta que el
+# owner configure secrets `STAGING_HOST`, `STAGING_USER`, `STAGING_SSH_KEY`
+# y descomente los pasos.
+#
+# Disparador: workflow_dispatch (manual) — nunca automatico en V1.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Tag o branch a desplegar'
+        required: true
+        default: 'main'
+
+jobs:
+  deploy:
+    if: false  # SAFETY: deshabilitado hasta que existan secrets reales.
+    name: Deploy to staging (skeleton)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install production deps
+        run: npm ci --omit=dev
+
+      # - name: Sync via SSH (placeholder)
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.STAGING_HOST }}
+      #     username: ${{ secrets.STAGING_USER }}
+      #     key: ${{ secrets.STAGING_SSH_KEY }}
+      #     script: |
+      #       cd /var/www/vhosts/staging.<dominio>/httpdocs
+      #       git fetch origin
+      #       git checkout ${{ inputs.ref }}
+      #       npm ci --omit=dev
+      #       NODE_ENV=production npm run db:migrate
+      #       npm run build
+      #       # Reiniciar la Node.js app desde Plesk
+      #       touch tmp/restart.txt || true
+
+      - name: Reminder
+        run: |
+          echo "Este workflow es un skeleton. El deploy real lo realiza el owner via SSH+Plesk."
+          echo "Ver infra/plesk/README.md y infra/scripts/deploy-checklist.md."
