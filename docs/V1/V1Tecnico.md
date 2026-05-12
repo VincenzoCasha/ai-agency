@@ -31,12 +31,13 @@ Regla de oro:
 ```yaml
 project: CRUDO V1
 state_version: 1
-last_updated: 2026-05-08
-current_phase: 6
-current_phase_name: "Scripts npm, build y despliegue Plesk/Contabo"
-current_focus: "Fase 7 (scaffold frontend) completada. Stack visible operativo: React 19 + Vite 6 + Tailwind con tokens CRUDO (dark editorial, Cormorant Garamond/Inter/JetBrains Mono), proxy Vite a `/api` y `/uploads`. 17 paginas stub publicadas via React Router con AppShell, Header, Footer, StickyCTA, CookieBanner; UI primitives accesibles (Button, IconButton, Input, Textarea, Select, FieldError, Badge, Tag, Spinner, Modal, PageScaffold). API client axios, consent helpers + analytics consent-aware, schema.org helpers, hooks useSiteConfig/useConsent, tokens.css + global.css. Build Vite verificado (1668 modulos, 546KB JS gzip 162KB, 15KB CSS gzip 4KB). Backend monolito (Fases 2-6) consolidado en un commit anterior con 112/112 tests verde y lint limpio. Listo para Fase 8 (pantallas reales con datos)."
-next_recommended_prompt: "Fase 8 - Public frontend: Home, Catalogo y PDP"
+last_updated: 2026-05-12
+current_phase: 8
+current_phase_name: "Public frontend: Home, Catalogo y PDP"
+current_focus: "Fase 8 completada. Home real con Hero full-bleed (overlay rgba(26,31,20,0.55), H1 Cormorant italic, eyebrow 'Vinos y quesos · Madrid', CTAs Reservar mi tabla + Cómo llegar, indicador abierto/cerrado), SeasonalShowcase con productos `seasonal=true`, CategoryStrips (Quesos / Tablas / Temporada), EventsTeaser con 3 eventos futuros, InstagramStrip editorial (sin API real), VisitBlock con direccion+horarios+Maps+WhatsApp. Catalogo `/catalogo`, `/catalogo/quesos`, `/catalogo/vinos`, `/catalogo/temporada` compartiendo `CatalogView` (toolbar con busqueda `q`, filtro categoria, toggle seasonal, limpiar filtros). ProductCard mobile-first con aspect-ratio 1/1, tags Temporada/Destacado/Agotado, precio en JetBrains Mono, CTA divergente: vino -> WhatsApp con texto prellenado `Hola, me interesa {nombre}. ¿Lo tenéis disponible en CRUDO?`, no alcohol -> `Añadir`. PDP `/producto/:slug` con ProductGallery (con miniaturas), ProductMeta, ProductLongRead (leche/tratamiento/intensidad/region/productor + historia + maridaje), RelatedProducts. Wine guard PDP: vino nunca renderiza AddToTablaButton (test cubre). Schema.org Product inyectado en JSON-LD. tablaDraft (localStorage + subscribe pattern) rechaza alcohol con AlcoholInTablaError; useTablaDraft hook expone count para StickyCTA y Hero. analytics.js dispara select_item / wine_pairing_whatsapp_click / whatsapp_click / maps_click solo con consentimiento. Lint 0 errores, build Vite 1701 modulos 347KB JS gzip 111KB, tests 135/135 verde (23 nuevos de cliente). Inventario visual real catalogado en §7.bis (1 Gemini hero + 17 fotos local + branding) y nuevas sub-secciones de assets inyectadas en Fases 8.5/9/10/12/14."
+next_recommended_prompt: "Fase 8.5 - Refinamiento visual con assets reales"
 overall_status: "REVIEW_READY"
+visual_assets_index: "§7.bis Inventario visual de assets reales (autoritativo). Fuente: images/ + docs/V1/Photos/ + docs/V1/Crudo/."
 ```
 
 ### Leyenda de estados
@@ -60,7 +61,8 @@ overall_status: "REVIEW_READY"
 | 5 | Admin backend y seguridad JWT | REVIEW_READY | Migracion `004_admin_security_and_config.sql` con `admin_refresh_token` (denylist + fingerprint anonimo). Servicios `auth.service` (login bcrypt, rotacion refresh, loadAdminFromAccessToken), `jwt.service` (sign/verify access+refresh con audience/issuer), `audit.service` (sanitize que redacta password/token y trunca strings), `storage.service` (multer JPG/PNG/WebP con MAX_UPLOAD_MB y nombres saneados, deleteByPublicUrl con guard de path), `admin-product.service` (wine guard 422 WINE_MUST_BE_ALCOHOL, slug conflict 409, soft delete, addImage/deleteImage con audit), `admin-event.service` (slug+date validation, soft delete), `admin-campaign.service` (single active enforcement con countActiveOthers), `admin-inquiry/pickup-order/event-reservation.service` (status enums + audit), `admin-site-config.service` (whitelist 3 keys, bulkSet), `admin-dashboard.service` (compact + KPIs por periodo). Repositories admin extendidos (admin-user findActiveByEmail/findById, admin-refresh-token CRUD, audit-log create/listRecent, product/event/campaign/inquiry/pickup-order adminPaginate y mutations). Middleware `authenticate-admin.js` (Bearer + req.admin) y `require-role.js` (helper futuro). 6 validators (admin-auth/products/events/campaigns/status/site-config con paginationRules+slugRule reutilizados). 9 controllers + 9 routes (admin-auth/dashboard/products/events/campaigns/inquiries/pickup-orders/event-reservations/site-config) wireadas en server/app.js bajo /api/v1/admin con JWT obligatorio salvo /auth/login y /auth/refresh, login rate-limited 5/min/IP, public POST limiter ahora skipea /admin/. Static `/uploads` servido. Tests admin (auth 10, products 9, dashboard 3, status 8, upload 3, auth.service unit 4, audit.service unit 3) + regression Fase 4 alcohol guard. 112/112 tests OK con DB real. Lint 0 errores. Smoke verificado: login emite tokens, dashboard sin token 401 TOKEN_MISSING, dashboard con token 200, public siguen abiertos. | Frontend admin (Fase 11). Notificacion real WhatsApp/email (cliente). Cleanup periodico de refresh tokens caducados. | Sin bloqueos |
 | 6 | Scripts npm, build y despliegue Plesk/Contabo | REVIEW_READY | server.js sirve dist/ con cache correcto si existe (assets 30d, index.html no-cache), aviso honesto si no existe, fallback SPA que NO intercepta /api/* ni /uploads/*, mountFinalHandlers exportado para registrar 404+errorHandler despues de la SPA en produccion, graceful shutdown SIGTERM/SIGINT con failsafe 10s. Scripts npm honestos: build placeholder, build:check, dev/dev:server/dev:client, start, lint, test, test:unit, check, db:migrate/seed/reset, deploy:plesk:notes. .env.example con PUBLIC_BASE_URL y STAGING_BASE_URL. infra/plesk/README.md reescrito (Contabo+Plesk, dominio+SSL, Node app, MariaDB, env vars panel, uploads persistentes, staging noindex+basic-auth, deploy manual, smoke, rollback, seguridad). infra/scripts/backup-notes.md (Plesk Backup Manager diario 30d, restore test trimestral, recuperacion ante desastre con RTO 4h/RPO 24h). infra/scripts/deploy-checklist.md (pre/durante/post). infra/scripts/smoke.sh ejecutable. .github/workflows/pr.yml con MariaDB service para lint+test+build:check; staging.yml y production.yml skeletons con if:false. README actualizado con scripts y despliegue. Eliminado .github/workflows/README.md placeholder. | Frontend Vite real (Fase 7) sustituye build placeholder. Secrets reales y dominio definitivo pendientes del owner antes de habilitar staging.yml/production.yml. | Sin bloqueos |
 | 7 | Frontend React/Vite y design system | REVIEW_READY | Scaffold React 19 + Vite + Tailwind operativo: `index.html`, `vite.config.mjs` (proxy `/api` y `/uploads` a backend en dev), `tailwind.config.mjs` con tokens CRUDO (paleta dark editorial, fuentes Cormorant Garamond + Inter + JetBrains Mono), `postcss.config.mjs`. `src/` con `main.jsx`, `App.jsx`, `routes.jsx` y 17 paginas stub (Home, Catalog, Seasonal, Tablas, MyTabla + Confirmation, Events + Detail, About, Contact, CelebrateWithUs, Wholesale, Legal, Privacy, Cookies, AdminEntry, NotFound, Product). Layout (AppShell, Header, Footer, StickyCTA, CookieBanner) + UI primitives (Button, IconButton, Input, Textarea, Select, FieldError, Badge, Tag, Spinner, Modal, PageScaffold). `src/lib/`: api client axios, consent helpers, analytics consent-aware, schema.org helpers, siteConfig, cn (clsx+tailwind-merge). Hooks `useSiteConfig`, `useConsent`. Estilos `tokens.css` + `global.css`. Build Vite verificado (1668 modulos, 546KB JS gzip 162KB, 15KB CSS gzip 4KB). Lint limpio (0 errores). | Pantallas reales con datos del API (Fases 8-11). Tests de componentes (jsdom configurado, sin specs aun). | Sin bloqueos |
-| 8 | Public frontend: Home, Catalogo y PDP | NOT_STARTED | Nada | Home, catalogo, PDP, vino WhatsApp-only, schema | Pendiente Fase 7 y API estable |
+| 8.5 | Refinamiento visual con assets reales | NOT_STARTED | Nada | Hero con imagen real, componentes de marca (RetroSign, SaffronTileBackground, LifestylePhoto, BrandSticker, AnimalQuesero), strip Maridajes, ProductCard fallback por tipo, footer easter egg, pipeline minimo `public/img/` | Pendiente Fase 8 (hecha) — assets ya disponibles en `images/` y `docs/V1/Photos/` |
+| 8 | Public frontend: Home, Catalogo y PDP | REVIEW_READY | Home real (Hero full-bleed con overlay rgba(26,31,20,0.55), H1 Cormorant italic, CTAs Reservar mi tabla + Cómo llegar, abierto/cerrado en vivo, SeasonalShowcase con productos `seasonal=true`, CategoryStrips Quesos/Tablas/Temporada, EventsTeaser con 3 eventos futuros + seats_left, InstagramStrip editorial sin API real, VisitBlock con direccion+horarios+Maps+WhatsApp). 4 rutas catalogo: `/catalogo` general, `/catalogo/quesos` (type=CHEESE), `/catalogo/vinos` (type=WINE), `/catalogo/temporada` (seasonal=true), todas alimentadas por `CatalogView` compartido (toolbar busqueda `q` con debounce 300ms, filtro categoria, toggle seasonal, limpiar filtros, EmptyState/skeleton/error states). ProductCard aspect-ratio 1/1, tags Temporada/Destacado, StockBadge (Agotado/Pocas unidades), precio formateado es-ES en JetBrains Mono, CTA divergente: vino -> WhatsApp con texto prellenado `Hola, me interesa {nombre}. ¿Lo tenéis disponible en CRUDO?`, no alcohol -> `Añadir`. PDP `/producto/:slug` con ProductGallery (miniaturas accesibles), ProductMeta (eyebrow productor·region, H1, precio, CTA), ProductLongRead (leche/tratamiento/intensidad/origen/productor + historia + maridaje), RelatedProducts. Wine guard: PDP de vino NUNCA renderiza AddToTablaButton, muestra WineWhatsAppButton + texto "Los vinos se reservan y se pagan en CRUDO." Schema.org Product inyectado en JSON-LD. tablaDraft (localStorage + subscribe pattern) rechaza alcohol con AlcoholInTablaError; useTablaDraft expone count, items, addItem/removeItem/setQuantity/clear. StickyCTA muestra count en mobile cuando hay items. Hero CTA primario va a /mi-tabla si hay items, /catalogo si no. analytics.js dispara select_item / wine_pairing_whatsapp_click / whatsapp_click / maps_click consent-aware. Hooks: useProducts, useProduct, useCategories, useActiveCampaign, useEvents, useTablaDraft. lib/whatsapp.js (buildProductInquiryUrl + variantes). Tests cliente nuevos: tablaDraft (8 incluyendo alcohol-reject + cap 99 + persistencia localStorage), ProductCard (4 incluyendo vino-no-Añadir y OUT-disabled), ProductMeta (3 incluyendo PDP wine guard), Hero (2 incluyendo sin texto ingles), EmptyState (2), whatsapp helpers (4). | Tests Playwright E2E (Fase 12). Hero placeholder usa gradiente CSS — imagen real owner pendiente. InstagramStrip editorial sin Instagram API. Sin meta description dinamica por ruta avanzada (Fase 12). | Sin bloqueos |
 | 9 | Mi Tabla frontend y pickup flow | NOT_STARTED | Nada | Store, drawer, form, confirmacion, analytics | Pendiente Fase 8 y Fase 4 |
 | 10 | Eventos, contacto, newsletter, sobre y mayoristas | NOT_STARTED | Nada | Rutas publicas secundarias y formularios | Pendiente Fase 3 y Fase 7 |
 | 11 | Admin frontend movil | NOT_STARTED | Nada | Login, dashboard, CRUD UI, pedidos, consultas | Pendiente Fase 5 y Fase 7 |
@@ -129,7 +131,7 @@ Actualizar esta lista al terminar cada sesion con codigo. Mantener bullets concr
 ### Bloqueos actuales
 
 - No hay codigo inicial todavia.
-- Logo, paleta y tipografia del owner pendientes de recibir via Drive (placeholder con tokens del §7 hasta entonces).
+- ~~Logo, paleta y tipografia del owner pendientes~~ — logos y branding disponibles en `docs/V1/Crudo/` (Color V1/V2/Blanco/Negro PNG, Texto, Completo, Animales Queseros 1/2). Tipografia primaria sigue siendo Cormorant Garamond + Inter (no se ha recibido alternativa del owner; no es bloqueo).
 - Lista mensual de quesos de temporada pendiente de carga via Drive (owner subira ejemplo).
 - Definiciones definitivas de las 3 tablas (3/6/8 quesos): contenido por defecto, precios, maridajes blancos y tintos sugeridos.
 
@@ -168,6 +170,8 @@ Registro:
 - 2026-05-08 | Fase 5 | Admin backend + JWT: db/migrations/004_admin_security_and_config.sql (admin_refresh_token con denylist + fingerprint anonimo). Dependencias jsonwebtoken y multer anadidas. Servicios jwt (sign/verify access+refresh con audience/issuer + nonce), auth (login bcrypt, rotacion refresh, loadAdminFromAccessToken), audit (sanitize redacta passwords/tokens y trunca strings >500), storage (multer JPG/PNG/WebP con MAX_UPLOAD_MB, nombres saneados, deleteByPublicUrl con guard de path), admin-product (wine guard 422 WINE_MUST_BE_ALCOHOL, slug 409, soft delete, addImage/deleteImage), admin-event (slug+date validation), admin-campaign (single active enforcement), admin-inquiry/pickup-order/event-reservation (status updates auditados), admin-site-config (whitelist 3 keys), admin-dashboard (compact + KPIs today/7d/30d con pickup by_status/revenue/avg ticket/reservas/newsletter). Repositories admin-user/admin-refresh-token/audit-log + extensiones product/event/campaign/inquiry/pickup-order/site-config con adminPaginate y mutations. Middleware authenticate-admin (Bearer + req.admin) con require-role helper. 6 validators admin (auth/products/events/campaigns/status/site-config). 9 controllers + 9 routes admin wireadas en server/app.js bajo /api/v1/admin con JWT obligatorio salvo /auth/login y /auth/refresh, login rate-limited 5/min/IP, public POST limiter skipea /admin. Static `/uploads` servido por Express. Helpers tests/helpers/admin-test.js. Tests admin-auth (10) + admin-products (9) + admin-dashboard (3) + admin-status (8 con kill switch verificado) + admin-upload (3 con multer real) + auth.service unit (4) + audit.service unit (3) + regression alcohol guard. vitest.config con JWT_SECRET/COOKIE_SECRET/UPLOADS_DIR para tests | Verificacion: `npm test` 112/112 verde con DB real (40 tests admin nuevos) · `npm run lint` 0 errores · smoke con curl: login emite access+refresh tokens · GET /admin/dashboard sin token -> 401 TOKEN_MISSING · con token -> 200 con bloques compactos · public /products sigue 200 abierto sin auth · refresh rota y reuso del viejo -> 401 REFRESH_TOKEN_REVOKED | Siguiente: Fase 6
 - 2026-05-08 | Fase 6 | Operativa Plesk/Contabo: server.js con mountStaticDist (Cache-Control 30d/no-cache, fallback excluye /api/* y /uploads/*, aviso honesto si dist/ falta, graceful shutdown con failsafe 10s); server/app.js exporta mountFinalHandlers para 404+errorHandler post-SPA en produccion. package.json con scripts honestos (build placeholder con mensaje claro, build:check sin fingir, check=lint+test, test:unit, dev:client placeholder, deploy:plesk:notes). .env.example con PUBLIC_BASE_URL/STAGING_BASE_URL. infra/plesk/README.md reescrito (Contabo+Plesk paso a paso, dominio+SSL, Node app, MariaDB con DB separada staging, env vars panel, uploads persistentes, staging con noindex header + robots Disallow + basic-auth, deploy SSH paso a paso, smoke checklist post-deploy, rollback con/sin migracion, seguridad). infra/scripts/backup-notes.md (Plesk Backup Manager diario 30d con cifrado, restore test trimestral en staging, recuperacion ante desastre con RTO 4h/RPO 24h). infra/scripts/deploy-checklist.md (pre/durante/post). infra/scripts/smoke.sh ejecutable con bash+curl+jq. .github/workflows/pr.yml con MariaDB 10.11 service container, npm ci+lint+migrate test+test+build:check; staging.yml y production.yml como skeletons documentados con if:false hasta que owner finalice secrets. Eliminado .github/workflows/README.md placeholder. README.md y docs/runbook.md actualizados | Verificacion: `npm test` 112/112 verde · `npm run lint` 0 errores · `npm run build` placeholder honesto exit 0 sin generar dist falso · `npm run build:check` confirma estado real · server smoke en NODE_ENV=production sin dist -> arranca con AVISO claro y endpoints OK · server smoke con dist/ minimo -> sirve SPA en `/` y rutas SPA random, /api 404 sigue siendo problem+json, /uploads no existente NO devuelve index.html, Cache-Control assets 30d e index.html max-age=0 · infra/scripts/smoke.sh contra :3000 -> 6/6 ok | Siguiente: Fase 7
 - 2026-05-12 | Fase 7 | Scaffold frontend React 19 + Vite 6 + Tailwind con tokens CRUDO: `index.html`, `vite.config.mjs` (proxy `/api` y `/uploads` a backend dev), `tailwind.config.mjs` (paleta dark editorial, Cormorant Garamond + Inter + JetBrains Mono), `postcss.config.mjs`. `src/` con main.jsx, App.jsx, routes.jsx; 17 paginas stub (Home, Catalog, Seasonal, Tablas, MyTabla + Confirmation, Events + Detail, About, Contact, CelebrateWithUs, Wholesale, Legal, Privacy, Cookies, AdminEntry, NotFound, Product); layout (AppShell, Header, Footer, StickyCTA, CookieBanner); UI primitives accesibles (Button, IconButton, Input, Textarea, Select, FieldError, Badge, Tag, Spinner, Modal, PageScaffold); lib (api axios, consent, analytics consent-aware, schema.org, siteConfig, cn); hooks useSiteConfig/useConsent; tokens.css + global.css. eslint extendido a `src/`. | Verificacion: `npm run build` -> 1668 modulos, 546KB JS gzip 162KB, 15KB CSS gzip 4KB · `npm run lint` 0 errores tras eliminar `eslint-disable-next-line no-console` huerfano en IconButton · `npm test` 112/112 verde (sin specs de cliente aun) | Siguiente: Fase 8
+- 2026-05-12 | Fase docs | Inventario visual catalogado: revisadas 17 fotos en docs/V1/Photos/ + 1 Gemini hero en images/ + branding en docs/V1/Crudo/. Anadidas a V1Tecnico.md: §7.bis (inventario autoritativo asset->uso con patron visual del local), §17.1 Fase 8.5 (prompt completo para refinamiento visual con componentes de marca RetroSign/SaffronTileBackground/LifestylePhoto/BrandSticker/AnimalQuesero + refactor Hero/Cards/Footer), sub-bloques "Assets visuales" en Fases 9 (Mi Tabla hero/empty/success), 10 (About/Eventos/Mayoristas/Contacto + pipeline minimo), 12 (OG images 1200x630 por ruta) y 14 (mapeo completo origen->destino + pipeline sharp + EXIF rotation). Actualizado §0.1 con visual_assets_index, fila Fase 8.5 en tabla, bloqueo de logos resuelto. Verificacion: lectura/estructura OK, sin cambios de codigo. Siguiente: Fase 8.5 o continuar con commit/push de Fase 8.
+- 2026-05-12 | Fase 8 | Frontend publico Home + Catalogo + PDP. Hooks `useProducts`, `useProduct`, `useCategories`, `useActiveCampaign`, `useEvents`, `useTablaDraft`. Lib `whatsapp.js` (buildProductInquiryUrl + variantes), `tablaDraft.js` (localStorage + subscribe pattern, AlcoholInTablaError, cap 99 unidades). Catalog components: `StockBadge`, `EmptyState`, `ProductCard`, `ProductGrid` + `ProductGridSkeleton`, `CatalogToolbar` (busqueda con debounce 300ms, select categoria, toggle seasonal, limpiar filtros), `CatalogView` (compartido por 4 rutas). Product components: `ProductGallery` (miniaturas accesibles), `ProductMeta`, `ProductLongRead` (atributos leche/tratamiento/intensidad/region/productor + historia + maridaje), `WineWhatsAppButton` (texto "Los vinos se reservan y se pagan en CRUDO."), `AddToTablaButton` (feedback "Añadido a Mi Tabla"), `RelatedProducts`. Home components: `Hero` (overlay rgba(26,31,20,0.55), abierto/cerrado en vivo, CTA dinamico segun draft), `SeasonalShowcase`, `CategoryStrips`, `EventsTeaser` (3 eventos + seats_left/few_seats_left/is_full), `InstagramStrip` (placeholder editorial), `VisitBlock`. Pages reescritas: `HomePage`, `CatalogPage`, `SeasonalPage`, `ProductPage` (con buildProductSchema JSON-LD inline, trackSelectItem, useEffect title/meta). Pages nuevas: `CatalogQuesoPage` (type=CHEESE), `CatalogVinosPage` (type=WINE). Rutas anadidas en `routes.jsx`: `/catalogo/quesos`, `/catalogo/vinos`. `StickyCTA` ahora muestra count del draft cuando hay items. Tests cliente: tablaDraft (8: alcohol-reject + cap 99 + persistencia + remove + setQuantity), ProductCard (4: precio+seasonal+Añadir cheese, wine WhatsApp con nombre y wa.me/34xxx, OUT disabled, link a PDP), ProductMeta (3: PDP wine guard nunca Añadir, link WhatsApp con nombre, h1+eyebrow+precio), Hero (2: H1 unico + CTAs + sin texto ingles), EmptyState (2), whatsapp helpers (4). | Verificacion: `npm install` OK (177 paquetes) · `npm run lint` 0 errores · `npm run build` 1701 modulos 347KB JS gzip 111KB CSS 20KB gzip 5KB · `npm test` 135/135 verde (112 backend + 23 cliente nuevos, 60.5s con DB real para backend) · Smoke visual queda pendiente con dev server | Siguiente: Fase 9
 
 ### Instrucciones para actualizar este estado
 
@@ -625,6 +629,74 @@ Prohibido visualmente:
 - Estetica SaaS generica.
 - Botones demasiado redondeados.
 - Carruseles auto-rotatorios, parallax o scroll-jacking.
+
+## 7.bis Inventario visual de assets reales (2026-05-12)
+
+Esta seccion es **fuente autoritativa de mapeo asset -> componente** para todas las fases >= 8. Cualquier fase que use placeholders genericos debe consultar este indice primero. Si un asset cambia de ubicacion o se sustituye por una version optimizada, actualizar este indice.
+
+### Carpetas fuente
+- `images/` (raiz del repo): assets nuevos generados/curados, **1 imagen** actual:
+  - `Gemini_Generated_Image_149guw149guw149g.png` — bodegon AI: tabla de quesos con bodega al fondo, lampara terracota, **espacio negativo verde oscuro a la izquierda intencional para overlay**.
+- `docs/V1/Photos/` (originales): 17 fotos reales del local CRUDO + 1 MP4 (`DB18FE7B-*.MP4`):
+  - `IMG_0205.JPG`, `IMG_0206.JPG`, `IMG_0207.JPG` — bodegon real interior: botellas (Rayo en Rama, Alperi, La Pertia), copas vacias, posavasos Le Gruyere, **cartel CRUDO retroiluminado naranja** sobre pared ladrillo blanco.
+  - `IMG_1117.jpeg`, `IMG_1118.jpeg` — botella vino natural con etiqueta arte cyberpunk en mano, entorno almacen/tienda.
+  - `IMG_1582.jpeg` — tabla de quesos completa en plato metalico: Manchego, Brie, queso azul, nueces, uvas, miel, dos copas tinto, sobre azulejo amarillo CRUDO.
+  - `IMG_8952.JPG`, `IMG_8953.JPG`, `IMG_8954.JPG` — mostrador con queseras enteras, vino, owner sonriendo, ambiente "tienda real".
+  - `IMG_8956.JPG`, `IMG_8957.JPG` — copas tumbadas en soporte madera, **sticker logo CRUDO retro marron/blanco**, pato suizo Le Gruyere, sobre azulejo amarillo.
+  - `IMG_9525.JPG`, `IMG_9526.JPG`, `IMG_9527.JPG`, `IMG_9528.JPG` — tres botellas vinos naturales (El Rayo en Rama, Bisus, Brave Rama) + plato pequeño quesos + bowl crackers + decantador, sobre azulejo amarillo.
+  - `IMG_9602.JPG` — botella Penedes Ull de Llebre 2023 (Les Vinyerons) en mano.
+- `docs/V1/Crudo/`: branding oficial:
+  - `Logo Crudo - PNG - Color V1.png`, `V2.png`, `Blanco.png`, `Negro.png`.
+  - `Crudo_Completo.png`, `Crudo_Texto.png`.
+  - `1.01 - Animales Queseros.png`, `2.01 - Animales Queseros.png` — ilustraciones mascotas/animales queseros.
+  - `final1.png`, `carta_quesos_vinos (1) (1).html` — referencia carta.
+
+### Patron visual del local (firma CRUDO)
+- **Azulejo mustard/saffron** (amarillo brillante, mate) -> material de firma; usar como background pattern en secciones lifestyle.
+- **Cartel CRUDO retroiluminado naranja** -> componente reutilizable `<RetroSign>` para eyebrows decorativos, 404, success states.
+- **Tipografia retro chunky** del logo -> ya capturada en sticker IMG_8956; usar como decorativo, no como tipografia primaria (Cormorant/Inter mandan).
+- **Pared ladrillo blanco** + **luces calidas puntuales** -> textura sugerida para hero alt y About.
+- **Vinos naturales con etiquetas artisticas** -> destacar visualmente como diferenciador vs vino industrial.
+- **Patito Le Gruyere** + **posavasos suizos** -> humor sutil, usar en footer easter egg o 404 (no en producto serio).
+
+### Mapeo asset -> uso en V1
+
+| Asset | Uso primario | Uso secundario | Notas |
+|---|---|---|---|
+| `images/Gemini_*.png` | **Hero home** (overlay texto izq) | OG image Home, hero `/sobre-crudo` alt | Espacio negativo izq es **invariante de composicion** — overlay debe respetarlo. |
+| `IMG_0205-0207.JPG` | Hero secundario `/sobre-crudo` o `/contacto` | Strip lifestyle Home, OG Contacto | Cartel CRUDO visible -> reforzar marca. |
+| `IMG_1117/1118/9602.jpeg` | Featured "Vinos naturales" en `/catalogo/vinos` | Hero `/mayoristas`, ficha producto vino destacado | Etiquetas artisticas atraen click. |
+| `IMG_1582.jpeg` | **Hero `/mi-tabla`** y `/catalogo/quesos` | PDP queso fallback, OG Catalogo, hero `/eventos` | Imagen mas "shoppable" — usar siempre que se hable de tabla. |
+| `IMG_8952-8954.JPG` | **Hero `/sobre-crudo`** + bloque "Owner" | Strip "Como hacemos las tablas" Home | Owner visible -> humaniza marca. |
+| `IMG_8956/8957.JPG` | Footer easter egg, 404, FormSuccess decorativo | Branding Instagram strip placeholder | Sticker retro = identidad de marca. |
+| `IMG_9525-9528.JPG` | **Hero `/eventos`** + cards de catas | Strip "Maridajes" Home, hero `/mayoristas` alt | Vibe "experiencia compartida". |
+| `Logo Crudo - PNG - Blanco.png` | Logo header sobre fondos oscuros, OG fallback | Loading splash si existe | Conservar SVG si owner provee. |
+| `Logo Crudo - PNG - Negro.png` | Logo sobre fondos claros (raro en CRUDO) | Print/factura | - |
+| `Animales Queseros*.png` | Decorativo `/sobre-crudo`, `/mi-tabla` empty state | Ilustracion 404 alternativa | Mascotas; uso editorial, no producto. |
+| `Crudo_Completo.png`, `Crudo_Texto.png` | Logo header, footer, OG | - | Verificar transparencia. |
+
+### Componentes nuevos sugeridos (a crear en Fase 8.5 o segun necesidad)
+- `src/components/brand/RetroSign.jsx` — caja con sombra interior naranja calida emulando el cartel retroiluminado de IMG_0205. Props: `text`, `size`, `as` (`h2` por defecto).
+- `src/components/brand/SaffronTileBackground.jsx` — fondo CSS con textura azulejo amarillo (SVG pattern o repeating-linear-gradient). Para secciones lifestyle.
+- `src/components/brand/LifestylePhoto.jsx` — wrapper de `<img>` con aspect-ratio reservado, `loading="lazy"`, `srcset` desktop/mobile, `alt` obligatorio.
+- `src/components/brand/BrandSticker.jsx` — render del sticker logo retro como elemento decorativo (no link, no logo principal).
+- `src/components/brand/AnimalQuesero.jsx` — ilustracion mascota inline (1.01 o 2.01).
+
+### Pipeline de assets (a implementar en Fase 14, preparable antes)
+1. **Origen**: `docs/V1/Photos/` y `images/` no se sirven publicamente.
+2. **Destino publico**: `public/img/` con subcarpetas semanticas: `hero/`, `lifestyle/`, `products/`, `events/`, `about/`, `brand/`.
+3. **Conversion**: cada origen genera 3 outputs: WebP @1x, WebP @2x, JPG fallback. Script `scripts/optimize-images.js` con `sharp`.
+4. **Naming**: kebab-case semantico, no IDs: `hero-home-cheeseboard.webp`, no `IMG_1582.webp`.
+5. **EXIF rotation**: los originales tienen orientacion EXIF rotada — el script debe aplicar rotacion al exportar.
+6. **Alt text**: obligatorio, en espanol, descriptivo, sin "imagen de" prefijo.
+
+### Reglas duras de uso visual
+- **Nunca** usar fotos de stock genericas si existe equivalente en este inventario.
+- **Nunca** alterar el espacio negativo izquierdo de la imagen Gemini (Hero home) — el overlay esta diseñado para esa composicion.
+- **Nunca** usar los logos sobre fondos que dañen contraste (Logo blanco sobre amarillo saffron = no).
+- Las mascotas Animales Queseros son **decorativas**, no marca primaria.
+- El cartel retroiluminado y el sticker retro son **firmas visuales** — usarlos refuerza marca; abusar los banaliza.
+- Todas las fotos del local tienen **orientacion EXIF rotada**; verificar siempre output rotation antes de servir.
 
 ## 8. Prompt base minimo y fijo
 
@@ -3625,6 +3697,224 @@ Respuesta final:
 - Siguiente prompt recomendado.
 ```
 
+## 17.1 Fase 8.5 - Refinamiento visual con assets reales (back-addition)
+
+Esta sub-fase aparece **despues** de Fase 8 porque Fase 8 quedo `REVIEW_READY` con placeholders y composiciones genericas. Ahora que existe el inventario visual (`§7.bis`), Fase 8.5 reemplaza placeholders por assets reales en Home, Catalogo y PDP, y crea los componentes de marca firma (`<RetroSign>`, `<SaffronTileBackground>`, `<LifestylePhoto>`, `<BrandSticker>`). No introduce nuevas rutas ni cambia logica de negocio.
+
+Objetivo: que el front ya construido **se sienta CRUDO**, no plantilla.
+
+Entregables:
+- Hero home con `images/Gemini_*.png` y overlay sobre espacio negativo izquierdo
+- Componentes de marca: `RetroSign`, `SaffronTileBackground`, `LifestylePhoto`, `BrandSticker`, `AnimalQuesero`
+- Strip "Maridajes" en Home con IMG_9525
+- ProductCard con fallback de imagen si producto no tiene asset (placeholder editorial, no generico)
+- VisitBlock con IMG_0205-0207 de fondo o accent
+- SeasonalShowcase con frame de azulejo saffron sutil
+- Footer easter egg con BrandSticker o AnimalQuesero
+- Pipeline minimo de assets: copia `images/` y subset de `docs/V1/Photos/` a `public/img/` con naming semantico (sin script de optimizacion todavia, eso es Fase 14)
+
+Prompt para Opus:
+
+```text
+Usa el Prompt base minimo y fijo.
+
+Implementa la Fase 8.5: refinamiento visual del frontend publico (Home, Catalogo, PDP) usando los assets reales catalogados en `§7.bis Inventario visual de assets reales` de `docs/V1/V1Tecnico.md`.
+
+Objetivo de esta fase:
+Fase 8 quedo funcional pero con placeholders genericos. Esta fase reemplaza placeholders por fotos reales del local CRUDO, crea los componentes de marca firma (cartel retroiluminado, azulejo saffron, sticker retro) y deja Home/Catalogo/PDP con identidad visual coherente. No cambia rutas, contratos API ni reglas de negocio. Mantiene vino WhatsApp-only y no alcohol en Mi Tabla.
+
+Contexto obligatorio:
+- Fase 8 esta en REVIEW_READY. No reescribir Home/Catalogo/PDP desde cero; refinar.
+- Lee `§7.bis Inventario visual de assets reales` en `docs/V1/V1Tecnico.md` antes de tocar nada. Es fuente autoritativa del mapeo asset -> componente.
+- Assets disponibles:
+  - `images/Gemini_Generated_Image_149guw149guw149g.png` (Hero home)
+  - `docs/V1/Photos/IMG_*.JPG/.jpeg` (17 fotos del local)
+  - `docs/V1/Crudo/*.png` (logos, ilustraciones, sticker retro)
+- Stack: React 19, Vite, JavaScript, Tailwind. Sin TypeScript.
+
+Antes de editar:
+1. Lee `docs/V1/V1Tecnico.md` completo (especialmente `§0.1` y `§7.bis`).
+2. Inspecciona:
+   - `src/components/home/Hero.jsx`
+   - `src/components/home/SeasonalShowcase.jsx`
+   - `src/components/home/CategoryStrips.jsx`
+   - `src/components/home/VisitBlock.jsx`
+   - `src/components/catalog/ProductCard.jsx`
+   - `src/components/product/ProductGallery.jsx`
+   - `src/components/layout/Footer.jsx`
+   - `public/` (existe? estructura?)
+   - `tailwind.config.js` para tokens existentes
+   - tests existentes
+3. No modifiques `docs/AGENTS_Javi.md`.
+4. No introducir TypeScript.
+
+Pipeline minimo de assets:
+- Crear `public/img/` con subcarpetas: `hero/`, `lifestyle/`, `brand/`, `about/`.
+- Copiar (no mover, los originales se conservan):
+  - `images/Gemini_*.png` -> `public/img/hero/hero-home-cheeseboard.png`
+  - `docs/V1/Photos/IMG_1582 2.jpeg` -> `public/img/lifestyle/tabla-quesos-vino.jpg`
+  - `docs/V1/Photos/IMG_0205 2.JPG` -> `public/img/lifestyle/bodegon-cartel-crudo.jpg`
+  - `docs/V1/Photos/IMG_9525 2.JPG` -> `public/img/lifestyle/cata-vinos-naturales.jpg`
+  - `docs/V1/Photos/IMG_8954 2.JPG` -> `public/img/about/owner-mostrador.jpg`
+  - `docs/V1/Crudo/Logo Crudo - PNG - Blanco.png` -> `public/img/brand/logo-blanco.png`
+  - `docs/V1/Crudo/Crudo_Texto.png` -> `public/img/brand/logo-texto.png`
+  - `docs/V1/Crudo/1.01 - Animales Queseros.png` -> `public/img/brand/animal-quesero-1.png`
+- No ejecutar optimizacion WebP/AVIF en esta fase; Fase 14 hara pipeline `sharp`.
+- Aplicar rotacion EXIF manualmente si las copias salen rotadas (los originales tienen `Orientation=6`).
+- Si una imagen no se puede usar por orientacion/calidad, documentar en respuesta final.
+
+Componentes de marca nuevos (en `src/components/brand/`):
+
+1. `RetroSign.jsx`:
+   - Caja con borde redondeado pequeño (8px), background `#FF8A47` (terracota calida tipo cartel del local), sombra interior orange-glow, texto en blanco hueso (#F5EFE6).
+   - Props: `text` (string), `as` (string, default "span"), `size` ("sm"|"md"|"lg", default "md").
+   - Padding tactil. No clickable por defecto.
+   - Uso: eyebrows decorativos en secciones lifestyle, 404, success states de formularios.
+
+2. `SaffronTileBackground.jsx`:
+   - Wrapper que aplica background pattern de azulejo amarillo (#E8B547 base + lineas grout #C99A36 sutil).
+   - Implementacion: SVG inline o `background-image` con SVG data-uri.
+   - Props: `as` (string), `className`, `children`, `intensity` ("subtle"|"normal", default "subtle").
+   - Uso: fondo de bloque "Maridajes", footer easter egg.
+
+3. `LifestylePhoto.jsx`:
+   - Wrapper de `<img>` con aspect-ratio reservado (`aspect-[4/3]` default, configurable).
+   - `loading="lazy"`, `decoding="async"`.
+   - Props: `src`, `alt` (obligatorio, no opcional), `aspectRatio` (string Tailwind), `className`, `priority` (boolean — si true, `loading="eager"` y `fetchpriority="high"`).
+   - Skeleton/placeholder oscuro mientras carga.
+
+4. `BrandSticker.jsx`:
+   - Render del sticker logo retro como elemento decorativo (rotacion ligera, sombra suave).
+   - Props: `rotation` (number, grados, default -8), `size` (number, px, default 80).
+   - Uso: footer easter egg, decoracion en empty states.
+
+5. `AnimalQuesero.jsx`:
+   - Render de ilustracion mascota.
+   - Props: `variant` ("1"|"2", default "1"), `size`, `className`.
+   - `aria-hidden="true"` por defecto (decorativo).
+
+Refinamientos por componente existente:
+
+1. `Hero.jsx`:
+   - Cambiar background a `public/img/hero/hero-home-cheeseboard.png` con `loading="eager"` y `fetchpriority="high"`.
+   - Overlay actual `rgba(26,31,20,0.55)` solo sobre **la mitad izquierda** (gradient `linear-gradient(90deg, rgba(26,31,20,0.75) 0%, rgba(26,31,20,0.45) 50%, rgba(26,31,20,0) 100%)`) — respetar la composicion intencional del asset.
+   - Eyebrow usa `<RetroSign text="VINOS Y QUESOS · MADRID" size="sm" />` en lugar de span plano.
+   - CTAs y H1 anchored a la izquierda en columna estrecha (max-w-md desktop).
+   - Mantener 90vh mobile / 80vh desktop.
+
+2. `SeasonalShowcase.jsx`:
+   - Frame del bloque con `<SaffronTileBackground intensity="subtle">` o un borde superior azulejo.
+   - Eyebrow `<RetroSign text="DE TEMPORADA" size="sm" />`.
+   - Cards mantienen `aspect-ratio: 1/1`.
+
+3. `CategoryStrips.jsx`:
+   - Cada strip (Quesos / Vinos / Temporada) usa una foto representativa de fondo con overlay oscuro:
+     - Quesos -> `public/img/lifestyle/tabla-quesos-vino.jpg`
+     - Vinos -> `public/img/lifestyle/cata-vinos-naturales.jpg`
+     - Temporada -> reusar Hero o lifestyle bodegon.
+   - Texto centrado sobre overlay, CTA `Ver`.
+
+4. Nuevo bloque `MaridajesStrip.jsx` (entre SeasonalShowcase y CategoryStrips):
+   - Background `<SaffronTileBackground intensity="subtle">`.
+   - Eyebrow `<RetroSign text="MARIDAJES" size="sm" />`.
+   - H2 corto editorial.
+   - 1-2 `<LifestylePhoto>` con copy adjunto.
+   - Sin CTA explicito (es bloque editorial).
+
+5. `VisitBlock.jsx`:
+   - Background o accent con `public/img/lifestyle/bodegon-cartel-crudo.jpg` overlay 60%.
+   - Direccion, horarios, CTAs WhatsApp/Maps/Instagram destacados.
+
+6. `ProductCard.jsx`:
+   - Si producto no tiene `images[0].url`, fallback a placeholder editorial **especifico por tipo**:
+     - `type=CHEESE` -> recorte 1:1 de `tabla-quesos-vino.jpg`.
+     - `type=WINE` -> recorte 1:1 de `cata-vinos-naturales.jpg`.
+     - otro -> placeholder oscuro CRUDO con texto "Sin imagen".
+   - No usar fallback gris generico.
+
+7. `ProductGallery.jsx` (PDP):
+   - Misma logica de fallback por tipo.
+   - Si producto tiene 1 sola imagen, no mostrar thumbnails.
+
+8. `Footer.jsx`:
+   - Esquina inferior derecha (desktop) / abajo centrado (mobile): `<BrandSticker rotation={-12} size={72} />` como easter egg.
+   - Tooltip o alt: "Hecho con queso en Madrid" (humor sutil).
+
+9. `InstagramStrip.jsx`:
+   - Hasta que API Instagram este integrada, usar 4-6 fotos curadas del inventario (IMG_1582, IMG_0205, IMG_9525, IMG_8957) como placeholder editorial **honesto** con badge "@crudomov" y enlace externo.
+
+Tailwind extension:
+- Añadir en `tailwind.config.js` color tokens:
+  - `crudo-saffron: #E8B547`
+  - `crudo-saffron-grout: #C99A36`
+  - `crudo-terracota: #FF8A47`
+  - `crudo-bone: #F5EFE6`
+- No tocar tokens ya existentes (`crudo-dark`, etc.). Solo añadir.
+
+Analytics/SEO:
+- No cambiar contratos de eventos existentes.
+- Actualizar `<meta property="og:image">` en Home a `/img/hero/hero-home-cheeseboard.png` absoluto.
+
+Accesibilidad:
+- Todas las `<LifestylePhoto>` tienen `alt` descriptivo en espanol.
+- `<RetroSign>` con texto: el texto cuenta como contenido accesible.
+- `<AnimalQuesero>` y `<BrandSticker>` decorativos: `aria-hidden="true"`.
+- Overlay del Hero no debe reducir contraste de H1 por debajo de WCAG AA.
+
+Tests obligatorios:
+1. `RetroSign` renderiza el texto y aplica clases base.
+2. `LifestylePhoto` falla en build/runtime si falta `alt` (PropTypes warning o invariant).
+3. `Hero` sigue mostrando un solo H1 y CTAs accesibles.
+4. `ProductCard` usa fallback por tipo cuando no hay imagen (testear con producto sin `images`).
+5. Regresion: Vino sigue WhatsApp-only, no alcohol sigue con Mi Tabla.
+
+Prohibido en esta fase:
+- No cambiar rutas ni endpoints.
+- No cambiar reglas alcohol.
+- No introducir TypeScript ni librerias UI pesadas.
+- No optimizar imagenes con sharp/avif (eso es Fase 14).
+- No publicar contenido owner privado de las fotos (caras, sin consentimiento; las fotos de owner son OK porque las provee el owner).
+- No abusar de los componentes de marca: 1 `RetroSign` por seccion como maximo; sticker solo en footer.
+- No carrusel auto-rotatorio en MaridajesStrip.
+
+Actualizacion del estado vivo:
+Al terminar, actualiza `0.1 Estado vivo del proyecto`:
+- `last_updated`
+- `current_phase`: 8.5
+- `current_phase_name`: "Refinamiento visual con assets reales"
+- `current_focus`: resumen de Hero refinado, componentes de marca, strip Maridajes, fallbacks por tipo
+- `overall_status`: `REVIEW_READY` si build/tests/lint pasan
+- registro de sesion con fecha y verificacion
+- siguiente prompt recomendado: "Fase 9 - Mi Tabla frontend y pickup flow"
+
+Criterios de aceptacion:
+- Hero usa imagen real con overlay que respeta el espacio negativo izquierdo.
+- Existen los 5 componentes de marca (`RetroSign`, `SaffronTileBackground`, `LifestylePhoto`, `BrandSticker`, `AnimalQuesero`).
+- Home tiene strip Maridajes nuevo.
+- ProductCard tiene fallback editorial por tipo, no gris generico.
+- Footer tiene sticker easter egg.
+- `public/img/` poblado con assets renombrados semanticamente.
+- Reglas vino/no alcohol siguen intactas.
+- `npm run build`, `npm test`, `npm run lint` pasan.
+- No hay texto ingles publico nuevo.
+
+Verificacion obligatoria:
+- `npm run build`
+- `npm test`
+- `npm run lint`
+- Smoke local Home + 1 PDP queso + 1 PDP vino.
+- `git status --short` y listado de archivos.
+
+Respuesta final:
+- Resumen Fase 8.5.
+- Componentes de marca creados.
+- Assets copiados a `public/img/` (lista).
+- Refinamientos por componente.
+- Verificacion ejecutada.
+- Estado vivo actualizado.
+- Siguiente prompt recomendado.
+```
+
 ## 18. Fase 9 - Mi Tabla frontend y pickup flow
 
 Objetivo: implementar drawer, formulario y confirmacion de reserva sin pago online.
@@ -3897,6 +4187,13 @@ Si API no esta disponible:
 - Mockear `pickupApi` en tests.
 - No marcar integracion real como DONE.
 - Documentar comando pendiente para probar con backend.
+
+Assets visuales (consultar `§7.bis`):
+- `/mi-tabla` hero/empty state usa `public/img/lifestyle/tabla-quesos-vino.jpg` (IMG_1582) — es la imagen mas "shoppable" del inventario.
+- Si `Mi Tabla` esta vacia: empty state con `<AnimalQuesero variant="1" />` + copy editorial "Aun no has elegido quesos. Empieza por nuestra carta." + CTA a `/catalogo/quesos`.
+- Confirmacion post-submit: `<RetroSign text="¡PEDIDO RECIBIDO!" />` + copy "Te confirmamos por WhatsApp en menos de 24 h. Pagas en CRUDO al recoger."
+- TablaDrawer (mobile/desktop): no usar fotos lifestyle dentro del drawer (puede ralentizar overlay). Solo imagen de producto 1:1.
+- Color terracota del `RetroSign` debe contrastar suficiente sobre fondo dark CRUDO (verificar WCAG AA).
 
 Prohibido en esta fase:
 - No integrar Stripe/Redsys.
@@ -4210,6 +4507,23 @@ VisitBlock/CTAs:
   - `generate_lead`.
 - No trackear PII.
 - No disparar analytics sin consentimiento.
+
+Assets visuales (consultar `§7.bis`):
+- `/sobre-crudo` hero: `public/img/about/owner-mostrador.jpg` (IMG_8954, Stefano sonriendo detras del mostrador) full-bleed 60vh con overlay gradient sutil. Reforzar marca con `<RetroSign text="DESDE 2024 EN MADRID" size="sm" />` como eyebrow (ajustar año real cuando owner confirme).
+- `/sobre-crudo` bloque "manifesto": dos columnas: texto + `<LifestylePhoto src="/img/lifestyle/bodegon-cartel-crudo.jpg" alt="Bodegon en CRUDO con vinos naturales y cartel retroiluminado" aspectRatio="aspect-[4/5]" />`.
+- `/sobre-crudo` bloque "Owner/Space": grid 3 fotos: IMG_8952, IMG_8953, IMG_8954 (mostrador, quesera, owner).
+- `/sobre-crudo` footer-block: ilustracion `<AnimalQuesero variant="2" />` como decorativo + copy editorial corto.
+- `/eventos` hero: `public/img/lifestyle/cata-vinos-naturales.jpg` (IMG_9525, tres botellas + plato quesos + decantador) overlay 50%. Eyebrow `<RetroSign text="EVENTOS" size="sm" />`.
+- `/eventos` EventCard: si evento no tiene `hero_image_url`, fallback editorial usando IMG_9525-9528 segun tipo (cata vinos / tabla maridajes).
+- `/eventos/:slug` detalle: hero del evento; si falta, fallback `/img/lifestyle/cata-vinos-naturales.jpg`.
+- `/contacto` hero/accent: `public/img/lifestyle/bodegon-cartel-crudo.jpg` con overlay; MapBlock embebido debajo. Acompañar con `<RetroSign text="VISITANOS" size="sm" />`.
+- `/mayoristas` hero: foto botella vino natural en mano (`docs/V1/Photos/IMG_1117 2.jpeg` -> `public/img/lifestyle/vino-natural-mano.jpg`) — comunica "producto seleccionado a mano". Eyebrow `<RetroSign text="HORECA Y DISTRIBUCION" size="sm" />`.
+- Pipeline minimo Fase 10:
+  - Copiar a `public/img/about/`: IMG_8952, IMG_8953 (renombrar `mostrador-quesera.jpg`, `mostrador-vino.jpg`).
+  - Copiar a `public/img/lifestyle/`: IMG_1117 -> `vino-natural-mano.jpg`, IMG_0206 -> `bodegon-cartel-crudo-2.jpg` (alt del primero).
+  - Verificar EXIF rotation.
+- Newsletter form success state: `<BrandSticker rotation={-10} size={56} />` + copy "Revisa tu correo para confirmar la suscripcion" — humor sutil sin banalizar.
+- FormError: NO usar sticker ni mascotas (no humor en errores). Solo iconografia sobria.
 
 Visual:
 - Mantener tokens CRUDO.
@@ -4984,6 +5298,25 @@ SEO basico:
 - No meter copy en imagenes.
 - Espanol claro y traducible.
 
+OG images por ruta (consultar `§7.bis`):
+- Generar variantes optimizadas WebP/JPG 1200x630 (16:9 social-safe) bajo `public/img/og/`:
+  - `og-home.jpg` <- recorte de `/img/hero/hero-home-cheeseboard.png` (encuadrar tabla quesos + lampara).
+  - `og-catalogo.jpg` <- recorte de `/img/lifestyle/tabla-quesos-vino.jpg` (IMG_1582).
+  - `og-catalogo-vinos.jpg` <- recorte de `/img/lifestyle/cata-vinos-naturales.jpg` (IMG_9525).
+  - `og-catalogo-quesos.jpg` <- mismo que catalogo o variante 16:9 mas cerrada de IMG_1582.
+  - `og-sobre.jpg` <- recorte de `/img/about/owner-mostrador.jpg` (IMG_8954).
+  - `og-eventos.jpg` <- recorte de `/img/lifestyle/cata-vinos-naturales.jpg`.
+  - `og-contacto.jpg` <- recorte de `/img/lifestyle/bodegon-cartel-crudo.jpg` (IMG_0205, cartel CRUDO visible para reforzar marca en preview).
+  - `og-mayoristas.jpg` <- recorte de `/img/lifestyle/vino-natural-mano.jpg` (IMG_1117).
+- PDP producto: usar `images[0].url` del producto si existe. Si no, fallback OG por tipo (`og-catalogo-quesos.jpg` o `og-catalogo-vinos.jpg`).
+- PDP evento: usar `hero_image_url` si existe; si no, `og-eventos.jpg`.
+- Naming: kebab-case, semantico, no IDs.
+- Tag `<meta property="og:image">` debe ser **URL absoluta** (concat `PUBLIC_BASE_URL`).
+- Reservar `<meta property="og:image:alt">` con descripcion espanol corta (max 100 chars).
+- Twitter card `summary_large_image`.
+- No texto incrustado en OG images (el preview rendea texto encima por Twitter/Linkedin/WhatsApp/Slack).
+- Verificacion: `curl -s URL | grep og:image` debe devolver path absoluto.
+
 Schema.org:
 - Home:
   - Restaurant o LocalBusiness/Restaurant.
@@ -5581,6 +5914,7 @@ Productos:
   - documentar columnas y ejemplo ficticio claramente marcado.
 
 Imagenes:
+- **Fuente autoritativa**: `§7.bis Inventario visual de assets reales` en `docs/V1/V1Tecnico.md`. Antes de cargar nada nuevo, mapear todos los assets ya existentes en `images/` y `docs/V1/Photos/` segun ese indice.
 - Clasificar:
   - producto 1:1.
   - hero desktop 16:9.
@@ -5588,6 +5922,8 @@ Imagenes:
   - lifestyle.
   - owner/interior.
   - eventos.
+  - OG/social 1200x630 (16:9 social-safe).
+  - brand (logos, sticker, mascotas).
 - Optimizar solo copias generadas, no destruir originales.
 - Formatos:
   - WebP si pipeline existe.
@@ -5597,12 +5933,50 @@ Imagenes:
   - product minimo recomendado 1600x1600 origen si existe.
   - hero desktop 16:9.
   - hero mobile 9:16.
+  - OG 1200x630 absolutos.
   - alt text descriptivo en espanol.
   - no texto incrustado en imagen.
   - no imagenes gigantes sin compresion.
-- Si falta pipeline:
-  - documentar comandos/herramienta pendiente.
-  - no bloquear todo si assets ya son razonables.
+- Pipeline `scripts/optimize-images.js` (a crear en esta fase):
+  - Input: `public/img/_originals/` (copia de `images/` + subset de `docs/V1/Photos/`).
+  - Output: `public/img/{hero,lifestyle,products,about,events,brand,og}/` con WebP @1x y @2x + JPG fallback.
+  - Aplicar rotacion EXIF al exportar (los originales de `docs/V1/Photos/` tienen `Orientation=6`).
+  - Stripping de metadata GPS y autor (privacidad).
+  - Dependencia: `sharp` (devDependency).
+  - Script invocable con `npm run img:optimize`.
+- Naming semantico kebab-case obligatorio (`hero-home-cheeseboard.webp`, no `IMG_1582.webp`).
+- Mapeo origen -> destino recomendado:
+  - `images/Gemini_Generated_Image_149guw149guw149g.png` -> `hero/hero-home-cheeseboard.{webp,jpg}`
+  - `docs/V1/Photos/IMG_1582 2.jpeg` -> `lifestyle/tabla-quesos-vino.{webp,jpg}`
+  - `docs/V1/Photos/IMG_0205 2.JPG` -> `lifestyle/bodegon-cartel-crudo.{webp,jpg}`
+  - `docs/V1/Photos/IMG_0206 2.JPG` -> `lifestyle/bodegon-cartel-crudo-2.{webp,jpg}`
+  - `docs/V1/Photos/IMG_0207 2.JPG` -> `lifestyle/bodegon-cartel-crudo-3.{webp,jpg}`
+  - `docs/V1/Photos/IMG_1117 2.jpeg` -> `lifestyle/vino-natural-mano.{webp,jpg}`
+  - `docs/V1/Photos/IMG_1118 2.jpeg` -> `lifestyle/vino-natural-mano-2.{webp,jpg}`
+  - `docs/V1/Photos/IMG_8952 2.JPG` -> `about/mostrador-quesera.{webp,jpg}`
+  - `docs/V1/Photos/IMG_8953 2.JPG` -> `about/mostrador-vino.{webp,jpg}`
+  - `docs/V1/Photos/IMG_8954 2.JPG` -> `about/owner-mostrador.{webp,jpg}`
+  - `docs/V1/Photos/IMG_8956 2.JPG` -> `brand/copas-sticker-crudo.{webp,jpg}`
+  - `docs/V1/Photos/IMG_8957 2.JPG` -> `brand/copas-sticker-crudo-2.{webp,jpg}`
+  - `docs/V1/Photos/IMG_9525 2.JPG` -> `lifestyle/cata-vinos-naturales.{webp,jpg}`
+  - `docs/V1/Photos/IMG_9526 2.JPG` -> `lifestyle/cata-vinos-naturales-2.{webp,jpg}`
+  - `docs/V1/Photos/IMG_9527 2.JPG` -> `lifestyle/cata-vinos-naturales-3.{webp,jpg}`
+  - `docs/V1/Photos/IMG_9528 2.JPG` -> `lifestyle/cata-vinos-naturales-4.{webp,jpg}`
+  - `docs/V1/Photos/IMG_9602 2.JPG` -> `lifestyle/vino-natural-penedes.{webp,jpg}`
+  - `docs/V1/Crudo/Logo Crudo - PNG - Blanco.png` -> `brand/logo-blanco.png` (mantener PNG por transparencia).
+  - `docs/V1/Crudo/Logo Crudo - PNG - Negro.png` -> `brand/logo-negro.png`.
+  - `docs/V1/Crudo/Crudo_Texto.png` -> `brand/logo-texto.png`.
+  - `docs/V1/Crudo/1.01 - Animales Queseros.png` -> `brand/animal-quesero-1.png`.
+  - `docs/V1/Crudo/2.01 - Animales Queseros.png` -> `brand/animal-quesero-2.png`.
+- OG variants (1200x630) generados desde:
+  - `og/og-home.jpg` <- recorte de Gemini hero.
+  - `og/og-catalogo.jpg`, `og/og-catalogo-quesos.jpg` <- recorte IMG_1582.
+  - `og/og-catalogo-vinos.jpg`, `og/og-eventos.jpg` <- recorte IMG_9525.
+  - `og/og-sobre.jpg` <- recorte IMG_8954.
+  - `og/og-contacto.jpg` <- recorte IMG_0205 (cartel CRUDO visible).
+  - `og/og-mayoristas.jpg` <- recorte IMG_1117.
+- Verificacion EXIF rotation: testear que las copias en `public/img/lifestyle/` y `about/` salen con orientacion correcta (no rotadas 90deg).
+- Si pipeline `sharp` no se puede instalar en esta fase: documentar comando pendiente y dejar JPG/PNG sin optimizar pero con naming semantico correcto.
 
 Eventos:
 - Cargar 3 eventos iniciales si hay datos reales:

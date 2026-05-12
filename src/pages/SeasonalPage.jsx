@@ -1,12 +1,13 @@
 import React from 'react';
-import { PageScaffold } from '../components/PageScaffold';
+import { CatalogView } from '../components/catalog/CatalogView';
 
 export default function SeasonalPage() {
   return (
-    <PageScaffold
-      eyebrow="Catalogo"
-      title="Quesos de temporada"
-      intro="La lista de productos reales y los filtros (tipo de leche, tratamiento, region, intensidad y maridaje) se conectan en la siguiente fase, alimentados por la API publica."
+    <CatalogView
+      pageEyebrow="Esta semana"
+      pageTitle="Quesos de temporada"
+      pageIntro="La selección que ha llegado fresca a la vitrina. Cambia cada semana según producción y madurez."
+      fixedFilters={{ seasonal: true }}
     />
   );
 }

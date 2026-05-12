@@ -89,5 +89,5 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build placeholder check (Vite real llega en Fase 7)
-        run: npm run build:check
+      - name: Build Vite frontend
+        run: npm run build
