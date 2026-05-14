@@ -26,7 +26,7 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 500;
+    font-weight: 700;   /* Cinzel: bold per manual psicolabis */
     line-height: 1.12;
     color: var(--color-text-primary);
     margin: 0;

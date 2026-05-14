@@ -11,7 +11,7 @@ export function ManifestoBlock() {
         <p className="eyebrow text-gold mb-3">Manifiesto</p>
         <h2
           id="manifesto-heading"
-          className="font-display italic text-3xl md:text-4xl text-text-primary leading-tight"
+          className="font-display text-3xl md:text-4xl text-text-primary leading-tight"
         >
           Producto pequeño, mesa cercana.
         </h2>

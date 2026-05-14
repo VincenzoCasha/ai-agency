@@ -64,7 +64,7 @@ export function CategoryStrips() {
               />
               <div className="relative h-full p-6 md:p-8 flex flex-col justify-end">
                 <p className="eyebrow text-crudo-bone/80 mb-3">{strip.eyebrow}</p>
-                <h3 className="font-display italic text-2xl md:text-3xl text-text-primary mb-2">
+                <h3 className="font-display text-2xl md:text-3xl text-text-primary mb-2">
                   {strip.title}
                 </h3>
                 <p className="text-sm text-text-secondary max-w-prose">

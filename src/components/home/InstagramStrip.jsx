@@ -20,7 +20,7 @@ export function InstagramStrip({ instagramUrl }) {
           <RetroSign text="Día a día" size="sm" className="mb-3" />
           <h2
             id="instagram-heading"
-            className="font-display italic text-3xl md:text-4xl text-text-primary"
+            className="font-display text-3xl md:text-4xl text-text-primary"
           >
             En Instagram
           </h2>

@@ -27,7 +27,7 @@ export function Footer({ siteConfig }) {
       </div>
       <div className="container-page py-10 grid gap-8 md:grid-cols-4">
         <div>
-          <h3 className="font-display italic text-2xl">CRUDO</h3>
+          <h3 className="font-display text-2xl">CRUDO</h3>
           <p className="mt-2 text-sm text-text-secondary max-w-prose">
             {cfg.legal_name || 'CRUDO QUESOS S.L.U'}
           </p>

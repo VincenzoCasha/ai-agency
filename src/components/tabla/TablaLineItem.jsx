@@ -32,13 +32,13 @@ export function TablaLineItem({ item, onRemove, onIncrement, onDecrement, compac
         {item.image_url ? (
           <img src={item.image_url} alt="" className="w-full h-full object-cover" loading="lazy" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-text-muted font-display italic">
+          <div className="w-full h-full flex items-center justify-center text-text-muted font-display">
             CRUDO
           </div>
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <p className={cn('font-display italic leading-tight text-text-primary', compact ? 'text-base' : 'text-lg')}>
+        <p className={cn('font-display leading-tight text-text-primary', compact ? 'text-base' : 'text-lg')}>
           {item.name}
         </p>
         {unit ? (

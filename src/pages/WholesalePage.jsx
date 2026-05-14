@@ -31,7 +31,7 @@ export default function WholesalePage() {
           <RetroSign text="Horeca y distribución" size="sm" className="self-start mb-4" />
           <h1
             id="wholesale-heading"
-            className="font-display italic text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
+            className="font-display text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
           >
             Quesos artesanos para restaurantes y tiendas.
           </h1>
@@ -45,7 +45,7 @@ export default function WholesalePage() {
 
       <section className="container-page py-12 md:py-16 grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14 items-start">
         <div className="max-w-prose">
-          <h2 className="font-display italic text-2xl md:text-3xl text-text-primary leading-tight mb-4">
+          <h2 className="font-display text-2xl md:text-3xl text-text-primary leading-tight mb-4">
             Cómo trabajamos.
           </h2>
           <ul className="space-y-3 text-text-secondary">

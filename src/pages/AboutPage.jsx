@@ -15,7 +15,7 @@ export default function AboutPage() {
       <ManifestoBlock />
       <OwnerSpaceBlock />
       <section className="container-page py-14 md:py-20 max-w-prose">
-        <h2 className="font-display italic text-2xl md:text-3xl text-text-primary mb-3">
+        <h2 className="font-display text-2xl md:text-3xl text-text-primary mb-3">
           ¿Qué quieres hacer?
         </h2>
         <ul className="text-text-primary text-base space-y-2">

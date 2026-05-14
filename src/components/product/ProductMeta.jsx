@@ -36,7 +36,7 @@ export function ProductMeta({ product, whatsappNumber }) {
         {eyebrow ? (
           <p className="eyebrow text-text-muted text-xs">{eyebrow}</p>
         ) : null}
-        <h1 className="font-display italic text-4xl sm:text-5xl leading-[1.05] text-text-primary">
+        <h1 className="font-display text-4xl sm:text-5xl leading-[1.05] text-text-primary">
           {product.name}
         </h1>
         {product.short_desc ? (

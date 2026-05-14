@@ -89,7 +89,7 @@ export function TablaMaridajeSelector({ siteConfig }) {
                 onChange={() => setSize(s.id)}
                 className="sr-only"
               />
-              <p className="font-display italic text-2xl text-text-primary leading-tight">
+              <p className="font-display text-2xl text-text-primary leading-tight">
                 {s.label}
               </p>
               <p className="mt-1 text-xs text-text-secondary">{s.desc}</p>

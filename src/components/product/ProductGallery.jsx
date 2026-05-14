@@ -29,7 +29,7 @@ export function ProductGallery({ images = [], productName, productType }) {
             className="absolute inset-0 flex items-center justify-center"
             style={{ background: 'linear-gradient(180deg, rgba(26,31,20,0.25) 0%, rgba(26,31,20,0.7) 100%)' }}
           >
-            <span className="font-display italic text-3xl md:text-5xl text-crudo-bone/95 px-4 text-center">
+            <span className="font-display text-3xl md:text-5xl text-crudo-bone/95 px-4 text-center">
               {productName}
             </span>
           </div>
@@ -42,7 +42,7 @@ export function ProductGallery({ images = [], productName, productType }) {
         style={{ aspectRatio: '1 / 1' }}
         aria-label={`Imagen no disponible para ${productName}`}
       >
-        <span className="font-display italic text-5xl text-text-muted opacity-40">
+        <span className="font-display text-5xl text-text-muted opacity-40">
           CRUDO
         </span>
       </div>

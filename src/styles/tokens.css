@@ -43,8 +43,11 @@
   --color-crudo-terracota-deep: #6C4050;
   --color-crudo-bone: #F6F1E4;
 
-  /* Tipografía — Google Fonts cargadas en index.html */
-  --font-display: "Fraunces", "Cormorant Garamond", "Times New Roman", serif;
-  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  /* Tipografía — Google Fonts cargadas en index.html
+     Fuente: Manual de identidad psicolabis (PSLBS-MANUAL-IDENTIDAD)
+     Display: Cinzel (romana, bold, mayúsculas) — titular principal
+     Body: Barlow (light→semibold) — textos corridos y subtítulos */
+  --font-display: "Cinzel", "Times New Roman", serif;
+  --font-body: "Barlow", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }

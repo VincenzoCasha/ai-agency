@@ -11,7 +11,7 @@ export function EmptyState({ title, description, action, className }) {
         className,
       )}
     >
-      <p className="font-display italic text-2xl text-text-primary">
+      <p className="font-display text-2xl text-text-primary">
         {title || 'Sin resultados'}
       </p>
       {description ? (

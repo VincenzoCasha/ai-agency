@@ -59,7 +59,7 @@ export function TablaDrawer({ open, onClose }) {
             <p className="eyebrow text-text-muted text-[0.65rem]">Tu reserva</p>
             <h2
               id="tabla-drawer-title"
-              className="font-display italic text-2xl text-text-primary leading-tight"
+              className="font-display text-2xl text-text-primary leading-tight"
             >
               Mi Tabla
             </h2>

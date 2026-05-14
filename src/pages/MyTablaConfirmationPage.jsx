@@ -17,7 +17,7 @@ export default function MyTablaConfirmationPage() {
   if (!confirmation) {
     return (
       <article className="container-page py-12 md:py-16 max-w-2xl">
-        <h1 className="font-display italic text-3xl md:text-4xl text-text-primary leading-tight">
+        <h1 className="font-display text-3xl md:text-4xl text-text-primary leading-tight">
           No encontramos tu reserva.
         </h1>
         <p className="mt-4 text-text-secondary text-lg">

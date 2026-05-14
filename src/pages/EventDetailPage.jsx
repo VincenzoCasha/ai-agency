@@ -29,7 +29,7 @@ export default function EventDetailPage() {
   if (status === 'error' || !event) {
     return (
       <main className="container-page py-16 max-w-prose">
-        <h1 className="font-display italic text-3xl md:text-4xl text-text-primary leading-tight">
+        <h1 className="font-display text-3xl md:text-4xl text-text-primary leading-tight">
           Evento no encontrado.
         </h1>
         <p className="mt-3 text-text-secondary">

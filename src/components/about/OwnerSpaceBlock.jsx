@@ -32,7 +32,7 @@ export function OwnerSpaceBlock() {
             <p className="eyebrow text-gold mb-2">El local</p>
             <h2
               id="space-heading"
-              className="font-display italic text-3xl md:text-4xl text-text-primary leading-tight"
+              className="font-display text-3xl md:text-4xl text-text-primary leading-tight"
             >
               Una tienda con barra al fondo.
             </h2>

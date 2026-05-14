@@ -33,7 +33,7 @@ export function EventsTeaser() {
             <p className="eyebrow text-gold mb-2">Próximamente</p>
             <h2
               id="events-heading"
-              className="font-display italic text-3xl md:text-4xl text-text-primary"
+              className="font-display text-3xl md:text-4xl text-text-primary"
             >
               Eventos en CRUDO
             </h2>
@@ -59,7 +59,7 @@ export function EventsTeaser() {
                   <Calendar size={14} aria-hidden="true" />
                   {formatEventDate(event.starts_at)}
                 </p>
-                <h3 className="font-display italic text-2xl text-text-primary leading-tight">
+                <h3 className="font-display text-2xl text-text-primary leading-tight">
                   {event.title}
                 </h3>
                 {event.short_desc ? (
