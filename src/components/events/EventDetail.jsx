@@ -9,7 +9,7 @@ import { FormSuccess } from '../forms/FormSuccess';
 import { buildGenericUrl } from '../../lib/whatsapp';
 import { trackWhatsAppClick } from '../../lib/analytics';
 
-const FALLBACK_HERO = '/img/lifestyle/cata-vinos-naturales.jpg';
+const FALLBACK_HERO = '/img/lifestyle/cata-vinos-naturales-pro.jpg';
 
 function formatDate(iso) {
   if (!iso) return '';

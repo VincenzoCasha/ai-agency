@@ -32,7 +32,7 @@ export function ManifestoBlock() {
         </div>
       </div>
       <LifestylePhoto
-        src="/img/lifestyle/bodegon-cartel-crudo.jpg"
+        src="/img/lifestyle/bodegon-cartel-crudo-pro.jpg"
         alt="Bodegón en CRUDO con vinos naturales y cartel retroiluminado al fondo"
         aspectRatio="aspect-[4/5]"
         className="rounded-md border border-border shadow-elevated"

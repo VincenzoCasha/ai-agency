@@ -38,7 +38,7 @@ function formatTime(iso) {
   }
 }
 
-const FALLBACK_HERO = '/img/lifestyle/cata-vinos-naturales.jpg';
+const FALLBACK_HERO = '/img/lifestyle/cata-vinos-naturales-pro.jpg';
 
 export function EventCard({ event }) {
   if (!event) return null;

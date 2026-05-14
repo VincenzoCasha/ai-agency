@@ -36,10 +36,13 @@ export default {
           terracota: 'var(--color-crudo-terracota)',
           'terracota-deep': 'var(--color-crudo-terracota-deep)',
           bone: 'var(--color-crudo-bone)',
+          coral: 'var(--color-accent)',
+          vine: 'var(--color-vine)',
+          petrol: 'var(--color-petrol)',
         },
       },
       fontFamily: {
-        display: ['"Cormorant Garamond"', '"Times New Roman"', 'serif'],
+        display: ['Fraunces', '"Cormorant Garamond"', '"Times New Roman"', 'serif'],
         body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
@@ -52,8 +55,8 @@ export default {
         pill: '999px',
       },
       boxShadow: {
-        soft: '0 1px 0 rgba(242,234,216,0.04), 0 8px 24px rgba(0,0,0,0.18)',
-        elevated: '0 1px 0 rgba(242,234,216,0.06), 0 16px 40px rgba(0,0,0,0.32)',
+        soft: '0 1px 2px rgba(108,64,80,0.06), 0 8px 24px rgba(108,64,80,0.10)',
+        elevated: '0 1px 2px rgba(108,64,80,0.08), 0 20px 48px rgba(108,64,80,0.18)',
       },
       letterSpacing: {
         eyebrow: '0.16em',

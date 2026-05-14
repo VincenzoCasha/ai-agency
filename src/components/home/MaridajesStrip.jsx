@@ -30,7 +30,7 @@ export function MaridajesStrip() {
           </p>
         </div>
         <LifestylePhoto
-          src="/img/lifestyle/cata-vinos-naturales.jpg"
+          src="/img/lifestyle/cata-vinos-naturales-pro.jpg"
           alt="Tres botellas de vinos naturales con plato de quesos y bowl de crackers sobre azulejo amarillo de CRUDO"
           aspectRatio="aspect-[4/5]"
           className="rounded-md border border-border-strong shadow-elevated"

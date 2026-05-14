@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { RetroSign } from '../components/brand/RetroSign';
 import { EventList } from '../components/events/EventList';
+import { CelebraStrip } from '../components/events/CelebraStrip';
 import { NewsletterForm } from '../components/forms/NewsletterForm';
 import { useEvents } from '../hooks/useEvents';
+import { useSiteConfig } from '../hooks/useSiteConfig';
 
 export default function EventsPage() {
   const { events, status, loading, error } = useEvents();
+  const { config } = useSiteConfig();
 
   useEffect(() => {
     document.title = 'Eventos · CRUDO';
@@ -19,7 +22,7 @@ export default function EventsPage() {
         style={{ minHeight: '45vh' }}
       >
         <img
-          src="/img/lifestyle/cata-vinos-naturales.jpg"
+          src="/img/lifestyle/cata-vinos-naturales-pro.jpg"
           alt=""
           aria-hidden="true"
           loading="eager"
@@ -50,7 +53,9 @@ export default function EventsPage() {
         <EventList events={events} status={status} loading={loading} error={error} />
       </section>
 
-      <section className="bg-bg-secondary border-t border-border">
+      <CelebraStrip siteConfig={config} />
+
+      <section className="bg-bg-elevated border-t border-border">
         <div className="container-page py-10 md:py-14 max-w-2xl">
           <h2 className="font-display italic text-2xl md:text-3xl text-text-primary mb-2">
             ¿Quieres que te avisemos del próximo evento?

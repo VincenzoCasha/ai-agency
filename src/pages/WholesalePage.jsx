@@ -15,7 +15,7 @@ export default function WholesalePage() {
         style={{ minHeight: '45vh' }}
       >
         <img
-          src="/img/lifestyle/vino-natural-mano.jpg"
+          src="/img/lifestyle/vino-natural-mano-pro.jpg"
           alt=""
           aria-hidden="true"
           loading="eager"

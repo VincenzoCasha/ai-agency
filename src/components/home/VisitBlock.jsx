@@ -42,7 +42,7 @@ export function VisitBlock({ siteConfig }) {
             tienda y pagas allí.
           </p>
           <LifestylePhoto
-            src="/img/lifestyle/bodegon-cartel-crudo.jpg"
+            src="/img/lifestyle/bodegon-cartel-crudo-pro.jpg"
             alt="Botellas, copas y cartel retroiluminado de CRUDO en el local"
             aspectRatio="aspect-[4/3]"
             className="mt-6 rounded-md border border-border"
