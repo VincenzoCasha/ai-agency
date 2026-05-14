@@ -15,7 +15,7 @@ export function PageScaffold({ title, eyebrow, intro, children }) {
     <article className="container-page py-10 md:py-16">
       <header className="max-w-prose">
         {eyebrow ? <p className="eyebrow mb-3">{eyebrow}</p> : null}
-        <h1 className="font-display italic text-4xl sm:text-5xl md:text-6xl leading-[1.05]">
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05]">
           {title}
         </h1>
         {intro ? (

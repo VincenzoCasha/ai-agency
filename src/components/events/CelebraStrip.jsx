@@ -22,7 +22,7 @@ export function CelebraStrip({ siteConfig }) {
         <RetroSign text="Privatizaciones" size="sm" className="mb-3" />
         <h2
           id="celebra-heading"
-          className="font-display italic text-3xl md:text-4xl text-text-primary leading-tight"
+          className="font-display text-3xl md:text-4xl text-text-primary leading-tight"
         >
           Si tienes un evento y quieres hacerlo en CRUDO, ponte en contacto.
         </h2>

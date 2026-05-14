@@ -20,7 +20,7 @@ export function SeasonalShowcase({ whatsappNumber }) {
           <RetroSign text="De temporada" size="sm" className="mb-3" />
           <h2
             id="seasonal-heading"
-            className="font-display italic text-3xl md:text-4xl text-text-primary"
+            className="font-display text-3xl md:text-4xl text-text-primary"
           >
             Esta semana en CRUDO
           </h2>

@@ -60,7 +60,7 @@ export function ProductLongRead({ product }) {
       ) : null}
       {hasLongDesc ? (
         <div>
-          <h2 id="product-longread" className="font-display italic text-2xl text-text-primary mb-3">
+          <h2 id="product-longread" className="font-display text-2xl text-text-primary mb-3">
             La historia
           </h2>
           <p className="text-text-secondary leading-relaxed max-w-prose whitespace-pre-line">
@@ -70,7 +70,7 @@ export function ProductLongRead({ product }) {
       ) : null}
       {hasPairing ? (
         <div>
-          <h3 className="font-display italic text-xl text-text-primary mb-2">Maridaje</h3>
+          <h3 className="font-display text-xl text-text-primary mb-2">Maridaje</h3>
           <p className="text-text-secondary leading-relaxed max-w-prose whitespace-pre-line">
             {product.pairing}
           </p>

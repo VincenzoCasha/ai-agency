@@ -77,7 +77,7 @@ export function EventCard({ event }) {
           <Calendar size={14} aria-hidden="true" />
           {formatDate(event.starts_at)}
         </p>
-        <h3 className="font-display italic text-2xl leading-tight text-text-primary">
+        <h3 className="font-display text-2xl leading-tight text-text-primary">
           <Link
             to={href}
             className="hover:text-gold focus-visible:outline-none focus-visible:underline"

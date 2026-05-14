@@ -49,7 +49,7 @@ export default function MyTablaPage() {
     <main className="container-page py-10 md:py-16">
       <header className="max-w-prose">
         <RetroSign text="Mi Tabla" size="sm" className="mb-3" />
-        <h1 className="font-display italic text-4xl sm:text-5xl text-text-primary leading-tight">
+        <h1 className="font-display text-4xl sm:text-5xl text-text-primary leading-tight">
           Tu selección para llevar.
         </h1>
         <p className="mt-3 text-text-secondary text-lg">

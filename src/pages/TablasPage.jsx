@@ -34,7 +34,7 @@ export default function TablasPage() {
           <RetroSign text="Tablas para llevar" size="sm" className="self-start mb-4" />
           <h1
             id="tablas-heading"
-            className="font-display italic text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
+            className="font-display text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
           >
             Tres tamaños, tu maridaje.
           </h1>
@@ -43,7 +43,7 @@ export default function TablasPage() {
 
       <section className="container-page py-10 md:py-14 grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-14 items-start">
         <div className="max-w-prose">
-          <h2 className="font-display italic text-2xl md:text-3xl text-text-primary leading-tight mb-4">
+          <h2 className="font-display text-2xl md:text-3xl text-text-primary leading-tight mb-4">
             Cómo son nuestras tablas.
           </h2>
           <ul className="space-y-3 text-text-secondary">

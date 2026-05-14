@@ -43,7 +43,7 @@ export default function ContactPage() {
           <RetroSign text="Visítanos" size="sm" className="self-start mb-4" />
           <h1
             id="contact-heading"
-            className="font-display italic text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
+            className="font-display text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
           >
             Pásate por la tienda o escríbenos.
           </h1>

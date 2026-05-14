@@ -25,7 +25,7 @@ export function AboutIntro() {
       />
       <div className="container-page flex flex-col justify-end pt-24 pb-16 md:min-h-[60vh] md:py-20">
         <RetroSign text="Sobre CRUDO" size="sm" className="self-start mb-4" />
-        <h1 className="font-display italic text-4xl sm:text-5xl md:text-6xl text-text-primary leading-[1.05] max-w-3xl">
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl text-text-primary leading-[1.05] max-w-3xl">
           Quesos artesanos y vinos naturales, en pleno centro de Madrid.
         </h1>
         <p className="mt-5 text-text-secondary text-lg max-w-prose">

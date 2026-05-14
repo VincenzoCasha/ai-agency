@@ -26,7 +26,7 @@ export function PickupSuccess({ confirmation, siteConfig }) {
   return (
     <article className="container-page py-12 md:py-16 max-w-2xl">
       <RetroSign text="¡Pedido recibido!" size="lg" className="mb-5" />
-      <h1 className="font-display italic text-4xl md:text-5xl text-text-primary leading-tight">
+      <h1 className="font-display text-4xl md:text-5xl text-text-primary leading-tight">
         Te confirmamos por WhatsApp.
       </h1>
       <p className="mt-4 text-text-secondary text-lg">

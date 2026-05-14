@@ -38,7 +38,7 @@ export default function EventsPage() {
           <RetroSign text="Eventos" size="sm" className="self-start mb-4" />
           <h1
             id="events-page-heading"
-            className="font-display italic text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
+            className="font-display text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
           >
             Catas, talleres y bodegas invitadas.
           </h1>
@@ -57,7 +57,7 @@ export default function EventsPage() {
 
       <section className="bg-bg-elevated border-t border-border">
         <div className="container-page py-10 md:py-14 max-w-2xl">
-          <h2 className="font-display italic text-2xl md:text-3xl text-text-primary mb-2">
+          <h2 className="font-display text-2xl md:text-3xl text-text-primary mb-2">
             ¿Quieres que te avisemos del próximo evento?
           </h2>
           <p className="text-text-secondary text-sm mb-4">

@@ -58,7 +58,7 @@ export function Hero({ siteConfig, cta }) {
       />
       <div className="container-page flex flex-col justify-end pt-24 pb-16 md:min-h-[80vh] md:py-24">
         <RetroSign text="Vinos y quesos · Madrid" size="sm" className="self-start mb-5" />
-        <h1 className="font-display italic text-5xl sm:text-6xl md:text-7xl leading-[1.02] max-w-2xl text-text-primary">
+        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl leading-[1.02] max-w-2xl text-text-primary">
           Queso de autor, mesa de barrio.
         </h1>
         <p className="mt-5 text-text-secondary text-lg md:text-xl max-w-prose">

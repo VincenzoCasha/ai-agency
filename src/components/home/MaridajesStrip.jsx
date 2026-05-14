@@ -16,7 +16,7 @@ export function MaridajesStrip() {
           <RetroSign text="Maridajes" size="sm" className="mb-3" />
           <h2
             id="maridajes-heading"
-            className="font-display italic text-3xl md:text-4xl text-text-primary"
+            className="font-display text-3xl md:text-4xl text-text-primary"
           >
             Vino natural, queso de autor.
           </h2>

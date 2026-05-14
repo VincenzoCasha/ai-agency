@@ -61,7 +61,7 @@ export function EventDetail({ event, siteConfig }) {
         />
         <div className="container-page flex flex-col justify-end pt-24 pb-12 md:min-h-[55vh] md:py-20">
           <RetroSign text="Evento" size="sm" className="self-start mb-4" />
-          <h1 className="font-display italic text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-3xl">
+          <h1 className="font-display text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-3xl">
             {event.title}
           </h1>
           <ul className="mt-5 flex flex-wrap gap-4 text-text-secondary">

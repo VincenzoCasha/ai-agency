@@ -10,7 +10,7 @@ export function TablaEmptyState() {
       className="flex flex-col items-center justify-center text-center py-12 px-4"
     >
       <AnimalQuesero variant="1" size={140} className="mb-6 opacity-90" />
-      <h2 className="font-display italic text-2xl md:text-3xl text-text-primary">
+      <h2 className="font-display text-2xl md:text-3xl text-text-primary">
         Aún no has elegido quesos.
       </h2>
       <p className="mt-3 text-text-secondary max-w-prose">

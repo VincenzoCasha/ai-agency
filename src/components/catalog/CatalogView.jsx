@@ -44,7 +44,7 @@ export function CatalogView({
     <article className="container-page py-10 md:py-14">
       <header className="mb-8 max-w-prose">
         {pageEyebrow ? <p className="eyebrow mb-3">{pageEyebrow}</p> : null}
-        <h1 className="font-display italic text-4xl md:text-5xl text-text-primary leading-[1.05]">
+        <h1 className="font-display text-4xl md:text-5xl text-text-primary leading-[1.05]">
           {pageTitle}
         </h1>
         {pageIntro ? (

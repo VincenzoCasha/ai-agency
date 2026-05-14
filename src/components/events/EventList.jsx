@@ -46,7 +46,7 @@ export function EventList({ events = [], loading, status, error }) {
   if (upcoming.length === 0) {
     return (
       <div className="rounded-md border border-border bg-bg-secondary p-8 text-center">
-        <h2 className="font-display italic text-2xl text-text-primary">
+        <h2 className="font-display text-2xl text-text-primary">
           Sin eventos por ahora.
         </h2>
         <p className="mt-3 text-text-secondary max-w-prose mx-auto">
