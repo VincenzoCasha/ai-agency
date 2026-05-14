@@ -3,10 +3,10 @@ import { Instagram } from 'lucide-react';
 import { RetroSign } from '../brand/RetroSign';
 
 const CURATED = [
-  { src: '/img/lifestyle/tabla-quesos-vino.jpg', alt: 'Tabla de quesos con copas de vino' },
-  { src: '/img/lifestyle/bodegon-cartel-crudo.jpg', alt: 'Bodegón con cartel retroiluminado CRUDO' },
-  { src: '/img/lifestyle/cata-vinos-naturales.jpg', alt: 'Cata de vinos naturales con plato de quesos' },
-  { src: '/img/lifestyle/vino-natural-mano.jpg', alt: 'Botella de vino natural en mano' },
+  { src: '/img/lifestyle/tabla-quesos-vino-pro.jpg', alt: 'Tabla de quesos con copas de vino' },
+  { src: '/img/lifestyle/bodegon-cartel-crudo-pro.jpg', alt: 'Bodegón con cartel retroiluminado CRUDO' },
+  { src: '/img/lifestyle/cata-vinos-naturales-pro.jpg', alt: 'Cata de vinos naturales con plato de quesos' },
+  { src: '/img/lifestyle/vino-natural-mano-pro.jpg', alt: 'Botella de vino natural en mano' },
 ];
 
 export function InstagramStrip({ instagramUrl }) {

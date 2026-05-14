@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { Hero } from '../components/home/Hero';
 import { SeasonalShowcase } from '../components/home/SeasonalShowcase';
 import { CategoryStrips } from '../components/home/CategoryStrips';
-import { MaridajesStrip } from '../components/home/MaridajesStrip';
 import { EventsTeaser } from '../components/home/EventsTeaser';
-import { InstagramStrip } from '../components/home/InstagramStrip';
 import { VisitBlock } from '../components/home/VisitBlock';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { useTablaDraft } from '../hooks/useTablaDraft';
@@ -33,11 +31,9 @@ export default function HomePage() {
         siteConfig={config}
         cta={{ primaryHref, primaryLabel }}
       />
+      <EventsTeaser />
       <SeasonalShowcase whatsappNumber={config?.contact?.whatsapp_public} />
       <CategoryStrips />
-      <MaridajesStrip />
-      <EventsTeaser />
-      <InstagramStrip instagramUrl={config?.contact?.instagram} />
       <VisitBlock siteConfig={config} />
     </>
   );

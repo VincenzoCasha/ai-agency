@@ -1,31 +1,50 @@
 /* CRUDO V1 — Design tokens
-   Fuente unica de verdad. Tailwind los expone via tailwind.config.js. */
+   Fuente: paleta oficial extraída del logo SVG (Crudo_Logo/SVG/*).
+   Tema CLARO confirmado por owner. Si llega manual de marca de psicolabis
+   con códigos distintos, se ajustan estos HEX en un solo lugar. */
 :root {
-  --color-bg-primary: #1A1F14;
-  --color-bg-secondary: #1E1C18;
-  --color-bg-elevated: #252420;
-  --color-bg-light: #F2EAD8;
-  --color-bg-light-soft: #EAE0CB;
-  --color-text-primary: #F2EAD8;
-  --color-text-secondary: #C7BFAD;
-  --color-text-muted: #8A8473;
-  --color-text-inverse: #1A1F14;
-  --color-accent: #B5713A;
-  --color-accent-hover: #C8804A;
-  --color-accent-soft: #3A2A1E;
-  --color-gold: #B89668;
+  /* Backgrounds — tema claro CRUDO */
+  --color-bg-primary: #F6F1E4;        /* bone cream — fondo página */
+  --color-bg-secondary: #FFFFFF;      /* cards, secciones elevadas */
+  --color-bg-elevated: #F0E8D4;       /* inputs, elevated surfaces */
+  --color-bg-light: #FFFFFF;          /* compat: páginas que asumen "light" */
+  --color-bg-light-soft: #FAF5E8;     /* light alt */
+
+  /* Text */
+  --color-text-primary: #1A1F14;      /* casi-negro CRUDO sobre claro */
+  --color-text-secondary: #6C4050;    /* vino oscuro del logo */
+  --color-text-muted: #8A7A6A;        /* gris cálido */
+  --color-text-inverse: #F6F1E4;      /* texto sobre fondos oscuros (RetroSign, etc.) */
+
+  /* Accent primario — rosa coral CRUDO */
+  --color-accent: #EE769C;
+  --color-accent-hover: #E55D88;
+  --color-accent-soft: #F6B6C8;
+
+  /* Acentos secundarios — paleta del logo */
+  --color-gold: #A71E17;              /* terracota — eyebrows, RetroSign, highlights */
+  --color-gold-soft: #FEDB9A;         /* amarillo crema — backgrounds suaves */
+  --color-petrol: #447A96;            /* azul petrol — info badges */
+  --color-vine: #6C4050;              /* vino oscuro — alt text/borders */
+
+  /* Estados */
   --color-success: #6B8E5A;
   --color-warning: #C8893E;
-  --color-error: #A8443A;
-  --color-border: rgba(242,234,216,0.12);
-  --color-border-strong: rgba(242,234,216,0.24);
-  /* CRUDO brand-signature tokens (Fase 8.5) */
-  --color-crudo-saffron: #E8B547;
-  --color-crudo-saffron-grout: #C99A36;
-  --color-crudo-terracota: #FF8A47;
-  --color-crudo-terracota-deep: #E0703A;
-  --color-crudo-bone: #F5EFE6;
-  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --color-error: #A71E17;             /* terracota = mismo tono familia */
+
+  /* Borders */
+  --color-border: rgba(108, 64, 80, 0.18);     /* vino diluido */
+  --color-border-strong: rgba(108, 64, 80, 0.36);
+
+  /* Compat tokens crudo-* (Fase 8.5) — apuntan ahora a la paleta oficial */
+  --color-crudo-saffron: #FEDB9A;
+  --color-crudo-saffron-grout: #A71E17;
+  --color-crudo-terracota: #A71E17;
+  --color-crudo-terracota-deep: #6C4050;
+  --color-crudo-bone: #F6F1E4;
+
+  /* Tipografía — Google Fonts cargadas en index.html */
+  --font-display: "Fraunces", "Cormorant Garamond", "Times New Roman", serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { cn } from '../../lib/cn';
 
 const FALLBACK_BY_TYPE = {
-  CHEESE: { src: '/img/lifestyle/tabla-quesos-vino.jpg', alt: 'Tabla de quesos artesanos en CRUDO' },
-  WINE: { src: '/img/lifestyle/cata-vinos-naturales.jpg', alt: 'Botellas de vino natural en CRUDO' },
+  CHEESE: { src: '/img/lifestyle/tabla-quesos-vino-pro.jpg', alt: 'Tabla de quesos artesanos en CRUDO' },
+  WINE: { src: '/img/lifestyle/cata-vinos-naturales-pro.jpg', alt: 'Botellas de vino natural en CRUDO' },
 };
 
 export function ProductGallery({ images = [], productName, productType }) {

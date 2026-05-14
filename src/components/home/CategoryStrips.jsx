@@ -8,7 +8,7 @@ const STRIPS = [
     eyebrow: 'Vitrina',
     title: 'Quesos artesanos',
     desc: 'Curados, frescos y de pasta lavada. Selección rotativa cada mes.',
-    image: '/img/lifestyle/tabla-quesos-vino.jpg',
+    image: '/img/lifestyle/tabla-quesos-vino-pro.jpg',
     alt: 'Tabla de quesos curados con uvas y nueces sobre azulejo amarillo de CRUDO',
   },
   {
@@ -16,7 +16,7 @@ const STRIPS = [
     eyebrow: 'Para llevar',
     title: 'Tablas listas',
     desc: 'De 3, 6 u 8 quesos. Maridaje opcional acordado por WhatsApp.',
-    image: '/img/lifestyle/bodegon-cartel-crudo.jpg',
+    image: '/img/lifestyle/bodegon-cartel-crudo-pro.jpg',
     alt: 'Botellas de vino y copas en el local de CRUDO con cartel retroiluminado al fondo',
   },
   {
@@ -24,7 +24,7 @@ const STRIPS = [
     eyebrow: 'Esta semana',
     title: 'De temporada',
     desc: 'Lo que ha llegado fresco a la vitrina. Cambia cada semana.',
-    image: '/img/lifestyle/cata-vinos-naturales.jpg',
+    image: '/img/lifestyle/cata-vinos-naturales-pro.jpg',
     alt: 'Tres botellas de vinos naturales con plato de quesos y crackers',
   },
 ];

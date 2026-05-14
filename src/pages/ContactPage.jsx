@@ -27,7 +27,7 @@ export default function ContactPage() {
         style={{ minHeight: '45vh' }}
       >
         <img
-          src="/img/lifestyle/bodegon-cartel-crudo.jpg"
+          src="/img/lifestyle/bodegon-cartel-crudo-pro.jpg"
           alt=""
           aria-hidden="true"
           loading="eager"

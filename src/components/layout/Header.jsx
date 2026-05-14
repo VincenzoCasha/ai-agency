@@ -7,8 +7,9 @@ import { useTablaDraft } from '../../hooks/useTablaDraft';
 import { cn } from '../../lib/cn';
 
 const NAV_LINKS = [
-  { to: '/catalogo', label: 'Catalogo' },
   { to: '/eventos', label: 'Eventos' },
+  { to: '/tablas', label: 'Tablas' },
+  { to: '/catalogo', label: 'Catálogo' },
   { to: '/celebra-con-nosotros', label: 'Celebra con nosotros' },
   { to: '/sobre-crudo', label: 'Sobre CRUDO' },
   { to: '/contacto', label: 'Contacto' },
@@ -31,8 +32,14 @@ export function Header({ siteConfig, onOpenTabla }) {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-bg-primary/85 backdrop-blur-md">
       <div className="container-page flex items-center justify-between gap-4 py-3">
-        <Link to="/" className="flex items-baseline gap-2 text-text-primary">
-          <span className="font-display italic text-2xl leading-none">CRUDO</span>
+        <Link to="/" className="flex items-center gap-3 text-text-primary" aria-label="CRUDO — inicio">
+          <img
+            src="/img/brand/logo-color.svg"
+            alt="CRUDO"
+            width={64}
+            height={32}
+            className="h-8 w-auto"
+          />
           <span className="text-[0.7rem] uppercase tracking-eyebrow text-text-muted hidden sm:inline">
             Quesos · Madrid
           </span>

@@ -35,7 +35,7 @@ export function Hero({ siteConfig, cta }) {
       style={{ minHeight: '90vh' }}
     >
       <img
-        src="/img/hero/hero-home-cheeseboard.png"
+        src="/img/hero/hero-home-cheeseboard-pro.jpg"
         alt=""
         aria-hidden="true"
         loading="eager"
@@ -48,13 +48,13 @@ export function Hero({ siteConfig, cta }) {
         aria-hidden="true"
         style={{
           background:
-            'linear-gradient(90deg, rgba(26,31,20,0.78) 0%, rgba(26,31,20,0.62) 35%, rgba(26,31,20,0.30) 65%, rgba(26,31,20,0) 100%)',
+            'linear-gradient(90deg, rgba(246,241,228,0.92) 0%, rgba(246,241,228,0.72) 40%, rgba(246,241,228,0.28) 70%, rgba(246,241,228,0) 100%)',
         }}
       />
       <div
         className="md:hidden absolute inset-0 -z-10 hero-mobile-min"
         aria-hidden="true"
-        style={{ background: 'linear-gradient(180deg, rgba(26,31,20,0.4) 0%, rgba(26,31,20,0.75) 100%)' }}
+        style={{ background: 'linear-gradient(180deg, rgba(246,241,228,0.55) 0%, rgba(246,241,228,0.92) 100%)' }}
       />
       <div className="container-page flex flex-col justify-end pt-24 pb-16 md:min-h-[80vh] md:py-24">
         <RetroSign text="Vinos y quesos · Madrid" size="sm" className="self-start mb-5" />
