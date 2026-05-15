@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carta — Quesos &amp; Vinos Artesanales</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+    :root { --cream: #F7F3EC; --dark: #1C1712; --wine: #6B2737; --gold: #C49A3C; --muted: #8A7F72; --border: rgba(100,80,50,0.18); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--cream); }
+    .carta { background: var(--cream); color: var(--dark); font-family: 'Jost', sans-serif; min-height: 100vh; padding: 0 0 4rem; max-width: 780px; margin: 0 auto; }
+    .header { text-align: center; padding: 3rem 2rem 2rem; border-bottom: 0.5px solid var(--border); }
+    .header-eyebrow { font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.75rem; }
+    .header-title { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; line-height: 1; color: var(--dark); margin-bottom: 0.25rem; }
+    .header-title em { font-style: italic; color: var(--wine); }
+    .header-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: var(--muted); margin-top: 0.5rem; }
+    .ornament { display: flex; align-items: center; gap: 12px; justify-content: center; margin: 1.25rem 0 0; }
+    .ornament-line { width: 60px; height: 0.5px; background: var(--gold); opacity: 0.5; }
+    .ornament-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+    .section { padding: 2.5rem 1.5rem 0; max-width: 680px; margin: 0 auto; }
+    .section-label { font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--dark); margin-bottom: 0.25rem; }
+    .section-note { font-size: 12px; color: var(--muted); font-style: italic; font-family: 'Cormorant Garamond', serif; margin-bottom: 1.5rem; }
+    .divider { width: 100%; height: 0.5px; background: var(--border); margin: 0.25rem 0 1.25rem; }
+    .item { display: flex; justify-content: space-between; align-items: baseline; padding: 0.7rem 0; border-bottom: 0.5px solid var(--border); gap: 1rem; }
+    .item:last-child { border-bottom: none; }
+    .item-left { flex: 1; }
+    .item-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; color: var(--dark); line-height: 1.3; }
+    .item-name em { font-style: italic; color: var(--wine); }
+    .item-desc { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: 'Jost', sans-serif; font-weight: 300; line-height: 1.5; }
+    .item-price { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; color: var(--wine); white-space: nowrap; }
+    .featured-box { background: var(--dark); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0 0; position: relative; overflow: hidden; }
+    .featured-box::before { content: ''; position: absolute; top: 0; right: 0; width: 120px; height: 120px; background: radial-gradient(circle at top right, rgba(196,154,60,0.15), transparent 70%); }
+    .featured-eyebrow { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-family: 'Jost', sans-serif; font-weight: 500; margin-bottom: 1rem; }
+    .featured-item { display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0; border-bottom: 0.5px solid rgba(255,255,255,0.08); gap: 1rem; }
+    .featured-item:last-child { border-bottom: none; }
+    .featured-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; color: #F7F3EC; line-height: 1.3; }
+    .featured-name em { font-style: italic; color: var(--gold); }
+    .featured-price { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; color: var(--gold); white-space: nowrap; }
+    .new-badge { display: inline-block; font-size: 9px; font-family: 'Jost', sans-serif; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; background: var(--wine); color: #F7F3EC; padding: 2px 7px; border-radius: 20px; margin-left: 8px; vertical-align: middle; position: relative; top: -1px; }
+    .wines-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 0.5rem; }
+    .wine-col { background: var(--cream); border: 0.5px solid var(--border); border-radius: 8px; padding: 0.75rem; }
+    .wine-type { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; font-family: 'Jost', sans-serif; }
+    .wine-name { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: var(--dark); margin-bottom: 0.3rem; line-height: 1.3; }
+    .wine-price { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; color: var(--wine); }
+    .promo-banner { background: rgba(107,39,55,0.06); border: 0.5px solid rgba(107,39,55,0.2); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 1.25rem; text-align: center; }
+    .promo-banner p { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--wine); }
+    .limonada-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0.75rem; }
+    .limonada-card { border-radius: 10px; padding: 1rem 1rem 0.85rem; border: 0.5px solid var(--border); }
+    .limonada-yuzu { background: linear-gradient(135deg, #FDFBE8 0%, #F5F0C0 100%); }
+    .limonada-maracuya { background: linear-gradient(135deg, #FEF3E2 0%, #FDDFA0 100%); }
+    .limonada-brand { font-size: 9px; font-family: 'Jost', sans-serif; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+    .limonada-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: var(--dark); line-height: 1.2; margin-bottom: 0.2rem; }
+    .limonada-name em { font-style: italic; color: #7A6A10; }
+    .limonada-desc { font-size: 11px; color: #8A7A50; font-family: 'Jost', sans-serif; font-weight: 300; margin-bottom: 0.65rem; }
+    .limonada-price { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; color: #7A6A10; }
+    .footer { text-align: center; padding: 3rem 1.5rem 0; max-width: 680px; margin: 0 auto; }
+    .footer-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+<div class="carta">
+
+  <div class="header">
+    <div class="header-eyebrow">Madrid · Quesos &amp; Vinos Artesanales</div>
+    <div class="header-title">Nuestra <em>Carta</em></div>
+    <div class="header-sub">Selección de quesos de origen, vinos de autor y maridajes cuidados</div>
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-line"></div>
+    </div>
+  </div>
+
+  <!-- TABLAS -->
+  <div class="section">
+    <div class="section-label">Para compartir</div>
+    <div class="section-title">Tablas de Queso Artesanal</div>
+    <div class="section-note">Cada tabla viene acompañada de frutas de temporada, frutos secos y crackers</div>
+    <div class="divider"></div>
+    <div class="item">
+      <div class="item-left"><div class="item-name">Tabla de <em>un</em> queso</div></div>
+      <div class="item-price">8 €</div>
+    </div>
+    <div class="item">
+      <div class="item-left"><div class="item-name">Tabla de <em>dos</em> quesos</div></div>
+      <div class="item-price">13 €</div>
+    </div>
+    <div class="item">
+      <div class="item-left"><div class="item-name">Tabla de <em>tres</em> quesos</div></div>
+      <div class="item-price">17 €</div>
+    </div>
+    <div class="item">
+      <div class="item-left"><div class="item-name">Tabla de <em>seis</em> quesos</div></div>
+      <div class="item-price">28 €</div>
+    </div>
+    <div class="item">
+      <div class="item-left"><div class="item-name">Tabla de <em>ocho</em> quesos</div></div>
+      <div class="item-price">39 €</div>
+    </div>
+  </div>
+
+  <!-- TORTA DEL CASAR -->
+  <div class="section">
+    <div class="section-label">Producto estrella</div>
+    <div class="section-title">Torta del Casar</div>
+    <div class="divider"></div>
+    <div class="item">
+      <div class="item-left">
+        <div class="item-name"><em>Torta del Casar</em> mini <span class="new-badge">Nuevo</span></div>
+        <div class="item-desc">Para 2–3 personas · con pan artesanal y mermelada de temporada</div>
+      </div>
+      <div class="item-price">22 €</div>
+    </div>
+    <div class="item">
+      <div class="item-left">
+        <div class="item-name"><em>Torta del Casar</em> + Botella <span class="new-badge">Nuevo</span></div>
+        <div class="item-desc">Para 2–3 personas · pan artesanal, mermelada y botella de vino seleccionado</div>
+      </div>
+      <div class="item-price">42 €</div>
+    </div>
+  </div>
+
+  <!-- GRILLED CHEESE -->
+  <div class="section">
+    <div class="section-label">Para picar</div>
+    <div class="section-title">Grilled Cheese</div>
+    <div class="divider"></div>
+    <div class="item">
+      <div class="item-left">
+        <div class="item-name"><em>Grilled Cheese</em> clásico <span class="new-badge">Nuevo</span></div>
+        <div class="item-desc">Para tomar aquí o llevar · mezcla de quesos fundidos en pan artesanal tostado</div>
+      </div>
+      <div class="item-price">7,50 €</div>
+    </div>
+    <div class="item">
+      <div class="item-left">
+        <div class="item-name"><em>Grilled Cheese</em> con queso artesanal</div>
+        <div class="item-desc">Con queso artesanal de nuestra vitrina · pregúntanos por el queso del día</div>
+      </div>
+      <div class="item-price">9,50 €</div>
+    </div>
+  </div>
+
+  <!-- COMBOS -->
+  <div class="section">
+    <div class="featured-box">
+      <div class="featured-eyebrow">Maridajes · Queso + Botella</div>
+      <div class="featured-item">
+        <div class="featured-name">Tres quesos + <em>Botella</em></div>
+        <div class="featured-price">45 €</div>
+      </div>
+      <div class="featured-item">
+        <div class="featured-name">Seis quesos + <em>Botella</em></div>
+        <div class="featured-price">65 €</div>
+      </div>
+      <div class="featured-item">
+        <div class="featured-name">Ocho quesos + <em>Botella</em></div>
+        <div class="featured-price">76 €</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VINOS POR COPA -->
+  <div class="section">
+    <div class="section-label">Para beber</div>
+    <div class="section-title">Vinos por Copa</div>
+    <div class="divider"></div>
+    <div class="wines-grid">
+      <div class="wine-col">
+        <div class="wine-type">Blanco</div>
+        <div class="wine-name">Esencial</div>
+        <div class="wine-price">6 €</div>
+      </div>
+      <div class="wine-col">
+        <div class="wine-type">Tinto</div>
+        <div class="wine-name">Esencial</div>
+        <div class="wine-price">5,50 €</div>
+      </div>
+      <div class="wine-col">
+        <div class="wine-type">Especiales</div>
+        <div class="wine-name">Selección</div>
+        <div class="wine-price">6,50 €</div>
+      </div>
+    </div>
+    <div class="wines-grid" style="margin-top:10px;">
+      <div class="wine-col">
+        <div class="wine-type">Singulares</div>
+        <div class="wine-name">Blanco singular</div>
+        <div class="wine-price">7 €</div>
+      </div>
+      <div class="wine-col">
+        <div class="wine-type">Singulares</div>
+        <div class="wine-name">Tinto singular</div>
+        <div class="wine-price">6,50 €</div>
+      </div>
+      <div class="wine-col" style="display:flex;align-items:center;justify-content:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--muted);text-align:center;">Pregúntanos por<br>nuestra selección</div>
+      </div>
+    </div>
+    <div class="promo-banner">
+      <p>Promoción en vinos seleccionados · Lunes, Martes &amp; Domingo</p>
+    </div>
+  </div>
+
+  <!-- LIMONADAS MIKKS -->
+  <div class="section">
+    <div class="section-label">Sin alcohol</div>
+    <div class="section-title">Limonadas Artesanales</div>
+    <div class="section-note">Elaboradas por Mikks · sabores únicos y naturales</div>
+    <div class="divider"></div>
+    <div class="limonada-grid">
+      <div class="limonada-card limonada-yuzu">
+        <div class="limonada-brand">Mikks</div>
+        <div class="limonada-name">Limonada<br>de <em>Yuzu</em></div>
+        <div class="limonada-desc">Cítrico japonés · fresco y aromático</div>
+        <div class="limonada-price">5 €</div>
+      </div>
+      <div class="limonada-card limonada-maracuya">
+        <div class="limonada-brand">Mikks</div>
+        <div class="limonada-name">Limonada<br>de <em>Maracuyá</em></div>
+        <div class="limonada-desc">Fruta de la pasión · tropical y vibrante</div>
+        <div class="limonada-price">5 €</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARA LLEVAR -->
+  <div class="section">
+    <div class="section-label">Para llevar</div>
+    <div class="section-title">Quesos al Peso &amp; Vinos</div>
+    <div class="divider"></div>
+    <div class="item">
+      <div class="item-left">
+        <div class="item-name">Quesos artesanales <em>al peso</em></div>
+        <div class="item-desc">Amplia selección de quesos de la vitrina · consulta disponibilidad</div>
+      </div>
+      <div class="item-price">/ 100g</div>
+    </div>
+    <div class="item">
+      <div class="item-left">
+        <div class="item-name">Vinos <em>para llevar</em></div>
+        <div class="item-desc">Selección de vinos de autor · te ayudamos a elegir el maridaje perfecto</div>
+      </div>
+      <div class="item-price">desde 12 €</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="ornament" style="margin-bottom:1rem;">
+      <div class="ornament-line"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-line"></div>
+    </div>
+    <div class="footer-text">Todos nuestros quesos son de producción artesanal y origen controlado.<br>Pregúntanos por las elaboraciones del día.</div>
+  </div>
+
+</div>
+</body>
+</html>
