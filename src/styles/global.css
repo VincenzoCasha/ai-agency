@@ -19,9 +19,7 @@
     font-family: var(--font-body);
     font-size: 16px;
     line-height: 1.6;
-    background:
-      linear-gradient(180deg, rgba(26,31,20,0.96), rgba(26,31,20,1) 460px),
-      radial-gradient(circle at 18% 0%, rgba(181,113,58,0.10), transparent 32%);
+    background: var(--color-bg-primary);
   }
 
   h1, h2, h3, h4 {

@@ -8,10 +8,7 @@ import { cn } from '../../lib/cn';
 
 const NAV_LINKS = [
   { to: '/eventos', label: 'Eventos' },
-  { to: '/tablas', label: 'Tablas' },
   { to: '/catalogo', label: 'Catálogo' },
-  { to: '/celebra-con-nosotros', label: 'Celebra con nosotros' },
-  { to: '/sobre-crudo', label: 'Sobre CRUDO' },
   { to: '/contacto', label: 'Contacto' },
 ];
 
