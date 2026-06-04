@@ -64,9 +64,9 @@ export function EventList({ events = [], loading, status, error }) {
 
   return (
     <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {upcoming.map((event) => (
+      {upcoming.map((event, idx) => (
         <li key={event.id || event.slug}>
-          <EventCard event={event} />
+          <EventCard event={event} featured={idx === 0} />
         </li>
       ))}
     </ul>

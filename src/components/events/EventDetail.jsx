@@ -144,11 +144,17 @@ export function EventDetail({ event, siteConfig }) {
               ) : null}
             </div>
           ) : (
-            <ReservationForm
-              eventSlug={event.slug}
-              eventTitle={event.title}
-              onSuccess={({ confirmation: c }) => setConfirmation(c || true)}
-            />
+            <>
+              <p className="text-sm text-text-secondary mb-4 leading-relaxed">
+                Te confirmamos la plaza por WhatsApp y te enviamos un link de pago.
+                Pagas online, disfrutas en CRUDO.
+              </p>
+              <ReservationForm
+                eventSlug={event.slug}
+                eventTitle={event.title}
+                onSuccess={({ confirmation: c }) => setConfirmation(c || true)}
+              />
+            </>
           )}
           <p className="mt-6 text-xs text-text-muted">
             <Link to="/eventos" className="underline hover:text-text-primary">

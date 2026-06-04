@@ -167,6 +167,101 @@ export function TablaMaridajeSelector({ siteConfig }) {
           </p>
         )}
       </div>
+
+      {/* ── O DÉJATE SORPRENDER ─────────────────────────────────────── */}
+      <div className="pt-2">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-xs font-semibold uppercase tracking-eyebrow text-text-muted">
+            O déjate sorprender
+          </span>
+          <hr className="flex-1 border-border" />
+        </div>
+
+        {/* A — Selección de Annet */}
+        <FromelierCard whatsappNumber={whatsappNumber} />
+
+        {/* B — Caja para llevar */}
+        <CajaCard whatsappNumber={whatsappNumber} />
+      </div>
     </form>
+  );
+}
+
+function FromelierCard({ whatsappNumber }) {
+  const [fromSize, setFromSize] = React.useState('6');
+  const message = `Hola CRUDO, me interesa una tabla con la selección del fromelier para ${fromSize} quesos. ¿Cuándo podríais prepararla?`;
+  const href = whatsappNumber ? buildWhatsAppUrl(whatsappNumber, message) : null;
+
+  return (
+    <div
+      className="rounded-md border p-5 mb-4 space-y-4"
+      style={{ borderColor: 'var(--color-accent)', background: 'rgba(238,118,156,0.06)' }}
+    >
+      <div>
+        <span className="inline-block bg-gold text-text-inverse text-[10px] font-semibold uppercase tracking-[0.18em] px-3 py-1 rounded-sm mb-3">
+          Fromelier
+        </span>
+        <h3 className="font-display text-lg text-text-primary">Selección de Annet</h3>
+        <p className="mt-1 text-sm text-text-secondary">
+          Annet elige los quesos según temporada. Tú dinos cuántos sois.
+        </p>
+      </div>
+      {/* Compact radios 3/6/8 */}
+      <div className="flex gap-2">
+        {['3', '6', '8'].map((n) => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => setFromSize(n)}
+            className="flex-1 py-2 rounded-md text-sm font-semibold transition-colors"
+            style={{
+              background: fromSize === n ? 'var(--color-accent)' : 'transparent',
+              color: fromSize === n ? '#fff' : 'var(--color-vine)',
+              border: `1px solid ${fromSize === n ? 'var(--color-accent)' : 'var(--color-border-strong, rgba(108,64,80,0.36))'}`,
+            }}
+          >
+            {n}
+          </button>
+        ))}
+      </div>
+      {href ? (
+        <Button as="a" href={href} target="_blank" rel="noopener noreferrer" variant="whatsapp" block>
+          <MessageCircle size={16} aria-hidden="true" />
+          Reservar por WhatsApp
+        </Button>
+      ) : (
+        <p className="text-xs text-text-muted">WhatsApp no configurado.</p>
+      )}
+    </div>
+  );
+}
+
+function CajaCard({ whatsappNumber }) {
+  const message = 'Hola CRUDO, me interesa una caja de quesos para llevar. ¿Qué opciones tenéis disponibles?';
+  const href = whatsappNumber ? buildWhatsAppUrl(whatsappNumber, message) : null;
+
+  return (
+    <div
+      className="rounded-md border p-5 space-y-4"
+      style={{ borderColor: 'var(--color-gold-soft)', background: 'rgba(254,219,154,0.12)' }}
+    >
+      <div>
+        <span className="inline-block bg-gold text-text-inverse text-[10px] font-semibold uppercase tracking-[0.18em] px-3 py-1 rounded-sm mb-3">
+          Regalo
+        </span>
+        <h3 className="font-display text-lg text-text-primary">Caja para llevar</h3>
+        <p className="mt-1 text-sm text-text-secondary">
+          Perfecta para regalar o disfrutar en casa.
+        </p>
+      </div>
+      {href ? (
+        <Button as="a" href={href} target="_blank" rel="noopener noreferrer" variant="whatsapp" block>
+          <MessageCircle size={16} aria-hidden="true" />
+          Pedir por WhatsApp
+        </Button>
+      ) : (
+        <p className="text-xs text-text-muted">WhatsApp no configurado.</p>
+      )}
+    </div>
   );
 }

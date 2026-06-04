@@ -10,8 +10,14 @@ const SITE = {
 describe('TablaMaridajeSelector', () => {
   it('default state generates a "sin maridaje" WhatsApp link without natural mention', () => {
     render(<TablaMaridajeSelector siteConfig={SITE} />);
-    const link = screen.getByRole('link', { name: /Reservar por WhatsApp/i });
-    const decoded = decodeURIComponent(link.getAttribute('href'));
+    // There are multiple "Reservar por WhatsApp" links now (main + fromelier section).
+    // The main tabla link contains "quesos sin maridaje" in its href.
+    const links = screen.getAllByRole('link', { name: /Reservar por WhatsApp/i });
+    const mainLink = links.find((l) =>
+      decodeURIComponent(l.getAttribute('href') || '').includes('sin maridaje'),
+    );
+    expect(mainLink).toBeTruthy();
+    const decoded = decodeURIComponent(mainLink.getAttribute('href'));
     expect(decoded).toMatch(/wa\.me\/34650131861/);
     expect(decoded).toMatch(/3 quesos sin maridaje/i);
     expect(decoded).not.toMatch(/natural/i);
@@ -24,8 +30,13 @@ describe('TablaMaridajeSelector', () => {
     expect(checkbox).toBeInTheDocument();
     fireEvent.click(checkbox);
     fireEvent.click(screen.getByLabelText(/8 quesos/i));
-    const link = screen.getByRole('link', { name: /Reservar por WhatsApp/i });
-    const decoded = decodeURIComponent(link.getAttribute('href'));
+    const links = screen.getAllByRole('link', { name: /Reservar por WhatsApp/i });
+    // The main tabla link will contain tinto ligero + natural in its href
+    const mainLink = links.find((l) =>
+      decodeURIComponent(l.getAttribute('href') || '').includes('tinto ligero'),
+    );
+    expect(mainLink).toBeTruthy();
+    const decoded = decodeURIComponent(mainLink.getAttribute('href'));
     expect(decoded).toMatch(/8 quesos/i);
     expect(decoded).toMatch(/tinto ligero/i);
     expect(decoded).toMatch(/natural/i);

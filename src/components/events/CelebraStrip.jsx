@@ -56,6 +56,10 @@ export function CelebraStrip({ siteConfig }) {
             </Button>
           ) : null}
         </div>
+        <p className="mt-4 text-sm text-text-secondary leading-relaxed">
+          Te confirmamos la plaza por WhatsApp y te enviamos un link de pago.
+          Pagas online, disfrutas en CRUDO.
+        </p>
       </div>
     </section>
   );

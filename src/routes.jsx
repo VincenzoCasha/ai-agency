@@ -20,6 +20,7 @@ import LegalPage from './pages/LegalPage';
 import PrivacyPage from './pages/PrivacyPage';
 import CookiesPage from './pages/CookiesPage';
 import AdminEntryPage from './pages/AdminEntryPage';
+import MerchPage from './pages/MerchPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 /**
@@ -31,6 +32,8 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      {/* /seleccion es la ruta principal; /catalogo se mantiene como alias */}
+      <Route path="/seleccion" element={<CatalogPage />} />
       <Route path="/catalogo" element={<CatalogPage />} />
       <Route path="/catalogo/quesos" element={<CatalogQuesoPage />} />
       <Route path="/catalogo/vinos" element={<CatalogVinosPage />} />
@@ -48,6 +51,7 @@ export function AppRoutes() {
       <Route path="/aviso-legal" element={<LegalPage />} />
       <Route path="/privacidad" element={<PrivacyPage />} />
       <Route path="/cookies" element={<CookiesPage />} />
+      <Route path="/merch" element={<MerchPage />} />
       <Route path="/admin" element={<AdminEntryPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

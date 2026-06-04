@@ -22,6 +22,8 @@ const button = cva(
           'bg-transparent text-text-primary hover:bg-bg-elevated border border-transparent hover:border-border',
         danger:
           'bg-error text-text-primary hover:opacity-90 border border-transparent',
+        whatsapp:
+          'bg-[#25D366] text-[#06351F] hover:bg-[#2EE47A] shadow-soft',
       },
       size: {
         sm: 'min-h-[40px] text-sm px-3',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, X, MapPin, MessageCircle, ShoppingBag } from 'lucide-react';
+import { Menu, X, MapPin, MessageCircle, ShoppingBag, ExternalLink } from 'lucide-react';
 import { IconButton } from '../ui/IconButton';
 import { trackMapsClick, trackWhatsAppClick } from '../../lib/analytics';
 import { useTablaDraft } from '../../hooks/useTablaDraft';
@@ -8,9 +8,12 @@ import { cn } from '../../lib/cn';
 
 const NAV_LINKS = [
   { to: '/eventos', label: 'Eventos' },
-  { to: '/catalogo', label: 'Catálogo' },
+  { to: '/seleccion', label: 'Selección del mes' },
   { to: '/contacto', label: 'Contacto' },
 ];
+
+// URL de la tienda de merch — actualizar con la URL real cuando esté lista
+const MERCH_URL = 'https://www.instagram.com/crudomov';
 
 function navClasses({ isActive }) {
   return cn(
@@ -31,15 +34,12 @@ export function Header({ siteConfig, onOpenTabla }) {
       <div className="container-page flex items-center justify-between gap-4 py-3">
         <Link to="/" className="flex items-center gap-3 text-text-primary" aria-label="CRUDO — inicio">
           <img
-            src="/img/brand/logo-color.svg"
+            src="/img/brand/crudo-logo.png"
             alt="CRUDO"
-            width={64}
-            height={32}
-            className="h-8 w-auto"
+            width={132}
+            height={44}
+            className="h-11 w-auto"
           />
-          <span className="text-[0.7rem] uppercase tracking-eyebrow text-text-muted hidden sm:inline">
-            Quesos · Madrid
-          </span>
         </Link>
         <nav aria-label="Principal" className="hidden md:flex items-center gap-1">
           {NAV_LINKS.map((link) => (
@@ -47,6 +47,19 @@ export function Header({ siteConfig, onOpenTabla }) {
               {link.label}
             </NavLink>
           ))}
+          {/* Merch — enlace externo con indicador ↗ */}
+          <a
+            href={MERCH_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              'inline-flex items-center gap-1 px-3 min-h-[44px] rounded-md text-sm font-medium',
+              'text-text-secondary hover:text-text-primary hover:bg-bg-elevated',
+            )}
+          >
+            Merch
+            <ExternalLink size={11} aria-hidden="true" className="opacity-60" />
+          </a>
         </nav>
         <div className="flex items-center gap-2">
           {maps ? (
@@ -117,6 +130,21 @@ export function Header({ siteConfig, onOpenTabla }) {
                 </NavLink>
               </li>
             ))}
+            <li>
+              <a
+                href={MERCH_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className={cn(
+                  'inline-flex items-center gap-1 px-3 min-h-[44px] rounded-md text-sm font-medium w-full',
+                  'text-text-secondary hover:text-text-primary hover:bg-bg-elevated',
+                )}
+              >
+                Merch
+                <ExternalLink size={11} aria-hidden="true" className="opacity-60" />
+              </a>
+            </li>
           </ul>
         </nav>
       ) : null}
