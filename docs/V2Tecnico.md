@@ -46,12 +46,12 @@ reales.
 
 ```yaml
 project: CRUDO V2
-state_version: 3
+state_version: 4
 last_updated: 2026-06-05
-current_phase: 3
-current_phase_name: "Arquitectura frontend V2 y code splitting"
-current_focus: "Fase 3 ejecutada: lazy loading por rutas (React.lazy + Suspense) en src/routes.jsx con fallback sobrio mobile-first (RouteLoading). HomePage queda eager (landing instantaneo, sin flash de spinner); el resto de paginas cargan en chunks bajo demanda. Vendor chunks separados en vite.config.mjs: vendor-react (react+dom+router 61KB), vendor-http (axios 42KB), vendor-icons (lucide 7.5KB). Bundle: antes 1 chunk index 763.84KB (warning >500KB); ahora index 496.55KB (gzip 137KB, bajo el umbral, warning eliminado) + ~20 chunks por ruta (0.5-21KB cada uno). Navegar entre rutas ahora solo descarga el chunk de esa pagina. Rutas y aliases intactos (/seleccion, /catalogo, /eventos, /tablas, /merch, /contacto, etc.). Sin cambios de diseño visual. Verificado: lint limpio, test:client 90/90, build OK sin warning. Fase 0 previa: auditoria. Estado real verificado en repo limpio sobre main (HEAD 936eade). Commits posteriores a V1Tecnico YA estan en main: nav simplificada a 4 items (Eventos / Seleccion del mes / Merch externo / Contacto), /seleccion ruta principal con /catalogo como alias, /merch implementada (MerchPage placeholder honesto con CTA Instagram), EventCard con variante poster 3:4 + fallback caja-fecha + prop featured, TablaMaridajeSelector con Seleccion de Annet/fromelier (coral) y Caja para llevar (cream) por WhatsApp, Button variante whatsapp, copy confirmacion WhatsApp+link de pago en EventDetail y CelebraStrip, logo PNG real crudo-logo.png en Header. Backend API publica + admin (9 grupos de rutas /api/v1/admin/**) montados y con JWT. Admin frontend NO implementado: /admin sigue siendo placeholder (AdminEntryPage). Diseño Claude Design accesible localmente como docs/Crudo by Piscolabis.zip (44MB) + docs/crudo_redesign_extract/ (la ruta Windows del doc es la maquina del compañero, no accesible desde aqui, pero la copia local del repo basta para Fase 2). Fotos disponibles: Chosen ones (12), Fotos Crudo Noche (27), poster evento wine-tasting-telperion.jpg. Plesk NO verificado con smoke: produccion sigue pendiente, owner configurando DB en Plesk (sin .env real aun). 202 tests verdes en ultimo run local; build OK con warning de bundle >500KB (sin code splitting todavia)."
-next_recommended_prompt: "Fase 2 - Intake del nuevo diseño Claude Design (solo docs, prepara Fase 5) o Fase 4 - Pipeline de imagenes. Fase 1 - Plesk sigue BLOCKED por acceso a produccion."
+current_phase: 2
+current_phase_name: "Intake del nuevo diseño Claude Design"
+current_focus: "Fase 2 ejecutada (solo documentacion, sin tocar codigo). Analizado el rediseño Claude Design vigente (docs/crudo_redesign_extract/crudo-redesign.jsx: tema claro Cinzel+Barlow+bone cream). Spec completa añadida en seccion 17 de este doc: tokens (ya coinciden con tokens.css del repo), tipografia (ya aplicada; Bagel Fat One descartada, logo PNG real), mapeo de 12 componentes del diseño a equivalentes del repo (EventCard/Tabla/Merch/Button ya HECHOS; ProductCard/Home/Contact/Footer/eyebrow-pill pendientes de alinear en Fase 5), 6 pantallas mobile-first a implementar, assets necesarios vs disponibles, diferencias diseño-vs-repo (repo va por delante en nav 4 items + Seleccion del mes; datos reales crudomov mandan sobre placeholders del mockup), conflictos con reglas (no Añadir a Mi Tabla en alcohol, link de pago manual, no wine bar), y decision reutilizar/alinear/reemplazar/descartar. AVISO clave: dentro del extract conviven dos diseños; el valido es crudo-redesign.jsx, los src/*.jsx (tokens/shared/photo-brief) son de una exploracion previa con tema OSCURO + Cormorant DESCARTADA. Orden recomendado: Fase 4 (pipeline imagenes) antes de Fase 5 (frontend V2). Fases previas: 0 auditoria, 3 code splitting (index 763→496KB). Estado real verificado en repo limpio sobre main (HEAD 936eade). Commits posteriores a V1Tecnico YA estan en main: nav simplificada a 4 items (Eventos / Seleccion del mes / Merch externo / Contacto), /seleccion ruta principal con /catalogo como alias, /merch implementada (MerchPage placeholder honesto con CTA Instagram), EventCard con variante poster 3:4 + fallback caja-fecha + prop featured, TablaMaridajeSelector con Seleccion de Annet/fromelier (coral) y Caja para llevar (cream) por WhatsApp, Button variante whatsapp, copy confirmacion WhatsApp+link de pago en EventDetail y CelebraStrip, logo PNG real crudo-logo.png en Header. Backend API publica + admin (9 grupos de rutas /api/v1/admin/**) montados y con JWT. Admin frontend NO implementado: /admin sigue siendo placeholder (AdminEntryPage). Diseño Claude Design accesible localmente como docs/Crudo by Piscolabis.zip (44MB) + docs/crudo_redesign_extract/ (la ruta Windows del doc es la maquina del compañero, no accesible desde aqui, pero la copia local del repo basta para Fase 2). Fotos disponibles: Chosen ones (12), Fotos Crudo Noche (27), poster evento wine-tasting-telperion.jpg. Plesk NO verificado con smoke: produccion sigue pendiente, owner configurando DB en Plesk (sin .env real aun). 202 tests verdes en ultimo run local; build OK con warning de bundle >500KB (sin code splitting todavia)."
+next_recommended_prompt: "Fase 4 - Pipeline de imagenes y curacion de assets (prepara assets para Fase 5 frontend V2). Alternativa: Fase 5 directa si se acepta usar imagenes sin optimizar. Fase 1 - Plesk sigue BLOCKED por acceso a produccion."
 overall_status: "IN_PROGRESS"
 ```
 
@@ -80,7 +80,7 @@ overall_status: "IN_PROGRESS"
 |------|--------|--------|----------|
 | 0 | Preparacion V2 y auditoria inicial | REVIEW_READY | Sincronizar contexto, repo, Plesk, diseño y riesgos antes de tocar codigo. |
 | 1 | Produccion/Plesk y deploy reproducible | NOT_STARTED | Verificar crudomov.es, env, DB, build, migraciones, SSL y smoke. |
-| 2 | Intake del nuevo diseño Claude Design | NOT_STARTED | Extraer tokens, rutas, componentes y decisiones mobile-first del ZIP. |
+| 2 | Intake del nuevo diseño Claude Design | REVIEW_READY | Extraer tokens, rutas, componentes y decisiones mobile-first del ZIP. |
 | 3 | Arquitectura frontend V2 y code splitting | REVIEW_READY | Preparar rutas lazy, shell mobile-first y base para rediseño sin romper reglas. |
 | 4 | Pipeline de imagenes y curacion de assets | NOT_STARTED | Usar fotos V1, generar WebP/thumbnails/srcset y mapear assets por seccion. |
 | 5 | Frontend publico V2 mobile-first | NOT_STARTED | Implementar Home, Seleccion del mes, Eventos, Tablas/Cajas, Merch y Contacto con el nuevo diseño. |
@@ -1013,3 +1013,128 @@ Si hay prisa comercial:
 - Despues Fase 5 para que la web se vea V2.
 - Admin movil puede ir despues si Annet acepta que cambios de contenido sigan
   siendo asistidos temporalmente.
+
+---
+
+## 17. Anexo - Spec de diseño V2 (intake Fase 2)
+
+Resultado de la Fase 2: analisis del rediseño Claude Design/Piscolabis. Fuentes
+inspeccionadas en el repo (la ruta Windows del compañero no es accesible aqui):
+
+- `docs/Crudo by Piscolabis.zip` (44MB, proyecto Claude Design completo)
+- `docs/crudo_redesign_extract/crudo-redesign.jsx` (rediseño VIGENTE, tema claro)
+- `docs/crudo_redesign_extract/src/*.jsx` (exploracion ANTERIOR Phase 7, tema
+  oscuro forest + Cormorant — DESCARTADA, no usar)
+- `docs/V1/Crudo Rediseño.html` (CSS/tokens del sistema vigente)
+
+IMPORTANTE: dentro del extract conviven dos diseños. El valido es
+`crudo-redesign.jsx` (Cinzel + Barlow + bone cream). Los archivos `src/tokens.jsx`,
+`src/shared.jsx`, `src/photo-brief.jsx` son de una fase previa con tema OSCURO y
+Cormorant Garamond: NO son la referencia V2 y no deben implementarse.
+
+### 17.1 Tokens (sistema vigente, ya en `src/styles/tokens.css`)
+
+| Token diseño | HEX | Uso | Token repo actual |
+|---|---|---|---|
+| bone | #F6F1E4 | fondo pagina | --color-bg-primary |
+| bone-soft | #EFE8D6 | fondo seccion alt | (añadir si hace falta) |
+| blanco | #FFFFFF | cards | --color-bg-secondary |
+| coral | #EE769C | CTA primario | --color-accent |
+| coral-hover | #E55D88 | hover CTA | --color-accent-hover |
+| coral-soft | #F6B6C8 | fondos suaves | --color-accent-soft |
+| vino | #6C4050 | texto sec + bordes | --color-text-secondary / --color-vine |
+| vino-line | rgba(108,64,80,0.18) | bordes card | --color-border |
+| crema | #FEDB9A | highlights | --color-gold-soft |
+| terracota | #A71E17 | eyebrows, RetroSign | --color-gold |
+| petrol | #447A96 | info/badges | --color-petrol |
+| tinta | #1A1F14 | texto principal | --color-text-primary |
+
+Conclusion tokens: la paleta del diseño YA coincide con la del repo (aplicada en
+Fase 10.5 + correccion tipografica). Solo faltaria, si se quiere fidelidad total,
+añadir `--color-bg-secondary-soft: #EFE8D6` para fondos de seccion alternos.
+
+### 17.2 Tipografia (ya aplicada en repo)
+
+- **Cinzel** 700, uppercase, letter-spacing ~0.01em → titulares (.display / font-display)
+- **Barlow** 300-600 → cuerpo y UI (font-body)
+- **JetBrains Mono** → precios e IDs (.mono / font-mono)
+- **Bagel Fat One** → SOLO usada en el mockup como proxy CSS del wordmark
+  (`WordmarkInline`). DECISION: en produccion NO se usa; el logo es el PNG real
+  `crudo-logo.png` (ya en Header). Bagel Fat One no se carga.
+
+### 17.3 Componentes del diseño → mapeo a repo
+
+| Componente diseño | Equivalente repo | Estado |
+|---|---|---|
+| Wordmark (PNG) | Header `<img crudo-logo.png>` | HECHO (Fase feedback V2) |
+| WordmarkInline (Bagel) | — | DESCARTADO (se usa PNG) |
+| EyebrowPill (terracota) | RetroSign / eyebrow | parcial; revisar estilo pill |
+| EyebrowLine | clase .eyebrow | existe |
+| Photo (ratio + src) | LifestylePhoto / img | existe |
+| PriceMono | font-mono spans | existe |
+| MobileNav (≡) | Header mobile drawer | existe (revisar mobile-first) |
+| StickyMobileCTA | StickyCTA | existe; alinear a diseño (WhatsApp + Mi Tabla) |
+| CheeseCard / CheeseCardLg | ProductCard | existe; alinear estilo card+tag |
+| EventCard (poster 3:4 + date-box) | EventCard | HECHO (Fase feedback V2) |
+| TablaSizeOption / CompactRadios | TablaMaridajeSelector | HECHO (fromelier + caja) |
+| Field (form) | Input/Select/Textarea | existe |
+| Footer | Footer | existe; alinear |
+
+### 17.4 Pantallas a implementar en Fase 5 (mobile-first)
+
+1. **Home** — hero bone con EyebrowPill + H1 Cinzel a 3 lineas + 2 CTA (Ver
+   selección / Eventos) + foto; bloque Proximos eventos (2 cards); Quesos del mes
+   (grid 2col); chips de categorias; bloque Visitanos con horario + mapa; sticky
+   CTA. Desktop: hero 2 columnas (texto 1.05fr / foto 4:5).
+2. **Selección del mes** (ex Catálogo) — eyebrow + H1 + intro fromelier; filtros
+   chips scroll-x; grid 2col CheeseCard; CTA "te lo elegimos" (card crema) →
+   WhatsApp. (HECHO copy en CatalogPage; falta estilo card/grid del diseño.)
+3. **Eventos** — hero + agenda de EventCards (poster cuando exista, date-box
+   fallback); bloque Privatizaciones (fondo coral-soft) con mailto + WhatsApp +
+   copy confirmacion/pago. (HECHO base; alinear a estilo diseño.)
+4. **Tablas/Cajas** — tamaño 3/6/8 + "O déjate sorprender" (Selección de Annet +
+   Caja para llevar) por WhatsApp. (HECHO en TablaMaridajeSelector.)
+5. **Merch** — placeholder honesto + CTA Instagram. (HECHO en MerchPage.)
+6. **Contacto** — mapa hero + quick actions (WhatsApp/email) + card horario+
+   direccion + formulario. (Existe ContactPage; alinear a estilo diseño.)
+
+### 17.5 Assets necesarios vs disponibles
+
+- Hero home/eventos: usar fotos `docs/V1/Photos` (Chosen ones / Noche) → pipeline
+  Fase 4 (WebP + ratios 16:10, 4:5, 16:9).
+- Cards queso 1:1: NO hay foto por queso; usar fallback editorial (Fase 4).
+- Poster evento 3:4: existe `wine-tasting-telperion.jpg`; resto por evento, pendiente Annet.
+- Logo: `public/img/brand/crudo-logo.png` ya presente.
+- Mapa contacto: el diseño usa un SVG estilizado; en repo se usa enlace Google Maps
+  real → mantener enlace real, el SVG es decorativo opcional.
+
+### 17.6 Diferencias diseño vs V1 actual
+
+- El mockup usa nav de 3 items (Eventos/Catálogo/Contacto) SIN Merch. El repo ya
+  va por delante: 4 items con Merch + "Selección del mes". DECISION: mantener el
+  nav del repo (4 items), es feedback posterior de Annet.
+- El mockup llama la seccion "Catálogo"; el repo ya usa "Selección del mes". Mantener repo.
+- El mockup tiene datos placeholder (precios, +34 6XX, hola@crudoquesos.es,
+  @crudoquesos). Los datos reales del repo (crudomov) MANDAN.
+- El mockup muestra "Añadir +" en CheeseCardLg: OJO regla — solo productos NO
+  alcoholicos van a Mi Tabla; vinos siempre WhatsApp. El boton "Añadir" no debe
+  aparecer en productos alcohol.
+
+### 17.7 Conflictos con reglas V1/V2 a vigilar en Fase 5
+
+- No poner "Añadir a Mi Tabla" en vinos/alcohol (mockup no lo distingue).
+- No comunicar CRUDO como wine bar; el diseño ya lo trata como tienda de quesos (OK).
+- "link de pago" en eventos = pago manual fuera de la web, no integrar pasarela.
+- Instagram/WhatsApp/email del mockup son placeholder: usar datos reales del repo.
+
+### 17.8 Decision reutilizar vs reemplazar
+
+- **Reutilizar tal cual**: paleta, tipografia, EventCard, TablaMaridajeSelector,
+  MerchPage, Button (incl. variante whatsapp), tokens.css.
+- **Alinear estilo (Fase 5)**: ProductCard (card+tag+precio mono+grid 2col),
+  Home (hero, secciones, sticky CTA), ContactPage (quick actions + card horario),
+  Footer, eyebrow pill terracota.
+- **Reemplazar/añadir**: fondos de seccion alternos (#EFE8D6), filtros chip
+  scroll-x en Selección del mes, bloque "te lo elegimos" en Selección.
+- **Descartar**: tema oscuro Phase 7, Cormorant Garamond, Bagel Fat One,
+  WordmarkInline CSS, datos placeholder del mockup.
