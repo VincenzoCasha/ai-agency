@@ -171,6 +171,22 @@ Fuente principal: `docs/V1/V1Tecnico.md`, seccion `0.1 Estado vivo del proyecto`
   - admin login cuando exista UI.
 - Probar mobile, iPhone Safari e Instagram in-app browser si es posible.
 
+### Limpieza de codigo / repositorio
+
+- Incluir una fase especifica de limpieza antes del launch readiness.
+- Objetivo: quitar solo codigo, assets, dependencias, scripts o docs que se
+  pueda demostrar que no se usan.
+- No hacer una limpieza agresiva:
+  - no borrar fotos fuente de `docs/V1/Photos` sin confirmacion
+  - no borrar logos/assets de marca por parecer duplicados
+  - no borrar migraciones ya aplicadas
+  - no tocar `docs/AGENTS_Javi.md`
+  - no borrar contexto V1/V2 util
+- Si algo parece no usarse pero hay duda, dejarlo como candidato documentado,
+  no eliminarlo.
+- Crear informe tipo `docs/V2-cleanup-report.md` con lo borrado, evidencia y
+  verificaciones.
+
 ## Dependencias de Annet / owner
 
 - No bloquear codigo por esto, pero no marcar launch-ready sin cerrarlo:

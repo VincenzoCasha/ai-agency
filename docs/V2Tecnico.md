@@ -78,7 +78,8 @@ overall_status: "IN_PROGRESS"
 | 7 | Admin movil V2 | NOT_STARTED | Construir UI admin mobile-first sobre backend existente. |
 | 8 | SEO, legal, cookies y analytics | NOT_STARTED | Robots, sitemap, OG, JSON-LD, canonical, legal, cookies y medicion consent-aware. |
 | 9 | E2E, accesibilidad, performance y QA | NOT_STARTED | Playwright, Lighthouse, checks mobile y regresiones criticas. |
-| 10 | Contenido final, demo data y launch readiness | NOT_STARTED | Cargar contenido/fallbacks, limpiar placeholders, checklist deploy y handoff. |
+| 10 | Limpieza de codigo y repositorio | NOT_STARTED | Quitar codigo, assets y dependencias no usados con pruebas, sin romper V2 ni historial util. |
+| 11 | Contenido final, demo data y launch readiness | NOT_STARTED | Cargar contenido/fallbacks, limpiar placeholders, checklist deploy y handoff. |
 
 ### Pendientes criticos heredados
 
@@ -87,6 +88,7 @@ overall_status: "IN_PROGRESS"
 - Pipeline de imagenes WebP/srcset pendiente.
 - SEO/prerender/robots/sitemap/canonical/OG/JSON-LD pendientes o parciales.
 - E2E/QA/performance pendientes.
+- Limpieza de codigo/repositorio pendiente: quitar solo cosas no usadas y verificadas.
 - Contenido real de Annet pendiente en varias partes.
 - Merch real/URL final pendiente.
 - Fotos especificas de producto 1:1, tablas/cajas y merch pendiente.
@@ -768,7 +770,103 @@ Verificacion:
 
 ---
 
-## 12. Fase 10 - Contenido final, demo data y launch readiness
+## 12. Fase 10 - Limpieza de codigo y repositorio
+
+Objetivo: reducir ruido del repo y codigo muerto, pero solo con cambios
+demostrables y reversibles. Esta fase no debe convertirse en un refactor grande.
+
+### Prompt para Opus
+
+```text
+Usa el Prompt base fijo V2.
+
+Implementa SOLO la Fase 10: limpieza de codigo y repositorio.
+
+Objetivo:
+Limpiar el repositorio despues de tener V2 funcional y verificada, eliminando solo codigo, assets, dependencias, scripts o documentos claramente no usados. No rompas el codigo, no borres contexto util de V1/V2 y no hagas refactors esteticos grandes.
+
+Regla principal:
+Si no puedes demostrar que algo no se usa, NO lo borres. Anotalo como "candidato a revisar" en un informe.
+
+Antes de editar:
+1. Ejecuta auditoria de referencias con herramientas seguras:
+   - `git status --short`
+   - `rg --files`
+   - `rg "nombre-del-archivo-o-export"` antes de borrar cada candidato
+   - revisar imports/exports en frontend y backend
+   - revisar `package.json` scripts y dependencias
+2. Revisa especialmente:
+   - `src`
+   - `server`
+   - `public/img`
+   - `docs`
+   - `tests`
+   - `db`
+   - `infra`
+   - raiz del repo
+3. No borres:
+   - `docs/AGENTS_Javi.md`
+   - `docs/V1/V1Tecnico.md`
+   - `docs/V2Tecnico.md`
+   - `docs/V2-recordatorio.md`
+   - migraciones de DB ya aplicadas
+   - archivos legales
+   - fotos fuente de `docs/V1/Photos` salvo confirmacion humana
+   - assets de marca/logo aunque parezcan duplicados, salvo que haya un reemplazo claro y aprobado
+   - archivos modificados por el usuario en `git status` si no son claramente parte de esta fase
+
+Tareas:
+1. Crear o actualizar `docs/V2-cleanup-report.md` con:
+   - que se reviso
+   - que se borro y por que
+   - evidencia de no uso
+   - candidatos NO borrados por duda
+   - verificaciones ejecutadas
+2. Eliminar imports, componentes, helpers o paginas que ya no tengan ruta ni referencia.
+3. Eliminar assets generados/duplicados solo si:
+   - no estan referenciados en codigo, CSS, markdown publico, seed o docs de deploy
+   - no son originales fuente importantes
+4. Revisar dependencias:
+   - quitar paquetes no usados solo si hay evidencia clara
+   - no quitar dependencias usadas por scripts de build, tests, sharp/image pipeline, Playwright o deploy
+5. Revisar scripts obsoletos:
+   - eliminar o documentar scripts que ya no se puedan ejecutar
+   - no romper comandos del README/deploy
+6. Revisar docs:
+   - quitar docs temporales solo si estan reemplazados por V2Tecnico/runbook y no contienen decisiones utiles
+   - si un doc viejo tiene valor historico, mantenerlo o moverlo a una seccion clara en vez de borrarlo
+7. Hacer cambios pequenos y verificables. No mezclar con features nuevas.
+
+Criterios de aceptacion:
+- Menos ruido en repo sin perder contexto critico.
+- No se elimina nada usado por build, runtime, tests, deploy o docs clave.
+- Hay informe de limpieza.
+- Los candidatos dudosos quedan listados, no borrados.
+- No hay cambios funcionales no intencionados.
+
+Verificacion obligatoria:
+- `npm run lint`
+- `npm run test:client`
+- `npm test` si DB local esta disponible; si no, documentar bloqueo
+- `npm run build`
+- `git status --short`
+- smoke local rapido de rutas principales si el servidor local esta disponible:
+  - `/`
+  - `/seleccion`
+  - `/eventos`
+  - `/tablas`
+  - `/merch`
+  - `/contacto`
+  - `/admin` si Fase 7 esta lista
+
+Actualiza estado vivo V2:
+- Fase 10 `REVIEW_READY` si limpieza + verificaciones pasan.
+- `BLOCKED` solo si hay demasiada incertidumbre o faltan permisos para verificar.
+```
+
+---
+
+## 13. Fase 11 - Contenido final, demo data y launch readiness
 
 Objetivo: dejar V2 lista para desplegar o para revision owner, sin placeholders
 engañosos.
@@ -778,7 +876,7 @@ engañosos.
 ```text
 Usa el Prompt base fijo V2.
 
-Implementa SOLO la Fase 10: contenido final, demo data y launch readiness.
+Implementa SOLO la Fase 11: contenido final, demo data y launch readiness.
 
 Objetivo:
 Preparar CRUDO V2 para despliegue/revision final: contenido real donde exista, fallback honesto donde falte, deploy checklist y handoff.
@@ -833,7 +931,7 @@ Verificacion:
 
 ---
 
-## 13. Definition of Done V2
+## 14. Definition of Done V2
 
 Una fase queda `REVIEW_READY` solo si:
 
@@ -860,11 +958,12 @@ V2 completa queda lista para despliegue solo si:
 - SEO basico listo.
 - Cookies/analytics consent-aware.
 - E2E criticos pasan.
+- Limpieza de codigo/repositorio hecha o candidatos pendientes documentados.
 - Pendientes de Annet estan documentados y no bloquean si son contenido opcional.
 
 ---
 
-## 14. Riesgos que Opus debe vigilar
+## 15. Riesgos que Opus debe vigilar
 
 - Rehacer todo de golpe y romper V1 funcional.
 - Copiar el diseño Claude Design sin adaptarlo al sistema real.
@@ -876,12 +975,13 @@ V2 completa queda lista para despliegue solo si:
 - Dejar `dist/` viejo en Plesk.
 - Usar `.env` local en produccion.
 - Dejar docs y codigo desincronizados.
+- Borrar assets, docs historicos o migraciones utiles por una limpieza demasiado agresiva.
 - Usar stock como si fuera ERP.
 - Hacer SEO como restaurante/wine bar en vez de tienda de quesos.
 
 ---
 
-## 15. Orden recomendado
+## 16. Orden recomendado
 
 1. Fase 0 - Preparacion V2 y auditoria inicial.
 2. Fase 1 - Produccion/Plesk y deploy reproducible.
@@ -893,7 +993,8 @@ V2 completa queda lista para despliegue solo si:
 8. Fase 7 - Admin movil.
 9. Fase 8 - SEO/legal/cookies/analytics.
 10. Fase 9 - E2E/QA/performance.
-11. Fase 10 - Contenido final y launch readiness.
+11. Fase 10 - Limpieza de codigo y repositorio.
+12. Fase 11 - Contenido final y launch readiness.
 
 Si hay prisa comercial:
 
@@ -902,4 +1003,3 @@ Si hay prisa comercial:
 - Despues Fase 5 para que la web se vea V2.
 - Admin movil puede ir despues si Annet acepta que cambios de contenido sigan
   siendo asistidos temporalmente.
-
