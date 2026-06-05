@@ -46,14 +46,24 @@ reales.
 
 ```yaml
 project: CRUDO V2
-state_version: 1
+state_version: 2
 last_updated: 2026-06-05
 current_phase: 0
-current_phase_name: "Preparacion V2 y sincronizacion"
-current_focus: "Documento V2Tecnico creado. V2 parte de V1 fase 10.5 + commits posteriores: frontend publico avanzado, backend API/admin listo, admin frontend pendiente, rediseño mobile-first Claude Design pendiente de implementar, fotos V1 disponibles para pipeline editorial, Plesk probablemente configurado pero debe verificarse con smoke."
-next_recommended_prompt: "Fase 0 - Preparacion V2 y auditoria inicial"
+current_phase_name: "Preparacion V2 y auditoria inicial"
+current_focus: "Fase 0 ejecutada (auditoria, sin cambios de codigo). Estado real verificado en repo limpio sobre main (HEAD 936eade). Commits posteriores a V1Tecnico YA estan en main: nav simplificada a 4 items (Eventos / Seleccion del mes / Merch externo / Contacto), /seleccion ruta principal con /catalogo como alias, /merch implementada (MerchPage placeholder honesto con CTA Instagram), EventCard con variante poster 3:4 + fallback caja-fecha + prop featured, TablaMaridajeSelector con Seleccion de Annet/fromelier (coral) y Caja para llevar (cream) por WhatsApp, Button variante whatsapp, copy confirmacion WhatsApp+link de pago en EventDetail y CelebraStrip, logo PNG real crudo-logo.png en Header. Backend API publica + admin (9 grupos de rutas /api/v1/admin/**) montados y con JWT. Admin frontend NO implementado: /admin sigue siendo placeholder (AdminEntryPage). Diseño Claude Design accesible localmente como docs/Crudo by Piscolabis.zip (44MB) + docs/crudo_redesign_extract/ (la ruta Windows del doc es la maquina del compañero, no accesible desde aqui, pero la copia local del repo basta para Fase 2). Fotos disponibles: Chosen ones (12), Fotos Crudo Noche (27), poster evento wine-tasting-telperion.jpg. Plesk NO verificado con smoke: produccion sigue pendiente, owner configurando DB en Plesk (sin .env real aun). 202 tests verdes en ultimo run local; build OK con warning de bundle >500KB (sin code splitting todavia)."
+next_recommended_prompt: "Fase 1 - Produccion/Plesk y deploy reproducible (BLOCKED por acceso) o, si se prefiere avanzar en codigo sin Plesk, Fase 3 - Arquitectura frontend V2 y code splitting"
 overall_status: "IN_PROGRESS"
 ```
+
+### Hallazgos auditoria Fase 0 (2026-06-05)
+
+- **Repo**: rama `main`, working tree limpio (solo worktrees `.claude/` sin trackear, inofensivos). HEAD `936eade`.
+- **Env requeridas en produccion** (`server/config/env.js`): `JWT_SECRET`, `COOKIE_SECRET`, `DB_PASSWORD` (lanza error si faltan en prod). Otras relevantes: `DB_HOST/PORT/NAME/USER`, `JWT_EXPIRES_IN` (default 15m), `BREVO_API_KEY` (vacio), `OWNER_WHATSAPP/EMAIL`, `PUBLIC_WHATSAPP/INSTAGRAM/GOOGLE_MAPS_URL`.
+- **Inconsistencia menor detectada**: `env.js` default `PUBLIC_INSTAGRAM=crudoquesos` pero el resto del proyecto (siteConfig fallback, Header, MerchPage) usa `crudomov`. No se corrige en Fase 0 (no tocar codigo); anotar para Fase 5/8.
+- **Health/API**: `/api/v1/health` existe y esta montado. Smoke de produccion NO ejecutado (sin acceso a crudomov.es).
+- **Admin backend**: 9 grupos de rutas montados bajo `/api/v1/admin` (auth, dashboard, products, events, campaigns, inquiries, pickup-orders, event-reservations, site-config). Admin frontend pendiente (Fase 7).
+- **Diseño Claude Design**: accesible localmente (zip + extract). La ruta `C:\Users\Vincenzo\...` del doc es del compañero, no de esta maquina.
+- **Bloqueos reales**: (1) Plesk/produccion sin verificar — owner configurando DB. (2) Contenido real de Annet pendiente (no bloquea codigo). (3) Acceso SSH a Contabo bloqueado anteriormente por Fail2Ban.
 
 ### Leyenda de estados
 
@@ -68,7 +78,7 @@ overall_status: "IN_PROGRESS"
 
 | Fase | Nombre | Estado | Objetivo |
 |------|--------|--------|----------|
-| 0 | Preparacion V2 y auditoria inicial | NOT_STARTED | Sincronizar contexto, repo, Plesk, diseño y riesgos antes de tocar codigo. |
+| 0 | Preparacion V2 y auditoria inicial | REVIEW_READY | Sincronizar contexto, repo, Plesk, diseño y riesgos antes de tocar codigo. |
 | 1 | Produccion/Plesk y deploy reproducible | NOT_STARTED | Verificar crudomov.es, env, DB, build, migraciones, SSL y smoke. |
 | 2 | Intake del nuevo diseño Claude Design | NOT_STARTED | Extraer tokens, rutas, componentes y decisiones mobile-first del ZIP. |
 | 3 | Arquitectura frontend V2 y code splitting | NOT_STARTED | Preparar rutas lazy, shell mobile-first y base para rediseño sin romper reglas. |
