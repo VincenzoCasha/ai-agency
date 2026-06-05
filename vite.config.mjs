@@ -28,6 +28,17 @@ export default defineConfig(({ mode }) => {
       emptyOutDir: true,
       sourcemap: false,
       target: 'es2020',
+      rollupOptions: {
+        output: {
+          // Separa dependencias de terceros estables en chunks cacheables
+          // aparte del código de la app (V2 Fase 3 — code splitting).
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-icons': ['lucide-react'],
+            'vendor-http': ['axios'],
+          },
+        },
+      },
     },
   };
 });
