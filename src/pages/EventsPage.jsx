@@ -42,7 +42,7 @@ export default function EventsPage() {
       <section
         aria-labelledby="events-page-heading"
         className="relative isolate overflow-hidden border-b border-border"
-        style={{ minHeight: '45vh' }}
+        style={{ minHeight: '65vh' }}
       >
         <ResponsiveImage
           assetId="eventos-hero"
@@ -78,38 +78,24 @@ export default function EventsPage() {
       </section>
 
       {/* ── Galería de momentos ──────────────────────────────────────────── */}
-      <section aria-label="Momentos en CRUDO" className="border-t border-border bg-bg-secondary">
-        <ul className="grid grid-cols-1 sm:grid-cols-3">
+      <section aria-label="Momentos en CRUDO" className="border-t border-border">
+        <ul className="grid grid-cols-3">
           {GALLERY_MOMENTS.map((moment) => {
             const asset = V2_ASSETS[moment.assetId];
             return (
-              <li key={moment.assetId} className="group relative overflow-hidden">
-                <div className="aspect-[3/4]">
-                  {asset ? (
-                    <img
-                      src={asset.src}
-                      srcSet={asset.srcSet}
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      alt={asset.alt}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      style={{ filter: 'brightness(1.05) contrast(1.04) saturate(1.03)' }}
-                    />
-                  ) : null}
-                  {/* Overlay gradiente solo abajo */}
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0"
-                    style={{ background: 'linear-gradient(180deg, transparent 50%, rgba(26,31,20,0.72) 100%)' }}
+              <li key={moment.assetId} className="group overflow-hidden" style={{ maxHeight: '320px' }}>
+                {asset ? (
+                  <img
+                    src={asset.src}
+                    srcSet={asset.srcSet}
+                    sizes="33vw"
+                    alt={asset.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    style={{ filter: 'brightness(1.05) contrast(1.04) saturate(1.03)', display: 'block' }}
                   />
-                </div>
-                {/* Quote superpuesto */}
-                <blockquote className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-                  <p className="font-body text-base md:text-lg text-text-inverse leading-snug">
-                    {moment.quote}
-                  </p>
-                </blockquote>
+                ) : null}
               </li>
             );
           })}

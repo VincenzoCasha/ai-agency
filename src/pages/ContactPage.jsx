@@ -32,7 +32,7 @@ export default function ContactPage() {
         style={{ minHeight: '45vh' }}
       >
         <ResponsiveImage
-          assetId="lifestyle-bodegon"
+          assetId="contacto-local"
           sizes="100vw"
           eager
           decorative
