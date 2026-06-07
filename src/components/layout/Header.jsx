@@ -30,7 +30,7 @@ export function Header({ siteConfig, onOpenTabla }) {
   const maps = siteConfig?.contact?.google_maps_url;
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-bg-primary/85 backdrop-blur-md">
+    <header className="sticky top-0 z-30 border-b border-border bg-bg-primary">
       <div className="container-page flex items-center justify-between gap-4 py-3">
         <Link to="/" className="flex items-center gap-3 text-text-primary" aria-label="CRUDO — inicio">
           <img

@@ -56,24 +56,25 @@ export function CategoryStrips() {
                 loading="lazy"
                 decoding="async"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                style={{ filter: 'brightness(1.1) contrast(1.07) saturate(1.05)' }}
               />
               <div
                 className="absolute inset-0"
                 aria-hidden="true"
                 style={{
                   background:
-                    'linear-gradient(180deg, rgba(26,31,20,0.35) 0%, rgba(26,31,20,0.75) 70%, rgba(26,31,20,0.92) 100%)',
+                    'linear-gradient(180deg, rgba(26,31,20,0.18) 0%, rgba(26,31,20,0.5) 60%, rgba(26,31,20,0.85) 100%)',
                 }}
               />
               <div className="relative h-full p-6 md:p-8 flex flex-col justify-end">
-                <p className="eyebrow text-crudo-bone/80 mb-3">{strip.eyebrow}</p>
-                <h3 className="font-display text-2xl md:text-3xl text-text-primary mb-2">
+                <p className="eyebrow text-crudo-bone mb-3">{strip.eyebrow}</p>
+                <h3 className="font-display text-2xl md:text-3xl text-text-inverse mb-2">
                   {strip.title}
                 </h3>
-                <p className="text-sm text-text-secondary max-w-prose">
+                <p className="text-sm text-text-inverse opacity-90 max-w-prose">
                   {strip.desc}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm text-gold group-hover:gap-2 transition-all">
+                <span className="mt-4 inline-flex items-center gap-1 text-sm text-text-inverse group-hover:gap-2 transition-all">
                   Ver <ArrowUpRight size={14} aria-hidden="true" />
                 </span>
               </div>

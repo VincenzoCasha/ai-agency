@@ -33,21 +33,22 @@ export default function EventsPage() {
           eager
           decorative
           className="absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{ filter: 'brightness(1.08) contrast(1.06) saturate(1.05)' }}
         />
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10"
-          style={{ background: 'linear-gradient(180deg, rgba(26,31,20,0.35) 0%, rgba(26,31,20,0.85) 100%)' }}
+          style={{ background: 'linear-gradient(180deg, rgba(26,31,20,0.12) 0%, rgba(26,31,20,0.45) 55%, rgba(26,31,20,0.78) 100%)' }}
         />
         <div className="container-page flex flex-col justify-end pt-20 pb-12 md:min-h-[45vh] md:py-16">
           <RetroSign text="Eventos" size="sm" className="self-start mb-4" />
           <h1
             id="events-page-heading"
-            className="font-display text-4xl md:text-6xl text-text-primary leading-[1.05] max-w-2xl"
+            className="font-display text-4xl md:text-6xl text-text-inverse leading-[1.05] max-w-2xl"
           >
             Catas, talleres y bodegas invitadas.
           </h1>
-          <p className="mt-4 text-text-secondary text-lg max-w-prose">
+          <p className="mt-4 text-text-inverse opacity-90 text-lg max-w-prose">
             Eventos pequeños alrededor de la barra. Reserva tu plaza online y
             paga en CRUDO al llegar.
           </p>
