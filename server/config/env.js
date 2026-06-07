@@ -31,7 +31,7 @@ const env = {
 
   BREVO_API_KEY: process.env.BREVO_API_KEY || '',
   PUBLIC_WHATSAPP: process.env.PUBLIC_WHATSAPP || process.env.VITE_PUBLIC_WHATSAPP || '',
-  PUBLIC_INSTAGRAM: process.env.PUBLIC_INSTAGRAM || 'https://www.instagram.com/crudoquesos',
+  PUBLIC_INSTAGRAM: process.env.PUBLIC_INSTAGRAM || 'https://www.instagram.com/crudomov',
   PUBLIC_GOOGLE_MAPS_URL: process.env.PUBLIC_GOOGLE_MAPS_URL || process.env.VITE_GOOGLE_MAPS_URL || '',
 };
 

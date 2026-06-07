@@ -12,7 +12,7 @@ export const FALLBACK_SITE_CONFIG = {
   address: 'Calle Jose Ortega y Gasset 81, 28006 Madrid',
   city: 'Madrid',
   country: 'ES',
-  domain: 'crudomov.com',
+  domain: 'crudomov.es',
   hours: {
     mon: '17:30-22:30',
     tue: '17:30-22:30',

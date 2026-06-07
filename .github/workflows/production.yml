@@ -39,8 +39,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install production deps
-        run: npm ci --omit=dev
+      - name: Install deps (full — build needs vite/sharp devDeps)
+        run: npm ci
 
       # - name: Deploy via SSH (cuando existan secrets)
       #   uses: appleboy/ssh-action@v1.0.3
@@ -49,12 +49,13 @@ jobs:
       #     username: ${{ secrets.PROD_USER }}
       #     key: ${{ secrets.PROD_SSH_KEY }}
       #     script: |
-      #       cd /var/www/vhosts/<dominio>/httpdocs
+      #       cd /var/www/vhosts/crudomov.es/httpdocs
       #       git fetch --tags
       #       git checkout ${{ inputs.tag }}
-      #       npm ci --omit=dev
+      #       npm ci                              # completo: build necesita devDeps
       #       NODE_ENV=production npm run db:migrate
-      #       npm run build
+      #       NODE_ENV=production npm run build   # genera dist/
+      #       npm prune --omit=dev               # adelgazar runtime tras el build
       #       touch tmp/restart.txt || true
 
       - name: Manual deploy reminder

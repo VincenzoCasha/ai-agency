@@ -1,6 +1,9 @@
-# CRUDO V1 — Despliegue en Plesk / Contabo
+# CRUDO V2 — Despliegue en Plesk / Contabo
 
 Guía operativa para staging y producción. **No ejecuta deploys automáticos**: documenta los pasos manuales que corre el owner desde Plesk + SSH.
+
+> **Dominio de producción: `crudomov.es`** (canónico único; usado por canonical SEO,
+> sitemap, OG y `VITE_SITE_URL`). Si existe `crudomov.com`, debe hacer 301 → `.es`.
 
 ---
 
@@ -27,8 +30,8 @@ Plesk encapsula:
 
 | Entorno | Dominio | Nota |
 |---------|---------|------|
-| Producción | _pendiente_ (recomendado `crudo.es`) | Owner debe registrar y apuntar DNS al IP del VPS. |
-| Staging | `staging.<dominio>` | Subdominio Plesk, **noindex + basic-auth** (ver §7). |
+| Producción | `crudomov.es` | DNS (A/AAAA) apuntando al IP del VPS Contabo. |
+| Staging | `staging.crudomov.es` | Subdominio Plesk, **noindex + basic-auth** (ver §7). |
 
 Pasos al recibir el dominio:
 
@@ -47,11 +50,25 @@ Pasos al recibir el dominio:
    - **Node.js version**: 20 LTS.
    - **Application Mode**: `production`.
 3. Plesk crea automáticamente un proxy a `127.0.0.1:<puerto interno>`. Mantener `PORT=3000` o el que asigne Plesk en variables de entorno.
-4. Tras un cambio de código:
-   - File Manager: subir cambios o usar **Git** integrado de Plesk apuntando al repo.
-   - Plesk → **Node.js** → **NPM Install** (instala según `package.json`).
-   - Plesk → **Node.js** → **Run script: build** (cuando Fase 7 active el build Vite).
-   - Plesk → **Node.js** → **Restart App**.
+
+> **Arquitectura de servido (importante):** la app Express (`server.js`) sirve
+> TODO: la SPA construida en `dist/` (con fallback a `index.html` para rutas del
+> router), los assets de `/uploads/*` y la API en `/api/*`. **No** hay que apuntar
+> el document root a `/httpdocs/dist` ni configurar nginx para servir estáticos:
+> el document root es `/httpdocs` y el startup es `server.js`. Si `dist/` no existe,
+> el server arranca igual pero solo responde la API (no hay frontend) → hay que
+> ejecutar `npm run build` (ver §8).
+
+4. Tras un cambio de código, seguir el flujo completo de §8 (no basta con NPM
+   Install). En Plesk: **Git pull** → **NPM Install** → **Run script: build** →
+   **Restart App**.
+
+> ⚠️ **El build necesita devDependencies.** `vite` y `sharp` están en
+> `devDependencies`. Por eso el flujo de deploy hace `npm ci` **completo** (no
+> `--omit=dev`) y, si se quiere adelgazar el runtime, `npm prune --omit=dev`
+> DESPUÉS del build. Las imágenes WebP (`public/img/v2/`) ya están commiteadas,
+> así que NO hace falta correr `npm run build:images` en el servidor (sharp solo
+> se usa a build-time y de forma local/CI).
 
 ---
 
@@ -100,17 +117,30 @@ COOKIE_SECRET=<32+ chars aleatorios>
 UPLOADS_DIR=uploads
 MAX_UPLOAD_MB=8
 
-CORS_ALLOWED_ORIGINS=https://<dominio>
-PUBLIC_BASE_URL=https://<dominio>
+CORS_ALLOWED_ORIGINS=https://crudomov.es
+PUBLIC_BASE_URL=https://crudomov.es
 
 OWNER_WHATSAPP=<numero interno>
 OWNER_EMAIL=<email owner>
 PUBLIC_WHATSAPP=<numero publico>
-PUBLIC_INSTAGRAM=https://www.instagram.com/crudoquesos
+PUBLIC_INSTAGRAM=https://www.instagram.com/crudomov
 PUBLIC_GOOGLE_MAPS_URL=<url Google Maps de la tienda>
 
 BREVO_API_KEY=<cuando se active Brevo real>
 ```
+
+**Variables de build (Vite, leídas al ejecutar `npm run build`)** — deben estar
+presentes en el entorno del proceso que hace el build:
+
+```
+VITE_API_BASE=/api/v1
+VITE_SITE_URL=https://crudomov.es      # canonical/OG/sitemap
+VITE_GA_ID=                            # GA4: vacío = analytics off (no-op)
+```
+
+> Las `VITE_*` se hornean en el bundle en build-time; cambiarlas exige re-build,
+> no solo restart. `VITE_GA_ID` vacío deja Google Analytics desactivado (no
+> carga gtag) — rellenar solo cuando el owner entregue el ID.
 
 Generación de secretos seguros (en local, nunca pegar en git):
 
@@ -152,7 +182,7 @@ Objetivo: réplica de producción para QA antes de cada release. **Nunca debe se
 ```bash
 # Conectar al VPS via SSH (Plesk → Subscriptions → SSH access)
 ssh <user>@<host>
-cd /var/www/vhosts/<domain>/httpdocs
+cd /var/www/vhosts/crudomov.es/httpdocs
 
 # 1. Backup pre-deploy (DB + uploads) — desde Plesk Backup Manager
 # 2. Actualizar codigo
@@ -160,30 +190,44 @@ git fetch origin
 git checkout main
 git pull --ff-only
 
-# 3. Instalar dependencias
-npm ci --omit=dev
+# 3. Instalar dependencias COMPLETAS (build necesita vite/sharp = devDeps)
+npm ci
 
 # 4. Migraciones (idempotentes)
-npm run db:migrate
+NODE_ENV=production npm run db:migrate
 
-# 5. Build frontend (cuando exista, Fase 7)
-npm run build
+# 5. Build frontend → genera dist/ (servido por Express)
+NODE_ENV=production npm run build
 
-# 6. Reiniciar Node app desde Plesk → Node.js → Restart App
+# 6. (Opcional) adelgazar runtime quitando devDeps DESPUES del build
+npm prune --omit=dev
+
+# 7. Reiniciar Node app desde Plesk → Node.js → Restart App
 #    (o por CLI: touch tmp/restart.txt si Plesk lo soporta)
 
-# 7. Smoke (ver §9)
+# 8. Smoke (ver §9):  BASE_URL=https://crudomov.es ./infra/scripts/smoke.sh
 ```
+
+> ⚠️ **NO usar `npm ci --omit=dev` antes del build.** `vite` y `sharp` son
+> devDependencies; sin ellas `npm run build` falla con "vite: not found". El
+> orden correcto es: `npm ci` (completo) → build → `npm prune --omit=dev`.
+>
+> ⚠️ **`nodenv: command not found`.** Si el deploy por Git de Plesk ejecuta un
+> hook con `nodenv`, fallará: este proyecto NO usa nodenv (la versión de Node la
+> gestiona Plesk → Node.js 20 LTS). Eliminar cualquier `.node-version`/hook que
+> invoque `nodenv` del Git deploy de Plesk. Usar el Node de Plesk directamente.
 
 ---
 
 ## 9. Smoke checklist post-deploy
 
-Comprobar siempre tras cada deploy a producción y staging:
+Comprobar siempre tras cada deploy a producción y staging. La forma rápida es
+ejecutar el script: `BASE_URL=https://crudomov.es ./infra/scripts/smoke.sh`.
+Manualmente:
 
 ```bash
 # Health
-curl -fsS https://<dominio>/api/v1/health | jq .
+curl -fsS https://crudomov.es/api/v1/health | jq .
 
 # Catalogo publico
 curl -fsS "https://<dominio>/api/v1/products?size=2" | jq '.items | length'
@@ -226,8 +270,9 @@ cd /var/www/vhosts/<domain>/httpdocs
 git log --oneline -10
 # Reset duro al commit estable previo
 git reset --hard <commit-hash>
-npm ci --omit=dev
+npm ci
 npm run build
+npm prune --omit=dev
 # Reiniciar app desde Plesk
 ```
 

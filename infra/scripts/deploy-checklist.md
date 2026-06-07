@@ -18,38 +18,50 @@ Siempre, antes y después de cada deploy a producción. Staging usa el mismo flu
 
 ```bash
 ssh <user>@<host>
-cd /var/www/vhosts/<domain>/httpdocs
+cd /var/www/vhosts/crudomov.es/httpdocs
 
 # 1. Sincronizar codigo
 git fetch origin
 git checkout main
 git pull --ff-only
 
-# 2. Instalar dependencias (sin devDeps)
-npm ci --omit=dev
+# 2. Instalar dependencias COMPLETAS (el build necesita vite/sharp = devDeps)
+#    NO usar --omit=dev aqui: "vite: not found" si faltan devDeps.
+npm ci
 
 # 3. Migraciones (idempotentes)
 NODE_ENV=production npm run db:migrate
 # Verificar salida: "aplicadas=N omitidas=M"
 
-# 4. Build frontend (cuando Fase 7 exista)
+# 4. Build frontend → genera dist/ (servido por Express; dist/ esta gitignored)
 NODE_ENV=production npm run build
 
-# 5. Reiniciar app desde Plesk → Node.js → Restart App
+# 5. (Opcional) adelgazar runtime quitando devDeps DESPUES del build
+npm prune --omit=dev
+
+# 6. Reiniciar app desde Plesk → Node.js → Restart App
 #    (no hay comando CLI universal; algunos Plesk soportan: touch tmp/restart.txt)
 ```
+
+> Si el Git deploy de Plesk falla con `nodenv: command not found`: este proyecto
+> NO usa nodenv; eliminar el hook/`.node-version` que lo invoque. Node lo gestiona
+> Plesk (20 LTS).
 
 ---
 
 ## Smoke post-deploy
 
-- [ ] `curl -fsS https://<dominio>/api/v1/health` devuelve `status: ok`.
-- [ ] `curl -fsS "https://<dominio>/api/v1/products?size=2"` devuelve items.
-- [ ] `curl -fsS https://<dominio>/api/v1/site/config` devuelve `legal_name`.
+Rápido: `BASE_URL=https://crudomov.es ./infra/scripts/smoke.sh` (debe dar `fail=0`).
+Manual:
+
+- [ ] `curl -fsS https://crudomov.es/api/v1/health` devuelve `status: ok`.
+- [ ] `curl -fsS "https://crudomov.es/api/v1/products?size=2"` devuelve items.
+- [ ] `curl -fsS https://crudomov.es/api/v1/site/config` devuelve `legal_name`.
 - [ ] Login admin funciona y devuelve `access_token`.
-- [ ] `curl -fsS https://<dominio>/uploads/<imagen-real>` devuelve la imagen.
-- [ ] (Cuando exista frontend) home `/` carga HTML con `<title>CRUDO</title>`.
-- [ ] (Staging) `robots.txt` contiene `Disallow: /` y header `X-Robots-Tag: noindex, nofollow`.
+- [ ] `curl -fsS https://crudomov.es/uploads/<imagen-real>` devuelve la imagen.
+- [ ] Home `/` carga HTML de la SPA (contiene "CRUDO").
+- [ ] `/robots.txt` y `/sitemap.xml` responden (sitemap con dominio crudomov.es).
+- [ ] (Staging) `robots.txt` con `Disallow: /` y header `X-Robots-Tag: noindex, nofollow`.
 
 ---
 

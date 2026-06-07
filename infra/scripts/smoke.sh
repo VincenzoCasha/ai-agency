@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# CRUDO V1 — Smoke post-deploy.
-# Uso: BASE_URL=https://crudo.es ./infra/scripts/smoke.sh
+# CRUDO V2 — Smoke post-deploy.
+# Uso: BASE_URL=https://crudomov.es ./infra/scripts/smoke.sh
 # Requiere: curl, jq.
 
 set -euo pipefail
@@ -29,6 +29,12 @@ step "GET /api/v1/events"            bash -c "curl -fsS '$BASE_URL/api/v1/events
 step "GET /api/v1/site/config"       bash -c "curl -fsS '$BASE_URL/api/v1/site/config'       | jq -e '.legal_name'        >/dev/null"
 step "GET /api/v1/admin/dashboard sin token devuelve 401" \
   bash -c "test \"\$(curl -s -o /dev/null -w '%{http_code}' '$BASE_URL/api/v1/admin/dashboard')\" = '401'"
+step "GET / sirve la SPA (HTML con CRUDO)" \
+  bash -c "curl -fsS '$BASE_URL/' | grep -qi 'crudo'"
+step "GET /robots.txt" \
+  bash -c "curl -fsS '$BASE_URL/robots.txt' | grep -qi 'sitemap\|disallow'"
+step "GET /sitemap.xml" \
+  bash -c "curl -fsS '$BASE_URL/sitemap.xml' | grep -qi '<urlset'"
 
 echo
 echo "=== resumen: ok=$PASS fail=$FAIL ==="
