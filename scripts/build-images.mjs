@@ -149,13 +149,16 @@ const ASSETS = [
   // ── CONTACTO / LOCAL ─────────────────────────────────────────────────────
   {
     id: 'contacto-local',
-    // Cartel CRUDO en parte superior → gravity 'north' preserva el signo
+    // Foto vertical (1365×2048). El cartel CRUDO está arriba-centro-izquierda.
+    // Recorte manual 16:9 que sitúa el cartel en la derecha del marco y deja
+    // la zona oscura (perchero/pared) a la izquierda para el texto del hero.
     src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_0486.jpg",
+    extract: { left: 0, top: 50, width: 850, height: 478 },
     ratio: [16, 9],
     widths: [768, 1200],
     quality: Q_HERO,
-    gravity: 'north',
-    alt: 'Cartel CRUDO iluminado con gente en el local de Madrid',
+    gravity: 'attention',
+    alt: 'Cartel CRUDO iluminado en el local de Madrid',
   },
   // ── FALLBACKS DE CARD (1:1) ──────────────────────────────────────────────
   {
@@ -212,7 +215,17 @@ async function processAsset(asset) {
     const height = heightFor(width, asset.ratio);
     const fileName = `${asset.id}-${width}.webp`;
     const absOut = path.join(OUT_DIR, fileName);
-    await sharp(absSrc)
+    let pipeline = sharp(absSrc);
+    // extract: recorte manual previo (cuando gravity no basta para encuadrar
+    // el sujeto donde se necesita). La región ya está al ratio del rol.
+    if (asset.extract) {
+      pipeline = pipeline.extract(asset.extract);
+    }
+    // modulate: ajuste de brillo/saturación horneado en el WebP (opcional).
+    if (asset.modulate) {
+      pipeline = pipeline.modulate(asset.modulate);
+    }
+    await pipeline
       .resize(width, height, {
         fit: 'cover',
         position: asset.gravity === 'attention' ? sharp.strategy.attention : asset.gravity,

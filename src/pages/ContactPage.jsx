@@ -37,7 +37,7 @@ export default function ContactPage() {
           eager
           decorative
           className="absolute inset-0 -z-20 h-full w-full object-cover"
-          style={{ filter: 'brightness(1.08) contrast(1.06) saturate(1.05)' }}
+          style={{ filter: 'brightness(0.82) contrast(0.9) saturate(1.02)' }}
         />
         <div
           aria-hidden="true"
