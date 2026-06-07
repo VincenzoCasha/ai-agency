@@ -7,6 +7,22 @@ import { NewsletterForm } from '../components/forms/NewsletterForm';
 import { useEvents } from '../hooks/useEvents';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { useSeo } from '../hooks/useSeo';
+import { V2_ASSETS } from '../lib/v2Assets';
+
+const GALLERY_MOMENTS = [
+  {
+    assetId: 'gallery-despedida',
+    quote: '... tengo una despedida de soltera. ¡Vamos a CRUDO!',
+  },
+  {
+    assetId: 'gallery-ascenso',
+    quote: 'Me han ascendido en el trabajo. ¡Vamos a CRUDO!',
+  },
+  {
+    assetId: 'gallery-cita',
+    quote: 'Primera cita. ¡Vamos a CRUDO!',
+  },
+];
 
 export default function EventsPage() {
   const { events, status, loading, error } = useEvents();
@@ -22,6 +38,7 @@ export default function EventsPage() {
 
   return (
     <main>
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section
         aria-labelledby="events-page-heading"
         className="relative isolate overflow-hidden border-b border-border"
@@ -55,8 +72,48 @@ export default function EventsPage() {
         </div>
       </section>
 
+      {/* ── Próximos eventos ─────────────────────────────────────────────── */}
       <section className="container-page py-10 md:py-14">
         <EventList events={events} status={status} loading={loading} error={error} />
+      </section>
+
+      {/* ── Galería de momentos ──────────────────────────────────────────── */}
+      <section aria-label="Momentos en CRUDO" className="border-t border-border bg-bg-secondary">
+        <ul className="grid grid-cols-1 sm:grid-cols-3">
+          {GALLERY_MOMENTS.map((moment) => {
+            const asset = V2_ASSETS[moment.assetId];
+            return (
+              <li key={moment.assetId} className="group relative overflow-hidden">
+                <div className="aspect-[3/4]">
+                  {asset ? (
+                    <img
+                      src={asset.src}
+                      srcSet={asset.srcSet}
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                      alt={asset.alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      style={{ filter: 'brightness(1.05) contrast(1.04) saturate(1.03)' }}
+                    />
+                  ) : null}
+                  {/* Overlay gradiente solo abajo */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(180deg, transparent 50%, rgba(26,31,20,0.72) 100%)' }}
+                  />
+                </div>
+                {/* Quote superpuesto */}
+                <blockquote className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                  <p className="font-body text-base md:text-lg text-text-inverse leading-snug">
+                    {moment.quote}
+                  </p>
+                </blockquote>
+              </li>
+            );
+          })}
+        </ul>
       </section>
 
       <CelebraStrip siteConfig={config} />

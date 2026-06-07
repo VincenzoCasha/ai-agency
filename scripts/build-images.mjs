@@ -71,15 +71,71 @@ const ASSETS = [
     gravity: 'attention',
     alt: 'Tabla de quesos con copas de vino para llevar',
   },
+  // ── HOME — CATEGORY STRIPS (3 fotos elegidas por owner) ─────────────────
+  {
+    id: 'strip-vitrina',
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_0012.jpg",
+    ratio: [16, 9],
+    widths: [768, 1200],
+    quality: Q_HERO,
+    gravity: 'attention',
+    alt: 'Quesos artesanos en la barra de CRUDO Madrid',
+  },
+  {
+    id: 'strip-tablas',
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_9935.jpg",
+    ratio: [16, 9],
+    widths: [768, 1200],
+    quality: Q_HERO,
+    gravity: 'attention',
+    alt: 'Tablas de quesos listas para llevar en CRUDO',
+  },
+  {
+    id: 'strip-temporada',
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_0394.jpg",
+    ratio: [16, 9],
+    widths: [768, 1200],
+    quality: Q_HERO,
+    gravity: 'attention',
+    alt: 'Selección de temporada en CRUDO',
+  },
   // ── EVENTOS ──────────────────────────────────────────────────────────────
   {
     id: 'eventos-hero',
-    src: 'public/img/lifestyle/cata-vinos-naturales-pro.jpg',
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_0436.jpg",
     ratio: [16, 9],
     widths: [768, 1200, 1800],
     quality: Q_HERO,
     gravity: 'attention',
-    alt: 'Cata de vinos naturales en la barra de CRUDO',
+    alt: 'Ambiente en CRUDO durante un evento de noche en Madrid',
+  },
+  // ── GALERÍA EVENTOS PASADOS ───────────────────────────────────────────────
+  {
+    id: 'gallery-despedida',
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_9891.jpg",
+    ratio: [3, 4],
+    widths: [480, 800],
+    quality: Q_POSTER,
+    gravity: 'attention',
+    alt: 'Amigos compartiendo quesos y vino en CRUDO',
+  },
+  {
+    id: 'gallery-ascenso',
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_0511.jpg",
+    ratio: [3, 4],
+    widths: [480, 800],
+    quality: Q_POSTER,
+    gravity: 'attention',
+    alt: 'Persona disfrutando de vino en la barra de CRUDO',
+  },
+  {
+    id: 'gallery-cita',
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_9993.jpg",
+    ratio: [3, 4],
+    widths: [480, 800],
+    quality: Q_POSTER,
+    gravity: 'attention',
+    alt: 'Mesa con quesos y vino blanco en CRUDO',
   },
   {
     id: 'evento-poster-telperion',
@@ -93,12 +149,13 @@ const ASSETS = [
   // ── CONTACTO / LOCAL ─────────────────────────────────────────────────────
   {
     id: 'contacto-local',
-    src: 'public/img/about/mostrador-quesera.jpg',
+    // Cartel CRUDO en parte superior → gravity 'north' preserva el signo
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_0486.jpg",
     ratio: [16, 9],
     widths: [768, 1200],
     quality: Q_HERO,
-    gravity: 'attention',
-    alt: 'Mostrador de la tienda CRUDO en Madrid',
+    gravity: 'north',
+    alt: 'Cartel CRUDO iluminado con gente en el local de Madrid',
   },
   // ── FALLBACKS DE CARD (1:1) ──────────────────────────────────────────────
   {

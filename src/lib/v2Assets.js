@@ -41,13 +41,61 @@ export const V2_ASSETS = {
     "src": "/img/v2/tablas-hero-1800.webp",
     "srcSet": "/img/v2/tablas-hero-768.webp 768w, /img/v2/tablas-hero-1200.webp 1200w, /img/v2/tablas-hero-1800.webp 1800w"
   },
+  "strip-vitrina": {
+    "alt": "Quesos artesanos en la barra de CRUDO Madrid",
+    "ratio": "16/9",
+    "width": 1200,
+    "height": 675,
+    "src": "/img/v2/strip-vitrina-1200.webp",
+    "srcSet": "/img/v2/strip-vitrina-768.webp 768w, /img/v2/strip-vitrina-1200.webp 1200w"
+  },
+  "strip-tablas": {
+    "alt": "Tablas de quesos listas para llevar en CRUDO",
+    "ratio": "16/9",
+    "width": 1200,
+    "height": 675,
+    "src": "/img/v2/strip-tablas-1200.webp",
+    "srcSet": "/img/v2/strip-tablas-768.webp 768w, /img/v2/strip-tablas-1200.webp 1200w"
+  },
+  "strip-temporada": {
+    "alt": "Selección de temporada en CRUDO",
+    "ratio": "16/9",
+    "width": 1200,
+    "height": 675,
+    "src": "/img/v2/strip-temporada-1200.webp",
+    "srcSet": "/img/v2/strip-temporada-768.webp 768w, /img/v2/strip-temporada-1200.webp 1200w"
+  },
   "eventos-hero": {
-    "alt": "Cata de vinos naturales en la barra de CRUDO",
+    "alt": "Ambiente en CRUDO durante un evento de noche en Madrid",
     "ratio": "16/9",
     "width": 1800,
     "height": 1013,
     "src": "/img/v2/eventos-hero-1800.webp",
     "srcSet": "/img/v2/eventos-hero-768.webp 768w, /img/v2/eventos-hero-1200.webp 1200w, /img/v2/eventos-hero-1800.webp 1800w"
+  },
+  "gallery-despedida": {
+    "alt": "Amigos compartiendo quesos y vino en CRUDO",
+    "ratio": "3/4",
+    "width": 800,
+    "height": 1067,
+    "src": "/img/v2/gallery-despedida-800.webp",
+    "srcSet": "/img/v2/gallery-despedida-480.webp 480w, /img/v2/gallery-despedida-800.webp 800w"
+  },
+  "gallery-ascenso": {
+    "alt": "Persona disfrutando de vino en la barra de CRUDO",
+    "ratio": "3/4",
+    "width": 800,
+    "height": 1067,
+    "src": "/img/v2/gallery-ascenso-800.webp",
+    "srcSet": "/img/v2/gallery-ascenso-480.webp 480w, /img/v2/gallery-ascenso-800.webp 800w"
+  },
+  "gallery-cita": {
+    "alt": "Mesa con quesos y vino blanco en CRUDO",
+    "ratio": "3/4",
+    "width": 800,
+    "height": 1067,
+    "src": "/img/v2/gallery-cita-800.webp",
+    "srcSet": "/img/v2/gallery-cita-480.webp 480w, /img/v2/gallery-cita-800.webp 800w"
   },
   "evento-poster-telperion": {
     "alt": "Cartel del evento Wine Tasting con Bodegas Telperion",
@@ -58,7 +106,7 @@ export const V2_ASSETS = {
     "srcSet": "/img/v2/evento-poster-telperion-480.webp 480w, /img/v2/evento-poster-telperion-768.webp 768w, /img/v2/evento-poster-telperion-1000.webp 1000w"
   },
   "contacto-local": {
-    "alt": "Mostrador de la tienda CRUDO en Madrid",
+    "alt": "Cartel CRUDO iluminado con gente en el local de Madrid",
     "ratio": "16/9",
     "width": 1200,
     "height": 675,

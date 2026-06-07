@@ -43,18 +43,14 @@ export function Hero({ siteConfig, cta }) {
         decorative
         className="absolute inset-0 -z-20 h-full w-full object-cover"
       />
+      {/* Overlay suave solo en la parte inferior donde va el texto */}
       <div
         className="absolute inset-0 -z-10"
         aria-hidden="true"
         style={{
           background:
-            'linear-gradient(90deg, rgba(246,241,228,0.92) 0%, rgba(246,241,228,0.72) 40%, rgba(246,241,228,0.28) 70%, rgba(246,241,228,0) 100%)',
+            'linear-gradient(180deg, rgba(246,241,228,0.05) 0%, rgba(246,241,228,0.18) 50%, rgba(246,241,228,0.82) 100%)',
         }}
-      />
-      <div
-        className="md:hidden absolute inset-0 -z-10 hero-mobile-min"
-        aria-hidden="true"
-        style={{ background: 'linear-gradient(180deg, rgba(246,241,228,0.55) 0%, rgba(246,241,228,0.92) 100%)' }}
       />
       <div className="container-page flex flex-col justify-end pt-24 pb-16 md:min-h-[80vh] md:py-24">
         <RetroSign text="Vinos y quesos · Madrid" size="sm" className="self-start mb-5" />
