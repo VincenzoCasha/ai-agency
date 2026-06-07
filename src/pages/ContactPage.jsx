@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Clock } from 'lucide-react';
 import { RetroSign } from '../components/brand/RetroSign';
+import { ResponsiveImage } from '../components/ui/ResponsiveImage';
 import { ContactForm } from '../components/forms/ContactForm';
 import { ContactCtas } from '../components/contact/ContactCtas';
 import { MapBlock } from '../components/contact/MapBlock';
@@ -26,12 +27,11 @@ export default function ContactPage() {
         className="relative isolate overflow-hidden border-b border-border"
         style={{ minHeight: '45vh' }}
       >
-        <img
-          src="/img/lifestyle/bodegon-cartel-crudo-pro.jpg"
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          fetchPriority="high"
+        <ResponsiveImage
+          assetId="lifestyle-bodegon"
+          sizes="100vw"
+          eager
+          decorative
           className="absolute inset-0 -z-20 h-full w-full object-cover"
         />
         <div

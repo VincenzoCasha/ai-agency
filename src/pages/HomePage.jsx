@@ -22,7 +22,7 @@ export default function HomePage() {
     }
   }, []);
 
-  const primaryHref = count > 0 ? '/mi-tabla' : '/catalogo';
+  const primaryHref = count > 0 ? '/mi-tabla' : '/seleccion';
   const primaryLabel = count > 0 ? `Ir a Mi Tabla (${count})` : 'Reservar mi tabla';
 
   return (

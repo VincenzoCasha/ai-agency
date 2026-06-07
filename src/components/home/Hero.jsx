@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { RetroSign } from '../brand/RetroSign';
+import { ResponsiveImage } from '../ui/ResponsiveImage';
 import { trackMapsClick } from '../../lib/analytics';
 
 function isOpenNow(hours) {
@@ -34,13 +35,12 @@ export function Hero({ siteConfig, cta }) {
       className="relative isolate overflow-hidden"
       style={{ minHeight: '90vh' }}
     >
-      <img
-        src="/img/hero/hero-home-cheeseboard-pro.jpg"
-        alt=""
-        aria-hidden="true"
-        loading="eager"
-        fetchPriority="high"
-        decoding="async"
+      <ResponsiveImage
+        assetId="home-hero"
+        mobileAssetId="home-hero-mobile"
+        sizes="100vw"
+        eager
+        decorative
         className="absolute inset-0 -z-20 h-full w-full object-cover"
       />
       <div
@@ -66,7 +66,7 @@ export function Hero({ siteConfig, cta }) {
           por la tienda o pídenos un maridaje al gusto.
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
-          <Button as={Link} to={cta?.primaryHref || '/catalogo'} size="lg">
+          <Button as={Link} to={cta?.primaryHref || '/seleccion'} size="lg">
             {cta?.primaryLabel || 'Reservar mi tabla'}
           </Button>
           {mapsUrl ? (

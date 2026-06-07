@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
+import { V2_ASSETS } from '../../lib/v2Assets';
 
 const STRIPS = [
   {
@@ -8,7 +9,7 @@ const STRIPS = [
     eyebrow: 'Vitrina',
     title: 'Quesos artesanos',
     desc: 'Curados, frescos y de pasta lavada. Selección rotativa cada mes.',
-    image: '/img/lifestyle/tabla-quesos-vino-pro.jpg',
+    asset: V2_ASSETS['seleccion-hero'],
     alt: 'Tabla de quesos curados con uvas y nueces sobre azulejo amarillo de CRUDO',
   },
   {
@@ -16,7 +17,7 @@ const STRIPS = [
     eyebrow: 'Para llevar',
     title: 'Tablas listas',
     desc: 'De 3, 6 u 8 quesos. Maridaje opcional acordado por WhatsApp.',
-    image: '/img/lifestyle/bodegon-cartel-crudo-pro.jpg',
+    asset: V2_ASSETS['lifestyle-bodegon'],
     alt: 'Botellas de vino y copas en el local de CRUDO con cartel retroiluminado al fondo',
   },
   {
@@ -24,7 +25,7 @@ const STRIPS = [
     eyebrow: 'Esta semana',
     title: 'De temporada',
     desc: 'Lo que ha llegado fresco a la vitrina. Cambia cada semana.',
-    image: '/img/lifestyle/cata-vinos-naturales-pro.jpg',
+    asset: V2_ASSETS['eventos-hero'],
     alt: 'Tres botellas de vinos naturales con plato de quesos y crackers',
   },
 ];
@@ -47,7 +48,9 @@ export function CategoryStrips() {
               style={{ minHeight: '320px' }}
             >
               <img
-                src={strip.image}
+                src={strip.asset.src}
+                srcSet={strip.asset.srcSet}
+                sizes="(max-width: 768px) 100vw, 33vw"
                 alt=""
                 aria-hidden="true"
                 loading="lazy"

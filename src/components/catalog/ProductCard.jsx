@@ -7,6 +7,7 @@ import { cn } from '../../lib/cn';
 import { trackSelectItem, trackWineWhatsAppClick } from '../../lib/analytics';
 import { buildProductInquiryUrl } from '../../lib/whatsapp';
 import { useTablaDraft } from '../../hooks/useTablaDraft';
+import { V2_ASSETS } from '../../lib/v2Assets';
 
 function formatPrice(cents) {
   if (cents == null || Number.isNaN(Number(cents))) return null;
@@ -18,14 +19,15 @@ function formatPrice(cents) {
   }).format(n);
 }
 
+// Fallbacks editoriales 1:1 optimizados (manifest V2, Fase 4).
 const FALLBACK_BY_TYPE = {
-  CHEESE: { src: '/img/lifestyle/tabla-quesos-vino-pro.jpg', alt: 'Tabla de quesos artesanos en CRUDO' },
-  WINE: { src: '/img/lifestyle/cata-vinos-naturales-pro.jpg', alt: 'Botellas de vino natural en CRUDO' },
+  CHEESE: V2_ASSETS['fallback-queso'],
+  WINE: V2_ASSETS['fallback-maridaje'],
 };
 
 function getFallback(product) {
   const type = (product.type || '').toUpperCase();
-  return FALLBACK_BY_TYPE[type] || null;
+  return FALLBACK_BY_TYPE[type] || V2_ASSETS['fallback-queso'] || null;
 }
 
 export function ProductCard({ product, whatsappNumber }) {
@@ -66,7 +68,7 @@ export function ProductCard({ product, whatsappNumber }) {
     <article
       className={cn(
         'group flex flex-col bg-bg-secondary border border-border rounded-md overflow-hidden',
-        'transition-colors hover:border-border-strong',
+        'transition-all hover:border-border-strong hover:-translate-y-0.5 hover:shadow-elevated',
       )}
     >
       <Link
@@ -86,8 +88,11 @@ export function ProductCard({ product, whatsappNumber }) {
             <>
               <img
                 src={fallback.src}
+                srcSet={fallback.srcSet}
+                sizes="(max-width: 768px) 50vw, 25vw"
                 alt={fallback.alt}
                 loading="lazy"
+                decoding="async"
                 className="absolute inset-0 w-full h-full object-cover opacity-70"
               />
               <div

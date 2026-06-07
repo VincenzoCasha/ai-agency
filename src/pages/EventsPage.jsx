@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { RetroSign } from '../components/brand/RetroSign';
+import { ResponsiveImage } from '../components/ui/ResponsiveImage';
 import { EventList } from '../components/events/EventList';
 import { CelebraStrip } from '../components/events/CelebraStrip';
 import { NewsletterForm } from '../components/forms/NewsletterForm';
@@ -21,12 +22,11 @@ export default function EventsPage() {
         className="relative isolate overflow-hidden border-b border-border"
         style={{ minHeight: '45vh' }}
       >
-        <img
-          src="/img/lifestyle/cata-vinos-naturales-pro.jpg"
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          fetchPriority="high"
+        <ResponsiveImage
+          assetId="eventos-hero"
+          sizes="100vw"
+          eager
+          decorative
           className="absolute inset-0 -z-20 h-full w-full object-cover"
         />
         <div

@@ -8,8 +8,9 @@ import { ReservationForm } from './ReservationForm';
 import { FormSuccess } from '../forms/FormSuccess';
 import { buildGenericUrl } from '../../lib/whatsapp';
 import { trackWhatsAppClick } from '../../lib/analytics';
+import { V2_ASSETS } from '../../lib/v2Assets';
 
-const FALLBACK_HERO = '/img/lifestyle/cata-vinos-naturales-pro.jpg';
+const FALLBACK_HERO = V2_ASSETS['eventos-hero']?.src || '/img/lifestyle/cata-vinos-naturales-pro.jpg';
 
 function formatDate(iso) {
   if (!iso) return '';

@@ -97,16 +97,17 @@ describe('ProductCard', () => {
   it('uses editorial fallback by type when product has no images (CHEESE)', () => {
     const noImage = { ...CHEESE, images: [] };
     renderCard(noImage);
-    const img = screen.getByAltText(/Tabla de quesos artesanos en CRUDO/i);
+    // Fallback editorial 1:1 optimizado (manifest V2)
+    const img = screen.getByAltText(/Queso artesano de CRUDO/i);
     expect(img).toBeInTheDocument();
-    expect(img.getAttribute('src')).toMatch(/tabla-quesos-vino/);
+    expect(img.getAttribute('src')).toMatch(/fallback-queso/);
   });
 
   it('uses editorial fallback by type when product has no images (WINE)', () => {
     const noImageWine = { ...WINE, images: [] };
     renderCard(noImageWine);
-    const img = screen.getByAltText(/Botellas de vino natural en CRUDO/i);
+    const img = screen.getByAltText(/Maridaje de vino natural en CRUDO/i);
     expect(img).toBeInTheDocument();
-    expect(img.getAttribute('src')).toMatch(/cata-vinos-naturales/);
+    expect(img.getAttribute('src')).toMatch(/fallback-maridaje/);
   });
 });

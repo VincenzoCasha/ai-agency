@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { RetroSign } from '../components/brand/RetroSign';
+import { ResponsiveImage } from '../components/ui/ResponsiveImage';
 import { TablaMaridajeSelector } from '../components/tabla/TablaMaridajeSelector';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 
@@ -17,12 +18,11 @@ export default function TablasPage() {
         className="relative isolate overflow-hidden border-b border-border"
         style={{ minHeight: '40vh' }}
       >
-        <img
-          src="/img/lifestyle/tabla-quesos-vino-pro.jpg"
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          fetchPriority="high"
+        <ResponsiveImage
+          assetId="tablas-hero"
+          sizes="100vw"
+          eager
+          decorative
           className="absolute inset-0 -z-20 h-full w-full object-cover"
         />
         <div

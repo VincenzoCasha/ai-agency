@@ -36,6 +36,7 @@ export default defineConfig(({ mode }) => {
             'vendor-react': ['react', 'react-dom', 'react-router-dom'],
             'vendor-icons': ['lucide-react'],
             'vendor-http': ['axios'],
+            'vendor-ui': ['class-variance-authority', 'clsx', 'tailwind-merge'],
           },
         },
       },
