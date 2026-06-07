@@ -149,16 +149,14 @@ const ASSETS = [
   // ── CONTACTO / LOCAL ─────────────────────────────────────────────────────
   {
     id: 'contacto-local',
-    // Foto vertical (1365×2048). El cartel CRUDO está arriba-centro-izquierda.
-    // Recorte manual 16:9 que sitúa el cartel en la derecha del marco y deja
-    // la zona oscura (perchero/pared) a la izquierda para el texto del hero.
-    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_0486.jpg",
-    extract: { left: 0, top: 50, width: 850, height: 478 },
+    // Foto horizontal (2048×1365): mesa con copas de vino blanco y queso,
+    // gente alrededor. Crop 16:9 centrado conserva las copas y la tabla.
+    src: "docs/V1/Photos/Fotos Crudo Morning/Chosen ones/_A7_0061.jpg",
     ratio: [16, 9],
     widths: [768, 1200],
     quality: Q_HERO,
-    gravity: 'attention',
-    alt: 'Cartel CRUDO iluminado en el local de Madrid',
+    gravity: 'centre',
+    alt: 'Copas de vino blanco y queso en la mesa de CRUDO con clientes',
   },
   // ── FALLBACKS DE CARD (1:1) ──────────────────────────────────────────────
   {

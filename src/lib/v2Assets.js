@@ -106,7 +106,7 @@ export const V2_ASSETS = {
     "srcSet": "/img/v2/evento-poster-telperion-480.webp 480w, /img/v2/evento-poster-telperion-768.webp 768w, /img/v2/evento-poster-telperion-1000.webp 1000w"
   },
   "contacto-local": {
-    "alt": "Cartel CRUDO iluminado en el local de Madrid",
+    "alt": "Copas de vino blanco y queso en la mesa de CRUDO con clientes",
     "ratio": "16/9",
     "width": 1200,
     "height": 675,
