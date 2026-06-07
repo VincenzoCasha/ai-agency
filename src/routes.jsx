@@ -2,6 +2,9 @@ import React, { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { RouteLoading } from './components/layout/RouteLoading';
+import { AdminAuthProvider } from './hooks/useAdminAuth';
+import { RequireAdmin } from './components/admin/RequireAdmin';
+import { AdminShell } from './components/admin/AdminShell';
 
 // HomePage se carga eager: es el landing y queremos que aparezca al instante.
 import HomePage from './pages/HomePage';
@@ -25,9 +28,15 @@ const MyTablaConfirmationPage = lazy(() => import('./pages/MyTablaConfirmationPa
 const LegalPage = lazy(() => import('./pages/LegalPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const CookiesPage = lazy(() => import('./pages/CookiesPage'));
-const AdminEntryPage = lazy(() => import('./pages/AdminEntryPage'));
 const MerchPage = lazy(() => import('./pages/MerchPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+// Admin V2 (Fase 7) — chunk aparte, mobile-first.
+const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
+const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
+const AdminProductsPage = lazy(() => import('./pages/admin/AdminProductsPage'));
+const AdminEventsPage = lazy(() => import('./pages/admin/AdminEventsPage'));
+const AdminOrdersPage = lazy(() => import('./pages/admin/AdminOrdersPage'));
 
 /**
  * Rutas V1/V2. Los vinos se muestran en catálogo (Fase 8) pero el CTA siempre es
@@ -62,7 +71,35 @@ export function AppRoutes() {
         <Route path="/privacidad" element={<PrivacyPage />} />
         <Route path="/cookies" element={<CookiesPage />} />
         <Route path="/merch" element={<MerchPage />} />
-        <Route path="/admin" element={<AdminEntryPage />} />
+
+        {/* Admin V2 — login público + rutas protegidas con shell propio */}
+        <Route
+          path="/admin"
+          element={
+            <AdminAuthProvider>
+              <AdminLoginPage />
+            </AdminAuthProvider>
+          }
+        />
+        <Route
+          path="/admin/*"
+          element={
+            <AdminAuthProvider>
+              <RequireAdmin>
+                <AdminShell>
+                  <Routes>
+                    <Route path="dashboard" element={<AdminDashboardPage />} />
+                    <Route path="productos" element={<AdminProductsPage />} />
+                    <Route path="eventos" element={<AdminEventsPage />} />
+                    <Route path="pedidos" element={<AdminOrdersPage />} />
+                    <Route path="*" element={<AdminDashboardPage />} />
+                  </Routes>
+                </AdminShell>
+              </RequireAdmin>
+            </AdminAuthProvider>
+          }
+        />
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
