@@ -1,7 +1,8 @@
 /**
- * Analytics consent-aware.
+ * Analytics consent-aware (CRUDO V2 — Fase 8).
  * Todos los `track*` son no-op si el usuario no ha aceptado la categoria
- * correspondiente. No inyectamos GA4/Pixel reales todavia (Fase 12).
+ * correspondiente. GA4 real se carga SOLO si existe `VITE_GA_ID` y el usuario
+ * ha consentido (carga perezosa, nunca antes del consentimiento). Sin PII.
  */
 
 import { isCategoryAllowed } from './consent';
@@ -9,13 +10,37 @@ import { isCategoryAllowed } from './consent';
 const ANALYTICS_CATEGORY = 'analytics';
 const MARKETING_CATEGORY = 'marketing';
 
+const GA_ID = (import.meta?.env?.VITE_GA_ID || '').trim();
+let gaLoaded = false;
+
+/** Carga gtag.js una sola vez, bajo demanda, tras consentimiento de analytics. */
+function ensureGaLoaded() {
+  if (!GA_ID || gaLoaded || typeof window === 'undefined') return;
+  if (!isCategoryAllowed(ANALYTICS_CATEGORY)) return;
+  gaLoaded = true;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_ID, { anonymize_ip: true, allow_google_signals: false });
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  document.head.appendChild(s);
+}
+
 function emit(event, payload, category) {
   if (!isCategoryAllowed(category)) return false;
-  // En Fase 12 esto se conectara a GA4/Pixel reales.
-  // Por ahora exponemos en window para inspeccion en dev y para tests.
+  // Espejo en window para inspeccion en dev y para tests.
   if (typeof window !== 'undefined') {
     window.__crudoAnalytics = window.__crudoAnalytics || [];
     window.__crudoAnalytics.push({ event, payload, ts: Date.now() });
+    // GA4 real solo si esta configurado y consentido. No se envia PII.
+    if (GA_ID) {
+      ensureGaLoaded();
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', event, payload || {});
+      }
+    }
   }
   return true;
 }

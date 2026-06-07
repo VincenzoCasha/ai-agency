@@ -1,15 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RetroSign } from '../components/brand/RetroSign';
 import { ResponsiveImage } from '../components/ui/ResponsiveImage';
 import { TablaMaridajeSelector } from '../components/tabla/TablaMaridajeSelector';
 import { useSiteConfig } from '../hooks/useSiteConfig';
+import { useSeo } from '../hooks/useSeo';
 
 export default function TablasPage() {
   const { config } = useSiteConfig();
 
-  useEffect(() => {
-    document.title = 'Tablas · CRUDO';
-  }, []);
+  useSeo({
+    title: 'Tablas y cajas para llevar',
+    description:
+      'Monta tu tabla de quesos (3, 6 u 8) o pide la selección de la fromelier. Maridajes y reserva por WhatsApp.',
+    path: '/tablas',
+    image: '/img/v2/tablas-hero-1200.webp',
+  });
 
   return (
     <main>

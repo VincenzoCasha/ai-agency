@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Clock } from 'lucide-react';
 import { RetroSign } from '../components/brand/RetroSign';
 import { ResponsiveImage } from '../components/ui/ResponsiveImage';
@@ -6,6 +6,7 @@ import { ContactForm } from '../components/forms/ContactForm';
 import { ContactCtas } from '../components/contact/ContactCtas';
 import { MapBlock } from '../components/contact/MapBlock';
 import { useSiteConfig } from '../hooks/useSiteConfig';
+import { useSeo } from '../hooks/useSeo';
 
 const DAY_LABELS = {
   mon: 'Lunes', tue: 'Martes', wed: 'Miércoles', thu: 'Jueves',
@@ -16,9 +17,12 @@ export default function ContactPage() {
   const { config } = useSiteConfig();
   const hours = config?.hours || {};
 
-  useEffect(() => {
-    document.title = 'Contacto · CRUDO';
-  }, []);
+  useSeo({
+    title: 'Contacto',
+    description:
+      'Visítanos en Calle Ortega y Gasset 81, Madrid. Horario, WhatsApp, email e Instagram de CRUDO.',
+    path: '/contacto',
+  });
 
   return (
     <main>

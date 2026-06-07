@@ -1,21 +1,25 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { EventDetail } from '../components/events/EventDetail';
+import { EventJsonLd } from '../components/events/EventJsonLd';
 import { useEvent } from '../hooks/useEvent';
 import { useSiteConfig } from '../hooks/useSiteConfig';
+import { useSeo } from '../hooks/useSeo';
 
 export default function EventDetailPage() {
   const { slug } = useParams();
   const { event, status, loading } = useEvent(slug);
   const { config } = useSiteConfig();
 
-  useEffect(() => {
-    if (event?.title) {
-      document.title = `${event.title} · CRUDO`;
-    } else {
-      document.title = 'Evento · CRUDO';
-    }
-  }, [event?.title]);
+  useSeo({
+    title: event?.title || 'Evento',
+    description:
+      event?.description?.slice(0, 160) ||
+      'Evento en CRUDO, Madrid. Reserva tu plaza; te confirmamos por WhatsApp.',
+    path: slug ? `/eventos/${slug}` : '/eventos',
+    image: event?.hero_image_url || '/img/v2/eventos-hero-1200.webp',
+    type: 'article',
+  });
 
   if (loading) {
     return (
@@ -46,6 +50,7 @@ export default function EventDetailPage() {
 
   return (
     <main>
+      <EventJsonLd event={event} />
       <EventDetail event={event} siteConfig={config} />
     </main>
   );

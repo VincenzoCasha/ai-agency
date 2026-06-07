@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /mi-tabla/confirmacion
+
+Sitemap: https://crudomov.es/sitemap.xml

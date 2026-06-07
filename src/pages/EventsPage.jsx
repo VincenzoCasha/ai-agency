@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RetroSign } from '../components/brand/RetroSign';
 import { ResponsiveImage } from '../components/ui/ResponsiveImage';
 import { EventList } from '../components/events/EventList';
@@ -6,14 +6,19 @@ import { CelebraStrip } from '../components/events/CelebraStrip';
 import { NewsletterForm } from '../components/forms/NewsletterForm';
 import { useEvents } from '../hooks/useEvents';
 import { useSiteConfig } from '../hooks/useSiteConfig';
+import { useSeo } from '../hooks/useSeo';
 
 export default function EventsPage() {
   const { events, status, loading, error } = useEvents();
   const { config } = useSiteConfig();
 
-  useEffect(() => {
-    document.title = 'Eventos · CRUDO';
-  }, []);
+  useSeo({
+    title: 'Eventos',
+    description:
+      'Catas, talleres y bodegas invitadas en CRUDO, Madrid. Reserva tu plaza; te confirmamos por WhatsApp.',
+    path: '/eventos',
+    image: '/img/v2/eventos-hero-1200.webp',
+  });
 
   return (
     <main>

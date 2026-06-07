@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { RetroSign } from '../components/brand/RetroSign';
+import { useSeo } from '../hooks/useSeo';
 
 const MERCH_ITEMS = [
   { label: 'Taza', desc: 'Edición limitada · próximamente' },
@@ -12,9 +13,12 @@ const MERCH_ITEMS = [
 const INSTAGRAM_URL = 'https://www.instagram.com/crudomov';
 
 export default function MerchPage() {
-  useEffect(() => {
-    document.title = 'Merch · CRUDO';
-  }, []);
+  useSeo({
+    title: 'Merch',
+    description:
+      'Merch de CRUDO: tazas, bolsas, prints y objetos de la casa. Próximamente. Síguenos en Instagram.',
+    path: '/merch',
+  });
 
   return (
     <main>
