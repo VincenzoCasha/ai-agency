@@ -51,11 +51,23 @@ Al abrir el bar, revisa si hay pedidos nuevos:
 
 ---
 
-## Marcar producto agotado
+## Disponibilidad de un producto (no es inventario)
 
+CRUDO **no lleva inventario por unidades**. No tienes que contar nada. Cada
+producto tiene un estado editorial sencillo que tú eliges:
+
+| Estado | Qué significa | En la web |
+|---|---|---|
+| **Disponible** | Se vende con normalidad | Se muestra, sin aviso |
+| **Pocas unidades** | Quedan pocas, crea urgencia | Se muestra con etiqueta "Pocas unidades" |
+| **Agotado** | No queda por ahora | Se muestra con "Agotado", no se puede añadir a Mi Tabla |
+| **Oculto / no publicado** | No quieres que se vea | Desaparece de la web pública |
+
+Pasos:
 1. Catálogo → busca el producto (por nombre).
-2. Toca el producto → estado de stock → selecciona "Agotado" o "Pocas unidades".
-3. Guarda. La web se actualiza al momento.
+2. Toca el producto → **Disponibilidad** → elige Disponible / Pocas unidades / Agotado.
+3. Para quitarlo de la web sin borrarlo: desactiva **Publicado** (queda Oculto).
+4. Guarda. La web se actualiza al momento.
 
 ---
 
