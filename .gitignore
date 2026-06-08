@@ -46,6 +46,12 @@ Thumbs.db
 # Test coverage
 coverage/
 
+# Playwright E2E (Fase 9)
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
 # Temporary
 tmp/
 temp/
