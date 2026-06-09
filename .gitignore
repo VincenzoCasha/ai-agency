@@ -37,6 +37,9 @@ pids/
 .DS_Store
 Thumbs.db
 
+# Claude Code (worktrees, launch config — local only)
+.claude/
+
 # IDEs (config files OK, generated files not)
 .idea/
 *.iml
