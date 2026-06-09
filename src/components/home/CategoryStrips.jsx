@@ -5,7 +5,7 @@ import { V2_ASSETS } from '../../lib/v2Assets';
 
 const STRIPS = [
   {
-    to: '/catalogo/quesos',
+    to: '/seleccion',
     eyebrow: 'Vitrina',
     title: 'Quesos artesanos',
     desc: 'Curados, frescos y de pasta lavada. Selección rotativa cada mes.',
@@ -13,15 +13,15 @@ const STRIPS = [
     alt: 'Quesos artesanos en la barra de CRUDO Madrid',
   },
   {
-    to: '/tablas',
+    to: '/seleccion',
     eyebrow: 'Para llevar',
-    title: 'Tablas listas',
-    desc: 'De 3, 6 u 8 quesos. Maridaje opcional acordado por WhatsApp.',
+    title: 'Cajitas listas',
+    desc: 'De 2, 3, 4 o 6 quesos. Perfectas para regalar o disfrutar en casa.',
     asset: V2_ASSETS['strip-tablas'],
-    alt: 'Tablas de quesos listas para llevar en CRUDO',
+    alt: 'Cajitas de quesos listas para llevar en CRUDO',
   },
   {
-    to: '/catalogo/temporada',
+    to: '/seleccion',
     eyebrow: 'Esta semana',
     title: 'De temporada',
     desc: 'Lo que ha llegado fresco a la vitrina. Cambia cada semana.',
@@ -40,8 +40,8 @@ export function CategoryStrips() {
         Categorías destacadas
       </h2>
       <ul className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border rounded-md overflow-hidden">
-        {STRIPS.map((strip) => (
-          <li key={strip.to}>
+        {STRIPS.map((strip, idx) => (
+          <li key={idx}>
             <Link
               to={strip.to}
               className="group relative block h-full overflow-hidden bg-bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
