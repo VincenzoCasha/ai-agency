@@ -17,7 +17,7 @@ export function useEvents(params = {}) {
       .then((res) => {
         if (cancelled) return;
         const payload = res?.data;
-        const list = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload) ? payload : [];
+        const list = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload?.items) ? payload.items : Array.isArray(payload) ? payload : [];
         setEvents(list);
         setStatus('ok');
       })

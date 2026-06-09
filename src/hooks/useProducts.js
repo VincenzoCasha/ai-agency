@@ -18,7 +18,7 @@ export function useProducts(params = {}) {
       .then((res) => {
         if (cancelled) return;
         const payload = res?.data || {};
-        setProducts(Array.isArray(payload.data) ? payload.data : Array.isArray(payload) ? payload : []);
+        setProducts(Array.isArray(payload.data) ? payload.data : Array.isArray(payload.items) ? payload.items : Array.isArray(payload) ? payload : []);
         setPagination(payload.pagination || null);
         setStatus('ok');
       })

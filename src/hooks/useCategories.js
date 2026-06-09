@@ -15,7 +15,7 @@ export function useCategories() {
       .then((res) => {
         if (cancelled) return;
         const payload = res?.data;
-        const list = Array.isArray(payload) ? payload : Array.isArray(payload?.data) ? payload.data : [];
+        const list = Array.isArray(payload) ? payload : Array.isArray(payload?.data) ? payload.data : Array.isArray(payload?.items) ? payload.items : [];
         setCategories(list);
         setStatus('ok');
       })
