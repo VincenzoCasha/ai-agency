@@ -79,9 +79,10 @@ export function Header({ siteConfig, onOpenTabla }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackWhatsAppClick({ source: 'header' })}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 min-h-[44px] rounded-md text-sm text-text-secondary hover:text-text-primary"
+              className="inline-flex items-center gap-1.5 px-3 min-h-[44px] rounded-md text-sm text-text-secondary hover:text-text-primary"
             >
-              <MessageCircle size={16} aria-hidden="true" /> WhatsApp
+              <MessageCircle size={16} aria-hidden="true" />
+              <span className="hidden sm:inline">WhatsApp</span>
             </a>
           ) : null}
           {onOpenTabla ? (
