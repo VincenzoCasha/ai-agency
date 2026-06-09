@@ -31,9 +31,6 @@ export function Footer({ siteConfig }) {
           <p className="mt-2 text-sm text-text-secondary max-w-prose">
             {cfg.legal_name || 'CRUDO QUESOS S.L.U'}
           </p>
-          {cfg.vat_id ? (
-            <p className="mt-1 text-xs text-text-muted font-mono">CIF {cfg.vat_id}</p>
-          ) : null}
           <p className="mt-3 text-sm text-text-secondary">
             {cfg.address || 'Calle Jose Ortega y Gasset 81, 28006 Madrid'}
           </p>
@@ -119,8 +116,9 @@ export function Footer({ siteConfig }) {
         </div>
       </div>
       <div className="border-t border-border">
-        <div className="container-page py-4 text-xs text-text-muted">
-          © {new Date().getFullYear()} {cfg.legal_name || 'CRUDO QUESOS S.L.U'}. Todos los derechos reservados.
+        <div className="container-page py-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-text-muted">
+          <span>© {new Date().getFullYear()} {cfg.legal_name || 'CRUDO QUESOS S.L.U'}. Todos los derechos reservados.</span>
+          {cfg.vat_id ? <span className="opacity-50 font-mono">CIF {cfg.vat_id}</span> : null}
         </div>
       </div>
     </footer>

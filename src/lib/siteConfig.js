@@ -21,7 +21,7 @@ export const FALLBACK_SITE_CONFIG = {
     fri: '17:30-22:30',
     sat: '12:30-22:00',
     sun: '12:30-20:00',
-    notes: 'Cierre las dos ultimas semanas de agosto.',
+    notes: null,
   },
   pickup: {
     sla_text: 'Confirmamos por WhatsApp en menos de 24 horas dentro del horario de apertura.',
