@@ -99,7 +99,7 @@ export function ProductCard({ product, whatsappNumber }) {
                 className="absolute inset-0 flex items-center justify-center"
                 style={{ background: 'linear-gradient(180deg, rgba(26,31,20,0.3) 0%, rgba(26,31,20,0.7) 100%)' }}
               >
-                <span className="font-display text-2xl text-crudo-bone/90 px-3 text-center">
+                <span className="font-display text-2xl text-white px-3 text-center">
                   {product.name}
                 </span>
               </div>
