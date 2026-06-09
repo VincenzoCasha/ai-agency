@@ -3,7 +3,6 @@ import { RetroSign } from '../components/brand/RetroSign';
 import { ResponsiveImage } from '../components/ui/ResponsiveImage';
 import { EventList } from '../components/events/EventList';
 import { CelebraStrip } from '../components/events/CelebraStrip';
-import { NewsletterForm } from '../components/forms/NewsletterForm';
 import { useEvents } from '../hooks/useEvents';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { useSeo } from '../hooks/useSeo';
@@ -103,18 +102,6 @@ export default function EventsPage() {
       </section>
 
       <CelebraStrip siteConfig={config} />
-
-      <section className="bg-bg-elevated border-t border-border">
-        <div className="container-page py-10 md:py-14 max-w-2xl">
-          <h2 className="font-display text-2xl md:text-3xl text-text-primary mb-2">
-            ¿Quieres que te avisemos del próximo evento?
-          </h2>
-          <p className="text-text-secondary text-sm mb-4">
-            Suscríbete a la newsletter y te escribimos antes de que se agoten las plazas.
-          </p>
-          <NewsletterForm source="events_page" />
-        </div>
-      </section>
     </main>
   );
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { BrandSticker } from '../brand/BrandSticker';
-import { NewsletterForm } from '../forms/NewsletterForm';
 
 const HOURS_LABELS = {
   mon: 'Lunes',
@@ -104,17 +103,6 @@ export function Footer({ siteConfig }) {
         </div>
       </div>
 
-      <div className="border-t border-border bg-bg-elevated/40">
-        <div className="container-page py-8 md:py-10 grid gap-4 md:grid-cols-[1fr_1.4fr] md:items-end">
-          <div>
-            <h4 className="text-sm font-semibold uppercase tracking-eyebrow text-gold">Newsletter</h4>
-            <p className="mt-2 text-sm text-text-secondary max-w-prose">
-              Sin spam: solo eventos, llegadas y temporada.
-            </p>
-          </div>
-          <NewsletterForm source="footer" />
-        </div>
-      </div>
       <div className="border-t border-border">
         <div className="container-page py-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-text-muted">
           <span>© {new Date().getFullYear()} {cfg.legal_name || 'CRUDO QUESOS S.L.U'}. Todos los derechos reservados.</span>

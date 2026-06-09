@@ -51,7 +51,7 @@ export function EventList({ events = [], loading, status, error }) {
         </h2>
         <p className="mt-3 text-text-secondary max-w-prose mx-auto">
           Estamos preparando las próximas catas. Si quieres que te avisemos,
-          suscríbete a la newsletter o escríbenos.
+          escríbenos por WhatsApp o pásate por la tienda.
         </p>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
           <Button as={Link} to="/contacto" variant="secondary">
