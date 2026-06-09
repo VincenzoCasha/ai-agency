@@ -85,25 +85,15 @@ export function ProductCard({ product, whatsappNumber }) {
               className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-95"
             />
           ) : fallback ? (
-            <>
-              <img
-                src={fallback.src}
-                srcSet={fallback.srcSet}
-                sizes="(max-width: 768px) 50vw, 25vw"
-                alt={fallback.alt}
-                loading="lazy"
-                decoding="async"
-                className="absolute inset-0 w-full h-full object-cover opacity-70"
-              />
-              <div
-                className="absolute inset-0 flex items-center justify-center"
-                style={{ background: 'linear-gradient(180deg, rgba(26,31,20,0.3) 0%, rgba(26,31,20,0.7) 100%)' }}
-              >
-                <span className="font-display text-2xl text-white px-3 text-center">
-                  {product.name}
-                </span>
-              </div>
-            </>
+            <img
+              src={fallback.src}
+              srcSet={fallback.srcSet}
+              sizes="(max-width: 768px) 50vw, 25vw"
+              alt={fallback.alt}
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-bg-elevated text-text-muted">
               <span className="font-display text-3xl opacity-50">CRUDO</span>
