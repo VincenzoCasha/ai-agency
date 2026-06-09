@@ -21,7 +21,7 @@ export default function HomePage() {
   });
 
   const primaryHref = count > 0 ? '/mi-tabla' : '/seleccion';
-  const primaryLabel = count > 0 ? `Ir a Mi Tabla (${count})` : 'Reservar mi tabla';
+  const primaryLabel = count > 0 ? `Ir a Mi Cesta (${count})` : 'Reservar mi cesta';
 
   return (
     <>

@@ -26,7 +26,7 @@ export default function MyTablaPage() {
   const [removedAlcohol, setRemovedAlcohol] = useState([]);
 
   useEffect(() => {
-    document.title = 'Mi Tabla · CRUDO';
+    document.title = 'Mi Cesta · CRUDO';
     // Sanitiza al entrar — alcohol guard a la entrada de la página.
     const before = (items || []).filter((i) => i?.is_alcohol === true);
     hydrateDraft();
@@ -48,12 +48,12 @@ export default function MyTablaPage() {
   return (
     <main className="container-page py-10 md:py-16">
       <header className="max-w-prose">
-        <RetroSign text="Mi Tabla" size="sm" className="mb-3" />
+        <RetroSign text="Mi Cesta" size="sm" className="mb-3" />
         <h1 className="font-display text-4xl sm:text-5xl text-text-primary leading-tight">
           Tu selección para llevar.
         </h1>
         <p className="mt-3 text-text-secondary text-lg">
-          Reserva tu tabla aquí y la pagas en CRUDO al recoger. Te confirmamos
+          Reserva tu cesta aquí y la pagas en CRUDO al recoger. Te confirmamos
           por WhatsApp en menos de 24 horas.
         </p>
       </header>
@@ -70,7 +70,7 @@ export default function MyTablaPage() {
           className="bg-bg-secondary border border-border rounded-md p-5 md:p-6"
         >
           <h2 id="tabla-resumen-heading" className="text-sm uppercase tracking-eyebrow text-text-muted mb-4">
-            Tu tabla ({count})
+            Tu cesta ({count})
           </h2>
           {count === 0 ? (
             <TablaEmptyState />

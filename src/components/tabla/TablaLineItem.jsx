@@ -2,6 +2,9 @@ import React from 'react';
 import { Minus, Plus, X } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { TABLA_MAX_QTY } from '../../lib/tablaDraft';
+import { V2_ASSETS } from '../../lib/v2Assets';
+
+const FALLBACK_IMG = V2_ASSETS['fallback-queso'];
 
 function formatPrice(cents) {
   if (cents == null || Number.isNaN(Number(cents))) return null;
@@ -31,6 +34,16 @@ export function TablaLineItem({ item, onRemove, onIncrement, onDecrement, compac
       >
         {item.image_url ? (
           <img src={item.image_url} alt="" className="w-full h-full object-cover" loading="lazy" />
+        ) : FALLBACK_IMG ? (
+          <img
+            src={FALLBACK_IMG.src}
+            srcSet={FALLBACK_IMG.srcSet}
+            sizes="64px"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover"
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-text-muted font-display">
             CRUDO

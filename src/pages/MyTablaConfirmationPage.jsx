@@ -22,11 +22,11 @@ export default function MyTablaConfirmationPage() {
         </h1>
         <p className="mt-4 text-text-secondary text-lg">
           Si acabas de hacer una reserva, ya te confirmaremos por WhatsApp. Si
-          aún no has reservado, vuelve a montar tu tabla.
+          aún no has reservado, vuelve a montar tu cesta.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link to="/mi-tabla" className="underline text-text-primary">
-            Volver a Mi Tabla
+            Volver a Mi Cesta
           </Link>
           <Link to="/catalogo" className="underline text-text-primary">
             Ver catálogo

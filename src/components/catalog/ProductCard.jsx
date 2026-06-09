@@ -166,7 +166,7 @@ export function ProductCard({ product, whatsappNumber }) {
                 'disabled:opacity-50 disabled:cursor-not-allowed',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary',
               )}
-              aria-label={`Añadir ${product.name} a Mi Tabla`}
+              aria-label={`Añadir ${product.name} a Mi Cesta`}
             >
               <Plus size={16} aria-hidden="true" />
               Añadir

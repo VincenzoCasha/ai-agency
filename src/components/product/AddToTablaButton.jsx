@@ -37,17 +37,17 @@ export function AddToTablaButton({ product, source = 'pdp', size = 'lg' }) {
         block
         onClick={onClick}
         disabled={isOut}
-        aria-label={`Añadir ${product.name} a Mi Tabla`}
+        aria-label={`Añadir ${product.name} a Mi Cesta`}
       >
         {feedback === 'added' ? (
           <>
             <Check size={18} aria-hidden="true" />
-            Añadido a Mi Tabla
+            Añadido a Mi Cesta
           </>
         ) : (
           <>
             <Plus size={18} aria-hidden="true" />
-            Añadir a Mi Tabla
+            Añadir a Mi Cesta
           </>
         )}
       </Button>
@@ -57,7 +57,7 @@ export function AddToTablaButton({ product, source = 'pdp', size = 'lg' }) {
         </p>
       ) : (
         <p className="text-xs text-text-muted">
-          Reservas tu tabla aquí y la pagas en CRUDO al recoger.
+          Reservas tu cesta aquí y la pagas en CRUDO al recoger.
         </p>
       )}
       {feedback === 'error' ? (

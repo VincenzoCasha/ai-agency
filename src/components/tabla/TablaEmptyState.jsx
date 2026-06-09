@@ -14,10 +14,10 @@ export function TablaEmptyState() {
         Aún no has elegido quesos.
       </h2>
       <p className="mt-3 text-text-secondary max-w-prose">
-        Empieza por nuestra carta de temporada. Te montamos la tabla y la
+        Empieza por nuestra carta de temporada. Te montamos la cesta y la
         recoges en CRUDO cuando te venga bien.
       </p>
-      <Button as={Link} to="/catalogo/quesos" size="lg" className="mt-6">
+      <Button as={Link} to="/seleccion" size="lg" className="mt-6">
         Ver quesos
       </Button>
     </div>

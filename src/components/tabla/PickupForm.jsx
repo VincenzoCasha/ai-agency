@@ -13,7 +13,7 @@ import { generateIdempotencyKey } from '../../lib/idempotency';
 import { trackPickupRequest } from '../../lib/analytics';
 
 const PAYMENT_NOTICE =
-  'Reserva tu tabla. El pago se realiza en CRUDO al recoger. Te confirmaremos por WhatsApp en menos de 24 horas.';
+  'Reserva tu cesta. El pago se realiza en CRUDO al recoger. Te confirmaremos por WhatsApp en menos de 24 horas.';
 
 function todayIso() {
   const d = new Date();
@@ -88,7 +88,7 @@ export function PickupForm({ items = [], totalCents = 0, hours, onSuccess, getPa
     setGeneralError(null);
 
     if (items.length === 0) {
-      setGeneralError('Tu tabla está vacía. Añade algún queso antes de reservar.');
+      setGeneralError('Tu cesta está vacía. Añade algún queso antes de reservar.');
       return;
     }
     if (items.some((i) => i.is_alcohol === true)) {
@@ -133,7 +133,7 @@ export function PickupForm({ items = [], totalCents = 0, hours, onSuccess, getPa
     if (result.status === 422) {
       if (err?.code === 'ALCOHOL_NOT_ALLOWED_IN_PICKUP' || /alcohol/i.test(err?.detail || '')) {
         setGeneralError(
-          'No se puede reservar alcohol online. Quita los vinos de tu tabla y vuelve a intentarlo.',
+          'No se puede reservar alcohol online. Quita los vinos de tu cesta y vuelve a intentarlo.',
         );
       } else if (Array.isArray(err?.errors) && err.errors.length > 0) {
         const nextErrors = {};

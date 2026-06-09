@@ -41,18 +41,18 @@ describe('ProductMeta', () => {
     clearDraft();
   });
 
-  it('non-alcohol PDP renders "Añadir a Mi Tabla" button', () => {
+  it('non-alcohol PDP renders "Añadir a Mi Cesta" button', () => {
     renderMeta(CHEESE);
     expect(
-      screen.getByRole('button', { name: /Añadir Manchego curado a Mi Tabla/i }),
+      screen.getByRole('button', { name: /Añadir Manchego curado a Mi Cesta/i }),
     ).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /WhatsApp/i })).toBeNull();
   });
 
-  it('alcohol PDP NEVER renders "Añadir a Mi Tabla" and shows WhatsApp CTA with product name', () => {
+  it('alcohol PDP NEVER renders "Añadir a Mi Cesta" and shows WhatsApp CTA with product name', () => {
     renderMeta(WINE);
     expect(
-      screen.queryByRole('button', { name: /Añadir.*Mi Tabla/i }),
+      screen.queryByRole('button', { name: /Añadir.*Mi Cesta/i }),
     ).toBeNull();
     const link = screen.getByRole('link', {
       name: /Consultar disponibilidad de Rioja Reserva por WhatsApp/i,

@@ -63,7 +63,7 @@ describe('ProductCard', () => {
     expect(screen.getByText(/14,50/)).toBeInTheDocument();
     expect(screen.getByText('Temporada')).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /Añadir Manchego curado a Mi Tabla/i }),
+      screen.getByRole('button', { name: /Añadir Manchego curado a Mi Cesta/i }),
     ).toBeInTheDocument();
     expect(screen.queryByText(/WhatsApp/i)).toBeNull();
   });
@@ -83,7 +83,7 @@ describe('ProductCard', () => {
     renderCard(OUT_CHEESE);
     expect(screen.getByText(/Agotado/i)).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /Añadir Cabra payoyo a Mi Tabla/i }),
+      screen.getByRole('button', { name: /Añadir Cabra payoyo a Mi Cesta/i }),
     ).toBeDisabled();
   });
 

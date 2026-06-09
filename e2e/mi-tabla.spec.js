@@ -14,14 +14,14 @@ function isoDaysAhead(days) {
   return `${d.getFullYear()}-${m}-${day}`;
 }
 
-test('flujo completo: añadir queso → Mi Tabla → pickup → confirmación', async ({ page }) => {
+test('flujo completo: añadir queso → Mi Cesta → pickup → confirmación', async ({ page }) => {
   // 1. Añadir un queso desde la selección.
   await page.goto('/seleccion');
-  await page.getByRole('button', { name: /Añadir Manchego curado a Mi Tabla/i }).click();
+  await page.getByRole('button', { name: /Añadir Manchego curado a Mi Cesta/i }).click();
 
-  // 2. Ir a Mi Tabla; el borrador persiste en localStorage.
+  // 2. Ir a Mi Cesta; el borrador persiste en localStorage.
   await page.goto('/mi-tabla');
-  await expect(page.getByRole('heading', { name: /Tu tabla \(1\)/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Tu cesta \(1\)/i })).toBeVisible();
   await expect(page.getByText('Manchego curado')).toBeVisible();
 
   // 3. Rellenar el formulario de recogida.
@@ -36,9 +36,9 @@ test('flujo completo: añadir queso → Mi Tabla → pickup → confirmación', 
   await expect(page).toHaveURL(/\/mi-tabla\/confirmacion/);
 });
 
-test('Mi Tabla vacía: invita a añadir queso y no permite reservar', async ({ page }) => {
+test('Mi Cesta vacía: invita a añadir queso y no permite reservar', async ({ page }) => {
   await page.goto('/mi-tabla');
-  await expect(page.getByRole('heading', { name: /Tu tabla \(0\)/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Tu cesta \(0\)/i })).toBeVisible();
   await expect(page.getByText(/Añade algún queso a la tabla/i)).toBeVisible();
   // Sin items no se renderiza el formulario de pickup.
   await expect(page.getByRole('button', { name: /Reservar para recoger/i })).toHaveCount(0);

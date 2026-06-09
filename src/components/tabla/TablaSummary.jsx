@@ -14,7 +14,7 @@ function formatPrice(cents) {
 export function TablaSummary({ items, totalCents, onRemove, onIncrement, onDecrement, compact = false }) {
   return (
     <div>
-      <ul aria-label="Tu tabla" className="divide-y divide-border">
+      <ul aria-label="Tu cesta" className="divide-y divide-border">
         {items.map((item) => (
           <TablaLineItem
             key={item.id ?? item.slug}

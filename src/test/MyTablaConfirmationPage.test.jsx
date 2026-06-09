@@ -20,7 +20,7 @@ describe('MyTablaConfirmationPage', () => {
   it('shows safe state when entered without confirmation in nav state', () => {
     renderAt(undefined);
     expect(screen.getByText(/No encontramos tu reserva/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Volver a Mi Tabla/i })).toHaveAttribute('href', '/mi-tabla');
+    expect(screen.getByRole('link', { name: /Volver a Mi Cesta/i })).toHaveAttribute('href', '/mi-tabla');
   });
 
   it('shows pickup success with payment-on-pickup language and order id', () => {

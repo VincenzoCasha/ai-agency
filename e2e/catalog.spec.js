@@ -15,10 +15,10 @@ test('/seleccion carga y lista productos', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Rioja Reserva' })).toBeVisible();
 });
 
-test('alcohol guard (frontend): el queso permite Añadir a Mi Tabla', async ({ page }) => {
+test('alcohol guard (frontend): el queso permite Añadir a Mi Cesta', async ({ page }) => {
   await page.goto('/seleccion');
   await expect(
-    page.getByRole('button', { name: /Añadir Manchego curado a Mi Tabla/i }),
+    page.getByRole('button', { name: /Añadir Manchego curado a Mi Cesta/i }),
   ).toBeVisible();
 });
 
@@ -33,14 +33,14 @@ test('alcohol guard (frontend): el vino solo ofrece WhatsApp, nunca Añadir', as
 
   // NUNCA debe existir un botón "Añadir" para el vino.
   await expect(
-    page.getByRole('button', { name: /Añadir Rioja Reserva a Mi Tabla/i }),
+    page.getByRole('button', { name: /Añadir Rioja Reserva a Mi Cesta/i }),
   ).toHaveCount(0);
 });
 
 test('producto agotado: el botón Añadir está deshabilitado', async ({ page }) => {
   await page.goto('/seleccion');
   await expect(
-    page.getByRole('button', { name: /Añadir Azul de Valdeón a Mi Tabla/i }),
+    page.getByRole('button', { name: /Añadir Azul de Valdeón a Mi Cesta/i }),
   ).toBeDisabled();
 });
 

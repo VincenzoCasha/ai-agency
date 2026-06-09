@@ -22,10 +22,10 @@ export function StickyCTA({ onOpenTabla }) {
   const { count } = useTablaDraft();
   if (HIDDEN_PATHS.some((p) => pathname.startsWith(p))) return null;
 
-  const label = count > 0 ? `Mi Tabla (${count})` : 'Monta tu tabla';
+  const label = count > 0 ? `Mi Cesta (${count})` : 'Monta tu cesta';
   const aria = count > 0
-    ? `Abrir Mi Tabla con ${count} ${count === 1 ? 'producto' : 'productos'}`
-    : 'Montar tu tabla';
+    ? `Abrir Mi Cesta con ${count} ${count === 1 ? 'producto' : 'productos'}`
+    : 'Montar tu cesta';
 
   return (
     <div

@@ -52,7 +52,7 @@ export function PickupSuccess({ confirmation, siteConfig }) {
       {items.length > 0 ? (
         <section aria-labelledby="confirmation-items-heading" className="mt-8">
           <h2 id="confirmation-items-heading" className="text-sm uppercase tracking-eyebrow text-text-muted mb-3">
-            Tu tabla
+            Tu cesta
           </h2>
           <ul className="divide-y divide-border border border-border rounded-md">
             {items.map((item, i) => (

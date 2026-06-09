@@ -91,13 +91,13 @@ export function Header({ siteConfig, onOpenTabla }) {
               onClick={onOpenTabla}
               aria-label={
                 count > 0
-                  ? `Abrir Mi Tabla, ${count} ${count === 1 ? 'producto' : 'productos'}`
-                  : 'Abrir Mi Tabla'
+                  ? `Abrir Mi Cesta, ${count} ${count === 1 ? 'producto' : 'productos'}`
+                  : 'Abrir Mi Cesta'
               }
               className="hidden md:inline-flex items-center gap-1.5 px-3 min-h-[44px] rounded-md text-sm font-semibold text-text-primary border border-border-strong hover:border-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
             >
               <ShoppingBag size={16} aria-hidden="true" />
-              Mi Tabla
+              Mi Cesta
               {count > 0 ? (
                 <span className="font-mono text-xs px-1.5 py-0.5 rounded-pill bg-accent text-text-inverse">
                   {count}

@@ -58,12 +58,12 @@ export function Hero({ siteConfig, cta }) {
           Queso de autor, mesa de barrio.
         </h1>
         <p className="mt-5 text-text-secondary text-lg md:text-xl max-w-prose">
-          Selección rotativa cada mes en pleno centro. Reserva tu tabla, pasa
+          Selección rotativa cada mes en pleno centro. Reserva tu cesta, pasa
           por la tienda o pídenos un maridaje al gusto.
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
           <Button as={Link} to={cta?.primaryHref || '/seleccion'} size="lg">
-            {cta?.primaryLabel || 'Reservar mi tabla'}
+            {cta?.primaryLabel || 'Reservar mi cesta'}
           </Button>
           {mapsUrl ? (
             <Button

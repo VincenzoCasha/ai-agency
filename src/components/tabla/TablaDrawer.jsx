@@ -61,13 +61,13 @@ export function TablaDrawer({ open, onClose }) {
               id="tabla-drawer-title"
               className="font-display text-2xl text-text-primary leading-tight"
             >
-              Mi Tabla
+              Mi Cesta
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar Mi Tabla"
+            aria-label="Cerrar Mi Cesta"
             className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center rounded-md text-text-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
           >
             <X size={20} aria-hidden="true" />
